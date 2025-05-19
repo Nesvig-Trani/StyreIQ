@@ -145,15 +145,18 @@ export interface User {
  */
 export interface Organization {
   id: number;
-  name?: string | null;
-  type?: ('university' | 'faculty' | 'department' | 'office' | 'project') | null;
+  name: string;
+  type: 'university' | 'faculty' | 'department' | 'office' | 'project';
   parentOrg?: (number | null) | Organization;
-  admin?: (number | null) | User;
+  admin: number | User;
+  backupAdmins?: (number | null) | User;
   email?: string | null;
   phone?: string | null;
   status?: ('active' | 'inactive' | 'pending_review') | null;
   description?: string | null;
   delegatedPermissions?: boolean | null;
+  path?: string | null;
+  depth?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -286,11 +289,14 @@ export interface OrganizationSelect<T extends boolean = true> {
   type?: T;
   parentOrg?: T;
   admin?: T;
+  backupAdmins?: T;
   email?: T;
   phone?: T;
   status?: T;
   description?: T;
   delegatedPermissions?: T;
+  path?: T;
+  depth?: T;
   updatedAt?: T;
   createdAt?: T;
 }

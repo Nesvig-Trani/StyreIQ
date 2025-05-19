@@ -33,8 +33,7 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: [
-    payloadCloudPlugin(),
-    // storage-adapter-placeholder
-  ],
+  plugins: [payloadCloudPlugin()],
+  cors: ['http://localhost:3000'],
+  cookiePrefix: 'payload',
 })

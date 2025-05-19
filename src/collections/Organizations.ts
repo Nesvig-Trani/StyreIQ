@@ -1,4 +1,5 @@
-import type { CollectionConfig } from 'payload'
+import { CollectionConfig } from 'payload'
+import { createOrganization } from '@/endpoints/organizations'
 
 export const Organizations: CollectionConfig = {
   slug: 'organization',
@@ -10,6 +11,7 @@ export const Organizations: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
+      required: true,
     },
     {
       name: 'type',
@@ -21,6 +23,7 @@ export const Organizations: CollectionConfig = {
         { label: 'Office', value: 'office' },
         { label: 'Project', value: 'project' },
       ],
+      required: true,
     },
     {
       name: 'parentOrg',
@@ -31,14 +34,22 @@ export const Organizations: CollectionConfig = {
       name: 'admin',
       type: 'relationship',
       relationTo: 'users',
+      required: true,
+    },
+    {
+      name: 'backupAdmins',
+      type: 'relationship',
+      relationTo: 'users',
     },
     {
       name: 'email',
       type: 'email',
+      unique: true,
     },
     {
       name: 'phone',
       type: 'text',
+      unique: true,
     },
     {
       name: 'status',
@@ -58,5 +69,15 @@ export const Organizations: CollectionConfig = {
       name: 'delegatedPermissions',
       type: 'checkbox',
     },
+    {
+      name: 'path',
+      type: 'text',
+    },
+    {
+      name: 'depth',
+      type: 'number',
+    },
   ],
+  timestamps: true,
+  endpoints: [createOrganization],
 }
