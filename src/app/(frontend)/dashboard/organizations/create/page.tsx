@@ -3,12 +3,7 @@ import { CreateOrgForm } from '@/components/organizations/createOrgForm'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { Card } from '@/components/ui/card'
-import { Organization } from '@/payload-types'
-
-export type OrganizationWithChildren = Organization & {
-  parentOrg?: number
-  children?: OrganizationWithChildren[]
-}
+import { CreateOrganizationsTree } from '@/utils/createOrgTree'
 
 export default async function CreateOrganization() {
   const payload = await getPayload({ config })
@@ -29,27 +24,13 @@ export default async function CreateOrganization() {
     },
   })
 
-  const organizations = allOrganizations.docs as OrganizationWithChildren[]
+  const tree = CreateOrganizationsTree(allOrganizations)
 
-  const orgMap: Record<string, OrganizationWithChildren> = {}
-  organizations.forEach((org) => {
-    org.children = []
-    orgMap[org.id] = org
-  })
-
-  const tree: OrganizationWithChildren[] = []
-  organizations.forEach((org) => {
-    if (org.parentOrg && orgMap[org.parentOrg]) {
-      orgMap[org.parentOrg].children!.push(org)
-    } else {
-      tree.push(org)
-    }
-  })
   return (
     <div>
       <h1>Create Organization</h1>
       <Card>
-        <CreateOrgForm users={users.docs} tree={tree} organizations={organizations} />
+        <CreateOrgForm users={users.docs} tree={tree} organizations={allOrganizations.docs} />
       </Card>
     </div>
   )

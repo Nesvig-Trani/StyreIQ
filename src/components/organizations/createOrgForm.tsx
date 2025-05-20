@@ -27,7 +27,7 @@ import { Organization, User } from '@/payload-types'
 import { createOrganization } from '@/services/organization'
 import { createOrgFormSchema } from '@/schemas/organization'
 import { OrganizationTreeNode } from '@/components/tree-select'
-import { OrganizationWithChildren } from '@/app/(frontend)/dashboard/organizations/create/page'
+import { OrganizationWithChildren } from '@/types/organizations'
 import { MultiSelect } from '@/components/multi-select'
 
 type CreateOrgFormProps = {

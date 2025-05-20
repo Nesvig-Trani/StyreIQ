@@ -1,7 +1,7 @@
 'use client'
 import { cn } from '@/lib/utils'
 import { SelectItem } from '@/components/ui/select'
-import { OrganizationWithChildren } from '@/app/(frontend)/dashboard/organizations/create/page'
+import { OrganizationWithChildren } from '@/types/organizations'
 
 interface OrganizationTreeNodeProps {
   organization: OrganizationWithChildren
