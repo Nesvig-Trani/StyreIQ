@@ -40,16 +40,15 @@ export const Organizations: CollectionConfig = {
       name: 'backupAdmins',
       type: 'relationship',
       relationTo: 'users',
+      hasMany: true,
     },
     {
       name: 'email',
       type: 'email',
-      unique: true,
     },
     {
       name: 'phone',
       type: 'text',
-      unique: true,
     },
     {
       name: 'status',

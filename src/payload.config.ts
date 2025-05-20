@@ -33,7 +33,7 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: [payloadCloudPlugin()],
+  plugins: [],
   cors: ['http://localhost:3000'],
   cookiePrefix: 'payload',
 })

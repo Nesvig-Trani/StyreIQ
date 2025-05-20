@@ -149,7 +149,7 @@ export interface Organization {
   type: 'university' | 'faculty' | 'department' | 'office' | 'project';
   parentOrg?: (number | null) | Organization;
   admin: number | User;
-  backupAdmins?: (number | null) | User;
+  backupAdmins?: (number | User)[] | null;
   email?: string | null;
   phone?: string | null;
   status?: ('active' | 'inactive' | 'pending_review') | null;

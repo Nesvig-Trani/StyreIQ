@@ -1,4 +1,3 @@
-'use client'
 import { cn } from '@/lib/utils'
 import { SelectItem } from '@/components/ui/select'
 import { OrganizationWithChildren } from '@/types/organizations'
