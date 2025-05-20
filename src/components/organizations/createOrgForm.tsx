@@ -29,6 +29,7 @@ import { createOrgFormSchema } from '@/schemas/organization'
 import { OrganizationTreeNode } from '@/components/tree-select'
 import { OrganizationWithChildren } from '@/types/organizations'
 import { MultiSelect } from '@/components/multi-select'
+import { toast } from 'sonner'
 
 type CreateOrgFormProps = {
   users: User[]
@@ -55,10 +56,11 @@ export const CreateOrgForm = ({ users, organizations, tree }: CreateOrgFormProps
 
   const onSubmit = async (data: z.infer<typeof createOrgFormSchema>) => {
     try {
-      const result = await createOrganization(data)
-      console.log('Organization created:', result)
-    } catch (error) {
-      console.error('Error creating organization:', error)
+      await createOrganization(data)
+      form.reset()
+      toast.success('Organization created successfully')
+    } catch {
+      toast.error('An error occurred while creating the organization, please try again')
     }
   }
 

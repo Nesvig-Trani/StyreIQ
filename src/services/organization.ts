@@ -2,7 +2,7 @@ import { createOrgFormSchema } from '@/schemas/organization'
 import { z } from 'zod'
 
 export const createOrganization = async (data: z.infer<typeof createOrgFormSchema>) => {
-  const response = await fetch('http://localhost:3000/api/organization', {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/organization`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
