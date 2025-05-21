@@ -17,23 +17,7 @@ type CreateOrgFormProps = {
 }
 
 export const CreateOrgForm = ({ users, organizations, tree }: CreateOrgFormProps) => {
-  const form = useForm<z.infer<typeof createOrgFormSchema>>({
-    resolver: zodResolver(createOrgFormSchema),
-    defaultValues: {
-      name: '',
-      type: 'university',
-      parent: '',
-      admin: '',
-      email: '',
-      phone: '',
-      status: 'active',
-      description: '',
-      delegatedPermissions: false,
-      backupAdmins: [],
-    },
-  })
-
-  const { formComponent } = useFormHelper(
+  const { formComponent, form } = useFormHelper(
     {
       schema: createOrgFormSchema,
       fields: [
