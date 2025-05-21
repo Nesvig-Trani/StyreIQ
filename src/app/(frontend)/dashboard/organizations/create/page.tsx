@@ -22,6 +22,7 @@ export default async function CreateOrganization() {
       depth: true,
       path: true,
     },
+    limit: 0,
   })
 
   const tree = CreateOrganizationsTree(allOrganizations)

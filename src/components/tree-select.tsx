@@ -1,31 +1,31 @@
 import { cn } from '@/lib/utils'
 import { SelectItem } from '@/components/ui/select'
-import { OrganizationWithChildren } from '@/types/organizations'
+import { Tree } from '@/types/organizations'
 
 interface OrganizationTreeNodeProps {
-  organization: OrganizationWithChildren
+  tree: Tree
   selectedValue?: string
 }
 
-export function OrganizationTreeNode({ organization, selectedValue }: OrganizationTreeNodeProps) {
+export function TreeNode({ tree, selectedValue }: OrganizationTreeNodeProps) {
   return (
     <>
-      <SelectItem value={organization.id.toString()} className="flex items-center">
+      <SelectItem value={tree.id.toString()} className="flex items-center">
         <div className="flex items-center">
           <span
             className={cn('inline-block, cursor-pointer')}
             style={{
-              marginLeft: `${organization.depth ? organization.depth : 0}rem`,
+              marginLeft: `${tree.depth ? tree.depth : 0}rem`,
             }}
           >
-            {organization.name}
+            {tree.name}
           </span>
         </div>
       </SelectItem>
 
-      {organization.children &&
-        organization.children.map((child) => (
-          <OrganizationTreeNode key={child.id} organization={child} selectedValue={selectedValue} />
+      {tree.children &&
+        tree.children.map((child) => (
+          <TreeNode key={child.id} tree={child} selectedValue={selectedValue} />
         ))}
     </>
   )

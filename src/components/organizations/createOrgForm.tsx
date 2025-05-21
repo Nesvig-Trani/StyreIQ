@@ -1,39 +1,18 @@
 'use client'
-
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Textarea } from '@/components/ui/textarea'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Button } from '@/components/ui/button'
 import { Organization, User } from '@/payload-types'
 import { createOrganization } from '@/services/organization'
 import { createOrgFormSchema } from '@/schemas/organization'
-import { OrganizationTreeNode } from '@/components/tree-select'
-import { OrganizationWithChildren } from '@/types/organizations'
-import { MultiSelect } from '@/components/multi-select'
+import { Tree } from '@/types/organizations'
 import { toast } from 'sonner'
+import { useFormHelper } from '@/components/form-hook-helper'
 
 type CreateOrgFormProps = {
   users: User[]
-  tree: OrganizationWithChildren[]
+  tree: Tree[]
   organizations: Organization[]
 }
 
@@ -54,215 +33,112 @@ export const CreateOrgForm = ({ users, organizations, tree }: CreateOrgFormProps
     },
   })
 
-  const onSubmit = async (data: z.infer<typeof createOrgFormSchema>) => {
-    try {
-      await createOrganization(data)
-      form.reset()
-      toast.success('Organization created successfully')
-    } catch {
-      toast.error('An error occurred while creating the organization, please try again')
-    }
-  }
-
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Organization name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="type"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Type</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="university">University</SelectItem>
-                    <SelectItem value="faculty">Faculty</SelectItem>
-                    <SelectItem value="department">Department</SelectItem>
-                    <SelectItem value="office">Office</SelectItem>
-                    <SelectItem value="project">Project</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="parent"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Parent</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select parent">
-                      {organizations.find((org) => org.id === Number(field.value))?.name ||
-                        'Select parent'}
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {tree.map((org) => (
-                      <OrganizationTreeNode
-                        key={org.id}
-                        organization={org}
-                        selectedValue={field.value}
-                      />
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="admin"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Admin</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select admin" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {users.map((user) => (
-                      <SelectItem key={user.id} value={user.id.toString()}>
-                        {user.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="backupAdmins"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Backup Admins</FormLabel>
-              <FormControl>
-                <MultiSelect
-                  options={users.map((user) => ({ label: user.name, value: user.id.toString() }))}
-                  selected={field.value || []}
-                  onChange={field.onChange}
-                  placeholder={'Select backup admins'}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input type="email" placeholder="Email (optional)" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="phone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Phone</FormLabel>
-              <FormControl>
-                <Input type="tel" placeholder="Phone (optional)" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="status"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Status</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="inactive">Inactive</SelectItem>
-                    <SelectItem value="pending_review">Pending Review</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea placeholder="Description (optional)" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="delegatedPermissions"
-          render={({ field }) => (
-            <FormItem className="flex items-center space-x-3">
-              <FormControl>
-                <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-              </FormControl>
-              <FormLabel>Delegated Permissions</FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Button type="submit" className={'cursor-pointer'}>
-          Create Organization
-        </Button>
-      </form>
-    </Form>
+  const { formComponent } = useFormHelper(
+    {
+      schema: createOrgFormSchema,
+      fields: [
+        {
+          label: 'Name',
+          name: 'name',
+          type: 'text',
+        },
+        {
+          label: 'Type',
+          name: 'type',
+          type: 'select',
+          options: [
+            { value: 'university', label: 'University' },
+            { value: 'faculty', label: 'Faculty' },
+            { value: 'department', label: 'Department' },
+            { value: 'office', label: 'Office' },
+            { value: 'project', label: 'Project' },
+          ],
+        },
+        {
+          label: 'Parent',
+          name: 'parent',
+          type: 'tree-select',
+          options: organizations.map((org) => ({
+            value: org.id.toString(),
+            label: org.name,
+          })),
+          tree: tree,
+        },
+        {
+          label: 'Admin',
+          name: 'admin',
+          type: 'select',
+          options: users.map((user) => ({
+            value: user.id.toString(),
+            label: user.name,
+          })),
+        },
+        {
+          label: 'Backup Admins',
+          name: 'backupAdmins',
+          type: 'multiselect',
+          options: users.map((user) => ({
+            value: user.id.toString(),
+            label: user.name,
+          })),
+        },
+        {
+          label: 'Email',
+          name: 'email',
+          type: 'text',
+        },
+        {
+          label: 'Phone',
+          name: 'phone',
+          type: 'text',
+        },
+        {
+          label: 'Status',
+          name: 'status',
+          type: 'select',
+          options: [
+            { value: 'active', label: 'Active' },
+            { value: 'inactive', label: 'Inactive' },
+            { value: 'pending_review', label: 'Pending Review' },
+          ],
+        },
+        {
+          label: 'Description',
+          name: 'description',
+          type: 'textarea',
+        },
+        {
+          label: 'Delegated Permissions',
+          name: 'delegatedPermissions',
+          type: 'checkbox',
+          checkboxMode: 'boolean',
+        },
+      ],
+      onSubmit: async (submitData) => {
+        try {
+          await createOrganization(submitData)
+          form.reset()
+          toast.success('Organization created successfully')
+        } catch {
+          toast.error('An error occurred while creating the organization, please try again')
+        }
+      },
+    },
+    {
+      defaultValues: {
+        name: '',
+        type: 'university',
+        parent: '',
+        admin: '',
+        email: '',
+        phone: '',
+        status: 'active',
+        description: '',
+        delegatedPermissions: false,
+        backupAdmins: [],
+      },
+    },
   )
+
+  return <div>{formComponent}</div>
 }
