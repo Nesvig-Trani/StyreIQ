@@ -2,8 +2,7 @@ import React from 'react'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 
-import { Select, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { TreeNode } from '@/components/tree-select'
+import { TreeSelect } from '@/components/tree-select'
 import { FieldData } from '@/components/form-hook-helper/types'
 
 export type TreeSelectHelperProps<TFieldValues extends FieldValues> = {
@@ -23,18 +22,12 @@ export const TreeSelectHelper = <TFieldValues extends FieldValues>({
         <FormItem>
           <FormLabel>{fieldData.label}</FormLabel>
           <FormControl>
-            <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger>
-                <SelectValue placeholder={'Select parent organization'}>
-                  {fieldData.options?.find((org) => org.value === field.value)?.label}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {fieldData.tree?.map((org) => (
-                  <TreeNode key={org.id} tree={org} selectedValue={field.value} />
-                ))}
-              </SelectContent>
-            </Select>
+            <TreeSelect
+              options={fieldData.options || []}
+              tree={fieldData.tree || []}
+              onChange={field.onChange}
+              value={field.value}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>

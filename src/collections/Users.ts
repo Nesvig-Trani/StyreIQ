@@ -1,4 +1,6 @@
 import type { CollectionConfig } from 'payload'
+import { UserRolesEnum, UserStatusEnum } from '@/types/users'
+import { createUser } from '@/endpoints/users'
 export const Users: CollectionConfig = {
   slug: 'users',
   admin: {
@@ -17,12 +19,12 @@ export const Users: CollectionConfig = {
       options: [
         {
           label: 'Super Admin',
-          value: 'super_admin',
+          value: UserRolesEnum.SuperAdmin,
         },
-        { label: 'Unit Admin', value: 'unit_admin' },
+        { label: 'Unit Admin', value: UserRolesEnum.UnitAdmin },
         {
           label: 'Social Media Manager',
-          value: 'social_media_manager',
+          value: UserRolesEnum.SocialMediaManager,
         },
       ],
     },
@@ -30,8 +32,8 @@ export const Users: CollectionConfig = {
       name: 'status',
       type: 'select',
       options: [
-        { label: 'Active', value: 'active' },
-        { label: 'Pending Activation', value: 'pending_activation' },
+        { label: 'Active', value: UserStatusEnum.Active },
+        { label: 'Pending Activation', value: UserStatusEnum.PendingActivation },
       ],
     },
     {
@@ -55,4 +57,5 @@ export const Users: CollectionConfig = {
       hasMany: false,
     },
   ],
+  endpoints: [createUser],
 }
