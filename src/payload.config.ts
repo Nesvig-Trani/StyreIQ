@@ -14,6 +14,13 @@ import { AuditLogPlugin } from '@/plugins/audit-log'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const auditLogCollections = {
+  users: true,
+  organization: true,
+} as const
+
+export type AuditLogCollectionKey = keyof typeof auditLogCollections
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -35,10 +42,7 @@ export default buildConfig({
   sharp,
   plugins: [
     AuditLogPlugin({
-      collections: {
-        users: true,
-        organization: true,
-      },
+      collections: auditLogCollections,
     }),
   ],
   cors: ['http://localhost:3000'],

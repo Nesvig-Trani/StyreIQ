@@ -1,5 +1,6 @@
 import { AuditLog } from '@/payload-types'
 import { CollectionAfterChangeHook } from 'payload'
+import { AuditLogCollectionKey } from '@payload-config'
 
 const AuditLogAfterChange: CollectionAfterChangeHook = async ({
   doc,
@@ -11,13 +12,13 @@ const AuditLogAfterChange: CollectionAfterChangeHook = async ({
   setTimeout(async () => {
     try {
       if (!req.user) return doc
-      if (collection.slug !== 'users' && collection.slug !== 'organization') return doc
+
       const data: Omit<AuditLog, 'createdAt' | 'updatedAt' | 'id'> = {
         user: req.user?.id,
         action: operation,
         entity: collection.slug,
         document: {
-          relationTo: collection.slug,
+          relationTo: collection.slug as AuditLogCollectionKey,
           value: doc.id,
         },
       }
