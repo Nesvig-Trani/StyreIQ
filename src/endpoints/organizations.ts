@@ -71,6 +71,7 @@ export const createOrganization: Endpoint = {
       const createOrganization = await req.payload.create({
         collection: 'organization',
         data,
+        req,
       })
 
       const currentId = createOrganization.id

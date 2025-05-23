@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Building2Icon, UserIcon, UsersIcon } from 'lucide-react'
+import { Building2Icon, HistoryIcon, UsersIcon } from 'lucide-react'
 
 import {
   Sidebar,
@@ -24,6 +24,11 @@ const data = {
       title: 'Users',
       url: '/dashboard/users',
       icon: UsersIcon,
+    },
+    {
+      title: 'Audit Log',
+      url: '/dashboard/audit-logs',
+      icon: HistoryIcon,
     },
   ],
 }

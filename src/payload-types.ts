@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     organization: Organization;
+    audit_log: AuditLog;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -79,6 +80,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     organization: OrganizationSelect<false> | OrganizationSelect<true>;
+    audit_log: AuditLogSelect<false> | AuditLogSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -181,6 +183,45 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "audit_log".
+ */
+export interface AuditLog {
+  id: number;
+  user: number | User;
+  action: 'create' | 'update' | 'delete' | 'approval' | 'flag_resolution' | 'policy_acknowledgment';
+  entity: string;
+  prev?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  current?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  document?:
+    | ({
+        relationTo: 'users';
+        value: number | User;
+      } | null)
+    | ({
+        relationTo: 'organization';
+        value: number | Organization;
+      } | null);
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -197,6 +238,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'organization';
         value: number | Organization;
+      } | null)
+    | ({
+        relationTo: 'audit_log';
+        value: number | AuditLog;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -297,6 +342,20 @@ export interface OrganizationSelect<T extends boolean = true> {
   delegatedPermissions?: T;
   path?: T;
   depth?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "audit_log_select".
+ */
+export interface AuditLogSelect<T extends boolean = true> {
+  user?: T;
+  action?: T;
+  entity?: T;
+  prev?: T;
+  current?: T;
+  document?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -53,6 +53,7 @@ export const createUser: Endpoint = {
           organization: Number(data.organization),
           admin_policy_agreement: false,
         },
+        req,
       })
 
       return new Response(JSON.stringify(createUser), {
