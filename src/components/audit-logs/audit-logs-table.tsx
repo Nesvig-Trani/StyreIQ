@@ -84,6 +84,15 @@ export const columns: ColumnDef<AuditLog>[] = [
       return <span>{format(new Date(createdAt), 'LLL dd, y')}</span>
     },
   },
+  {
+    accessorKey: 'createdAt',
+    header: 'Created At',
+    enableColumnFilter: true,
+    cell: ({ row }) => {
+      const createdAt = row.getValue('createdAt') as string
+      return <span>{format(new Date(createdAt), 'LLL dd, y')}</span>
+    },
+  },
 ]
 
 export const AuditLogsTable = ({
