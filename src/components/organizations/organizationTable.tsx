@@ -1,8 +1,8 @@
 'use client'
 import { Badge } from '@/components/ui/badge'
 import { ColumnDef } from '@tanstack/table-core'
-import { DataTable } from '@/components/data-table'
 import { Organization, User } from '@/payload-types'
+import { DataTable } from '@/components/data-table'
 
 export const columns: ColumnDef<Organization>[] = [
   {
@@ -54,6 +54,25 @@ export const columns: ColumnDef<Organization>[] = [
     cell: ({ row }) => row.getValue('phone') || '-',
   },
 ]
-export function OrganizationTable({ data }: { data: Organization[] }) {
-  return <DataTable columns={columns} data={data} />
+export function OrganizationTable({
+  data,
+  pagination,
+}: {
+  data: Organization[]
+  pagination: {
+    pageSize: number
+    pageIndex: number
+    total: number
+    pageCount: number
+  }
+}) {
+  return (
+    <DataTable
+      columns={columns}
+      data={data}
+      pagination={pagination}
+      pageSizeOptions={[5, 10, 20]}
+      pageCount={pagination.pageCount}
+    />
+  )
 }
