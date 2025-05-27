@@ -10,7 +10,7 @@ import { Button } from '@/shared/components/ui/button'
 
 export default async function CreateOrganization() {
   const { user } = await getAuthUser()
-  const organizations = await getAllOrganizations({ user })
+  const organizations = await getAllOrganizations()
   const orgIds = organizations.docs.map((org) => org.id)
   const users = await getUsersByOrganizations({ orgIds })
   if (users.docs.length === 0) {

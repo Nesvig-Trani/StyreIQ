@@ -1,10 +1,8 @@
 import { Card, CardContent } from '@/shared/components/ui/card'
 import { getUserById, UpdateUserForm } from '@/users'
-import { getAuthUser } from '@/auth/utils/getAuthUser'
 import { getAllOrganizations } from '@/organizations/queries'
 
 export default async function UpdateUser({ params }: { params: Promise<{ id: string }> }) {
-  const { user } = await getAuthUser()
   const { id } = await params
   if (!id) return <div>404</div>
 
@@ -16,7 +14,7 @@ export default async function UpdateUser({ params }: { params: Promise<{ id: str
       </div>
     )
 
-  const organizations = await getAllOrganizations({ user })
+  const organizations = await getAllOrganizations()
 
   return (
     <div>

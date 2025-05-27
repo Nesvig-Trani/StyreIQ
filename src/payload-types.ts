@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     organization: Organization;
     organization_access: OrganizationAccess;
+    'social-medias': SocialMedia;
     audit_log: AuditLog;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,6 +85,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     organization: OrganizationSelect<false> | OrganizationSelect<true>;
     organization_access: OrganizationAccessSelect<false> | OrganizationAccessSelect<true>;
+    'social-medias': SocialMediasSelect<false> | SocialMediasSelect<true>;
     audit_log: AuditLogSelect<false> | AuditLogSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -188,6 +190,32 @@ export interface OrganizationAccess {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "social-medias".
+ */
+export interface SocialMedia {
+  id: number;
+  name: string;
+  profileUrl: string;
+  platform: string;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  passwordUpdatedAt?: string | null;
+  isEnabledTwoFactor?: boolean | null;
+  isInUseSecurePassword?: boolean | null;
+  isAcceptedPolicies?: boolean | null;
+  isCompletedTrainingAccessibility?: boolean | null;
+  isCompletedTrainingRisk?: boolean | null;
+  isCompletedTrainingBrand?: boolean | null;
+  hasKnowledgeStandards?: boolean | null;
+  organization: number | Organization;
+  primaryAdmin: number | User;
+  backupAdmin: number | User;
+  status: 'active' | 'inactive' | 'in_transition' | 'pending_approval';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "audit_log".
  */
 export interface AuditLog {
@@ -224,6 +252,10 @@ export interface AuditLog {
         value: number | Organization;
       } | null)
     | ({
+        relationTo: 'social-medias';
+        value: number | SocialMedia;
+      } | null)
+    | ({
         relationTo: 'organization_access';
         value: number | OrganizationAccess;
       } | null);
@@ -248,6 +280,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'organization_access';
         value: number | OrganizationAccess;
+      } | null)
+    | ({
+        relationTo: 'social-medias';
+        value: number | SocialMedia;
       } | null)
     | ({
         relationTo: 'audit_log';
@@ -349,6 +385,31 @@ export interface OrganizationAccessSelect<T extends boolean = true> {
   type?: T;
   start_date?: T;
   end_date?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "social-medias_select".
+ */
+export interface SocialMediasSelect<T extends boolean = true> {
+  name?: T;
+  profileUrl?: T;
+  platform?: T;
+  contactEmail?: T;
+  contactPhone?: T;
+  passwordUpdatedAt?: T;
+  isEnabledTwoFactor?: T;
+  isInUseSecurePassword?: T;
+  isAcceptedPolicies?: T;
+  isCompletedTrainingAccessibility?: T;
+  isCompletedTrainingRisk?: T;
+  isCompletedTrainingBrand?: T;
+  hasKnowledgeStandards?: T;
+  organization?: T;
+  primaryAdmin?: T;
+  backupAdmin?: T;
+  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }

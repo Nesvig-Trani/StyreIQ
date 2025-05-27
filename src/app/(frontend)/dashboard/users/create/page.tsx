@@ -8,7 +8,7 @@ import { getAllOrganizations } from '@/organizations/queries'
 export default async function CreateUserPage() {
   const { user } = await getAuthUser()
 
-  const organizations = await getAllOrganizations({ user })
+  const organizations = await getAllOrganizations()
 
   const userOrgs = user?.organizations as Organization[]
 

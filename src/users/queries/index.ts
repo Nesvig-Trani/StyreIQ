@@ -3,7 +3,7 @@ import { PaginatedDocs, Where } from 'payload'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
 import { User } from '@/payload-types'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
-import { UserStatusEnum } from '../schemas'
+import { UserRolesEnum, UserStatusEnum } from '../schemas'
 
 export const getUsersByOrganizations = async ({
   orgIds,
@@ -104,4 +104,20 @@ export const getTotalUsers = async (): Promise<number> => {
   } catch {
     return 0
   }
+}
+
+export const getUsersByRoles = async (roles: UserRolesEnum[]) => {
+  const { payload } = await getPayloadContext()
+  const { user } = await getAuthUser()
+  const users = await payload.find({
+    collection: 'users',
+    where: {
+      role: {
+        in: roles,
+      },
+    },
+    overrideAccess: false,
+    user,
+  })
+  return users
 }

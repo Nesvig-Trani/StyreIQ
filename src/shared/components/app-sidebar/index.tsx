@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Building2Icon, HistoryIcon, UsersIcon } from 'lucide-react'
+import { Building2Icon, HistoryIcon, Share2Icon, UsersIcon } from 'lucide-react'
 
 import {
   Sidebar,
@@ -12,8 +12,6 @@ import {
   SidebarRail,
 } from '@/shared/components/ui/sidebar'
 import Link from 'next/link'
-import { Button } from '../ui/button'
-import OrganizationHierarchy from '../organization-hierarchy'
 
 const data = {
   navMain: [
@@ -26,6 +24,11 @@ const data = {
       title: 'Users',
       url: '/dashboard/users',
       icon: UsersIcon,
+    },
+    {
+      title: 'Social Medias',
+      url: '/dashboard/social-medias',
+      icon: Share2Icon,
     },
     {
       title: 'Audit Log',

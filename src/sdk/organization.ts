@@ -2,6 +2,8 @@ import { createOrgFormSchema, updateOrgFormSchema } from '@/organizations'
 import { z } from 'zod'
 import { env } from '@/config/env'
 import { JSON_HEADERS } from '@/shared/constants'
+import { Organization } from '@/payload-types'
+import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 
 export const createOrganization = async (data: z.infer<typeof createOrgFormSchema>) => {
   const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/organization`, {
@@ -56,3 +58,15 @@ export const updateOrganization = async (data: z.infer<typeof updateOrgFormSchem
   return response.json()
 }
 
+/**
+ * Returns an organization by id
+ * @returns
+ */
+export const getOrganizationById = async (id: number): Promise<Organization> => {
+  const { payload } = await getPayloadContext()
+  const organization = await payload.findByID({
+    collection: 'organization',
+    id,
+  })
+  return organization
+}

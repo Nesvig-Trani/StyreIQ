@@ -1,16 +1,12 @@
 'use server'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
-import { User } from '@/payload-types'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { Where } from 'payload'
 
-export const getAllOrganizations = async ({
-  user,
-}: {
-  user: (User & { collection: 'users' }) | null
-}) => {
+export const getAllOrganizations = async () => {
   try {
     const { payload } = await getPayloadContext()
+    const { user } = await getAuthUser()
     const organizations = await payload.find({
       collection: 'organization',
       depth: 0,
