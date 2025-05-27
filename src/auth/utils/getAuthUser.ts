@@ -4,7 +4,7 @@ import { UserAccessTypeEnum } from '@/organization-access'
 import { OrganizationAccess } from '@/payload-types'
 import { getOrganizationAccessByUserId } from '@/organization-access/queries'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
-import { UserStatusEnum } from '@/users'
+import { UserRolesEnum, UserStatusEnum } from '@/users'
 
 export async function getAuthUser() {
   const headers = await getHeaders()
@@ -34,6 +34,9 @@ export async function verifyUser() {
   })
 
   if (accessibleOrganizations.length === 0 || user.status !== UserStatusEnum.Active) {
+    if (user.role === UserRolesEnum.SuperAdmin) {
+      return user
+    }
     return null
   }
   return user

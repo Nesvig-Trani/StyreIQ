@@ -1,9 +1,40 @@
 import { z } from 'zod'
-import { createUserFormSchema, updateUserSchema } from '@/users/schemas'
+import { createFirstUserFormSchema, createUserFormSchema, updateUserSchema } from '@/users/schemas'
 import { env } from '@/config/env'
 import { updateOrgAccessSchema } from '@/organization-access'
 import { setUserStatusSchema } from '@/review-requests'
 import { JSON_HEADERS } from '@/shared/constants'
+
+/**
+ * Makes a request to the api for creating a user for the first time.
+ * @param data
+ * @returns
+ */
+export const createFirstUser = async (data: z.infer<typeof createFirstUserFormSchema>) => {
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/create-first-user`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify({
+      name: data.name,
+      email: data.email,
+      password: data.password,
+    }),
+  })
+
+  if (!response.ok) {
+    const errorResponse = await response.json()
+
+    throw {
+      message: 'Failed to create user',
+      data: { message: errorResponse.message, details: errorResponse.details },
+    }
+  }
+
+  return response.json()
+}
 
 export const createUser = async (data: z.infer<typeof createUserFormSchema>) => {
   const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users`, {

@@ -1,4 +1,4 @@
-import { Endpoint } from 'payload'
+import { Endpoint, Where } from 'payload'
 import { parseSearchParamsWithSchema } from '@/shared'
 import {
   createUserFormSchema,
@@ -31,7 +31,6 @@ export const createUser: Endpoint = {
           headers: JSON_HEADERS,
         })
       }
-
       const data = await req.json()
 
       if (data.organizations && !Array.isArray(data.organizations)) {
@@ -122,7 +121,6 @@ export const updateUser: Endpoint = {
           headers: JSON_HEADERS,
         })
       }
-
       const data = await req.json()
       const dataParsed = parseSearchParamsWithSchema(data, updateUserSchema)
       const userExists = await req.payload.findByID({ collection: 'users', id: dataParsed.id })
@@ -363,13 +361,18 @@ export const getOrganizationUsers: Endpoint = {
         return org.id
       })
 
+      const where: Where =
+        orgIds.length === 0 && user.role === UserRolesEnum.SuperAdmin
+          ? {}
+          : {
+              'organizations.id': {
+                in: orgIds,
+              },
+            }
+
       const users = await req.payload.find({
         collection: 'users',
-        where: {
-          'organizations.id': {
-            in: orgIds,
-          },
-        },
+        where,
         limit,
         page,
       })

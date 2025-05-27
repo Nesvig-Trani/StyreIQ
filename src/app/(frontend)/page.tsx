@@ -32,7 +32,7 @@ export default async function HomePage() {
         <div className="links">
           <a
             className="admin"
-            href={payloadConfig.routes.admin}
+            href="/dashboard"
             rel="noopener noreferrer"
             target="_blank"
           >

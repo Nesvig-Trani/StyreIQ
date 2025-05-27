@@ -1,5 +1,5 @@
 'use server'
-import { PaginatedDocs } from 'payload'
+import { PaginatedDocs, Where } from 'payload'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
 import { User } from '@/payload-types'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
@@ -14,11 +14,16 @@ export const getUsersByOrganizations = async ({
     const { payload } = await getPayloadContext()
     const { user } = await getAuthUser()
 
+    const where: Where =
+      orgIds.length === 0
+        ? {}
+        : {
+            'organizations.id': { in: orgIds },
+          }
+
     const users = await payload.find({
       collection: 'users',
-      where: {
-        'organizations.id': { in: orgIds },
-      },
+      where,
       overrideAccess: false,
       user,
     })
@@ -82,4 +87,21 @@ export const getAllUsers = async () => {
     user,
   })
   return users
+}
+
+/**
+ * Returns the total of users.
+ * @returns
+ */
+export const getTotalUsers = async (): Promise<number> => {
+  try {
+    const { payload } = await getPayloadContext()
+
+    const allUsers = await payload.find({
+      collection: 'users',
+    })
+    return allUsers.totalDocs
+  } catch {
+    return 0
+  }
 }

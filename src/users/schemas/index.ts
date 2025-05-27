@@ -40,6 +40,12 @@ export const createUserFormSchema = z.object({
   organizations: z.array(z.string()).optional(),
 })
 
+export const createFirstUserFormSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  password: z.string().min(8),
+})
+
 export const updateUserFormSchema = createUserFormSchema.omit({
   password: true,
 })
