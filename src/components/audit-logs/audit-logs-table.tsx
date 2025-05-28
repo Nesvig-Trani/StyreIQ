@@ -47,7 +47,7 @@ export const columns: ColumnDef<AuditLog>[] = [
     header: 'Document',
     cell: ({ row }) => {
       const document = row.getValue('document') as { value: { name: string } }
-      return <span>{document.value.name}</span>
+      return <span>{document?.value?.name || 'Unknown'}</span>
     },
   },
 ]
