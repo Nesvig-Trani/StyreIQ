@@ -1,6 +1,6 @@
 import React from 'react'
 import './styles.css'
-import { Toaster } from '@/components/ui/sonner'
+import { Toaster } from '@/shared/components/ui/sonner'
 
 export const metadata = {
   description: 'A blank template using Payload in a Next.js app.',

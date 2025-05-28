@@ -1,29 +1,11 @@
 import React from 'react'
 import { getPayload, Where } from 'payload'
 import config from '@payload-config'
-import { Card, CardContent } from '@/components/ui/card'
-import { AuditLogsTable } from '@/components/audit-logs/audit-logs-table'
-import { parseSearchParamsWithSchema } from '@/utils/parseParamsServer'
-import { z } from 'zod'
+import { Card, CardContent } from '@/shared/components/ui/card'
+import { AuditLogsTable } from '@/audit-logs'
+import { parseSearchParamsWithSchema } from '@/shared/utils/parseParamsServer'
 import { endOfDay, startOfDay } from 'date-fns'
-
-const auditLogSearchSchema = z.object({
-  pagination: z
-    .object({
-      pageSize: z.number().catch(10),
-      pageIndex: z.number().catch(0),
-    })
-    .catch({ pageSize: 10, pageIndex: 0 }),
-  entity: z.array(z.string()).catch([]),
-  action: z.array(z.string()).catch([]),
-  user: z.string().catch(''),
-  createdAt: z
-    .object({
-      from: z.string().catch(''),
-      to: z.string().catch(''),
-    })
-    .catch({ from: '', to: '' }),
-})
+import { auditLogSearchSchema } from '@/audit-logs/schemas'
 
 export default async function AuditLogsPage(props: {
   searchParams?: Promise<{

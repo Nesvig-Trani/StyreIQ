@@ -1,9 +1,8 @@
 import React from 'react'
-import { CreateOrgForm } from '@/components/organizations/createOrgForm'
+import { CreateOrganizationForm } from '@/organizations'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { Card } from '@/components/ui/card'
-import { CreateOrganizationsTree } from '@/utils/createOrgTree'
+import { Card } from '@/shared/components/ui/card'
 
 export default async function CreateOrganization() {
   const payload = await getPayload({ config })
@@ -25,13 +24,11 @@ export default async function CreateOrganization() {
     limit: 0,
   })
 
-  const tree = CreateOrganizationsTree(allOrganizations)
-
   return (
     <div>
       <h1>Create Organization</h1>
       <Card>
-        <CreateOrgForm users={users.docs} tree={tree} organizations={allOrganizations.docs} />
+        <CreateOrganizationForm users={users.docs} organizations={allOrganizations.docs} />
       </Card>
     </div>
   )

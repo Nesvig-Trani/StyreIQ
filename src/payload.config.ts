@@ -6,9 +6,8 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
-import { Users } from './collections/Users'
-import { Media } from './collections/Media'
-import { Organizations } from './collections/Organizations'
+import { Users } from '@/users'
+import { Organizations } from '@/organizations'
 import { AuditLogPlugin } from '@/plugins/audit-log'
 
 const filename = fileURLToPath(import.meta.url)
@@ -28,7 +27,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Organizations],
+  collections: [Users, Organizations],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

@@ -1,21 +1,11 @@
 import React from 'react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { Card, CardContent } from '@/components/ui/card'
-import { UsersTable } from '@/components/users/usersTable'
-import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/shared/components/ui/card'
+import { userSearchSchema, UserTable } from '@/users'
+import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
-import { z } from 'zod'
-import { parseSearchParamsWithSchema } from '@/utils/parseParamsServer'
-
-const userSearchSchema = z.object({
-  pagination: z
-    .object({
-      pageSize: z.number().catch(10),
-      pageIndex: z.number().catch(0),
-    })
-    .catch({ pageSize: 10, pageIndex: 0 }),
-})
+import { parseSearchParamsWithSchema } from '@/shared/utils/parseParamsServer'
 
 export default async function UsersPage(props: {
   searchParams?: Promise<{
@@ -33,6 +23,7 @@ export default async function UsersPage(props: {
     limit: parsedParams.pagination.pageSize,
     page: parsedParams.pagination.pageIndex + 1,
   })
+
   return (
     <div>
       <Card>
@@ -42,7 +33,7 @@ export default async function UsersPage(props: {
           </Button>
         </div>
         <CardContent>
-          <UsersTable
+          <UserTable
             data={users.docs}
             pagination={{
               pageSize: users.limit,
