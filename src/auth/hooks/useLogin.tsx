@@ -19,7 +19,7 @@ export function useLogin() {
     event.preventDefault()
 
     try {
-      const res = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/admins/login`, {
+      const res = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/login`, {
         method: 'POST',
         credentials: 'include',
         headers: {

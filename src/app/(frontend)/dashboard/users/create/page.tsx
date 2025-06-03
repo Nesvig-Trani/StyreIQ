@@ -3,11 +3,14 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { Card } from '@/shared/components/ui/card'
 import { CreateUserForm } from '@/users/'
+import { getAuthUser } from '@/auth/utils/getAuthUser'
 
 export default async function CreateUserPage() {
   const payload = await getPayload({ config })
 
-  const allOrganizations = await payload.find({
+  const { user } = await getAuthUser()
+
+  const organizations = await payload.find({
     collection: 'organization',
     depth: 0,
     select: {
@@ -18,13 +21,15 @@ export default async function CreateUserPage() {
       path: true,
     },
     limit: 0,
+    user,
+    overrideAccess: false
   })
 
   return (
     <div>
       <h1>Create User</h1>
       <Card>
-        <CreateUserForm organizations={allOrganizations.docs} />
+        <CreateUserForm organizations={organizations.docs} user={user} />
       </Card>
     </div>
   )

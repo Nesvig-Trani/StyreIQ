@@ -9,12 +9,11 @@ import {
 } from '@/users'
 import { updateUser } from '@/sdk/users'
 import { toast } from 'sonner'
-import { CreateOrganizationsTree } from '@/organizations/utils/createOrgTree'
-import { OrganizationWithChildren } from '@/organizations'
+import { Organization } from '@/payload-types'
+import { useRouter } from 'next/navigation'
 
 function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
-  const tree = CreateOrganizationsTree(organizations as OrganizationWithChildren[])
-
+  const router = useRouter()
   const { formComponent } = useFormHelper(
     {
       schema: updateUserFormSchema,
@@ -49,18 +48,18 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
         },
         {
           label: 'Organization',
-          name: 'organization',
-          type: 'tree-select',
+          name: 'organizations',
+          type: 'multiselect',
           options: organizations.map((org) => ({
             value: org.id.toString(),
             label: org.name,
           })),
-          tree: tree,
         },
       ],
       onSubmit: async (submitData) => {
         try {
-          await updateUser(id, submitData)
+          await updateUser({ ...submitData, id })
+          router.push(`/dashboard/users/access/${id}`)
           toast.success('User updated successfully')
         } catch {
           toast.error('An error occurred while updating the user, please try again')
@@ -74,7 +73,7 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
         name: data.name,
         role: data.role as UserRolesEnum,
         status: data.status as UserStatusEnum,
-        organization: data.organization?.toString(),
+        organizations: organizations.map((org: Organization) => org.id.toString()),
       },
     },
   )

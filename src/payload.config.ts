@@ -9,6 +9,7 @@ import sharp from 'sharp'
 import { Users } from '@/users'
 import { Organizations } from '@/organizations'
 import { AuditLogPlugin } from '@/plugins/audit-log'
+import { OrganizationAccess } from '@/organization-access/collections'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -16,6 +17,7 @@ const dirname = path.dirname(filename)
 const auditLogCollections = {
   users: true,
   organization: true,
+  organization_access: true,
 } as const
 
 export type AuditLogCollectionKey = keyof typeof auditLogCollections
@@ -27,7 +29,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Organizations],
+  collections: [Users, Organizations, OrganizationAccess],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

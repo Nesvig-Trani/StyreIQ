@@ -2,19 +2,28 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { Card, CardContent } from '@/shared/components/ui/card'
 import { UpdateUserForm } from '@/users'
+import { getAuthUser } from '@/auth/utils/getAuthUser'
 
-export default async function UpdateUser({ params }: { params: { id: string } }) {
+export default async function UpdateUser({ params }: { params: Promise<{ id: string }> }) {
+  const { user } = await getAuthUser()
   const payload = await getPayload({ config })
-  if (!params.id) return <div>404</div>
-  const user = await payload.findByID({
+  const { id } = await params
+  if (!id) return <div>404</div>
+
+  const data = await payload.findByID({
     collection: 'users',
-    id: params.id,
+    id: id,
     depth: 0,
   })
 
-  if (!user) return <div>404</div>
+  if (!data)
+    return (
+      <div>
+        <h1>404</h1>
+      </div>
+    )
 
-  const allOrganizations = await payload.find({
+  const organizations = await payload.find({
     collection: 'organization',
     depth: 0,
     select: {
@@ -25,6 +34,8 @@ export default async function UpdateUser({ params }: { params: { id: string } })
       path: true,
     },
     limit: 0,
+    overrideAccess: false,
+    user,
   })
 
   return (
@@ -32,7 +43,7 @@ export default async function UpdateUser({ params }: { params: { id: string } })
       <h1>Update user</h1>
       <Card>
         <CardContent>
-          <UpdateUserForm organizations={allOrganizations.docs} data={user} id={params.id} />
+          <UpdateUserForm organizations={organizations.docs} data={data} id={id} />
         </CardContent>
       </Card>
     </div>

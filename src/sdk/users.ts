@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { createUserFormSchema, updateUserFormSchema } from '@/users'
+import { createUserFormSchema, updateOrgAccessSchema, updateUserFormSchema, updateUserSchema } from '@/users'
 import { env } from '@/config/env'
 
 export const createUser = async (data: z.infer<typeof createUserFormSchema>) => {
@@ -15,7 +15,7 @@ export const createUser = async (data: z.infer<typeof createUserFormSchema>) => 
       password: data.password,
       role: data.role,
       status: data.status,
-      organization: data.organization,
+      organizations: data.organizations,
     }),
   })
 
@@ -31,8 +31,8 @@ export const createUser = async (data: z.infer<typeof createUserFormSchema>) => 
   return await response.json()
 }
 
-export const updateUser = async (id: string, data: z.infer<typeof updateUserFormSchema>) => {
-  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/${id}`, {
+export const updateUser = async (data: z.infer<typeof updateUserSchema>) => {
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/${data.id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export const updateUser = async (id: string, data: z.infer<typeof updateUserForm
       email: data.email,
       role: data.role,
       status: data.status,
-      organization: Number(data.organization),
+      organizations: data.organizations,
     }),
   })
 
@@ -52,4 +52,63 @@ export const updateUser = async (id: string, data: z.infer<typeof updateUserForm
   }
 
   return await response.json()
+}
+
+export const getUsers = async ({
+  params,
+  cookie,
+}: {
+  params: {
+    page: string
+    limit: string
+  }
+  cookie: string
+}) => {
+  const search = new URLSearchParams(params as Record<string, string>)
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users?${search}`, {
+    credentials: 'include',
+    headers: {
+      cookie: cookie,
+    },
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to get users')
+  }
+
+  return await response.json()
+}
+
+export const updateUserAccess = async (data: z.infer<typeof updateOrgAccessSchema>) => {
+  const response = await fetch(
+    `${env.NEXT_PUBLIC_BASE_URL}/api/users/access`,
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        access: data.access,
+      }),
+    },
+  )
+
+  if (!response.ok) {
+    throw new Error('Failed to update user')
+  }
+
+  return await response.json()
+}
+
+export const logout = async ({ cookie }: { cookie: string }) => {
+  const req = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/logout`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      cookie
+    },
+  })
+  return await req.json()
 }

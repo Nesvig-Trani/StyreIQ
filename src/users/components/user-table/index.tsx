@@ -1,17 +1,14 @@
 'use client'
 
-import { ColumnDef } from '@tanstack/table-core'
-import { Organization, User } from '@/payload-types'
-import { roleLabelMap, statusLabelMap, UserRolesEnum, UserStatusEnum } from '@/users'
-import { Button } from '@/shared/components/ui/button'
-import { PencilIcon } from 'lucide-react'
-import Link from 'next/link'
+import { User } from '@/payload-types'
+
 import { DataTable } from '@/shared'
 import useUserTable from '@/users/hooks/useUserTable'
 
 export function UserTable({
   data,
   pagination,
+  user,
 }: {
   data: User[]
   pagination: {
@@ -20,8 +17,9 @@ export function UserTable({
     total: number
     pageCount: number
   }
+  user: User
 }) {
-  const { columns } = useUserTable()
+  const { columns } = useUserTable({ user })
   return (
     <DataTable
       columns={columns}

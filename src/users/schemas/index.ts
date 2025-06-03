@@ -13,6 +13,7 @@ export enum UserStatusEnum {
   PendingActivation = 'pending_activation',
 }
 
+
 export const roleLabelMap: Record<UserRolesEnum, string> = {
   [UserRolesEnum.SuperAdmin]: 'Super Admin',
   [UserRolesEnum.UnitAdmin]: 'Unit Admin',
@@ -27,23 +28,27 @@ export const statusLabelMap: Record<UserStatusEnum, string> = {
 const RoleEnum = z.nativeEnum(UserRolesEnum)
 const StatusEnum = z.nativeEnum(UserStatusEnum)
 
+
+
 export const createUserFormSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
   name: z.string(),
   role: RoleEnum.optional(),
   status: StatusEnum.optional(),
-  organization: z.string().optional(),
+  organizations: z.array(z.string()).optional(),
 })
 
 export const updateUserFormSchema = createUserFormSchema.omit({
   password: true,
 })
+export const updateUserSchema = updateUserFormSchema.extend({ id: z.string() })
 
 export const userSearchSchema = paginationSchema.extend({})
 
 export type CreateUserFormProps = {
   organizations: Organization[]
+  user: User
 }
 
 export type UpdateUserFormProps = {

@@ -1,6 +1,11 @@
 import type { CollectionConfig } from 'payload'
-import { UserRolesEnum, UserStatusEnum } from '@/users'
-import { createUser } from '@/users'
+import {
+  createUser,
+  getOrganizationUsers,
+  updateUserAccess,
+  UserRolesEnum,
+  UserStatusEnum,
+} from '@/users'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -52,11 +57,11 @@ export const Users: CollectionConfig = {
       type: 'date',
     },
     {
-      name: 'organization',
+      name: 'organizations',
       type: 'relationship',
       relationTo: 'organization',
-      hasMany: false,
+      hasMany: true,
     },
   ],
-  endpoints: [createUser],
+  endpoints: [createUser, getOrganizationUsers, updateUserAccess],
 }

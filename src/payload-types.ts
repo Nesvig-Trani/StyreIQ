@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     organization: Organization;
+    organization_access: OrganizationAccess;
     audit_log: AuditLog;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +79,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     organization: OrganizationSelect<false> | OrganizationSelect<true>;
+    organization_access: OrganizationAccessSelect<false> | OrganizationAccessSelect<true>;
     audit_log: AuditLogSelect<false> | AuditLogSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -127,7 +129,7 @@ export interface User {
   admin_policy_agreement: boolean;
   date_of_last_policy_review?: string | null;
   date_of_last_training?: string | null;
-  organization?: (number | null) | Organization;
+  organizations?: (number | Organization)[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -162,6 +164,20 @@ export interface Organization {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organization_access".
+ */
+export interface OrganizationAccess {
+  id: number;
+  organization?: (number | null) | Organization;
+  user?: (number | null) | User;
+  type?: ('temporary' | 'permanent') | null;
+  start_date?: string | null;
+  end_date?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "audit_log".
  */
 export interface AuditLog {
@@ -187,6 +203,7 @@ export interface AuditLog {
     | number
     | boolean
     | null;
+  organization?: (number | null) | Organization;
   document?:
     | ({
         relationTo: 'users';
@@ -195,6 +212,10 @@ export interface AuditLog {
     | ({
         relationTo: 'organization';
         value: number | Organization;
+      } | null)
+    | ({
+        relationTo: 'organization_access';
+        value: number | OrganizationAccess;
       } | null);
   updatedAt: string;
   createdAt: string;
@@ -213,6 +234,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'organization';
         value: number | Organization;
+      } | null)
+    | ({
+        relationTo: 'organization_access';
+        value: number | OrganizationAccess;
       } | null)
     | ({
         relationTo: 'audit_log';
@@ -271,7 +296,7 @@ export interface UsersSelect<T extends boolean = true> {
   admin_policy_agreement?: T;
   date_of_last_policy_review?: T;
   date_of_last_training?: T;
-  organization?: T;
+  organizations?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -304,6 +329,19 @@ export interface OrganizationSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organization_access_select".
+ */
+export interface OrganizationAccessSelect<T extends boolean = true> {
+  organization?: T;
+  user?: T;
+  type?: T;
+  start_date?: T;
+  end_date?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "audit_log_select".
  */
 export interface AuditLogSelect<T extends boolean = true> {
@@ -312,6 +350,7 @@ export interface AuditLogSelect<T extends boolean = true> {
   entity?: T;
   prev?: T;
   current?: T;
+  organization?: T;
   document?: T;
   updatedAt?: T;
   createdAt?: T;

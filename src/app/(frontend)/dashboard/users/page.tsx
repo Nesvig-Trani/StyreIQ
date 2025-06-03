@@ -1,27 +1,30 @@
 import React from 'react'
-import { getPayload } from 'payload'
-import config from '@payload-config'
+import { PaginatedDocs } from 'payload'
 import { Card, CardContent } from '@/shared/components/ui/card'
 import { userSearchSchema, UserTable } from '@/users'
 import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
 import { parseSearchParamsWithSchema } from '@/shared/utils/parseParamsServer'
+import { getUsers } from '@/sdk/users'
+import {  User } from '@/payload-types'
+import { getAuthUser } from '@/auth/utils/getAuthUser'
 
 export default async function UsersPage(props: {
   searchParams?: Promise<{
     [key: string]: string
   }>
 }) {
-  const payload = await getPayload({ config })
+  const { user, headers } = await getAuthUser()
   const searchParams = await props.searchParams
 
   const parsedParams = parseSearchParamsWithSchema(searchParams, userSearchSchema)
 
-  const users = await payload.find({
-    collection: 'users',
-    depth: 1,
-    limit: parsedParams.pagination.pageSize,
-    page: parsedParams.pagination.pageIndex + 1,
+  const users: PaginatedDocs<User> = await getUsers({
+    params: {
+      page: String(parsedParams.pagination.pageIndex + 1),
+      limit: String(parsedParams.pagination.pageSize),
+    },
+    cookie: headers.get('cookie') || '',
   })
 
   return (
@@ -41,6 +44,7 @@ export default async function UsersPage(props: {
               total: users.totalDocs,
               pageCount: users.totalPages,
             }}
+            user={user}
           />
         </CardContent>
       </Card>

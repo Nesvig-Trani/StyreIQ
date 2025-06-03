@@ -1,6 +1,7 @@
 import React from 'react'
 import { AppSidebar } from '@/shared'
 import { SidebarInset, SidebarProvider } from '@/shared/components/ui/sidebar'
+import { getAuthUser } from '@/auth/utils/getAuthUser'
 
 export const metadata = {
   description: 'GovernIq Dashboard',
@@ -8,7 +9,8 @@ export const metadata = {
 }
 
 export default async function DashboardLayout(props: { children: React.ReactNode }) {
-  const { children } = props
+  const {children} = props
+  await getAuthUser()
 
   return (
     <SidebarProvider>

@@ -12,7 +12,6 @@ const AuditLogAfterChange: CollectionAfterChangeHook = async ({
   setTimeout(async () => {
     try {
       if (!req.user) return doc
-
       const data: Omit<AuditLog, 'createdAt' | 'updatedAt' | 'id'> = {
         user: req.user?.id,
         action: operation,

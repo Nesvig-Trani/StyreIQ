@@ -1,4 +1,4 @@
-import { useFormHelper } from '@/shared/components/form-hook-helper'
+import { FieldDataOption, useFormHelper } from '@/shared/components/form-hook-helper'
 import {
   CreateUserFormProps,
   createUserFormSchema,
@@ -10,12 +10,17 @@ import {
 import { createUser } from '@/sdk/users'
 import { toast } from 'sonner'
 import { isApiError } from '@/shared/utils/isApiError'
-import { redirect } from 'next/navigation'
-import { OrganizationWithChildren } from '@/organizations'
-import { CreateOrganizationsTree } from '@/organizations/utils/createOrgTree'
+import { useRouter } from 'next/navigation'
 
-function useCreateUserForm({ organizations }: CreateUserFormProps) {
-  const tree = CreateOrganizationsTree(organizations as OrganizationWithChildren[])
+function useCreateUserForm({ organizations, user }: CreateUserFormProps) {
+  const router = useRouter()
+  console.log("user", user)
+  const allowedRoles = Object.values(UserRolesEnum).filter((role) => {
+    if (user?.role === UserRolesEnum.UnitAdmin && role === UserRolesEnum.SuperAdmin) {
+      return false
+    }
+    return true
+  })
 
   const { formComponent, form } = useFormHelper(
     {
@@ -40,7 +45,7 @@ function useCreateUserForm({ organizations }: CreateUserFormProps) {
           label: 'Role',
           name: 'role',
           type: 'select',
-          options: Object.values(UserRolesEnum).map((role) => ({
+          options: allowedRoles.map((role) => ({
             label: roleLabelMap[role],
             value: role,
           })),
@@ -56,31 +61,32 @@ function useCreateUserForm({ organizations }: CreateUserFormProps) {
         },
         {
           label: 'Organization',
-          name: 'organization',
-          type: 'tree-select',
+          name: 'organizations',
+          type: 'multiselect',
           options: organizations.map((org) => ({
             value: org.id.toString(),
             label: org.name,
           })),
-          tree: tree,
         },
       ],
       onSubmit: async (submitData) => {
         try {
-          await createUser(submitData)
+          const user = await createUser(submitData)
           form.reset()
           toast.success('User created successfully')
+          router.push(`/dashboard/users/access/${user.id}`)
         } catch (error) {
+          console.log('error', error)
           if (isApiError(error)) {
             if (error.data?.message === 'A user with the given email is already registered.') {
               toast('User already exists, update the user instead')
-              redirect(`/dashboard/users/update/${error.data.details}`)
+              router.push(`/dashboard/users/update/${error.data.details}`)
             } else {
               toast.error('An error occurred while creating the user, please try again')
             }
           } else {
             toast.error('An unexpected error occurred')
-            console.error(error)
+            console.error('error', error)
           }
         }
       },
@@ -91,7 +97,7 @@ function useCreateUserForm({ organizations }: CreateUserFormProps) {
         name: '',
         role: undefined,
         status: undefined,
-        organization: undefined,
+        organizations: undefined,
       },
     },
   )

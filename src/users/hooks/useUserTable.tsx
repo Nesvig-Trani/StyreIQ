@@ -3,9 +3,9 @@ import { Organization, User } from '@/payload-types'
 import { roleLabelMap, statusLabelMap, UserRolesEnum, UserStatusEnum } from '@/users'
 import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
-import { PencilIcon } from 'lucide-react'
+import { FileLock2, PencilIcon } from 'lucide-react'
 
-function useUserTable() {
+function useUserTable({ user }: { user: User }) {
   const columns: ColumnDef<User>[] = [
     {
       accessorKey: 'name',
@@ -44,12 +44,26 @@ function useUserTable() {
       header: 'Actions',
       cell: ({ row }) => {
         const id = row.original.id
+        const role = row.original.role
         return (
-          <Button>
-            <Link href={`/dashboard/users/update/${id}`}>
-              <PencilIcon />
-            </Link>
-          </Button>
+          <div className="flex gap-2">
+            <Button>
+              <Link href={`/dashboard/users/access/${id}`}>
+                <FileLock2 />
+              </Link>
+            </Button>
+            <div>
+              {(user.role === UserRolesEnum.UnitAdmin &&
+                role === UserRolesEnum.SocialMediaManager) ||
+              user.role === UserRolesEnum.SuperAdmin ? (
+                <Button>
+                  <Link href={`/dashboard/users/update/${id}`}>
+                    <PencilIcon />
+                  </Link>
+                </Button>
+              ) : null}
+            </div>
+          </div>
         )
       },
     },

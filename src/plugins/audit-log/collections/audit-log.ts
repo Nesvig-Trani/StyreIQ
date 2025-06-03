@@ -51,6 +51,11 @@ export const AuditLogs: CollectionConfig = {
       name: 'current',
       type: 'json',
     },
+    {
+      name: 'organization',
+      type: 'relationship',
+      relationTo: 'organization',
+    },
   ],
   timestamps: true,
 }
