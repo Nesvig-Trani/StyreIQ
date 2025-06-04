@@ -73,16 +73,16 @@ export const createUser: Endpoint = {
       })
 
       await Promise.all(
-        dataParsed.organizations?.map(async (org) => {
-          await req.payload.create({
+        dataParsed.organizations?.map(async (org) =>
+          req.payload.create({
             collection: 'organization_access',
             data: {
               organization: Number(org),
               user: createUser.id,
               type: UserAccessTypeEnum.Permanent,
             },
-          })
-        }) || [],
+          }),
+        ) || [],
       )
 
       return new Response(JSON.stringify(createUser), {
@@ -207,16 +207,15 @@ export const updateUser: Endpoint = {
         })
 
         await Promise.all(
-          dataParsed.organizations?.map(
-            async (org) =>
-              await req.payload.create({
-                collection: 'organization_access',
-                data: {
-                  organization: Number(org),
-                  user: Number(dataParsed.id),
-                  type: 'permanent',
-                },
-              }),
+          dataParsed.organizations?.map(async (org) =>
+            req.payload.create({
+              collection: 'organization_access',
+              data: {
+                organization: Number(org),
+                user: Number(dataParsed.id),
+                type: UserAccessTypeEnum.Permanent,
+              },
+            }),
           ) || [],
         )
       }
@@ -256,18 +255,20 @@ export const updateUserAccess: Endpoint = {
 
       const data = await req.json()
       const dataParsed = parseSearchParamsWithSchema(data, updateOrgAccessSchema)
-      dataParsed.access.map(async (access) => {
-        await req.payload.update({
-          collection: 'organization_access',
-          id: access.id,
-          data: {
-            type: access.type,
-            start_date: access.start_date,
-            end_date: access.end_date,
-          },
-          req,
-        })
-      })
+      await Promise.all(
+        dataParsed.access.map(async (access) =>
+          req.payload.update({
+            collection: 'organization_access',
+            id: access.id,
+            data: {
+              type: access.type,
+              start_date: access.start_date,
+              end_date: access.end_date,
+            },
+            req,
+          }),
+        ) || [],
+      )
 
       return new Response(
         JSON.stringify({ success: true, message: 'Operation completed successfully' }),
