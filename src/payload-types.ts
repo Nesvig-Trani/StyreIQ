@@ -125,7 +125,7 @@ export interface User {
   id: number;
   name: string;
   role?: ('super_admin' | 'unit_admin' | 'social_media_manager') | null;
-  status?: ('active' | 'pending_activation') | null;
+  status?: ('active' | 'inactive' | 'pending_activation') | null;
   admin_policy_agreement: boolean;
   date_of_last_policy_review?: string | null;
   date_of_last_training?: string | null;

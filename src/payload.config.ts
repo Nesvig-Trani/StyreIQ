@@ -6,10 +6,11 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
-import { Users } from '@/users'
 import { Organizations } from '@/organizations'
 import { AuditLogPlugin } from '@/plugins/audit-log'
 import { OrganizationAccess } from '@/organization-access/collections'
+import { EmailAdapter } from './shared/utils/emailAdapter'
+import { Users } from '@/users/collections'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -48,4 +49,5 @@ export default buildConfig({
   ],
   cors: ['http://localhost:3000'],
   cookiePrefix: 'payload',
+  email: EmailAdapter()
 })

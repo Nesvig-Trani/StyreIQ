@@ -1,12 +1,6 @@
 import type { CollectionConfig } from 'payload'
-import {
-  createUser,
-  getOrganizationUsers,
-  updateUser,
-  updateUserAccess,
-  UserRolesEnum,
-  UserStatusEnum,
-} from '@/users'
+import { UserRolesEnum, UserStatusEnum } from '@/users/schemas'
+import { createUser, updateUser, getOrganizationUsers, updateUserAccess } from '@/users/endpoints'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -40,6 +34,7 @@ export const Users: CollectionConfig = {
       type: 'select',
       options: [
         { label: 'Active', value: UserStatusEnum.Active },
+        { label: 'Inactive', value: UserStatusEnum.Inactive },
         { label: 'Pending Activation', value: UserStatusEnum.PendingActivation },
       ],
     },

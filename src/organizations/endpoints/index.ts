@@ -1,3 +1,4 @@
+import { JSON_HEADERS } from '@/shared/constants'
 import { Endpoint } from 'payload'
 
 export const createOrganization: Endpoint = {
@@ -8,14 +9,14 @@ export const createOrganization: Endpoint = {
       if (!req.json)
         return new Response(JSON.stringify({ error: 'Missing JSON body' }), {
           status: 400,
-          headers: { 'Content-Type': 'application/json' },
+          headers: JSON_HEADERS,
         })
 
       const user = req.user
       if (!user) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), {
           status: 401,
-          headers: { 'Content-Type': 'application/json' },
+          headers: JSON_HEADERS,
         })
       }
       const data = await req.json()
@@ -24,7 +25,7 @@ export const createOrganization: Endpoint = {
           JSON.stringify({ error: 'parentOrg is required for non-super_admin users' }),
           {
             status: 400,
-            headers: { 'Content-Type': 'application/json' },
+            headers: JSON_HEADERS,
           },
         )
       }
@@ -43,7 +44,7 @@ export const createOrganization: Endpoint = {
             JSON.stringify({ error: 'Organization with the same name already exists' }),
             {
               status: 400,
-              headers: { 'Content-Type': 'application/json' },
+              headers: JSON_HEADERS,
             },
           )
         }
@@ -99,13 +100,13 @@ export const createOrganization: Endpoint = {
 
       return new Response(JSON.stringify(createOrganization), {
         status: 201,
-        headers: { 'Content-Type': 'application/json' },
+        headers: JSON_HEADERS,
       })
     } catch (error) {
       console.error('Error creating organization:', error)
       return new Response(JSON.stringify({ error: 'Internal Server Error', details: error }), {
         status: 500,
-        headers: { 'Content-Type': 'application/json' },
+        headers: JSON_HEADERS,
       })
     }
   },

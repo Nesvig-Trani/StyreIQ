@@ -50,7 +50,12 @@ export const updateUser = async (data: z.infer<typeof updateUserSchema>) => {
   })
 
   if (!response.ok) {
-    throw new Error('Failed to update user')
+    const errorData = await response.json().catch(() => ({}))
+    throw {
+      message: errorData?.error || 'Failed to update user',
+      status: response.status,
+      data: errorData,
+    }
   }
 
   return response.json()
@@ -101,13 +106,13 @@ export const updateUserAccess = async (data: z.infer<typeof updateOrgAccessSchem
 }
 
 export const logout = async ({ cookie }: { cookie: string }) => {
-  const req = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/logout`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      cookie,
-    },
-  })
-  return req.json()
+    const req = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/logout`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        cookie,
+      },
+    })
+    return req.json()
 }

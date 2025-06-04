@@ -4,6 +4,7 @@ import { UserAccessTypeEnum } from '@/organization-access'
 import { OrganizationAccess } from '@/payload-types'
 import { getOrganizationAccessByUserId } from '@/organization-access/queries'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
+import { UserStatusEnum } from '@/users'
 
 export async function getAuthUser() {
   const headers = await getHeaders()
@@ -22,6 +23,7 @@ export async function verifyUser() {
   if (!user) {
     return null
   }
+
   const accessibleOrganizations: OrganizationAccess[] = []
   const orgAccessResult = await getOrganizationAccessByUserId({ id: user.id })
   orgAccessResult.docs.forEach((access) => {
@@ -31,7 +33,7 @@ export async function verifyUser() {
     }
   })
 
-  if (accessibleOrganizations.length === 0) {
+  if (accessibleOrganizations.length === 0 || user.status !== UserStatusEnum.Active) {
     return null
   }
   return user

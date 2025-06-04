@@ -61,8 +61,29 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
           await updateUser({ ...submitData, id: Number(id) })
           router.push(`/dashboard/users/access/${id}`)
           toast.success('User updated successfully')
-        } catch {
-          toast.error('An error occurred while updating the user, please try again')
+        } catch (err) {
+          if (
+            typeof err === 'object' &&
+            err !== null &&
+            'status' in err &&
+            'data' in err
+           ) {
+            const typedErr = err as {
+              status: number;
+              data: { organizations: Organization[] };
+            };
+
+            if (typedErr.status === 409) {
+              toast.warning(
+                `You cannot disable this user because they are the only Unit Admin in the following organizations: ${typedErr.data.organizations
+                  .map((org) => org.name)
+                  .join(', ')}. Please assign another Unit Admin before disabling the user.`,
+              );
+              console.log('Conflicting organizations:', typedErr.data.organizations);
+            }
+          } else {
+            toast.error('An unexpected error occurred.');
+          }
         }
       },
       submitContent: 'Update User',

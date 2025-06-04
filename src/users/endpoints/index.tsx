@@ -1,7 +1,15 @@
 import { Endpoint } from 'payload'
 import { parseSearchParamsWithSchema } from '@/shared'
-import { createUserFormSchema, updateUserSchema } from '../schemas'
+import {
+  createUserFormSchema,
+  updateUserSchema,
+  UserRolesEnum,
+  UserStatusEnum,
+} from '@/users/schemas'
 import { updateOrgAccessSchema, UserAccessTypeEnum } from '@/organization-access'
+import { Organization } from '@/payload-types'
+import { checkAndSendPermissionChangeEmail } from '../utils/permissionChangeEmail'
+import { JSON_HEADERS } from '@/shared/constants'
 
 export const createUser: Endpoint = {
   path: '/',
@@ -11,14 +19,14 @@ export const createUser: Endpoint = {
       if (!req.json)
         return new Response(JSON.stringify({ error: 'Missing JSON body' }), {
           status: 400,
-          headers: { 'Content-Type': 'application/json' },
+          headers: JSON_HEADERS,
         })
 
       const user = req.user
       if (!user) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), {
           status: 401,
-          headers: { 'Content-Type': 'application/json' },
+          headers: JSON_HEADERS,
         })
       }
 
@@ -45,7 +53,7 @@ export const createUser: Endpoint = {
           }),
           {
             status: 400,
-            headers: { 'Content-Type': 'application/json' },
+            headers: JSON_HEADERS,
           },
         )
       }
@@ -79,13 +87,13 @@ export const createUser: Endpoint = {
 
       return new Response(JSON.stringify(createUser), {
         status: 201,
-        headers: { 'Content-Type': 'application/json' },
+        headers: JSON_HEADERS,
       })
     } catch (error) {
       console.error('Error creating user:', error)
       return new Response(JSON.stringify({ error: 'Error creating user', details: error }), {
         status: 400,
-        headers: { 'Content-Type': 'application/json' },
+        headers: JSON_HEADERS,
       })
     }
   },
@@ -99,19 +107,69 @@ export const updateUser: Endpoint = {
       if (!req.json)
         return new Response(JSON.stringify({ error: 'Missing JSON body' }), {
           status: 400,
-          headers: { 'Content-Type': 'application/json' },
+          headers: JSON_HEADERS,
         })
 
       const user = req.user
       if (!user) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), {
           status: 401,
-          headers: { 'Content-Type': 'application/json' },
+          headers: JSON_HEADERS,
         })
       }
 
       const data = await req.json()
       const dataParsed = parseSearchParamsWithSchema(data, updateUserSchema)
+      const userExists = await req.payload.findByID({ collection: 'users', id: dataParsed.id })
+      if (!userExists) {
+        return new Response(JSON.stringify({ error: 'User not found' }), {
+          status: 404,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      if (
+        dataParsed.status === UserStatusEnum.Inactive &&
+        dataParsed.role === UserRolesEnum.UnitAdmin
+      ) {
+        const organizations = userExists.organizations as Organization[]
+
+        const orgsWhereUserIsOnlyAdmin: Organization[] = []
+
+        for (const org of organizations) {
+          const otherAdmins = await req.payload.find({
+            collection: 'users',
+            where: {
+              and: [
+                { 'organizations.id': { equals: org.id } },
+                { role: { equals: UserRolesEnum.UnitAdmin } },
+                { id: { not_equals: userExists.id } },
+              ],
+            },
+            overrideAccess: false,
+            user,
+          })
+
+          if (!otherAdmins.docs.length) {
+            orgsWhereUserIsOnlyAdmin.push(org)
+          }
+        }
+
+        if (orgsWhereUserIsOnlyAdmin.length > 0) {
+          return new Response(
+            JSON.stringify({
+              error:
+                'You cannot disable this user because they are the only Unit Admin in the following organizations.',
+              organizations: orgsWhereUserIsOnlyAdmin,
+            }),
+            {
+              status: 409,
+              headers: JSON_HEADERS,
+            },
+          )
+        }
+      }
+
       const updatedUser = await req.payload.update({
         collection: 'users',
         id: dataParsed.id,
@@ -125,6 +183,19 @@ export const updateUser: Endpoint = {
         },
         req,
       })
+
+      await checkAndSendPermissionChangeEmail({
+        payload: req.payload,
+        originalUser: userExists,
+        updatedData: {
+          name: dataParsed.name,
+          email: dataParsed.email,
+          role: dataParsed.role,
+          status: dataParsed.status,
+          organizations: userExists.organizations as Organization[],
+        },
+      })
+
       if (dataParsed.organizations && dataParsed.organizations?.length > 0) {
         await req.payload.delete({
           collection: 'organization_access',
@@ -152,13 +223,13 @@ export const updateUser: Endpoint = {
 
       return new Response(JSON.stringify(updatedUser), {
         status: 200,
-        headers: { 'Content-Type': 'application/json' },
+        headers: JSON_HEADERS,
       })
     } catch (error) {
       console.error('Error updating organization:', error)
       return new Response(JSON.stringify({ error: 'Error updating user', details: error }), {
         status: 400,
-        headers: { 'Content-Type': 'application/json' },
+        headers: JSON_HEADERS,
       })
     }
   },
@@ -172,14 +243,14 @@ export const updateUserAccess: Endpoint = {
       if (!req.json)
         return new Response(JSON.stringify({ error: 'Missing JSON body' }), {
           status: 400,
-          headers: { 'Content-Type': 'application/json' },
+          headers: JSON_HEADERS,
         })
 
       const user = req.user
       if (!user) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), {
           status: 401,
-          headers: { 'Content-Type': 'application/json' },
+          headers: JSON_HEADERS,
         })
       }
 
@@ -202,14 +273,14 @@ export const updateUserAccess: Endpoint = {
         JSON.stringify({ success: true, message: 'Operation completed successfully' }),
         {
           status: 200,
-          headers: { 'Content-Type': 'application/json' },
+          headers: JSON_HEADERS,
         },
       )
     } catch (error) {
       console.error('Error updating access:', error)
       return new Response(JSON.stringify({ error: 'Internal Server Error', details: error }), {
         status: 500,
-        headers: { 'Content-Type': 'application/json' },
+        headers: JSON_HEADERS,
       })
     }
   },
@@ -224,7 +295,7 @@ export const getOrganizationUsers: Endpoint = {
       if (!user) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), {
           status: 401,
-          headers: { 'Content-Type': 'application/json' },
+          headers: JSON_HEADERS,
         })
       }
 
@@ -254,13 +325,13 @@ export const getOrganizationUsers: Endpoint = {
 
       return new Response(JSON.stringify({ ...users }), {
         status: 200,
-        headers: { 'Content-Type': 'application/json' },
+        headers: JSON_HEADERS,
       })
     } catch (error) {
       console.error('Error getting users:', error)
       return new Response(JSON.stringify({ error: 'Error getting users', details: error }), {
         status: 400,
-        headers: { 'Content-Type': 'application/json' },
+        headers: JSON_HEADERS,
       })
     }
   },

@@ -10,6 +10,7 @@ export enum UserRolesEnum {
 
 export enum UserStatusEnum {
   Active = 'active',
+  Inactive = 'inactive',
   PendingActivation = 'pending_activation',
 }
 
@@ -22,6 +23,7 @@ export const roleLabelMap: Record<UserRolesEnum, string> = {
 
 export const statusLabelMap: Record<UserStatusEnum, string> = {
   [UserStatusEnum.Active]: 'Active',
+  [UserStatusEnum.Inactive]: 'Inactive',
   [UserStatusEnum.PendingActivation]: 'Pending Activation',
 }
 

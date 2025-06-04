@@ -1,3 +1,4 @@
+'use server'
 import React from 'react'
 import { PaginatedDocs } from 'payload'
 import { Card, CardContent } from '@/shared/components/ui/card'
@@ -6,7 +7,7 @@ import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
 import { parseSearchParamsWithSchema } from '@/shared/utils/parseParamsServer'
 import { getUsers } from '@/sdk/users'
-import {  User } from '@/payload-types'
+import { User } from '@/payload-types'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
 
 export default async function UsersPage(props: {
