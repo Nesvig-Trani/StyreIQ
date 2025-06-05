@@ -1,7 +1,8 @@
 import { z } from 'zod'
-import { createUserFormSchema, updateUserSchema } from '@/users'
+import { createUserFormSchema, updateUserSchema } from '@/users/schemas'
 import { env } from '@/config/env'
 import { updateOrgAccessSchema } from '@/organization-access'
+import { setUserStatusSchema } from '@/review-requests'
 
 export const createUser = async (data: z.infer<typeof createUserFormSchema>) => {
   const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users`, {
@@ -104,7 +105,6 @@ export const updateUserAccess = async (data: z.infer<typeof updateOrgAccessSchem
 
   return await response.json()
 }
-
 export const logout = async ({ cookie }: { cookie: string }) => {
     const req = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/logout`, {
       method: 'POST',
@@ -115,4 +115,24 @@ export const logout = async ({ cookie }: { cookie: string }) => {
       },
     })
     return req.json()
+}
+export const setUserApprovalStatus = async ({
+  data,
+}: {
+  data: z.infer<typeof setUserStatusSchema>
+}) => {
+  const req = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/status`, {
+    method: 'PUT',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ ...data }),
+  })
+
+  if (!req.ok) {
+    throw new Error('Failed to set user status')
+  }
+
+  return req.json()
 }

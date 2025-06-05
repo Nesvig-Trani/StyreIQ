@@ -1,7 +1,8 @@
 import React from 'react'
 import { Card } from '@/shared/components/ui/card'
-import { CreateUserForm } from '@/users/'
+import { CreateUserForm, UserRolesEnum } from '@/users/'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
+import { Organization } from '@/payload-types'
 import { getAllOrganizations } from '@/organizations/queries'
 
 export default async function CreateUserPage() {
@@ -9,11 +10,26 @@ export default async function CreateUserPage() {
 
   const organizations = await getAllOrganizations({ user })
 
+  const userOrgs = user?.organizations as Organization[]
+
+  const orgsWithDefinedDepth = userOrgs.filter(
+    (org) => org.depth !== null && org.depth !== undefined,
+  )
+  const orgWithMinDepth =
+    orgsWithDefinedDepth.length > 0
+      ? orgsWithDefinedDepth.reduce((min, current) =>
+          (current.depth ?? Infinity) < (min.depth ?? Infinity) ? current : min,
+        )
+      : undefined
+
   return (
     <div>
-      <h1>Create User</h1>
       <Card>
-        <CreateUserForm organizations={organizations.docs} user={user} />
+        <CreateUserForm
+          initialOrganizations={organizations.docs}
+          authUserRole={user?.role as UserRolesEnum}
+          topOrgDepth={orgWithMinDepth?.depth || undefined}
+        />
       </Card>
     </div>
   )

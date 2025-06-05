@@ -1,6 +1,12 @@
 import type { CollectionConfig } from 'payload'
 import { UserRolesEnum, UserStatusEnum } from '@/users/schemas'
-import { createUser, updateUser, getOrganizationUsers, updateUserAccess } from '@/users/endpoints'
+import {
+  createUser,
+  updateUser,
+  getOrganizationUsers,
+  updateUserAccess,
+  setUserApprovalStatus,
+} from '@/users/endpoints'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -35,6 +41,7 @@ export const Users: CollectionConfig = {
       options: [
         { label: 'Active', value: UserStatusEnum.Active },
         { label: 'Inactive', value: UserStatusEnum.Inactive },
+        { label: 'Rejected', value: UserStatusEnum.Rejected },
         { label: 'Pending Activation', value: UserStatusEnum.PendingActivation },
       ],
     },
@@ -58,6 +65,16 @@ export const Users: CollectionConfig = {
       relationTo: 'organization',
       hasMany: true,
     },
+    {
+      name: 'reject_reason',
+      type: 'text',
+    },
   ],
-  endpoints: [createUser, updateUser, getOrganizationUsers, updateUserAccess],
+  endpoints: [
+    createUser,
+    getOrganizationUsers,
+    updateUser,
+    updateUserAccess,
+    setUserApprovalStatus,
+  ],
 }

@@ -7,9 +7,11 @@ import {
   UserStatusEnum,
 } from '@/users/schemas'
 import { updateOrgAccessSchema, UserAccessTypeEnum } from '@/organization-access'
-import { Organization } from '@/payload-types'
+import { Organization, User } from '@/payload-types'
 import { checkAndSendPermissionChangeEmail } from '../utils/permissionChangeEmail'
 import { JSON_HEADERS } from '@/shared/constants'
+import { setUserStatusSchema } from '@/review-requests'
+import { USER_ALREADY_EXISTS } from '../constants/Errors'
 
 export const createUser: Endpoint = {
   path: '/',
@@ -48,7 +50,7 @@ export const createUser: Endpoint = {
       if (existingUser.docs.length > 0) {
         return new Response(
           JSON.stringify({
-            message: 'A user with the given email is already registered.',
+            message: USER_ALREADY_EXISTS,
             details: existingUser.docs[0].id,
           }),
           {
@@ -65,7 +67,10 @@ export const createUser: Endpoint = {
           email: dataParsed.email,
           password: dataParsed.password,
           role: dataParsed.role,
-          status: dataParsed.status,
+          status:
+            user.role === UserRolesEnum.UnitAdmin
+              ? UserStatusEnum.PendingActivation
+              : dataParsed.status,
           organizations: dataParsed.organizations?.map((org) => Number(org)),
           admin_policy_agreement: false,
         },
@@ -73,7 +78,7 @@ export const createUser: Endpoint = {
       })
 
       await Promise.all(
-        dataParsed.organizations?.map(async (org) =>
+        dataParsed.organizations?.map((org) =>
           req.payload.create({
             collection: 'organization_access',
             data: {
@@ -207,7 +212,7 @@ export const updateUser: Endpoint = {
         })
 
         await Promise.all(
-          dataParsed.organizations?.map(async (org) =>
+          dataParsed.organizations?.map((org) =>
             req.payload.create({
               collection: 'organization_access',
               data: {
@@ -256,7 +261,7 @@ export const updateUserAccess: Endpoint = {
       const data = await req.json()
       const dataParsed = parseSearchParamsWithSchema(data, updateOrgAccessSchema)
       await Promise.all(
-        dataParsed.access.map(async (access) =>
+        dataParsed.access.map((access) =>
           req.payload.update({
             collection: 'organization_access',
             id: access.id,
@@ -281,6 +286,51 @@ export const updateUserAccess: Endpoint = {
       console.error('Error updating access:', error)
       return new Response(JSON.stringify({ error: 'Internal Server Error', details: error }), {
         status: 500,
+        headers: JSON_HEADERS,
+      })
+    }
+  },
+}
+
+export const setUserApprovalStatus: Endpoint = {
+  path: '/status',
+  method: 'put',
+  handler: async (req) => {
+    try {
+      if (!req.json)
+        return new Response(JSON.stringify({ error: 'Missing JSON body' }), {
+          status: 400,
+          headers: JSON_HEADERS,
+        })
+      const user = req.user
+      if (!user || user.role !== UserRolesEnum.SuperAdmin) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401,
+          headers: JSON_HEADERS,
+        })
+      }
+      const data = await req.json()
+      const parseData = setUserStatusSchema.parse(data)
+      const updateData: Partial<User> = {
+        status: parseData.approved ? UserStatusEnum.Active : UserStatusEnum.Rejected,
+      }
+      if (!parseData.approved) {
+        updateData.reject_reason = parseData.reason
+      }
+      const updatedUser = await req.payload.update({
+        collection: 'users',
+        where: { id: { equals: parseData.id } },
+        data: updateData,
+      })
+
+      return new Response(JSON.stringify({ updatedUser }), {
+        status: 200,
+        headers: JSON_HEADERS,
+      })
+    } catch (error) {
+      console.error('Error getting users:', error)
+      return new Response(JSON.stringify({ error: 'Internal Server Error', details: error }), {
+        status: 400,
         headers: JSON_HEADERS,
       })
     }

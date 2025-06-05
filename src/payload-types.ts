@@ -125,11 +125,12 @@ export interface User {
   id: number;
   name: string;
   role?: ('super_admin' | 'unit_admin' | 'social_media_manager') | null;
-  status?: ('active' | 'inactive' | 'pending_activation') | null;
+  status?: ('active' | 'inactive' | 'rejected' | 'pending_activation') | null;
   admin_policy_agreement: boolean;
   date_of_last_policy_review?: string | null;
   date_of_last_training?: string | null;
   organizations?: (number | Organization)[] | null;
+  reject_reason?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -297,6 +298,7 @@ export interface UsersSelect<T extends boolean = true> {
   date_of_last_policy_review?: T;
   date_of_last_training?: T;
   organizations?: T;
+  reject_reason?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

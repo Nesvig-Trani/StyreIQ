@@ -1,109 +1,107 @@
-import { FieldDataOption, useFormHelper } from '@/shared/components/form-hook-helper'
-import {
-  CreateUserFormProps,
-  createUserFormSchema,
-  roleLabelMap,
-  statusLabelMap,
-  UserRolesEnum,
-  UserStatusEnum,
-} from '@/users'
-import { createUser } from '@/sdk/users'
-import { toast } from 'sonner'
-import { isApiError } from '@/shared/utils/isApiError'
+import { CreateUser, UserRolesEnum, UserStatusEnum } from '@/users'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { Organization } from '@/payload-types'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { isApiError } from '@/shared'
+import { createUser } from '@/sdk/users'
+import { USER_ALREADY_EXISTS } from '../constants/Errors'
 
-function useCreateUserForm({ organizations, user }: CreateUserFormProps) {
+interface UserFormProps {
+  authUserRole?: UserRolesEnum | null
+  initialOrganizations: Organization[]
+  topOrgDepth?: number
+  onRefetchOrganizations?: () => Promise<Organization[]>
+}
+
+function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: UserFormProps) {
   const router = useRouter()
-  const allowedRoles = Object.values(UserRolesEnum).filter((role) => {
-    if (user?.role === UserRolesEnum.UnitAdmin && role === UserRolesEnum.SuperAdmin) {
-      return false
-    }
-    return true
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<CreateUser>({
+    defaultValues: {
+      email: '',
+      password: '',
+      name: '',
+      role: undefined,
+      status: undefined,
+      organizations: [],
+    },
   })
 
-  const { formComponent, form } = useFormHelper(
-    {
-      schema: createUserFormSchema,
-      fields: [
-        {
-          label: 'Email',
-          name: 'email',
-          type: 'text',
-        },
-        {
-          label: 'Password',
-          name: 'password',
-          type: 'password',
-        },
-        {
-          label: 'Name',
-          name: 'name',
-          type: 'text',
-        },
-        {
-          label: 'Role',
-          name: 'role',
-          type: 'select',
-          options: allowedRoles.map((role) => ({
-            label: roleLabelMap[role],
-            value: role,
-          })),
-        },
-        {
-          label: 'Status',
-          name: 'status',
-          type: 'select',
-          options: Object.values(UserStatusEnum).map((status) => ({
-            label: statusLabelMap[status],
-            value: status,
-          })),
-        },
-        {
-          label: 'Organization',
-          name: 'organizations',
-          type: 'multiselect',
-          options: organizations.map((org) => ({
-            value: org.id.toString(),
-            label: org.name,
-          })),
-        },
-      ],
-      onSubmit: async (submitData) => {
-        try {
-          const user = await createUser(submitData)
-          form.reset()
-          toast.success('User created successfully')
-          router.push(`/dashboard/users/access/${user.id}`)
-        } catch (error) {
-          console.log('error', error)
-          if (isApiError(error)) {
-            if (error.data?.message === 'A user with the given email is already registered.') {
-              toast('User already exists, update the user instead')
-              router.push(`/dashboard/users/update/${error.data.details}`)
-            } else {
-              toast.error('An error occurred while creating the user, please try again')
-            }
-          } else {
-            toast.error('An unexpected error occurred')
-            console.error('error', error)
-          }
+  const [organizations, setOrganizations] = useState<Organization[]>(initialOrganizations)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const allowedRoles =
+    authUserRole === UserRolesEnum.UnitAdmin
+      ? [UserRolesEnum.UnitAdmin, UserRolesEnum.SocialMediaManager]
+      : Object.values(UserRolesEnum)
+  const allowedStatuses =
+    authUserRole === UserRolesEnum.UnitAdmin ? [] : [UserStatusEnum.Active, UserStatusEnum.Inactive]
+
+  const handleRoleChange = async (role: UserRolesEnum) => {
+    if (authUserRole === UserRolesEnum.UnitAdmin && role === UserRolesEnum.UnitAdmin) {
+      try {
+        setIsLoading(true)
+        const newOrgs = initialOrganizations.filter((org) => org.depth === topOrgDepth)
+        setOrganizations(newOrgs)
+      } catch (error) {
+        console.error('Failed to refetch organizations:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    } else {
+      setOrganizations(initialOrganizations)
+    }
+  }
+
+  const handleOrganizationToggle = (orgId: string, checked: boolean) => {
+    const currentOrgs = watch('organizations') || []
+    const newOrgs = checked
+      ? [...currentOrgs, orgId]
+      : currentOrgs.filter((id: string) => id !== orgId)
+    setValue('organizations', newOrgs)
+  }
+
+  const onSubmit = async (data: CreateUser) => {
+    try {
+      const user = await createUser(data)
+      reset()
+      toast.success('User created successfully')
+      router.push(`/dashboard/users/access/${user.id}`)
+    } catch (error) {
+      if (isApiError(error)) {
+        if (error.data?.message === USER_ALREADY_EXISTS) {
+          toast('User already exists, update the user instead')
+          router.push(`/dashboard/users/update/${error.data.details}`)
+        } else {
+          toast.error('An error occurred while creating the user, please try again')
         }
-      },
-      submitContent: 'Create user',
-    },
-    {
-      defaultValues: {
-        name: '',
-        role: undefined,
-        status: undefined,
-        organizations: undefined,
-      },
-    },
-  )
+      } else {
+        toast.error('An unexpected error occurred')
+        console.error('error', error)
+      }
+    }
+  }
 
   return {
-    formComponent,
-    form,
+    handleSubmit: handleSubmit(onSubmit),
+    organizations,
+    allowedRoles,
+    allowedStatuses,
+    handleRoleChange,
+    handleOrganizationToggle,
+    isLoading: isLoading || isSubmitting,
+    register,
+    errors,
+    watch,
+    setValue,
   }
 }
 
