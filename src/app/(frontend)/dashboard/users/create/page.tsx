@@ -1,29 +1,13 @@
 import React from 'react'
-import { getPayload } from 'payload'
-import config from '@payload-config'
 import { Card } from '@/shared/components/ui/card'
 import { CreateUserForm } from '@/users/'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
+import { getAllOrganizations } from '@/organizations/queries'
 
 export default async function CreateUserPage() {
-  const payload = await getPayload({ config })
-
   const { user } = await getAuthUser()
 
-  const organizations = await payload.find({
-    collection: 'organization',
-    depth: 0,
-    select: {
-      id: true,
-      name: true,
-      parentOrg: true,
-      depth: true,
-      path: true,
-    },
-    limit: 0,
-    user,
-    overrideAccess: false
-  })
+  const organizations = await getAllOrganizations({ user })
 
   return (
     <div>

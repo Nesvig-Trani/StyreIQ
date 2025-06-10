@@ -14,7 +14,6 @@ import { useRouter } from 'next/navigation'
 
 function useCreateUserForm({ organizations, user }: CreateUserFormProps) {
   const router = useRouter()
-  console.log("user", user)
   const allowedRoles = Object.values(UserRolesEnum).filter((role) => {
     if (user?.role === UserRolesEnum.UnitAdmin && role === UserRolesEnum.SuperAdmin) {
       return false

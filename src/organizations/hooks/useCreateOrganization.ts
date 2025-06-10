@@ -1,3 +1,4 @@
+'use client'
 import { useFormHelper } from '@/shared/components/form-hook-helper'
 import { CreateOrgFormProps, createOrgFormSchema, OrganizationWithChildren } from '@/organizations'
 import { createOrganization } from '@/sdk/organization'

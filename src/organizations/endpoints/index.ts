@@ -87,7 +87,7 @@ export const createOrganization: Endpoint = {
         },
       })
 
-      let admin = await req.payload.findByID({ collection: 'users', id: data.admin, depth: 0 })
+      const admin = await req.payload.findByID({ collection: 'users', id: data.admin, depth: 0 })
       const organizations = admin.organizations as number[]
       await req.payload.update({
         collection: 'users',

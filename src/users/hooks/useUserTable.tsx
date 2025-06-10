@@ -5,7 +5,7 @@ import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
 import { FileLock2, PencilIcon } from 'lucide-react'
 
-function useUserTable({ user }: { user: User }) {
+function useUserTable({ user }: { user: User | null }) {
   const columns: ColumnDef<User>[] = [
     {
       accessorKey: 'name',
@@ -53,9 +53,9 @@ function useUserTable({ user }: { user: User }) {
               </Link>
             </Button>
             <div>
-              {(user.role === UserRolesEnum.UnitAdmin &&
+              {(user?.role === UserRolesEnum.UnitAdmin &&
                 role === UserRolesEnum.SocialMediaManager) ||
-              user.role === UserRolesEnum.SuperAdmin ? (
+              user?.role === UserRolesEnum.SuperAdmin ? (
                 <Button>
                   <Link href={`/dashboard/users/update/${id}`}>
                     <PencilIcon />

@@ -1,6 +1,7 @@
 import { z } from 'zod'
-import { createUserFormSchema, updateOrgAccessSchema, updateUserFormSchema, updateUserSchema } from '@/users'
+import { createUserFormSchema, updateUserSchema } from '@/users'
 import { env } from '@/config/env'
+import { updateOrgAccessSchema } from '@/organization-access'
 
 export const createUser = async (data: z.infer<typeof createUserFormSchema>) => {
   const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users`, {
@@ -28,17 +29,18 @@ export const createUser = async (data: z.infer<typeof createUserFormSchema>) => 
     }
   }
 
-  return await response.json()
+  return response.json()
 }
 
 export const updateUser = async (data: z.infer<typeof updateUserSchema>) => {
-  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/${data.id}`, {
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
     },
     credentials: 'include',
     body: JSON.stringify({
+      id: data.id,
       name: data.name,
       email: data.email,
       role: data.role,
@@ -51,7 +53,7 @@ export const updateUser = async (data: z.infer<typeof updateUserSchema>) => {
     throw new Error('Failed to update user')
   }
 
-  return await response.json()
+  return response.json()
 }
 
 export const getUsers = async ({
@@ -76,23 +78,20 @@ export const getUsers = async ({
     throw new Error('Failed to get users')
   }
 
-  return await response.json()
+  return response.json()
 }
 
 export const updateUserAccess = async (data: z.infer<typeof updateOrgAccessSchema>) => {
-  const response = await fetch(
-    `${env.NEXT_PUBLIC_BASE_URL}/api/users/access`,
-    {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({
-        access: data.access,
-      }),
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/access`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  )
+    credentials: 'include',
+    body: JSON.stringify({
+      access: data.access,
+    }),
+  })
 
   if (!response.ok) {
     throw new Error('Failed to update user')
@@ -107,8 +106,8 @@ export const logout = async ({ cookie }: { cookie: string }) => {
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
-      cookie
+      cookie,
     },
   })
-  return await req.json()
+  return req.json()
 }

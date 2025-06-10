@@ -17,7 +17,7 @@ export function UserTable({
     total: number
     pageCount: number
   }
-  user: User
+  user: User | null
 }) {
   const { columns } = useUserTable({ user })
   return (

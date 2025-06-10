@@ -42,7 +42,7 @@ export const OrganizationAccessForm = ({ initialAccess = [] }: OrganizationAcces
 
   const handleAccessTypeChange = (orgId: number, newType: UserAccessTypeEnum) => {
     const updatedAccess = accessList.map((org) => {
-      if (org.id === Number(orgId)) {
+      if (org.id === orgId) {
         const updatedOrg = {
           ...org,
           type: newType,
@@ -59,15 +59,8 @@ export const OrganizationAccessForm = ({ initialAccess = [] }: OrganizationAcces
   }
 
   const handleDateChange = (orgId: number, field: 'end_date' | 'start_date', date: Date) => {
-    const updatedAccess = accessList.map((org) => {
-      if (org.id === Number(orgId)) {
-        return { ...org, [field]: date }
-      }
-      return org
-    })
-    setAccessList(updatedAccess)
+    setAccessList((prev) => prev.map((org) => (org.id === orgId ? { ...org, [field]: date } : org)))
   }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
@@ -118,14 +111,13 @@ export const OrganizationAccessForm = ({ initialAccess = [] }: OrganizationAcces
                       }
                     />
                   </div>
-  
+
                   <div className="space-y-2 flex flex-col">
                     <Label>End Date</Label>
                     <DatePicker
                       required
                       selected={orgAccess.end_date ? new Date(orgAccess.end_date) : new Date()}
                       onSelect={(date) => {
-                        console.log(date)
                         handleDateChange(orgAccess.id, 'end_date', date || new Date())
                       }}
                     />

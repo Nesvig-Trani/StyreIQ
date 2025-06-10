@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import {
   createUser,
   getOrganizationUsers,
+  updateUser,
   updateUserAccess,
   UserRolesEnum,
   UserStatusEnum,
@@ -63,5 +64,5 @@ export const Users: CollectionConfig = {
       hasMany: true,
     },
   ],
-  endpoints: [createUser, getOrganizationUsers, updateUserAccess],
+  endpoints: [createUser, updateUser, getOrganizationUsers, updateUserAccess],
 }

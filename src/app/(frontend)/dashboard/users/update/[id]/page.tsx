@@ -1,21 +1,14 @@
-import { getPayload } from 'payload'
-import config from '@payload-config'
 import { Card, CardContent } from '@/shared/components/ui/card'
-import { UpdateUserForm } from '@/users'
+import { getUserById, UpdateUserForm } from '@/users'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
+import { getAllOrganizations } from '@/organizations/queries'
 
 export default async function UpdateUser({ params }: { params: Promise<{ id: string }> }) {
   const { user } = await getAuthUser()
-  const payload = await getPayload({ config })
   const { id } = await params
   if (!id) return <div>404</div>
 
-  const data = await payload.findByID({
-    collection: 'users',
-    id: id,
-    depth: 0,
-  })
-
+  const data = await getUserById({ id: Number(id) })
   if (!data)
     return (
       <div>
@@ -23,20 +16,7 @@ export default async function UpdateUser({ params }: { params: Promise<{ id: str
       </div>
     )
 
-  const organizations = await payload.find({
-    collection: 'organization',
-    depth: 0,
-    select: {
-      id: true,
-      name: true,
-      parentOrg: true,
-      depth: true,
-      path: true,
-    },
-    limit: 0,
-    overrideAccess: false,
-    user,
-  })
+  const organizations = await getAllOrganizations({ user })
 
   return (
     <div>

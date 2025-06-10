@@ -42,13 +42,14 @@ export const createUserFormSchema = z.object({
 export const updateUserFormSchema = createUserFormSchema.omit({
   password: true,
 })
-export const updateUserSchema = updateUserFormSchema.extend({ id: z.string() })
+
+export const updateUserSchema = updateUserFormSchema.extend({ id: z.number() })
 
 export const userSearchSchema = paginationSchema.extend({})
 
 export type CreateUserFormProps = {
   organizations: Organization[]
-  user: User
+  user: User | null
 }
 
 export type UpdateUserFormProps = {

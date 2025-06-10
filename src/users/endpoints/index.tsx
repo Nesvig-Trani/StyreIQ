@@ -64,16 +64,18 @@ export const createUser: Endpoint = {
         req,
       })
 
-      dataParsed.organizations?.map(async (org) => {
-        await req.payload.create({
-          collection: 'organization_access',
-          data: {
-            organization: Number(org),
-            user: createUser.id,
-            type: UserAccessTypeEnum.Permanent,
-          },
-        })
-      })
+      await Promise.all(
+        dataParsed.organizations?.map(async (org) => {
+          await req.payload.create({
+            collection: 'organization_access',
+            data: {
+              organization: Number(org),
+              user: createUser.id,
+              type: UserAccessTypeEnum.Permanent,
+            },
+          })
+        }) || [],
+      )
 
       return new Response(JSON.stringify(createUser), {
         status: 201,
@@ -81,8 +83,8 @@ export const createUser: Endpoint = {
       })
     } catch (error) {
       console.error('Error creating user:', error)
-      return new Response(JSON.stringify({ error: 'Internal Server Error', details: error }), {
-        status: 500,
+      return new Response(JSON.stringify({ error: 'Error creating user', details: error }), {
+        status: 400,
         headers: { 'Content-Type': 'application/json' },
       })
     }
@@ -110,8 +112,7 @@ export const updateUser: Endpoint = {
 
       const data = await req.json()
       const dataParsed = parseSearchParamsWithSchema(data, updateUserSchema)
-
-      const createUser = await req.payload.update({
+      const updatedUser = await req.payload.update({
         collection: 'users',
         id: dataParsed.id,
         data: {
@@ -124,34 +125,39 @@ export const updateUser: Endpoint = {
         },
         req,
       })
-
-      await req.payload.delete({
-        collection: 'organization_access',
-        where: {
-          'user.id': {
-            equals: dataParsed.id,
-          },
-        },
-      })
-
-      dataParsed.organizations?.map(async (org) => {
-        await req.payload.create({
+      if (dataParsed.organizations && dataParsed.organizations?.length > 0) {
+        await req.payload.delete({
           collection: 'organization_access',
-          data: {
-            organization: Number(org),
-            type: 'permanent',
+          where: {
+            'user.id': {
+              equals: dataParsed.id,
+            },
           },
         })
-      })
 
-      return new Response(JSON.stringify(createUser), {
-        status: 201,
+        await Promise.all(
+          dataParsed.organizations?.map(
+            async (org) =>
+              await req.payload.create({
+                collection: 'organization_access',
+                data: {
+                  organization: Number(org),
+                  user: Number(dataParsed.id),
+                  type: 'permanent',
+                },
+              }),
+          ) || [],
+        )
+      }
+
+      return new Response(JSON.stringify(updatedUser), {
+        status: 200,
         headers: { 'Content-Type': 'application/json' },
       })
     } catch (error) {
-      console.error('Error creating organization:', error)
-      return new Response(JSON.stringify({ error: 'Internal Server Error', details: error }), {
-        status: 500,
+      console.error('Error updating organization:', error)
+      return new Response(JSON.stringify({ error: 'Error updating user', details: error }), {
+        status: 400,
         headers: { 'Content-Type': 'application/json' },
       })
     }
@@ -192,10 +198,13 @@ export const updateUserAccess: Endpoint = {
         })
       })
 
-      return new Response(JSON.stringify(createUser), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-      })
+      return new Response(
+        JSON.stringify({ success: true, message: 'Operation completed successfully' }),
+        {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        },
+      )
     } catch (error) {
       console.error('Error updating access:', error)
       return new Response(JSON.stringify({ error: 'Internal Server Error', details: error }), {
@@ -249,8 +258,8 @@ export const getOrganizationUsers: Endpoint = {
       })
     } catch (error) {
       console.error('Error getting users:', error)
-      return new Response(JSON.stringify({ error: 'Internal Server Error', details: error }), {
-        status: 500,
+      return new Response(JSON.stringify({ error: 'Error getting users', details: error }), {
+        status: 400,
         headers: { 'Content-Type': 'application/json' },
       })
     }

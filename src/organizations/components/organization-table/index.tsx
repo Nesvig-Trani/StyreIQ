@@ -1,7 +1,5 @@
 'use client'
-import { Badge } from '@/shared/components/ui/badge'
-import { ColumnDef } from '@tanstack/table-core'
-import { Organization, User } from '@/payload-types'
+import { Organization} from '@/payload-types'
 import { DataTable } from '@/shared'
 import useOrganizationTable from '@/organizations/hooks/useOrganizationTable'
 

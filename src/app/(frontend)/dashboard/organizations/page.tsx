@@ -31,7 +31,7 @@ export default async function OrganizationsPage(props: {
     <div>
       <Card>
         <div className={'flex justify-end'}>
-        {user.role === UserRolesEnum.SuperAdmin && 
+        {user?.role === UserRolesEnum.SuperAdmin && 
           <Button>
             <Link href={'/dashboard/organizations/create'}>Create Organization</Link>
           </Button>}

@@ -58,7 +58,7 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
       ],
       onSubmit: async (submitData) => {
         try {
-          await updateUser({ ...submitData, id })
+          await updateUser({ ...submitData, id: Number(id) })
           router.push(`/dashboard/users/access/${id}`)
           toast.success('User updated successfully')
         } catch {
@@ -73,7 +73,7 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
         name: data.name,
         role: data.role as UserRolesEnum,
         status: data.status as UserStatusEnum,
-        organizations: organizations.map((org: Organization) => org.id.toString()),
+        organizations: data.organizations?.map((org) => org.toString()),
       },
     },
   )
