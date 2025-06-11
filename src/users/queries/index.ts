@@ -69,3 +69,17 @@ export const getPendingActivationUsers = async ({
   })
   return users
 }
+
+export const getAllUsers = async () => {
+  const { payload } = await getPayloadContext()
+  const { user } = await getAuthUser()
+
+  const users = await payload.find({
+    collection: 'users',
+    limit: 0,
+    depth: 0,
+    overrideAccess: false,
+    user,
+  })
+  return users
+}

@@ -3,13 +3,12 @@ import { createUserFormSchema, updateUserSchema } from '@/users/schemas'
 import { env } from '@/config/env'
 import { updateOrgAccessSchema } from '@/organization-access'
 import { setUserStatusSchema } from '@/review-requests'
+import { JSON_HEADERS } from '@/shared/constants'
 
 export const createUser = async (data: z.infer<typeof createUserFormSchema>) => {
   const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: JSON_HEADERS,
     credentials: 'include',
     body: JSON.stringify({
       name: data.name,
@@ -36,9 +35,7 @@ export const createUser = async (data: z.infer<typeof createUserFormSchema>) => 
 export const updateUser = async (data: z.infer<typeof updateUserSchema>) => {
   const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/`, {
     method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: JSON_HEADERS,
     credentials: 'include',
     body: JSON.stringify({
       id: data.id,
@@ -90,9 +87,7 @@ export const getUsers = async ({
 export const updateUserAccess = async (data: z.infer<typeof updateOrgAccessSchema>) => {
   const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/access`, {
     method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: JSON_HEADERS,
     credentials: 'include',
     body: JSON.stringify({
       access: data.access,
@@ -105,34 +100,34 @@ export const updateUserAccess = async (data: z.infer<typeof updateOrgAccessSchem
 
   return await response.json()
 }
+
 export const logout = async ({ cookie }: { cookie: string }) => {
-    const req = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/logout`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        cookie,
-      },
-    })
-    return req.json()
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/logout`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      ...JSON_HEADERS,
+      cookie,
+    },
+  })
+  return response.json()
 }
+
 export const setUserApprovalStatus = async ({
   data,
 }: {
   data: z.infer<typeof setUserStatusSchema>
 }) => {
-  const req = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/status`, {
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/status`, {
     method: 'PUT',
     credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: JSON_HEADERS,
     body: JSON.stringify({ ...data }),
   })
 
-  if (!req.ok) {
+  if (!response.ok) {
     throw new Error('Failed to set user status')
   }
 
-  return req.json()
+  return response.json()
 }

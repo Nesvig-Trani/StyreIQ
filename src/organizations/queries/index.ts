@@ -1,7 +1,8 @@
 'use server'
+import { getAuthUser } from '@/auth/utils/getAuthUser'
 import { User } from '@/payload-types'
-import { getPayload } from 'payload'
-import config from '@payload-config'
+import { getPayloadContext } from '@/shared/utils/getPayloadContext'
+import { Where } from 'payload'
 
 export const getAllOrganizations = async ({
   user,
@@ -9,8 +10,7 @@ export const getAllOrganizations = async ({
   user: (User & { collection: 'users' }) | null
 }) => {
   try {
-    const payload = await getPayload({ config })
-
+    const { payload } = await getPayloadContext()
     const organizations = await payload.find({
       collection: 'organization',
       depth: 0,
@@ -39,4 +39,26 @@ export const getAllOrganizations = async ({
   }
 }
 
-
+export const getOrganizationsWithFilter = async ({
+  status,
+  type,
+}: {
+  status?: string
+  type?: string
+}) => {
+  const { payload } = await getPayloadContext()
+  const { user } = await getAuthUser()
+  const where: Where = {
+    ...(status && { status: { equals: status } }),
+    ...(type && { type: { equals: type } }),
+  }
+  return payload.find({
+    collection: 'organization',
+    depth: 0,
+    overrideAccess: false,
+    user,
+    limit: 0,
+    sort: ['createdAt'],
+    where,
+  })
+}

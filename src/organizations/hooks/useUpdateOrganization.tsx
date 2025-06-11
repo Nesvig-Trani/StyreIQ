@@ -1,11 +1,10 @@
-'use client'
 import { useFormHelper } from '@/shared/components/form-hook-helper'
-import { CreateOrgFormProps, createOrgFormSchema, OrganizationWithChildren } from '@/organizations'
-import { createOrganization } from '@/sdk/organization'
+import { createOrgFormSchema, OrganizationWithChildren, UpdateOrgFormProps } from '@/organizations'
+import { updateOrganization } from '@/sdk/organization'
 import { toast } from 'sonner'
 import { CreateOrganizationsTree } from '@/organizations/utils/createOrgTree'
 
-function useCreateOrganization({ users, organizations }: CreateOrgFormProps) {
+function useUpdateOrganization({ users, data, organizations }: UpdateOrgFormProps) {
   const tree = CreateOrganizationsTree(organizations as OrganizationWithChildren[])
   const { formComponent, form } = useFormHelper(
     {
@@ -90,26 +89,28 @@ function useCreateOrganization({ users, organizations }: CreateOrgFormProps) {
       ],
       onSubmit: async (submitData) => {
         try {
-          await createOrganization(submitData)
-          form.reset()
-          toast.success('Organization created successfully')
+          if (data && data.id) {
+            await updateOrganization({ ...submitData, id: data.id })
+            form.reset()
+            toast.success('Organization updated successfully')
+          }
         } catch {
-          toast.error('An error occurred while creating the organization, please try again')
+          toast.error('An error occurred while updating the organization, please try again')
         }
       },
     },
     {
-      defaultValues: {
-        name: '',
-        type: 'university',
-        parent: '',
-        admin: '',
-        email: '',
-        phone: '',
-        status: 'active',
-        description: '',
-        delegatedPermissions: false,
-        backupAdmins: [],
+      values: {
+        name: data?.name || '',
+        type: data?.type || "university",
+        parent: data?.parentOrg?.toString(),
+        admin: data?.admin?.toString(),
+        email: data?.email || '',
+        phone: data?.phone || '',
+        status: data?.status || 'active',
+        description: data?.description || '',
+        delegatedPermissions: data?.delegatedPermissions || false,
+        backupAdmins: data?.backupAdmins?.map((ba) => ba.toString()),
       },
     },
   )
@@ -120,4 +121,4 @@ function useCreateOrganization({ users, organizations }: CreateOrgFormProps) {
   }
 }
 
-export default useCreateOrganization
+export default useUpdateOrganization

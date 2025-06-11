@@ -75,7 +75,11 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    organization: {
+      children: 'organization';
+    };
+  };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     organization: OrganizationSelect<false> | OrganizationSelect<true>;
@@ -160,6 +164,11 @@ export interface Organization {
   delegatedPermissions?: boolean | null;
   path?: string | null;
   depth?: number | null;
+  children?: {
+    docs?: (number | Organization)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -326,6 +335,7 @@ export interface OrganizationSelect<T extends boolean = true> {
   delegatedPermissions?: T;
   path?: T;
   depth?: T;
+  children?: T;
   updatedAt?: T;
   createdAt?: T;
 }

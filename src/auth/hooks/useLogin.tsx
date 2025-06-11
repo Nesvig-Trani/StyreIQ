@@ -2,6 +2,7 @@ import { ChangeEvent, FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { env } from '@/config/env'
 import { toast } from 'sonner'
+import { JSON_HEADERS } from '@/shared/constants'
 
 export function useLogin() {
   const [loginFields, setLoginFields] = useState({
@@ -22,9 +23,7 @@ export function useLogin() {
       const res = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/login`, {
         method: 'POST',
         credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: JSON_HEADERS,
         body: JSON.stringify(loginFields),
       })
 
@@ -32,7 +31,6 @@ export function useLogin() {
         throw new Error('Failed to login')
       }
 
-      await res.json()
       router.push('/dashboard')
     } catch {
       toast.error('Invalid credentials')

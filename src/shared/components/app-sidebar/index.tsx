@@ -12,6 +12,8 @@ import {
   SidebarRail,
 } from '@/shared/components/ui/sidebar'
 import Link from 'next/link'
+import { Button } from '../ui/button'
+import OrganizationHierarchy from '../organization-hierarchy'
 
 const data = {
   navMain: [

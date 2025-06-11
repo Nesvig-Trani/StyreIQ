@@ -285,7 +285,7 @@ export const updateUserAccess: Endpoint = {
     } catch (error) {
       console.error('Error updating access:', error)
       return new Response(JSON.stringify({ error: 'Internal Server Error', details: error }), {
-        status: 500,
+        status: 400,
         headers: JSON_HEADERS,
       })
     }

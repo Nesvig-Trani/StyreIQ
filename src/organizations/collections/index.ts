@@ -1,5 +1,5 @@
 import { CollectionConfig } from 'payload'
-import { createOrganization } from '@/organizations'
+import { createOrganization, updateOrganization } from '@/organizations'
 import { Organization } from '@/payload-types'
 
 export const Organizations: CollectionConfig = {
@@ -9,7 +9,7 @@ export const Organizations: CollectionConfig = {
   },
   access: {
     read: ({ req: { user } }) => {
-      if (!user) return false 
+      if (!user) return false
       const orgs = user.organizations as Organization[]
       const organizationIds = orgs.map((org) => org.id)
 
@@ -93,7 +93,13 @@ export const Organizations: CollectionConfig = {
       name: 'depth',
       type: 'number',
     },
+    {
+      name: 'children',
+      type: 'join',
+      collection: 'organization',
+      on: 'parentOrg',
+    },
   ],
   timestamps: true,
-  endpoints: [createOrganization],
+  endpoints: [createOrganization, updateOrganization],
 }

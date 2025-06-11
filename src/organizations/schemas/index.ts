@@ -1,6 +1,8 @@
 import { Organization, User } from '@/payload-types'
 import { z } from 'zod'
 import { paginationSchema } from '@/schemas/pagination'
+import { statusConfig } from '../constants/statusConfig'
+import { typeConfig } from '../constants/typeConfig'
 
 export const createOrgFormSchema = z.object({
   name: z.string().min(1),
@@ -14,6 +16,9 @@ export const createOrgFormSchema = z.object({
   description: z.string().optional(),
   delegatedPermissions: z.boolean().optional(),
 })
+export const updateOrgFormSchema = createOrgFormSchema.extend({
+  id: z.number(),
+})
 
 export type OrganizationWithChildren = Organization & {
   parentOrg?: number
@@ -21,10 +26,13 @@ export type OrganizationWithChildren = Organization & {
 }
 
 export type Tree = {
-  id: number | string
+  id: number
   parent: number
   name: string
   depth: number
+  admin: User
+  status: string
+  type: string
   children: Tree[]
 }
 
@@ -33,4 +41,34 @@ export type CreateOrgFormProps = {
   organizations: Organization[]
 }
 
-export const organizationSearchSchema = paginationSchema.extend({})
+export type UpdateOrgFormProps = {
+  users: User[]
+  data?: OrganizationWithChildren | null
+  organizations: OrganizationWithChildren[]
+}
+
+export const organizationSearchSchema = paginationSchema.extend({
+  search: z.string().optional(),
+  status: z.enum(['active', 'inactive', 'pending_review']).optional(),
+  type: z.enum(['university', 'faculty', 'department', 'office', 'project']).optional(),
+})
+
+export type StatusType = keyof typeof statusConfig
+export type OrganizationType = keyof typeof typeConfig
+
+export interface FlattenedTree extends Tree {
+  level: number
+  originalData?: OrganizationWithChildren
+}
+
+export interface OrganizationHierarchyProps {
+  organizations: Tree[]
+  originalData: OrganizationWithChildren[]
+  users: User[]
+  pagination: {
+    pageSize: number
+    pageIndex: number
+    total: number
+    pageCount: number
+  }
+}
