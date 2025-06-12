@@ -1,12 +1,14 @@
 'use client'
 
-import { Building2, ChevronLeftIcon, ChevronRightIcon, Search } from 'lucide-react'
+import { Building2, ChevronLeftIcon, ChevronRightIcon, EditIcon, Search, X } from 'lucide-react'
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '../ui/select'
 import { Input } from '../ui/input'
 import { ScrollArea } from '@radix-ui/react-scroll-area'
 import { OrganizationHierarchyProps } from '@/organizations'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { useOrganizationHierarchy } from '@/organizations/hooks/useOrganizationHierarchy'
+import { Button } from '../ui/button'
+import OrganizationDetailPage from '@/organizations/components/organization-detail'
 
 export default function OrganizationHierarchy({
   organizations,
@@ -25,6 +27,8 @@ export default function OrganizationHierarchy({
     handlePageChange,
     selectedOrg,
     formComponent,
+    isEditing,
+    setIsEditing,
   } = useOrganizationHierarchy({ organizations, originalData, pagination, users })
   return (
     <div className="flex">
@@ -100,10 +104,25 @@ export default function OrganizationHierarchy({
                 <div>
                   <CardTitle className="flex items-center gap-2">{selectedOrg.name}</CardTitle>
                 </div>
-                <div className="flex gap-2"></div>
-              </CardHeader>
+                <div className="flex gap-2">
+                  {isEditing ? (
+                         
+                    <Button onClick={() => setIsEditing(false)}>
+                      <X />
+                    </Button>           ) : (   <Button onClick={() => setIsEditing(true)}>
+                      <EditIcon />
+                    </Button>
 
-              <CardContent className="space-y-6">{formComponent}</CardContent>
+                  )}
+                </div>
+              </CardHeader>
+              {isEditing ? (
+                <CardContent className="space-y-6">{formComponent}</CardContent>
+              ) : (
+                <CardContent>
+                  <OrganizationDetailPage organization={selectedOrg} />{' '}
+                </CardContent>
+              )}
             </Card>
           </div>
         ) : (
@@ -118,4 +137,3 @@ export default function OrganizationHierarchy({
     </div>
   )
 }
-

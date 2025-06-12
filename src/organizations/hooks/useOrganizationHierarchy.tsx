@@ -23,6 +23,7 @@ export const useOrganizationHierarchy = ({
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState<StatusType | 'all'>('all')
   const [typeFilter, setTypeFilter] = useState<OrganizationType | 'all'>('all')
+  const [isEditing, setIsEditing] = useState<boolean>(false)
   const router = useRouter()
   const pathname = usePathname()
 
@@ -188,5 +189,7 @@ export const useOrganizationHierarchy = ({
     handlePageChange,
     selectedOrg,
     formComponent,
+    setIsEditing,
+    isEditing
   }
 }

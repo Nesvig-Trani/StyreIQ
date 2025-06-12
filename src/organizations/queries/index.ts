@@ -54,7 +54,7 @@ export const getOrganizationsWithFilter = async ({
   }
   return payload.find({
     collection: 'organization',
-    depth: 0,
+    depth: 1,
     overrideAccess: false,
     user,
     limit: 0,
