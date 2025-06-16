@@ -1,18 +1,11 @@
-import { OrganizationWithChildren, Tree } from '@/organizations'
-import { Organization, User } from '@/payload-types'
+import { OrganizationWithDepth, Tree } from '@/organizations'
 
-type OrganizationsWithDepth = OrganizationWithChildren & {
-  parentOrg: Organization
-  admin: User
-  backupAdmins: User[]
-}
-
-export const CreateOrganizationsTree = (organizations: OrganizationsWithDepth[]): Tree[] => {
+export const CreateOrganizationsTree = (organizations: OrganizationWithDepth[]): Tree[] => {
   const orgMap: Record<string, Tree> = {}
   organizations.forEach((org) => {
     orgMap[org.id] = {
       id: org.id,
-      parent: org.parentOrg || 0,
+      parent: org.parentOrg?.id || 0,
       name: org.name,
       depth: org.depth || 0,
       admin: org.admin,

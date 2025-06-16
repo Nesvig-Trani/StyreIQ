@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload'
 import { createOrganization, updateOrganization } from '@/organizations'
 import { Organization } from '@/payload-types'
+import { UserRolesEnum } from '@/users'
 
 export const Organizations: CollectionConfig = {
   slug: 'organization',
@@ -23,6 +24,9 @@ export const Organizations: CollectionConfig = {
         or: orgWhere,
       }
     },
+    delete: ({req: {user}}) => {
+      return !!(user && user.role === UserRolesEnum.SuperAdmin)
+    }
   },
   fields: [
     {

@@ -213,7 +213,7 @@ export interface AuditLog {
     | number
     | boolean
     | null;
-  organization?: (number | null) | Organization;
+  organizations?: (number | Organization)[] | null;
   document?:
     | ({
         relationTo: 'users';
@@ -362,7 +362,7 @@ export interface AuditLogSelect<T extends boolean = true> {
   entity?: T;
   prev?: T;
   current?: T;
-  organization?: T;
+  organizations?: T;
   document?: T;
   updatedAt?: T;
   createdAt?: T;

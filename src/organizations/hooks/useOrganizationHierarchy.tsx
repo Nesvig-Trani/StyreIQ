@@ -5,34 +5,25 @@ import {
   FlattenedTree,
   OrganizationHierarchyProps,
   OrganizationType,
-  OrganizationWithChildren,
+  OrganizationWithDepth,
   StatusType,
 } from '@/organizations'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
-import useUpdateOrganization from '@/organizations/hooks/useUpdateOrganization'
 import { statusConfig } from '../constants/statusConfig'
 import { typeConfig } from '../constants/typeConfig'
 
 export const useOrganizationHierarchy = ({
-  users,
   originalData,
   organizations,
 }: OrganizationHierarchyProps) => {
   const [expandedNodes, setExpandedNodes] = useState<Set<number>>(new Set())
-  const [selectedOrg, setSelectedOrg] = useState<OrganizationWithChildren | null>(null)
+  const [selectedOrg, setSelectedOrg] = useState<OrganizationWithDepth | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState<StatusType | 'all'>('all')
   const [typeFilter, setTypeFilter] = useState<OrganizationType | 'all'>('all')
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const router = useRouter()
   const pathname = usePathname()
-
-  const { formComponent } = useUpdateOrganization({
-    users: users,
-    organizations: originalData,
-    data: selectedOrg,
-  })
-
   const searchParams = useSearchParams()
 
   const updateSearchParams = (newParams: Record<string, string | null>) => {
@@ -68,7 +59,7 @@ export const useOrganizationHierarchy = ({
   }
 
   const originalDataMap = useMemo(() => {
-    const map: Record<number, OrganizationWithChildren> = {}
+    const map: Record<number, OrganizationWithDepth> = {}
     originalData?.forEach((org) => {
       map[org.id] = org
     })
@@ -178,6 +169,7 @@ export const useOrganizationHierarchy = ({
       </div>
     )
   }
+
   return {
     searchTerm,
     handleSearchChange,
@@ -188,8 +180,7 @@ export const useOrganizationHierarchy = ({
     renderFilteredResults,
     handlePageChange,
     selectedOrg,
-    formComponent,
     setIsEditing,
-    isEditing
+    isEditing,
   }
 }

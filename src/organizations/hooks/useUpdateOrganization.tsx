@@ -1,11 +1,11 @@
 import { useFormHelper } from '@/shared/components/form-hook-helper'
-import { createOrgFormSchema, OrganizationWithChildren, UpdateOrgFormProps } from '@/organizations'
+import { createOrgFormSchema, UpdateOrgFormProps } from '@/organizations'
 import { updateOrganization } from '@/sdk/organization'
 import { toast } from 'sonner'
 import { CreateOrganizationsTree } from '@/organizations/utils/createOrgTree'
 
 function useUpdateOrganization({ users, data, organizations }: UpdateOrgFormProps) {
-  const tree = CreateOrganizationsTree(organizations as OrganizationWithChildren[])
+  const tree = CreateOrganizationsTree(organizations)
   const { formComponent, form } = useFormHelper(
     {
       schema: createOrgFormSchema,
@@ -104,13 +104,13 @@ function useUpdateOrganization({ users, data, organizations }: UpdateOrgFormProp
         name: data?.name || '',
         type: data?.type || "university",
         parent: data?.parentOrg?.toString(),
-        admin: data?.admin?.toString(),
+        admin: data?.admin.id?.toString(),
         email: data?.email || '',
         phone: data?.phone || '',
         status: data?.status || 'active',
         description: data?.description || '',
         delegatedPermissions: data?.delegatedPermissions || false,
-        backupAdmins: data?.backupAdmins?.map((ba) => ba.toString()),
+        backupAdmins: data?.backupAdmins?.map((ba) => ba.id.toString()),
       },
     },
   )

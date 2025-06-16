@@ -1,25 +1,14 @@
-import { OrganizationWithChildren } from '@/organizations/schemas'
+import { OrganizationWithDepth } from '@/organizations/schemas'
 import { Organization, User } from '@/payload-types'
-import {
-  Badge,
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  Separator,
-} from '@/shared'
+import { Badge, Card, CardHeader, CardTitle, CardContent, Separator } from '@/shared'
 import { Avatar, AvatarFallback } from '@/shared/components/ui/avatar'
-import { Building, ChevronRight, Mail, Phone } from 'lucide-react'
+import { Building, Mail, Phone } from 'lucide-react'
 
 export default function OrganizationDetail({
   organization,
 }: {
-  organization: OrganizationWithChildren
+  organization: OrganizationWithDepth
 }) {
-
-  console.log("org", organization)
-
   const admin = organization.admin as User
   const backupAdmins = organization.backupAdmins as User[]
   const parentOrg = organization.parentOrg as Organization
@@ -68,7 +57,7 @@ export default function OrganizationDetail({
               </div>
             )}
 
-            <div >
+            <div>
               {organization.email && (
                 <div className="flex items-center gap-2">
                   <Mail className="h-4 w-4 text-muted-foreground" />
@@ -90,12 +79,11 @@ export default function OrganizationDetail({
               <h3 className="text-sm font-medium text-muted-foreground mb-3">Hierarchy</h3>
               {organization.parentOrg && (
                 <div className="mb-3">
-
                   <h4 className="text-xs text-muted-foreground mb-1">Parent Organization</h4>
 
                   <div className="flex items-center">
-                  <Building className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span>{parentOrg.name}</span>
+                    <Building className="h-4 w-4 mr-2 text-muted-foreground" />
+                    <span>{parentOrg.name}</span>
                   </div>
                 </div>
               )}
@@ -107,7 +95,7 @@ export default function OrganizationDetail({
                   </h4>
                   <div className="space-y-2">
                     {organization.children.docs.map((child) => (
-                      <div className="flex items-center">
+                      <div className="flex items-center" key={child.id}>
                         <Building className="h-4 w-4 mr-2 text-muted-foreground" />
                         <div>
                           <div>{child.name}</div>

@@ -1,20 +1,22 @@
 'use client'
 
 import { Building2, ChevronLeftIcon, ChevronRightIcon, EditIcon, Search, X } from 'lucide-react'
-import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '../ui/select'
-import { Input } from '../ui/input'
-import { ScrollArea } from '@radix-ui/react-scroll-area'
+import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@/shared'
+import { Input } from '@/shared'
 import { OrganizationHierarchyProps } from '@/organizations'
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
 import { useOrganizationHierarchy } from '@/organizations/hooks/useOrganizationHierarchy'
-import { Button } from '../ui/button'
+import { Button } from '@/shared'
 import OrganizationDetailPage from '@/organizations/components/organization-detail'
+import { UpdateOrganizationForm } from '@/organizations/forms/update-organization'
+import { ScrollArea } from '@/shared'
 
 export default function OrganizationHierarchy({
   organizations,
   originalData,
   pagination,
   users,
+  user
 }: OrganizationHierarchyProps) {
   const {
     searchTerm,
@@ -26,7 +28,6 @@ export default function OrganizationHierarchy({
     renderFilteredResults,
     handlePageChange,
     selectedOrg,
-    formComponent,
     isEditing,
     setIsEditing,
   } = useOrganizationHierarchy({ organizations, originalData, pagination, users })
@@ -106,21 +107,28 @@ export default function OrganizationHierarchy({
                 </div>
                 <div className="flex gap-2">
                   {isEditing ? (
-                         
                     <Button onClick={() => setIsEditing(false)}>
                       <X />
-                    </Button>           ) : (   <Button onClick={() => setIsEditing(true)}>
+                    </Button>
+                  ) : (
+                    <Button onClick={() => setIsEditing(true)}>
                       <EditIcon />
                     </Button>
-
                   )}
                 </div>
               </CardHeader>
               {isEditing ? (
-                <CardContent className="space-y-6">{formComponent}</CardContent>
+                <CardContent className="space-y-6">
+                  <UpdateOrganizationForm
+                    user={user}
+                    users={users}
+                    organizations={originalData}
+                    data={selectedOrg}
+                  />
+                </CardContent>
               ) : (
                 <CardContent>
-                  <OrganizationDetailPage organization={selectedOrg} />{' '}
+                  <OrganizationDetailPage organization={selectedOrg} />
                 </CardContent>
               )}
             </Card>

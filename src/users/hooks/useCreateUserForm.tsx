@@ -46,6 +46,7 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
     authUserRole === UserRolesEnum.UnitAdmin ? [] : [UserStatusEnum.Active, UserStatusEnum.Inactive]
 
   const handleRoleChange = async (role: UserRolesEnum) => {
+    setValue('role', role)
     if (authUserRole === UserRolesEnum.UnitAdmin && role === UserRolesEnum.UnitAdmin) {
       try {
         setIsLoading(true)

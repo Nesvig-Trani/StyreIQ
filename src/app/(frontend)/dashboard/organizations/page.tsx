@@ -2,6 +2,7 @@ import React from 'react'
 import {
   organizationSearchSchema,
   OrganizationWithChildren,
+  OrganizationWithDepth,
 } from '@/organizations'
 import { Card, CardContent } from '@/shared/components/ui/card'
 import { Button } from '@/shared/components/ui/button'
@@ -51,8 +52,9 @@ export default async function OrganizationsPage(props: {
         <CardContent>
           <OrganizationHierarchy
             organizations={result.docs}
-            originalData={organizations.docs as OrganizationWithChildren[]}
+            originalData={organizations.docs as OrganizationWithDepth[]}
             users={users.docs}
+            user={user}
             pagination={{
               pageSize: result.limit,
               pageIndex: result.page ? result.page - 1 : 0,

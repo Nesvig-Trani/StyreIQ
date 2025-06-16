@@ -25,6 +25,13 @@ export type OrganizationWithChildren = Organization & {
   children?: OrganizationWithChildren[]
 }
 
+export type OrganizationWithDepth =  {
+  parentOrg: Organization
+  admin: User
+  backupAdmins?: User[]
+  children?: { docs: Organization[]}
+}  & Organization
+
 export type Tree = {
   id: number
   parent: number
@@ -43,8 +50,9 @@ export type CreateOrgFormProps = {
 
 export type UpdateOrgFormProps = {
   users: User[]
-  data?: OrganizationWithChildren | null
-  organizations: OrganizationWithChildren[]
+  data?: OrganizationWithDepth | null
+  organizations: OrganizationWithDepth[]
+  user?: User | null,
 }
 
 export const organizationSearchSchema = paginationSchema.extend({
@@ -52,6 +60,7 @@ export const organizationSearchSchema = paginationSchema.extend({
   status: z.enum(['active', 'inactive', 'pending_review']).optional(),
   type: z.enum(['university', 'faculty', 'department', 'office', 'project']).optional(),
 })
+
 
 export type StatusType = keyof typeof statusConfig
 export type OrganizationType = keyof typeof typeConfig
@@ -63,8 +72,9 @@ export interface FlattenedTree extends Tree {
 
 export interface OrganizationHierarchyProps {
   organizations: Tree[]
-  originalData: OrganizationWithChildren[]
+  originalData: OrganizationWithDepth[]
   users: User[]
+  user?: User | null
   pagination: {
     pageSize: number
     pageIndex: number
@@ -72,3 +82,5 @@ export interface OrganizationHierarchyProps {
     pageCount: number
   }
 }
+
+export type CreateOrganization = z.infer<typeof createOrgFormSchema>
