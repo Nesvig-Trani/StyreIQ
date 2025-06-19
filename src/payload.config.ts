@@ -12,6 +12,7 @@ import { AuditLogPlugin } from '@/plugins/audit-log'
 import { OrganizationAccess } from '@/organization-access/collections'
 import { EmailAdapter } from './shared/utils/emailAdapter'
 import { Users } from '@/users/collections'
+import { Acknowledgments, Policies } from './policies/collections'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -32,7 +33,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Organizations, OrganizationAccess, SocialMedias],
+  collections: [Users, Organizations, OrganizationAccess, SocialMedias, Policies, Acknowledgments],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

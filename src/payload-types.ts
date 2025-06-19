@@ -71,6 +71,8 @@ export interface Config {
     organization: Organization;
     organization_access: OrganizationAccess;
     'social-medias': SocialMedia;
+    policies: Policy;
+    acknowledgments: Acknowledgment;
     audit_log: AuditLog;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -86,6 +88,8 @@ export interface Config {
     organization: OrganizationSelect<false> | OrganizationSelect<true>;
     organization_access: OrganizationAccessSelect<false> | OrganizationAccessSelect<true>;
     'social-medias': SocialMediasSelect<false> | SocialMediasSelect<true>;
+    policies: PoliciesSelect<false> | PoliciesSelect<true>;
+    acknowledgments: AcknowledgmentsSelect<false> | AcknowledgmentsSelect<true>;
     audit_log: AuditLogSelect<false> | AuditLogSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -190,6 +194,43 @@ export interface OrganizationAccess {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "policies".
+ */
+export interface Policy {
+  id: number;
+  version?: number | null;
+  text?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  author?: (number | null) | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "acknowledgments".
+ */
+export interface Acknowledgment {
+  id: number;
+  policy?: (number | null) | Policy;
+  user?: (number | null) | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "social-medias".
  */
 export interface SocialMedia {
@@ -284,6 +325,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'social-medias';
         value: number | SocialMedia;
+      } | null)
+    | ({
+        relationTo: 'policies';
+        value: number | Policy;
+      } | null)
+    | ({
+        relationTo: 'acknowledgments';
+        value: number | Acknowledgment;
       } | null)
     | ({
         relationTo: 'audit_log';
@@ -410,6 +459,27 @@ export interface SocialMediasSelect<T extends boolean = true> {
   primaryAdmin?: T;
   backupAdmin?: T;
   status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "policies_select".
+ */
+export interface PoliciesSelect<T extends boolean = true> {
+  version?: T;
+  text?: T;
+  author?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "acknowledgments_select".
+ */
+export interface AcknowledgmentsSelect<T extends boolean = true> {
+  policy?: T;
+  user?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -23,7 +23,7 @@ export const createOrganization: Endpoint = {
       }
       const data = await req.json()
 
-      const { id, parentOrg, name, admin } = data
+      const { parentOrg, name, admin } = data
 
       if (user.role !== UserRolesEnum.SuperAdmin && !parentOrg) {
         return new Response(
@@ -54,12 +54,6 @@ export const createOrganization: Endpoint = {
         }
       }
 
-      const { parentPath, parentDepth } = await calcParentPathAndDepth({
-        payload: req.payload,
-        id,
-        parentOrg,
-        name,
-      })
 
       const createOrganization = await req.payload.create({
         collection: 'organization',
@@ -68,6 +62,13 @@ export const createOrganization: Endpoint = {
       })
 
       const currentId = createOrganization.id
+
+      const { parentPath, parentDepth } = await calcParentPathAndDepth({
+        payload: req.payload,
+        id: createOrganization.id,
+        parentOrg,
+        name,
+      })
       const path = parentPath ? `${parentPath}/${currentId}` : `${currentId}`
       const depth = parentDepth + 1
 

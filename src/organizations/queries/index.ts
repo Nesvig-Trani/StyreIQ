@@ -9,7 +9,7 @@ export const getAllOrganizations = async () => {
     const { user } = await getAuthUser()
     const organizations = await payload.find({
       collection: 'organization',
-      depth: 0,
+      depth: 1,
       select: {
         id: true,
         name: true,

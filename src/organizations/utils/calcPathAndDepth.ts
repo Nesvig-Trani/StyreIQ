@@ -22,7 +22,7 @@ export const calcParentPathAndDepth = async ({
 
   if (!parent) throw new Error('Parent organization not found')
 
-  if (parent.path?.includes(id.toString())) {
+  if (parent.path?.includes(id?.toString())) {
     throw new Error('Invalid parent: would create a circular hierarchy')
   }
 
