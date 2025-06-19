@@ -1,5 +1,6 @@
+'use client'
 import * as React from 'react'
-import { Building2Icon, HistoryIcon, Share2Icon, UsersIcon } from 'lucide-react'
+import { Building2Icon, HistoryIcon,LogOutIcon, Share2Icon, UsersIcon } from 'lucide-react'
 
 import {
   Sidebar,
@@ -12,6 +13,8 @@ import {
   SidebarRail,
 } from '@/shared/components/ui/sidebar'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { Button } from '../ui/button'
 
 const data = {
   navMain: [
@@ -39,6 +42,7 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const router = useRouter()
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -69,6 +73,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             ))}
           </SidebarMenu>
         </SidebarGroup>
+        <Button onClick={() => router.push('api/login')}>
+          <LogOutIcon />
+        </Button>
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
