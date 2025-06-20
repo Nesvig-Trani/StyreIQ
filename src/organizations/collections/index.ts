@@ -1,7 +1,7 @@
 import { CollectionConfig } from 'payload'
 import { createOrganization, updateOrganization } from '@/organizations'
 import { Organization } from '@/payload-types'
-import { UserRolesEnum } from '@/users'
+import { UserRolesEnum } from '@/users/schemas'
 
 export const Organizations: CollectionConfig = {
   slug: 'organization',

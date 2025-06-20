@@ -1,6 +1,13 @@
 'use client'
 import * as React from 'react'
-import { Building2Icon, HistoryIcon,LogOutIcon, Share2Icon, UsersIcon } from 'lucide-react'
+import {
+  Building2Icon,
+  HistoryIcon,
+  LogOutIcon,
+  ScrollText,
+  Share2Icon,
+  UsersIcon,
+} from 'lucide-react'
 
 import {
   Sidebar,
@@ -15,6 +22,7 @@ import {
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Button } from '../ui/button'
+import { UserRolesEnum } from '@/users'
 
 const data = {
   navMain: [
@@ -34,6 +42,11 @@ const data = {
       icon: Share2Icon,
     },
     {
+      title: 'Policy',
+      url: '/dashboard/policies',
+      icon: ScrollText,
+    },
+    {
       title: 'Audit Log',
       url: '/dashboard/audit-logs',
       icon: HistoryIcon,
@@ -41,7 +54,11 @@ const data = {
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  userRole?: UserRolesEnum | null
+}
+
+export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
   const router = useRouter()
   return (
     <Sidebar {...props}>
@@ -61,19 +78,24 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            {data.navMain.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <Link href={item.url}>
-                  <SidebarMenuButton>
-                    {item.icon && <item.icon />}
-                    <span className="font-medium">{item.title}</span>
-                  </SidebarMenuButton>
-                </Link>
-              </SidebarMenuItem>
-            ))}
+            {data.navMain
+              .filter((item) => {
+                if (item.title === 'Policy' && userRole !== UserRolesEnum.SuperAdmin) return false
+                return true
+              })
+              .map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <Link href={item.url}>
+                    <SidebarMenuButton>
+                      {item.icon && <item.icon />}
+                      <span className="font-medium cursor-pointer">{item.title}</span>
+                    </SidebarMenuButton>
+                  </Link>
+                </SidebarMenuItem>
+              ))}
           </SidebarMenu>
         </SidebarGroup>
-        <Button onClick={() => router.push('api/login')}>
+        <Button onClick={() => router.push('/api/logout')}>
           <LogOutIcon />
         </Button>
       </SidebarContent>

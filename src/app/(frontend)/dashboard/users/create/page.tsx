@@ -1,5 +1,4 @@
 import React from 'react'
-import { Card } from '@/shared/components/ui/card'
 import { CreateUserForm, UserRolesEnum } from '@/users/'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
 import { Organization } from '@/payload-types'
@@ -24,13 +23,11 @@ export default async function CreateUserPage() {
 
   return (
     <div>
-      <Card>
         <CreateUserForm
           initialOrganizations={organizations.docs}
           authUserRole={user?.role as UserRolesEnum}
           topOrgDepth={orgWithMinDepth?.depth || undefined}
         />
-      </Card>
     </div>
   )
 }

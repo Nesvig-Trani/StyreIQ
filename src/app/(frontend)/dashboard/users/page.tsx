@@ -10,6 +10,7 @@ import { parseSearchParamsWithSchema } from '@/shared/utils/parseParamsServer'
 import { getUsers } from '@/sdk/users'
 import { User } from '@/payload-types'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
+import { CirclePlus } from 'lucide-react'
 
 export default async function UsersPage(props: {
   searchParams?: Promise<{
@@ -34,11 +35,12 @@ export default async function UsersPage(props: {
       <Card>
         <div className={'flex justify-end gap-4'}>
           <Button size="sm">
-            <Link href={'/dashboard/review-requests'}>Review user requests</Link>
+            <Link href={'/dashboard/review-requests'} prefetch>Review user requests</Link>
           </Button>
 
           <Button size="sm">
-            <Link href={'/dashboard/users/create'}>Create User</Link>
+            <Link   className={'flex items-center gap-2'} href={'/dashboard/users/create'} prefetch><CirclePlus/>Create User</Link>
+               
           </Button>
         </div>
         <CardContent>

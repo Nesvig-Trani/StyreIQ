@@ -3,7 +3,7 @@ import { organizationSearchSchema } from '@/organizations'
 import { Card, CardContent } from '@/shared/components/ui/card'
 import { parseSearchParamsWithSchema } from '@/shared/utils/parseParamsServer'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
-import { getPendingActivationUsers, UserStatusEnum } from '@/users'
+import { getPendingActivationUsers } from '@/users'
 import { ReviewRequestTable } from '@/review-requests'
 
 export default async function ReviewRequestsPage(props: {

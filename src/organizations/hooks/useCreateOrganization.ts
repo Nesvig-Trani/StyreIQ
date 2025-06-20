@@ -4,8 +4,10 @@ import { CreateOrgFormProps, createOrgFormSchema, OrganizationWithDepth } from '
 import { createOrganization } from '@/sdk/organization'
 import { toast } from 'sonner'
 import { CreateOrganizationsTree } from '@/organizations/utils/createOrgTree'
+import { useRouter } from 'next/navigation'
 
 function useCreateOrganization({ users, organizations }: CreateOrgFormProps) {
+  const router = useRouter()
   const tree = CreateOrganizationsTree(organizations as OrganizationWithDepth[])
   const { formComponent, form } = useFormHelper(
     {
@@ -93,6 +95,7 @@ function useCreateOrganization({ users, organizations }: CreateOrgFormProps) {
           await createOrganization(submitData)
           form.reset()
           toast.success('Organization created successfully')
+          router.push('/dashboard/organizations')
         } catch {
           toast.error('An error occurred while creating the organization, please try again')
         }

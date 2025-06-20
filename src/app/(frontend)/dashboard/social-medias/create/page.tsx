@@ -1,6 +1,6 @@
 import { getAuthUser } from '@/auth/utils/getAuthUser'
 import { getAllOrganizations } from '@/organizations/queries'
-import { Card, CardContent } from '@/shared/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
 import { CreateSocialMediaForm } from '@/social-medias'
 import { getUsersByRoles, UserRolesEnum } from '@/users'
 import { redirect } from 'next/navigation'
@@ -24,8 +24,10 @@ export default async function CreateSocialMediaPage() {
 
   return (
     <div>
-      <h1>Create Social Media Account</h1>
-      <Card>
+      <Card className="w-full max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle>Create social media</CardTitle>
+        </CardHeader>
         <CardContent>
           <CreateSocialMediaForm users={users.docs} organizations={organizations.docs} />
         </CardContent>

@@ -1,26 +1,21 @@
 import { CollectionConfig } from 'payload'
 import { AcknowledgmentsCollectionSlug, PoliciesCollectionSlug } from '../schemas'
+import { getLastPolicyVersion } from '../queries'
 
 export const Policies: CollectionConfig = {
   slug: PoliciesCollectionSlug,
   hooks: {
     beforeValidate: [
       async ({ data, operation, req }) => {
-        console.log('this happens')
         if (!req.user) return
         if (operation !== 'create') return
-        const lastVersion = await req.payload.find({
-          collection: 'policies',
-          sort: '-version',
-          limit: 1,
-        })
-        console.log('lastVersion', lastVersion)
-        const lastPolicy = lastVersion.docs[0]
-        console.log('original', data)
-
+        const lastPolicy = await getLastPolicyVersion()
         return {
           ...data,
-          version: lastPolicy && lastPolicy.version ? lastPolicy?.version + 0.1 : 0.1,
+          version:
+            lastPolicy && lastPolicy.version
+              ? Math.round((lastPolicy?.version + 0.1) * 10) / 10
+              : 0.1,
           author: req.user.id,
         }
       },
@@ -50,7 +45,6 @@ export const Acknowledgments: CollectionConfig = {
   hooks: {
     beforeValidate: [
       async ({ data, operation, req }) => {
-        console.log("data", data)
         if (!req.user) return
         if (operation !== 'create') return
         return {

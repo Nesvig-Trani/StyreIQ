@@ -7,13 +7,14 @@ import {
   DialogTitle,
   DialogFooter,
 } from '../../ui/dialog'
-import { Button } from '../../ui/button'
+import { Button } from '@/shared'
 import type { JSX } from 'react/jsx-runtime'
 import { useRouter } from 'next/navigation'
 import { acceptPolicy } from '@/sdk/policies'
 import { toast } from 'sonner'
+ import { useLoading } from '@/shared/hooks'
 
-interface LexicalData {
+export interface LexicalData {
   root: LexicalNode
 }
 
@@ -22,7 +23,7 @@ interface LexicalNode {
   children?: LexicalNode[]
   text?: string
   tag?: string
-  format?: number
+  format?: number | string
   detail?: number
   mode?: string
   style?: string
@@ -54,7 +55,7 @@ function renderLexicalNode(node: LexicalNode, index: number): React.ReactNode {
       )
     case 'text':
       let textClass = ''
-      if (node.format) {
+      if (typeof node.format === 'number') {
         if (node.format & 1) textClass += ' font-bold'
         if (node.format & 2) textClass += ' italic'
         if (node.format & 4) textClass += ' line-through'
@@ -78,25 +79,31 @@ interface LexicalContentModalProps {
   onOpenChange?: (open: boolean) => void
   showActions?: boolean
   triggerButton?: boolean
-  policy: number
+  policy?: number
 }
 
 export function LexicalContentModal({
   lexicalData,
-  title = 'Policy Review',
+  title = 'Policy Preview',
   open,
   onOpenChange,
   showActions = false,
   triggerButton = true,
   policy,
 }: LexicalContentModalProps) {
+  const { isLoading, startLoading, stopLoading } = useLoading()
   const router = useRouter()
   const onAccept = async () => {
     try {
+      if (!policy) return
+      startLoading()
       await acceptPolicy({ policy })
       toast.success('You have accepted the new policy')
+      router.refresh()
     } catch {
       toast.error('Something went wrong')
+    } finally {
+      stopLoading()
     }
   }
   const onReject = () => {
@@ -107,7 +114,9 @@ export function LexicalContentModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       {triggerButton && (
         <DialogTrigger asChild>
-          <Button disabled={!lexicalData}>Preview</Button>
+          <Button variant="secondary" disabled={!lexicalData}>
+            Preview
+          </Button>
         </DialogTrigger>
       )}
       <DialogContent className="w-full  min-w-6xl max-h-[90vh] overflow-y-auto">
@@ -120,7 +129,9 @@ export function LexicalContentModal({
             <Button variant="outline" onClick={onReject}>
               Reject
             </Button>
-            <Button onClick={onAccept}>Accept</Button>
+            <Button onClick={onAccept} loading={isLoading} disabled={isLoading}>
+              Accept
+            </Button>
           </DialogFooter>
         )}
       </DialogContent>

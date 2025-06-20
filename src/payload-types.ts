@@ -194,6 +194,32 @@ export interface OrganizationAccess {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "social-medias".
+ */
+export interface SocialMedia {
+  id: number;
+  name: string;
+  profileUrl: string;
+  platform: string;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  passwordUpdatedAt?: string | null;
+  isEnabledTwoFactor?: boolean | null;
+  isInUseSecurePassword?: boolean | null;
+  isAcceptedPolicies?: boolean | null;
+  isCompletedTrainingAccessibility?: boolean | null;
+  isCompletedTrainingRisk?: boolean | null;
+  isCompletedTrainingBrand?: boolean | null;
+  hasKnowledgeStandards?: boolean | null;
+  organization: number | Organization;
+  primaryAdmin: number | User;
+  backupAdmin: number | User;
+  status: 'active' | 'inactive' | 'in_transition' | 'pending_approval';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "policies".
  */
 export interface Policy {
@@ -226,32 +252,6 @@ export interface Acknowledgment {
   id: number;
   policy?: (number | null) | Policy;
   user?: (number | null) | User;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "social-medias".
- */
-export interface SocialMedia {
-  id: number;
-  name: string;
-  profileUrl: string;
-  platform: string;
-  contactEmail?: string | null;
-  contactPhone?: string | null;
-  passwordUpdatedAt?: string | null;
-  isEnabledTwoFactor?: boolean | null;
-  isInUseSecurePassword?: boolean | null;
-  isAcceptedPolicies?: boolean | null;
-  isCompletedTrainingAccessibility?: boolean | null;
-  isCompletedTrainingRisk?: boolean | null;
-  isCompletedTrainingBrand?: boolean | null;
-  hasKnowledgeStandards?: boolean | null;
-  organization: number | Organization;
-  primaryAdmin: number | User;
-  backupAdmin: number | User;
-  status: 'active' | 'inactive' | 'in_transition' | 'pending_approval';
   updatedAt: string;
   createdAt: string;
 }

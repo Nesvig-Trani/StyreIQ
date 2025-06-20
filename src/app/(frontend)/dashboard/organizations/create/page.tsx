@@ -1,7 +1,6 @@
 'use server'
 import React from 'react'
 import { CreateOrganizationForm } from '@/organizations'
-import { Card } from '@/shared/components/ui/card'
 import { getUsersByOrganizations, UserRolesEnum } from '@/users'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
 import Link from 'next/link'
@@ -36,10 +35,7 @@ export default async function CreateOrganization() {
   }
   return (
     <div>
-      <h1>Create Organization</h1>
-      <Card>
         <CreateOrganizationForm users={users.docs} organizations={organizations.docs} />
-      </Card>
     </div>
   )
 }

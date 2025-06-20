@@ -12,6 +12,7 @@ import { getAllUsers, UserRolesEnum } from '@/users'
 import OrganizationHierarchy from '@/shared/components/organization-hierarchy'
 import { getOrganizationsWithFilter } from '@/organizations/queries'
 import { treePaginationAndFilter } from '@/organizations/utils/treePaginationAndFilter'
+import { CirclePlus } from 'lucide-react'
 
 export default async function OrganizationsPage(props: {
   searchParams?: Promise<{
@@ -44,7 +45,14 @@ export default async function OrganizationsPage(props: {
         <div className={'flex justify-end'}>
           {user?.role === UserRolesEnum.SuperAdmin && (
             <Button>
-              <Link href={'/dashboard/organizations/create'}>Create Organization</Link>
+              <Link
+                className={'flex items-center gap-2'}
+                href={'/dashboard/organizations/create'}
+                prefetch={true}
+              >
+                <CirclePlus />
+                Create Organization
+              </Link>
             </Button>
           )}
         </div>

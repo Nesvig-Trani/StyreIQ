@@ -77,61 +77,58 @@ export const OrganizationAccessForm = ({ initialAccess = [] }: OrganizationAcces
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-4">
         {accessList.map((orgAccess) => (
-          <Card key={orgAccess.id} className="p-4 mb-2">
-            <div className="space-y-4">
-              <h4 className="font-medium text-base">{orgAccess.organization_name}</h4>
+          <div className="space-y-4">
+            <h4 className="font-medium text-base">{orgAccess.organization_name}</h4>
 
-              <div className="space-y-2 flex flex-col">
-                <Label>Access Type</Label>
-                <Select
-                  value={orgAccess.type || ''}
-                  onValueChange={(value: UserAccessTypeEnum) =>
-                    handleAccessTypeChange(orgAccess.id, value)
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select access type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value={UserAccessTypeEnum.Permanent}>Permanent</SelectItem>
-                    <SelectItem value={UserAccessTypeEnum.Temporary}>Temporary</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {orgAccess.type === UserAccessTypeEnum.Temporary && (
-                <div className="flex gap-4">
-                  <div className="space-y-2 flex flex-col">
-                    <Label>Start Date</Label>
-                    <DatePicker
-                      required
-                      selected={orgAccess.start_date ? new Date(orgAccess.start_date) : new Date()}
-                      onSelect={(date) =>
-                        handleDateChange(orgAccess.id, 'start_date', date || new Date())
-                      }
-                    />
-                  </div>
-
-                  <div className="space-y-2 flex flex-col">
-                    <Label>End Date</Label>
-                    <DatePicker
-                      required
-                      selected={orgAccess.end_date ? new Date(orgAccess.end_date) : new Date()}
-                      onSelect={(date) => {
-                        handleDateChange(orgAccess.id, 'end_date', date || new Date())
-                      }}
-                    />
-                  </div>
-                </div>
-              )}
+            <div className="space-y-2 flex flex-col">
+              <Label>Access Type</Label>
+              <Select
+                value={orgAccess.type || ''}
+                onValueChange={(value: UserAccessTypeEnum) =>
+                  handleAccessTypeChange(orgAccess.id, value)
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select access type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={UserAccessTypeEnum.Permanent}>Permanent</SelectItem>
+                  <SelectItem value={UserAccessTypeEnum.Temporary}>Temporary</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-          </Card>
+
+            {orgAccess.type === UserAccessTypeEnum.Temporary && (
+              <div className="flex gap-4">
+                <div className="space-y-2 flex flex-col">
+                  <Label>Start Date</Label>
+                  <DatePicker
+                    required
+                    selected={orgAccess.start_date ? new Date(orgAccess.start_date) : new Date()}
+                    onSelect={(date) =>
+                      handleDateChange(orgAccess.id, 'start_date', date || new Date())
+                    }
+                  />
+                </div>
+
+                <div className="space-y-2 flex flex-col">
+                  <Label>End Date</Label>
+                  <DatePicker
+                    required
+                    selected={orgAccess.end_date ? new Date(orgAccess.end_date) : new Date()}
+                    onSelect={(date) => {
+                      handleDateChange(orgAccess.id, 'end_date', date || new Date())
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
         ))}
       </div>
-      <Button disabled={isSubmitting}>
-        {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-        {isSubmitting ? 'Loading...' : 'Update Access'}
-      </Button>{' '}
+      <Button disabled={isSubmitting} loading={isSubmitting} loadingText={'Loading ...'}>
+         Update Access
+      </Button>
     </form>
   )
 }

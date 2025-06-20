@@ -23,7 +23,7 @@ export default async function DashboardLayout(props: { children: React.ReactNode
 
   const lastVersion = await getLastPolicyVersion()
   let open = false
-  if (user && user.id) {
+  if (user && user.id && user.role !== UserRolesEnum.SuperAdmin && lastVersion) {
     const acceptedVersion = await payload.find({
       collection: AcknowledgmentsCollectionSlug,
       limit: 1,
@@ -33,18 +33,18 @@ export default async function DashboardLayout(props: { children: React.ReactNode
         policy: { equals: lastVersion.id },
       },
     })
-    console.log("acc", acceptedVersion)
     if (acceptedVersion.docs.length === 0) {
-      open = true 
+      open = true
     }
   }
 
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar userRole={user?.role as UserRolesEnum} />
       <SidebarInset>
         <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
         <LexicalContentModal
+          title="New policy version"
           open={open}
           lexicalData={lastVersion.text as any}
           showActions

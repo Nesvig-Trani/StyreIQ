@@ -1,8 +1,9 @@
 'use server'
 import React from 'react'
-import { OrganizationAccessForm } from '@/shared'
+import { Card, CardContent, CardHeader, CardTitle, OrganizationAccessForm } from '@/shared'
 import { getUserById } from '@/users'
 import { getOrganizationAccessByUserId } from '@/organization-access/queries'
+import { Separator } from '@radix-ui/react-separator'
 
 async function UserAccessPage({ params }: { params: Promise<{ userId: string }> }) {
   const { userId } = await params
@@ -12,11 +13,21 @@ async function UserAccessPage({ params }: { params: Promise<{ userId: string }> 
 
   return (
     <div>
-      <h1>Set organization access</h1>
-      <p>
-        {user.name} - {user.email}
-      </p>
-      <OrganizationAccessForm initialAccess={userOrgs.docs} />
+      <Card>
+        <CardHeader>
+          <CardTitle> Set organization access</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p>
+            <b>Name: </b>
+            {user.name}
+          </p>
+          <p>
+            <b>Email: </b> {user.email}
+          </p>
+          <OrganizationAccessForm initialAccess={userOrgs.docs} />
+        </CardContent>
+      </Card>
     </div>
   )
 }

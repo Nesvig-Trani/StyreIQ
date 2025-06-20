@@ -1,3 +1,4 @@
+'use client'
 import { useFormHelper } from '@/shared/components/form-hook-helper'
 import { OrganizationWithDepth } from '@/organizations'
 import { CreateSocialMediaFormProps, createSocialMediaFormSchema } from '@/social-medias'
@@ -5,10 +6,11 @@ import { createSocialMedia } from '@/sdk/social-medias'
 import { toast } from 'sonner'
 import { CreateOrganizationsTree } from '@/organizations/utils/createOrgTree'
 import { EndpointError } from '@/shared'
+import { useRouter } from 'next/navigation'
 
 export function useCreateSocialMedia({ users, organizations }: CreateSocialMediaFormProps) {
   const tree = CreateOrganizationsTree(organizations as OrganizationWithDepth[])
-
+  const router = useRouter()
   const { formComponent, form } = useFormHelper(
     {
       schema: createSocialMediaFormSchema,
@@ -119,6 +121,7 @@ export function useCreateSocialMedia({ users, organizations }: CreateSocialMedia
           await createSocialMedia(submitData)
           form.reset()
           toast.success('Social media account created successfully')
+          router.push('/dashboard/social-medias')
         } catch (catchError) {
           if (catchError instanceof EndpointError) {
             toast.error(catchError.message)

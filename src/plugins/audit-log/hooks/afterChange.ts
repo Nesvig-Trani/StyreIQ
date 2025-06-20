@@ -24,7 +24,6 @@ const AuditLogAfterChange: CollectionAfterChangeHook = async ({
           value: doc.id,
         },
       }
-
       switch (slug) {
         case 'organization':
           data.organizations = [doc.id]
@@ -32,6 +31,8 @@ const AuditLogAfterChange: CollectionAfterChangeHook = async ({
         case 'users':
           data.organizations = doc.organizations
           break
+        case 'social-medias':
+          data.organizations = [doc.organization.id]
         default:
           break
       }
