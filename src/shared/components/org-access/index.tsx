@@ -77,7 +77,7 @@ export const OrganizationAccessForm = ({ initialAccess = [] }: OrganizationAcces
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-4">
         {accessList.map((orgAccess) => (
-          <div className="space-y-4">
+          <div key={orgAccess.id} className="space-y-4">
             <h4 className="font-medium text-base">{orgAccess.organization_name}</h4>
 
             <div className="space-y-2 flex flex-col">
