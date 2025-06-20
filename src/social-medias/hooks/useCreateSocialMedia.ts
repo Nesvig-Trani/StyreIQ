@@ -1,5 +1,5 @@
 import { useFormHelper } from '@/shared/components/form-hook-helper'
-import { OrganizationWithChildren } from '@/organizations'
+import { OrganizationWithDepth } from '@/organizations'
 import { CreateSocialMediaFormProps, createSocialMediaFormSchema } from '@/social-medias'
 import { createSocialMedia } from '@/sdk/social-medias'
 import { toast } from 'sonner'
@@ -7,7 +7,7 @@ import { CreateOrganizationsTree } from '@/organizations/utils/createOrgTree'
 import { EndpointError } from '@/shared'
 
 export function useCreateSocialMedia({ users, organizations }: CreateSocialMediaFormProps) {
-  const tree = CreateOrganizationsTree(organizations as OrganizationWithChildren[])
+  const tree = CreateOrganizationsTree(organizations as OrganizationWithDepth[])
 
   const { formComponent, form } = useFormHelper(
     {

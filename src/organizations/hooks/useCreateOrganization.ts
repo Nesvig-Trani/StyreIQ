@@ -1,12 +1,12 @@
 'use client'
 import { useFormHelper } from '@/shared/components/form-hook-helper'
-import { CreateOrgFormProps, createOrgFormSchema, OrganizationWithChildren } from '@/organizations'
+import { CreateOrgFormProps, createOrgFormSchema, OrganizationWithDepth } from '@/organizations'
 import { createOrganization } from '@/sdk/organization'
 import { toast } from 'sonner'
 import { CreateOrganizationsTree } from '@/organizations/utils/createOrgTree'
 
 function useCreateOrganization({ users, organizations }: CreateOrgFormProps) {
-  const tree = CreateOrganizationsTree(organizations as OrganizationWithChildren[])
+  const tree = CreateOrganizationsTree(organizations as OrganizationWithDepth[])
   const { formComponent, form } = useFormHelper(
     {
       schema: createOrgFormSchema,

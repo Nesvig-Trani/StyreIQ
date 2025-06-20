@@ -83,7 +83,11 @@ export const useOrganizationHierarchy = ({
   const toggleNode = (nodeId: number) => {
     setExpandedNodes((prev) => {
       const updated = new Set(prev)
-      updated.has(nodeId) ? updated.delete(nodeId) : updated.add(nodeId)
+      if (updated.has(nodeId)) {
+        updated.delete(nodeId)
+      } else {
+        updated.add(nodeId)
+      }
       return updated
     })
   }

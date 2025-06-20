@@ -32,10 +32,11 @@ export const DateInputHelper = <TFieldValues extends FieldValues>({
           <FormLabel>{fieldData.label}</FormLabel>
           <FormControl>
             <DatePicker
+              className="w-full"
+              {...fieldData.dateInputProps} // TODO - Find a better way to do this
               selected={value}
-              onSelect={(newValue: string): void => onChange(newValue || null)}
-              buttonclassname="w-full"
-              {...fieldData.dateInputProps}
+              onSelect={(newValue: Date | undefined) => onChange(newValue ?? null)}
+              locale={undefined}
             />
           </FormControl>
           <FormMessage />

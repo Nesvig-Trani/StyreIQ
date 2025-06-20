@@ -1,7 +1,6 @@
 import React from 'react'
 import {
   organizationSearchSchema,
-  OrganizationWithChildren,
   OrganizationWithDepth,
 } from '@/organizations'
 import { Card, CardContent } from '@/shared/components/ui/card'
@@ -33,7 +32,7 @@ export default async function OrganizationsPage(props: {
   const { pageIndex, pageSize } = parsedParams.pagination
 
   const result = treePaginationAndFilter({
-    organizations: organizations.docs as OrganizationWithChildren[],
+    organizations: organizations.docs as OrganizationWithDepth[],
     search: parsedParams.search,
     pageIndex,
     pageSize,
