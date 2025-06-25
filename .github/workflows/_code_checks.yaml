@@ -1,5 +1,8 @@
 name: Run code checks and quality tools
 
+on:
+  workflow_call:
+
 jobs:
   code-checks:
     runs-on: ubuntu-latest
