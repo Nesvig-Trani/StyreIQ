@@ -12,7 +12,7 @@ import type { JSX } from 'react/jsx-runtime'
 import { useRouter } from 'next/navigation'
 import { acceptPolicy } from '@/sdk/policies'
 import { toast } from 'sonner'
- import { useLoading } from '@/shared/hooks'
+import { useLoading } from '@/shared/hooks'
 
 export interface LexicalData {
   root: LexicalNode
@@ -72,7 +72,7 @@ function renderLexicalNode(node: LexicalNode, index: number): React.ReactNode {
 }
 
 interface LexicalContentModalProps {
-  lexicalData?: LexicalData
+  lexicalData?: LexicalData | null
   title?: string
   description?: string
   open?: boolean
@@ -80,6 +80,7 @@ interface LexicalContentModalProps {
   showActions?: boolean
   triggerButton?: boolean
   policy?: number
+  triggerText?: string
 }
 
 export function LexicalContentModal({
@@ -90,6 +91,7 @@ export function LexicalContentModal({
   showActions = false,
   triggerButton = true,
   policy,
+  triggerText = 'Preview',
 }: LexicalContentModalProps) {
   const { isLoading, startLoading, stopLoading } = useLoading()
   const router = useRouter()
@@ -107,6 +109,7 @@ export function LexicalContentModal({
     }
   }
   const onReject = () => {
+    toast.error('You must accept the policies to access the system')
     router.push('/api/logout')
   }
 
@@ -115,7 +118,7 @@ export function LexicalContentModal({
       {triggerButton && (
         <DialogTrigger asChild>
           <Button variant="secondary" disabled={!lexicalData}>
-            Preview
+            {triggerText}
           </Button>
         </DialogTrigger>
       )}
@@ -127,10 +130,10 @@ export function LexicalContentModal({
         {showActions && (
           <DialogFooter className="mt-6">
             <Button variant="outline" onClick={onReject}>
-              Reject
+              Cancel and Log Out
             </Button>
             <Button onClick={onAccept} loading={isLoading} disabled={isLoading}>
-              Accept
+              Accept and Continue
             </Button>
           </DialogFooter>
         )}

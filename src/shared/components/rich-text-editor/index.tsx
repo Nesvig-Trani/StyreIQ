@@ -22,7 +22,7 @@ export default function RichTextEditor({ initialState }: { initialState: string 
       if (!editorState) return
       startLoading()
       await savePolicy({ data: editorState?.toJSON() })
-      toast.success("Policy saved succesfully")
+      toast.success('Policy saved successfully')
       router.refresh()
     } catch (e) {
       console.log('error', e)
@@ -33,7 +33,8 @@ export default function RichTextEditor({ initialState }: { initialState: string 
 
   return (
     <div>
-      <div className="mb-2 flex justify-end gap-2">
+      <LexicalTextEditor initialState={initialState} onChange={onChange} />
+      <div className="mt-4 flex justify-end gap-2">
         <LexicalContentModal triggerButton lexicalData={editorState?.toJSON()} />
         <Button
           onClick={onSubmit}
@@ -44,8 +45,6 @@ export default function RichTextEditor({ initialState }: { initialState: string 
           Save
         </Button>
       </div>
-
-      <LexicalTextEditor initialState={initialState} onChange={onChange} />
     </div>
   )
 }
