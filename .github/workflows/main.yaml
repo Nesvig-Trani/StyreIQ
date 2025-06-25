@@ -1,0 +1,11 @@
+name: Release main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  code-checks:
+    name: Run code checks and quality tools
+    uses: ./.github/workflows/_code_checks.yaml
