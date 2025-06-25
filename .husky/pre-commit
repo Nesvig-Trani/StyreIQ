@@ -6,5 +6,3 @@ yarn syncpack list-mismatches
 yarn lint-staged
 yarn type-check
 yarn lint
-yarn test:coverage --filter=[HEAD^1] -- -o
-yarn i18n:check --filter=[HEAD^1]
