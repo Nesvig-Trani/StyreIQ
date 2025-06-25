@@ -24,3 +24,4 @@ jobs:
       from_name: ${{ secrets.FROM_NAME }}
       next_public_base_url: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
       next_public_node_env: ${{ secrets.NEXT_PUBLIC_NODE_ENV }}
+      payload_secret: ${{ secrets.PAYLOAD_SECRET }}

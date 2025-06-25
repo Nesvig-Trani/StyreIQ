@@ -27,6 +27,9 @@ on:
       next_public_node_env:
         description: 'next_public_node_env env var'
         required: true
+      payload_secret:
+        description: 'payload_secret env var'
+        required: true
     inputs:
       environment:
         description: 'The deploy environment'
@@ -57,3 +60,4 @@ jobs:
           FROM_NAME: ${{ secrets.from_name }}
           NEXT_PUBLIC_BASE_URL: ${{ secrets.next_public_base_url }}
           NEXT_PUBLIC_NODE_ENV: ${{ secrets.next_public_node_env }}
+          PAYLOAD_SECRET: ${{ secrets.payload_secret }}
