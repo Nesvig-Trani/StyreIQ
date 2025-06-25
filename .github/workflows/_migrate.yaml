@@ -30,6 +30,9 @@ on:
       payload_secret:
         description: 'payload_secret env var'
         required: true
+      postgres_uri:
+        description: 'postgres_uri env var'
+        required: true
     inputs:
       environment:
         description: 'The deploy environment'
@@ -61,3 +64,4 @@ jobs:
           NEXT_PUBLIC_BASE_URL: ${{ secrets.next_public_base_url }}
           NEXT_PUBLIC_NODE_ENV: ${{ secrets.next_public_node_env }}
           PAYLOAD_SECRET: ${{ secrets.payload_secret }}
+          POSTGRES_URL: ${{ secrets.postgres_uri }}
