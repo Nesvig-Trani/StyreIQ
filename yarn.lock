@@ -970,7 +970,7 @@
     "@dnd-kit/utilities" "^3.2.0"
     tslib "^2.0.0"
 
-"@dnd-kit/utilities@3.2.2", "@dnd-kit/utilities@^3.2.0", "@dnd-kit/utilities@^3.2.1":
+"@dnd-kit/utilities@^3.2.0", "@dnd-kit/utilities@^3.2.1":
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/@dnd-kit/utilities/-/utilities-3.2.2.tgz#5a32b6af356dc5f74d61b37d6f7129a4040ced7b"
   integrity sha512-+MKAJEOfaBe5SmV6t34p80MMKhjvUz0vRrvVJbPT0WElzaOJ/1xs+D+KDv+tD/NE5ujfrChEcshd4fLn0wpiqg==
@@ -2197,10 +2197,10 @@
     amazon-cognito-identity-js "^6.1.2"
     nodemailer "6.9.16"
 
-"@payloadcms/richtext-lexical@^3.33.0":
-  version "3.43.0"
-  resolved "https://registry.yarnpkg.com/@payloadcms/richtext-lexical/-/richtext-lexical-3.43.0.tgz#9fbb4436c7dfdbce305e63ffadaf781a70e30312"
-  integrity sha512-U4OhTntV/fycvOLM9QyLtKRfHM45iRUi47cIb1gmM92vdcF5BDe/FSrQZ4UzKEvbV/BmmbAnEUozzoW9rQvYvg==
+"@payloadcms/richtext-lexical@3.33.0":
+  version "3.33.0"
+  resolved "https://registry.yarnpkg.com/@payloadcms/richtext-lexical/-/richtext-lexical-3.33.0.tgz#c902b337a9ef00e3c792438af0f13b29508574f7"
+  integrity sha512-Y4IauXgkTQ0XLE0kGtExatMDUph1PGEsDtXVywjbGSG0Q92TfdGDLiHLa3EUV37B0oBM/LWN9JW0oadg1MDNWg==
   dependencies:
     "@lexical/headless" "0.28.0"
     "@lexical/html" "0.28.0"
@@ -2212,12 +2212,11 @@
     "@lexical/selection" "0.28.0"
     "@lexical/table" "0.28.0"
     "@lexical/utils" "0.28.0"
-    "@payloadcms/translations" "3.43.0"
-    "@payloadcms/ui" "3.43.0"
+    "@payloadcms/translations" "3.33.0"
+    "@payloadcms/ui" "3.33.0"
     "@types/uuid" "10.0.0"
     acorn "8.12.1"
     bson-objectid "2.0.4"
-    csstype "3.1.3"
     dequal "2.0.3"
     escape-html "1.0.3"
     jsox "1.2.121"
@@ -2237,13 +2236,6 @@
   dependencies:
     date-fns "4.1.0"
 
-"@payloadcms/translations@3.43.0":
-  version "3.43.0"
-  resolved "https://registry.yarnpkg.com/@payloadcms/translations/-/translations-3.43.0.tgz#1af25a098d793fe8775582e23f0de6cc36de9f0c"
-  integrity sha512-0SEw/JdQKSIFQbQ9v3CVyS2dMkOWUEjdCH8785jXrgOIJFph9RLzK5WRS3UUOZ0Sxc/pnUCI51FweYy1WbWcVg==
-  dependencies:
-    date-fns "4.1.0"
-
 "@payloadcms/ui@3.33.0":
   version "3.33.0"
   resolved "https://registry.yarnpkg.com/@payloadcms/ui/-/ui-3.33.0.tgz#c84dbc85eb0c95fb2b454964153612ec59611cff"
@@ -2257,35 +2249,6 @@
     "@faceless-ui/window-info" "3.0.1"
     "@monaco-editor/react" "4.7.0"
     "@payloadcms/translations" "3.33.0"
-    bson-objectid "2.0.4"
-    date-fns "4.1.0"
-    dequal "2.0.3"
-    md5 "2.3.0"
-    object-to-formdata "4.5.1"
-    qs-esm "7.0.2"
-    react-datepicker "7.6.0"
-    react-image-crop "10.1.8"
-    react-select "5.9.0"
-    scheduler "0.25.0"
-    sonner "^1.7.2"
-    ts-essentials "10.0.3"
-    use-context-selector "2.0.0"
-    uuid "10.0.0"
-
-"@payloadcms/ui@3.43.0":
-  version "3.43.0"
-  resolved "https://registry.yarnpkg.com/@payloadcms/ui/-/ui-3.43.0.tgz#bb3ed49011885ea5aaf3e5ae440c0a774da9b6f5"
-  integrity sha512-EHkiIhn6f1BuWmT+XMR1cBrmQFkkqZAiKLU7l6pTiaIB9zB8bMzVPUCc/EjutgofuKCPbwRDoYZ6wIiumkwb+g==
-  dependencies:
-    "@date-fns/tz" "1.2.0"
-    "@dnd-kit/core" "6.0.8"
-    "@dnd-kit/sortable" "7.0.2"
-    "@dnd-kit/utilities" "3.2.2"
-    "@faceless-ui/modal" "3.0.0-beta.2"
-    "@faceless-ui/scroll-info" "2.0.0"
-    "@faceless-ui/window-info" "3.0.1"
-    "@monaco-editor/react" "4.7.0"
-    "@payloadcms/translations" "3.43.0"
     bson-objectid "2.0.4"
     date-fns "4.1.0"
     dequal "2.0.3"
@@ -4481,7 +4444,7 @@ cssfilter@0.0.10:
   resolved "https://registry.yarnpkg.com/cssfilter/-/cssfilter-0.0.10.tgz#c6d2672632a2e5c83e013e6864a42ce8defd20ae"
   integrity sha512-FAaLDaplstoRsDR8XGYH51znUN0UY7nMc6Z9/fvE8EXGwvJE9hu7W2vHwx1+bd6gCYnln9nLbzxFTrcO9YQDZw==
 
-csstype@3.1.3, csstype@^3.0.2:
+csstype@^3.0.2:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.3.tgz#d80ff294d114fb0e6ac500fbf85b60137d7eff81"
   integrity sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==
