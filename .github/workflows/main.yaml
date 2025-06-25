@@ -17,3 +17,10 @@ jobs:
       environment: Production
     secrets:
       db_uri: ${{ secrets.DATABASE_URL }}
+      smtp_host: ${{ secrets.SMTP_HOST }}
+      smtp_user: ${{ secrets.SMTP_USER }}
+      smtp_pass: ${{ secrets.SMTP_PASS }}
+      from_address: ${{ secrets.FROM_ADDRESS }}
+      from_name: ${{ secrets.FROM_NAME }}
+      next_public_base_url: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
+      next_public_node_env: ${{ secrets.NEXT_PUBLIC_NODE_ENV }}

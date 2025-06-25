@@ -6,6 +6,27 @@ on:
       db_uri:
         description: 'Database url including the user and password'
         required: true
+      smtp_host:
+        description: 'smtp_host env var'
+        required: true
+      smtp_user:
+        description: 'smtp_user env var'
+        required: true
+      smtp_pass:
+        description: 'smtp_pass env var'
+        required: true
+      from_address:
+        description: 'from_address env var'
+        required: true
+      from_name:
+        description: 'from_name env var'
+        required: true
+      next_public_base_url:
+        description: 'next_public_base_url env var'
+        required: true
+      next_public_node_env:
+        description: 'next_public_node_env env var'
+        required: true
     inputs:
       environment:
         description: 'The deploy environment'
@@ -29,3 +50,10 @@ jobs:
         run: yarn db:migrate
         env:
           DATABASE_URL: ${{ secrets.db_uri }}
+          SMTP_HOST: ${{ secrets.smtp_host }}
+          SMTP_USER: ${{ secrets.smtp_user }}
+          SMTP_PASS: ${{ secrets.smtp_pass }}
+          FROM_ADDRESS: ${{ secrets.from_address }}
+          FROM_NAME: ${{ secrets.from_name }}
+          NEXT_PUBLIC_BASE_URL: ${{ secrets.next_public_base_url }}
+          NEXT_PUBLIC_NODE_ENV: ${{ secrets.next_public_node_env }}
