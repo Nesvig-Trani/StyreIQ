@@ -102,9 +102,9 @@ function useUpdateOrganization({ users, data, organizations }: UpdateOrgFormProp
     {
       values: {
         name: data?.name || '',
-        type: data?.type || "university",
+        type: data?.type || 'university',
         parent: data?.parentOrg?.toString(),
-        admin: data?.admin.id?.toString(),
+        admin: data?.admin.id?.toString() || '',
         email: data?.email || '',
         phone: data?.phone || '',
         status: data?.status || 'active',

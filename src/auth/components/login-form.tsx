@@ -1,4 +1,4 @@
-import { cn } from '@/shared/utils/cn'
+'use client'
 import { Button } from '@/shared/components/ui/button'
 import {
   Card,
@@ -9,18 +9,19 @@ import {
 } from '@/shared/components/ui/card'
 import { Input } from '@/shared/components/ui/input'
 import { Label } from '@/shared/components/ui/label'
-import { LoginFormProps } from '@/auth/schemas'
+import { useLogin } from '@/auth'
 
-export function LoginForm({ className, loginFields, onChange, onSubmit }: LoginFormProps) {
+export function LoginForm() {
+  const { loginFields, handleInputChange, handleSubmit } = useLogin()
   return (
-    <div className={cn('flex flex-col gap-6', className)}>
+    <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
           <CardDescription>Enter your email below to login to your account</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={onSubmit}>
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="email">Email</Label>
@@ -30,7 +31,7 @@ export function LoginForm({ className, loginFields, onChange, onSubmit }: LoginF
                   type="email"
                   required
                   value={loginFields.email}
-                  onChange={onChange}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="grid gap-3">
@@ -49,7 +50,7 @@ export function LoginForm({ className, loginFields, onChange, onSubmit }: LoginF
                   type="password"
                   required
                   value={loginFields.password}
-                  onChange={onChange}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="flex flex-col gap-3">

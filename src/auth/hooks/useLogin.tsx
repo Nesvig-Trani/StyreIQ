@@ -1,3 +1,4 @@
+'use client'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { env } from '@/config/env'

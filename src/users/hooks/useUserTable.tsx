@@ -4,6 +4,7 @@ import { roleLabelMap, statusLabelMap, UserRolesEnum, UserStatusEnum } from '@/u
 import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
 import { FileLock2, PencilIcon } from 'lucide-react'
+import { OrganizationCell } from '@/organizations/components/organizations-cell'
 
 function useUserTable({ user }: { user: User | null }) {
   const columns: ColumnDef<User>[] = [
@@ -32,11 +33,16 @@ function useUserTable({ user }: { user: User | null }) {
       },
     },
     {
-      accessorKey: 'organization',
-      header: 'Organization',
+      accessorKey: 'organizations',
+      header: 'Organizations',
       cell: ({ row }) => {
-        const organization = (row.getValue('organization') as Organization) || { name: '-' }
-        return <span>{organization.name}</span>
+        const organizations = row.original.organizations as Organization[]
+
+        return organizations && organizations?.length > 0 ? (
+          <OrganizationCell organizations={organizations} />
+        ) : (
+          <span> - </span>
+        )
       },
     },
     {

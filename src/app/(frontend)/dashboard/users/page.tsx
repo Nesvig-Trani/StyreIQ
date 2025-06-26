@@ -35,12 +35,16 @@ export default async function UsersPage(props: {
       <Card>
         <div className={'flex justify-end gap-4'}>
           <Button size="sm">
-            <Link href={'/dashboard/review-requests'} prefetch>Review user requests</Link>
+            <Link href={'/dashboard/review-requests'} prefetch>
+              Review user requests
+            </Link>
           </Button>
 
           <Button size="sm">
-            <Link   className={'flex items-center gap-2'} href={'/dashboard/users/create'} prefetch><CirclePlus/>Create User</Link>
-               
+            <Link className={'flex items-center gap-2'} href={'/dashboard/users/create'} prefetch>
+              <CirclePlus />
+              Create User
+            </Link>
           </Button>
         </div>
         <CardContent>

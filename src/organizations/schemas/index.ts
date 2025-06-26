@@ -5,10 +5,10 @@ import { statusConfig } from '../constants/statusConfig'
 import { typeConfig } from '../constants/typeConfig'
 
 export const createOrgFormSchema = z.object({
-  name: z.string().min(1),
+  name: z.string().min(1, 'Name is required'),
   type: z.enum(['university', 'faculty', 'department', 'office', 'project']),
   parent: z.string().optional(),
-  admin: z.string().optional(),
+  admin: z.string().min(1, 'Admin is required'),
   backupAdmins: z.string().array().optional(),
   email: z.string().optional(),
   phone: z.string().optional(),
@@ -25,12 +25,12 @@ export type OrganizationWithChildren = Organization & {
   children?: OrganizationWithChildren[]
 }
 
-export type OrganizationWithDepth =  {
+export type OrganizationWithDepth = {
   parentOrg: Organization
   admin: User
   backupAdmins?: User[]
-  children?: { docs: Organization[]}
-}  & Organization
+  children?: { docs: Organization[] }
+} & Organization
 
 export type Tree = {
   id: number
@@ -52,7 +52,7 @@ export type UpdateOrgFormProps = {
   users: User[]
   data?: OrganizationWithDepth | null
   organizations: OrganizationWithDepth[]
-  user?: User | null,
+  user?: User | null
 }
 
 export const organizationSearchSchema = paginationSchema.extend({
@@ -60,7 +60,6 @@ export const organizationSearchSchema = paginationSchema.extend({
   status: z.enum(['active', 'inactive', 'pending_review']).optional(),
   type: z.enum(['university', 'faculty', 'department', 'office', 'project']).optional(),
 })
-
 
 export type StatusType = keyof typeof statusConfig
 export type OrganizationType = keyof typeof typeConfig

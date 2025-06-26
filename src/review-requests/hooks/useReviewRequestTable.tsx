@@ -5,10 +5,11 @@ import { Check, PencilIcon } from 'lucide-react'
 import { roleLabelMap, statusLabelMap, UserRolesEnum, UserStatusEnum } from '@/users'
 import { Button } from '@/shared/components/ui/button'
 import RejectApplicationButton from '../components/reject-request-modal'
-import { useRouter, } from 'next/navigation'
-import  Link  from 'next/link'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { setUserApprovalStatus } from '@/sdk/users'
 import { toast } from 'sonner'
+import { OrganizationCell } from '@/organizations/components/organizations-cell'
 
 function useReviewRequestTable() {
   const router = useRouter()
@@ -17,7 +18,7 @@ function useReviewRequestTable() {
       await setUserApprovalStatus({ data: { id, approved: true } })
       toast.success('User approved successfully')
       router.refresh()
-    } catch (e) {
+    } catch {
       toast.error('An error occurred please try again later')
     }
   }
@@ -48,11 +49,16 @@ function useReviewRequestTable() {
       },
     },
     {
-      accessorKey: 'organization',
-      header: 'Organization',
+      accessorKey: 'organizations',
+      header: 'Organizations',
       cell: ({ row }) => {
-        const organizations = row.original.organizations as Organization[] 
-        return organizations.map((org) => org.name).join(' - ')
+        const organizations = row.original.organizations as Organization[]
+
+        return organizations && organizations?.length > 0 ? (
+          <OrganizationCell organizations={organizations} />
+        ) : (
+          <span> - </span>
+        )
       },
     },
     {

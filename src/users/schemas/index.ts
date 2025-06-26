@@ -33,7 +33,7 @@ const StatusEnum = z.nativeEnum(UserStatusEnum)
 
 export const createUserFormSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8),
+  password: z.string().min(8, 'Password should have at least 8 characters'),
   name: z.string(),
   role: RoleEnum.optional(),
   status: StatusEnum.optional(),

@@ -1,6 +1,6 @@
 'use client'
 
-import React  from 'react'
+import React from 'react'
 import {
   Card,
   CardHeader,
@@ -72,7 +72,10 @@ export function CreateUserForm({
               id="password"
               type="password"
               placeholder="Enter password"
-              {...register('password', { required: 'Password is required' })}
+              {...register('password', {
+                required: 'Password is required',
+                minLength: { value: 8, message: 'Password should be at least 8 characters long' },
+              })}
             />
             {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
           </div>

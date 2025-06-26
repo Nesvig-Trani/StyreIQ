@@ -54,7 +54,6 @@ export const createOrganization: Endpoint = {
         }
       }
 
-
       const createOrganization = await req.payload.create({
         collection: 'organization',
         data,
@@ -101,10 +100,13 @@ export const createOrganization: Endpoint = {
       })
     } catch (error) {
       console.error('Error creating organization:', error)
-      return new Response(JSON.stringify({ error: 'Error creating organizations', details: error }), {
-        status: 400,
-        headers: JSON_HEADERS,
-      })
+      return new Response(
+        JSON.stringify({ error: 'Error creating organizations', details: error }),
+        {
+          status: 400,
+          headers: JSON_HEADERS,
+        },
+      )
     }
   },
 }
@@ -187,7 +189,7 @@ export const updateOrganization: Endpoint = {
         collection: 'users',
         id: admin,
         data: {
-          organizations: [...organizations, id],
+          organizations: Array.from(new Set([...organizations, id])),
         },
       })
 
@@ -197,11 +199,13 @@ export const updateOrganization: Endpoint = {
       })
     } catch (error) {
       console.error('Error updating organization:', error)
-      return new Response(JSON.stringify({ error: 'Error updating organization', details: error }), {
-        status: 400,
-        headers: JSON_HEADERS,
-      })
+      return new Response(
+        JSON.stringify({ error: 'Error updating organization', details: error }),
+        {
+          status: 400,
+          headers: JSON_HEADERS,
+        },
+      )
     }
   },
 }
-

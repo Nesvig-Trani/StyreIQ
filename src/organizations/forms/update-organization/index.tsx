@@ -2,7 +2,7 @@
 import React from 'react'
 import { CreateOrganizationsTree, UpdateOrgFormProps } from '@/organizations'
 import { Button, Input, Label, MultiSelect, TreeSelect } from '@/shared'
-import { useForm } from 'react-hook-form'
+import { FieldValues, useForm } from 'react-hook-form'
 import { Select, SelectValue, SelectTrigger, SelectContent, SelectItem } from '@/shared'
 import { CreateOrganization, OrganizationType, StatusType } from '@/organizations/schemas'
 import { Textarea } from '@/shared/components/ui/textarea'
@@ -30,7 +30,7 @@ export const UpdateOrganizationForm = ({
       name: data?.name || '',
       type: data?.type || 'university',
       parent: data?.parentOrg?.id?.toString(),
-      admin: data?.admin.id?.toString(),
+      admin: data?.admin.id?.toString() || '',
       email: data?.email || '',
       phone: data?.phone || '',
       status: data?.status || 'active',
@@ -41,10 +41,10 @@ export const UpdateOrganizationForm = ({
   })
   const tree = CreateOrganizationsTree(organizations)
 
-  const onSubmit = async (submitData: CreateOrganization) => {
+  const onSubmit = async (submitData: FieldValues) => {
     try {
       if (data && data.id) {
-        await updateOrganization({ ...submitData, id: data.id })
+        await updateOrganization({ ...(submitData as CreateOrganization), id: data.id })
         router.refresh()
         toast.success('Organization updated successfully')
       }
