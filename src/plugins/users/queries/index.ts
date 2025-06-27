@@ -3,7 +3,7 @@ import { PaginatedDocs, Where } from 'payload'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
 import { User } from '@/payload-types'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
-import { UserRolesEnum, UserStatusEnum } from '../schemas'
+import { UserRolesEnum, UserStatusEnum } from '@/users'
 
 export const getUsersByOrganizations = async ({
   orgIds,

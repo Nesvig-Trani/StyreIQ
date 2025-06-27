@@ -2,7 +2,7 @@
 
 import { getAuthUser } from '@/auth/utils/getAuthUser'
 import { redirect } from 'next/navigation'
-import { getTotalUsers } from '@/users/queries'
+import { getTotalUsers } from '@/plugins/users/queries'
 
 export async function serverAuthNoUsersGuard() {
   const { user } = await getAuthUser()

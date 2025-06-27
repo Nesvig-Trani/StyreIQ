@@ -6,7 +6,7 @@ import {
   getOrganizationUsers,
   updateUserAccess,
   setUserApprovalStatus,
-} from '@/users/endpoints'
+} from '@/plugins/users/endpoints'
 
 export const Users: CollectionConfig = {
   slug: 'users',

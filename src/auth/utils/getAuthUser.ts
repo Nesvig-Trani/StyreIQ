@@ -2,7 +2,7 @@
 import { headers as getHeaders } from 'next/headers'
 import { UserAccessTypeEnum } from '@/organization-access'
 import { OrganizationAccess } from '@/payload-types'
-import { getOrganizationAccessByUserId } from '@/organization-access/queries'
+import { getOrganizationAccessByUserId } from '@/plugins/organization-access/queries'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { UserRolesEnum, UserStatusEnum } from '@/users'
 

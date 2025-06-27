@@ -6,13 +6,14 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
-import { Organizations } from '@/organizations/collections'
-import { SocialMedias } from '@/social-medias/collections'
 import { AuditLogPlugin } from '@/plugins/audit-log'
-import { OrganizationAccess } from '@/organization-access/collections'
 import { EmailAdapter } from './shared/utils/emailAdapter'
-import { Users } from '@/users/collections'
-import { Acknowledgments, Policies } from './policies/collections'
+import { Users } from '@/plugins/users/collections'
+import { OrganizationsPlugin } from '@/plugins/organizations'
+import { UsersPlugin } from '@/plugins/users'
+import { SocialMediasPlugin } from '@/plugins/social-medias'
+import { OrganizationAccessPlugin } from '@/plugins/organization-access'
+import { PoliciesPlugin } from '@/plugins/policies'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -33,7 +34,6 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Organizations, OrganizationAccess, SocialMedias, Policies, Acknowledgments],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -46,6 +46,21 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
+    OrganizationsPlugin({
+      disabled: false,
+    }),
+    UsersPlugin({
+      disabled: false,
+    }),
+    SocialMediasPlugin({
+      disabled: false,
+    }),
+    OrganizationAccessPlugin({
+      disabled: false,
+    }),
+    PoliciesPlugin({
+      disabled: false,
+    }),
     AuditLogPlugin({
       collections: auditLogCollections,
     }),

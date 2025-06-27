@@ -1,6 +1,6 @@
 import PolicyHistory from '@/policies/components/policy-history'
 import { emptyLexicalState } from '@/policies/constants/emptyLexicalState'
-import { getLastPolicyVersion, getPolicies } from '@/policies/queries'
+import { getLastPolicyVersion, getPolicies } from '@/plugins/policies/queries'
 import LexicalEditor from '@/shared/components/rich-text-editor'
 
 export default async function PoliciesPage() {

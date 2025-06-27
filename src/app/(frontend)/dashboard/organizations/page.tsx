@@ -1,8 +1,5 @@
 import React from 'react'
-import {
-  organizationSearchSchema,
-  OrganizationWithDepth,
-} from '@/organizations'
+import { organizationSearchSchema, OrganizationWithDepth } from '@/organizations'
 import { Card, CardContent } from '@/shared/components/ui/card'
 import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
@@ -10,7 +7,7 @@ import { parseSearchParamsWithSchema } from '@/shared/utils/parseParamsServer'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
 import { getAllUsers, UserRolesEnum } from '@/users'
 import OrganizationHierarchy from '@/shared/components/organization-hierarchy'
-import { getOrganizationsWithFilter } from '@/organizations/queries'
+import { getOrganizationsWithFilter } from '@/plugins/organizations/queries'
 import { treePaginationAndFilter } from '@/organizations/utils/treePaginationAndFilter'
 import { CirclePlus } from 'lucide-react'
 

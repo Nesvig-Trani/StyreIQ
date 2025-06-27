@@ -3,7 +3,7 @@ import { Where } from 'payload'
 
 import { getAuthUser } from '@/auth/utils/getAuthUser'
 import { UserRolesEnum } from '@/users/schemas'
- import { getPayloadContext } from '@/shared/utils/getPayloadContext'
+import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { SocialMediasCollectionSlug } from '../collections'
 
 export const getSocialMediaAccounts = async ({

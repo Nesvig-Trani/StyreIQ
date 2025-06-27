@@ -1,7 +1,6 @@
 import { CollectionConfig } from 'payload'
-import { createOrganization, updateOrganization } from '@/organizations'
-import { Organization } from '@/payload-types'
-import { UserRolesEnum } from '@/users/schemas'
+import { createOrganization, updateOrganization } from '@/plugins/organizations/endpoints'
+import { canDeleteOrganizations, canReadOrganizations } from '@/plugins/organizations/access'
 
 export const Organizations: CollectionConfig = {
   slug: 'organization',
@@ -9,24 +8,8 @@ export const Organizations: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: ({ req: { user } }) => {
-      if (!user) return false
-      const orgs = user.organizations as Organization[]
-      const organizationIds = orgs.map((org) => org.id)
-
-      const orgWhere: { id?: { equals: number }; path?: { contains: number } }[] =
-        organizationIds.flatMap((orgId) => [
-          { id: { equals: orgId } },
-          { path: { contains: orgId } },
-        ])
-
-      return {
-        or: orgWhere,
-      }
-    },
-    delete: ({req: {user}}) => {
-      return !!(user && user.role === UserRolesEnum.SuperAdmin)
-    }
+    read: canReadOrganizations,
+    delete: canDeleteOrganizations,
   },
   fields: [
     {

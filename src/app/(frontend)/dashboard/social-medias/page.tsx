@@ -6,7 +6,7 @@ import { DashboardSocialMedias } from '@/social-medias'
 //Interfaces and types
 import { parseSearchParamsWithSchema, type AppPageProps } from '@/shared'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
-import { getSocialMediaAccounts } from '@/social-medias/queries'
+import { getSocialMediaAccounts } from '@/plugins/social-medias/queries'
 
 export default async function SocialMediasPage(props: AppPageProps) {
   const { user } = await getAuthUser()

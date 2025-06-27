@@ -2,6 +2,5 @@ export * from './components/user-table'
 export * from './forms/create-user'
 export * from './forms/update-user'
 export * from './schemas'
-export * from './endpoints'
-export * from './queries'
-
+export * from '../plugins/users/endpoints'
+export * from '../plugins/users/queries'

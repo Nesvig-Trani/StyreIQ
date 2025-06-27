@@ -1,7 +1,7 @@
 import { JSON_HEADERS } from '@/shared/constants'
 import { UserRolesEnum } from '@/users/schemas'
 import { Endpoint } from 'payload'
-import { calcParentPathAndDepth } from '../utils/calcPathAndDepth'
+import { calcParentPathAndDepth } from '../../../organizations/utils/calcPathAndDepth'
 
 export const createOrganization: Endpoint = {
   path: '/',

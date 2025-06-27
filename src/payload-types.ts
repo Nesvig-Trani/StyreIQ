@@ -59,485 +59,486 @@ export type SupportedTimezones =
   | 'Pacific/Guam'
   | 'Pacific/Noumea'
   | 'Pacific/Auckland'
-  | 'Pacific/Fiji';
+  | 'Pacific/Fiji'
 
 export interface Config {
   auth: {
-    users: UserAuthOperations;
-  };
-  blocks: {};
+    users: UserAuthOperations
+  }
+  blocks: {}
   collections: {
-    users: User;
-    organization: Organization;
-    organization_access: OrganizationAccess;
-    'social-medias': SocialMedia;
-    policies: Policy;
-    acknowledgments: Acknowledgment;
-    audit_log: AuditLog;
-    'payload-locked-documents': PayloadLockedDocument;
-    'payload-preferences': PayloadPreference;
-    'payload-migrations': PayloadMigration;
-  };
+    organization: Organization
+    users: User
+    'social-medias': SocialMedia
+    organization_access: OrganizationAccess
+    policies: Policy
+    acknowledgments: Acknowledgment
+    audit_log: AuditLog
+    'payload-locked-documents': PayloadLockedDocument
+    'payload-preferences': PayloadPreference
+    'payload-migrations': PayloadMigration
+  }
   collectionsJoins: {
     organization: {
-      children: 'organization';
-    };
-  };
+      children: 'organization'
+    }
+  }
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
-    organization: OrganizationSelect<false> | OrganizationSelect<true>;
-    organization_access: OrganizationAccessSelect<false> | OrganizationAccessSelect<true>;
-    'social-medias': SocialMediasSelect<false> | SocialMediasSelect<true>;
-    policies: PoliciesSelect<false> | PoliciesSelect<true>;
-    acknowledgments: AcknowledgmentsSelect<false> | AcknowledgmentsSelect<true>;
-    audit_log: AuditLogSelect<false> | AuditLogSelect<true>;
-    'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
-    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
-    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
-  };
+    organization: OrganizationSelect<false> | OrganizationSelect<true>
+    users: UsersSelect<false> | UsersSelect<true>
+    'social-medias': SocialMediasSelect<false> | SocialMediasSelect<true>
+    organization_access: OrganizationAccessSelect<false> | OrganizationAccessSelect<true>
+    policies: PoliciesSelect<false> | PoliciesSelect<true>
+    acknowledgments: AcknowledgmentsSelect<false> | AcknowledgmentsSelect<true>
+    audit_log: AuditLogSelect<false> | AuditLogSelect<true>
+    'payload-locked-documents':
+      | PayloadLockedDocumentsSelect<false>
+      | PayloadLockedDocumentsSelect<true>
+    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>
+    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>
+  }
   db: {
-    defaultIDType: number;
-  };
-  globals: {};
-  globalsSelect: {};
-  locale: null;
+    defaultIDType: number
+  }
+  globals: {}
+  globalsSelect: {}
+  locale: null
   user: User & {
-    collection: 'users';
-  };
+    collection: 'users'
+  }
   jobs: {
-    tasks: unknown;
-    workflows: unknown;
-  };
+    tasks: unknown
+    workflows: unknown
+  }
 }
 export interface UserAuthOperations {
   forgotPassword: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
   login: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
   registerFirstUser: {
-    email: string;
-    password: string;
-  };
+    email: string
+    password: string
+  }
   unlock: {
-    email: string;
-    password: string;
-  };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  name: string;
-  role?: ('super_admin' | 'unit_admin' | 'social_media_manager') | null;
-  status?: ('active' | 'inactive' | 'rejected' | 'pending_activation') | null;
-  admin_policy_agreement: boolean;
-  date_of_last_policy_review?: string | null;
-  date_of_last_training?: string | null;
-  organizations?: (number | Organization)[] | null;
-  reject_reason?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password?: string | null;
+    email: string
+    password: string
+  }
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "organization".
  */
 export interface Organization {
-  id: number;
-  name: string;
-  type: 'university' | 'faculty' | 'department' | 'office' | 'project';
-  parentOrg?: (number | null) | Organization;
-  admin: number | User;
-  backupAdmins?: (number | User)[] | null;
-  email?: string | null;
-  phone?: string | null;
-  status?: ('active' | 'inactive' | 'pending_review') | null;
-  description?: string | null;
-  delegatedPermissions?: boolean | null;
-  path?: string | null;
-  depth?: number | null;
+  id: number
+  name: string
+  type: 'university' | 'faculty' | 'department' | 'office' | 'project'
+  parentOrg?: (number | null) | Organization
+  admin: number | User
+  backupAdmins?: (number | User)[] | null
+  email?: string | null
+  phone?: string | null
+  status?: ('active' | 'inactive' | 'pending_review') | null
+  description?: string | null
+  delegatedPermissions?: boolean | null
+  path?: string | null
+  depth?: number | null
   children?: {
-    docs?: (number | Organization)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  updatedAt: string;
-  createdAt: string;
+    docs?: (number | Organization)[]
+    hasNextPage?: boolean
+    totalDocs?: number
+  }
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "organization_access".
+ * via the `definition` "users".
  */
-export interface OrganizationAccess {
-  id: number;
-  organization?: (number | null) | Organization;
-  user?: (number | null) | User;
-  type?: ('temporary' | 'permanent') | null;
-  start_date?: string | null;
-  end_date?: string | null;
-  updatedAt: string;
-  createdAt: string;
+export interface User {
+  id: number
+  name: string
+  role?: ('super_admin' | 'unit_admin' | 'social_media_manager') | null
+  status?: ('active' | 'inactive' | 'rejected' | 'pending_activation') | null
+  admin_policy_agreement: boolean
+  date_of_last_policy_review?: string | null
+  date_of_last_training?: string | null
+  organizations?: (number | Organization)[] | null
+  reject_reason?: string | null
+  updatedAt: string
+  createdAt: string
+  email: string
+  resetPasswordToken?: string | null
+  resetPasswordExpiration?: string | null
+  salt?: string | null
+  hash?: string | null
+  loginAttempts?: number | null
+  lockUntil?: string | null
+  password?: string | null
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "social-medias".
  */
 export interface SocialMedia {
-  id: number;
-  name: string;
-  profileUrl: string;
-  platform: string;
-  contactEmail?: string | null;
-  contactPhone?: string | null;
-  passwordUpdatedAt?: string | null;
-  isEnabledTwoFactor?: boolean | null;
-  isInUseSecurePassword?: boolean | null;
-  isAcceptedPolicies?: boolean | null;
-  isCompletedTrainingAccessibility?: boolean | null;
-  isCompletedTrainingRisk?: boolean | null;
-  isCompletedTrainingBrand?: boolean | null;
-  hasKnowledgeStandards?: boolean | null;
-  organization: number | Organization;
-  primaryAdmin: number | User;
-  backupAdmin: number | User;
-  status: 'active' | 'inactive' | 'in_transition' | 'pending_approval';
-  updatedAt: string;
-  createdAt: string;
+  id: number
+  name: string
+  profileUrl: string
+  platform: string
+  contactEmail?: string | null
+  contactPhone?: string | null
+  passwordUpdatedAt?: string | null
+  isEnabledTwoFactor?: boolean | null
+  isInUseSecurePassword?: boolean | null
+  isAcceptedPolicies?: boolean | null
+  isCompletedTrainingAccessibility?: boolean | null
+  isCompletedTrainingRisk?: boolean | null
+  isCompletedTrainingBrand?: boolean | null
+  hasKnowledgeStandards?: boolean | null
+  organization: number | Organization
+  primaryAdmin: number | User
+  backupAdmin: number | User
+  status: 'active' | 'inactive' | 'in_transition' | 'pending_approval'
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organization_access".
+ */
+export interface OrganizationAccess {
+  id: number
+  organization?: (number | null) | Organization
+  user?: (number | null) | User
+  type?: ('temporary' | 'permanent') | null
+  start_date?: string | null
+  end_date?: string | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "policies".
  */
 export interface Policy {
-  id: number;
-  version?: number | null;
+  id: number
+  version?: number | null
   text?: {
     root: {
-      type: string;
+      type: string
       children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  author?: (number | null) | User;
-  updatedAt: string;
-  createdAt: string;
+        type: string
+        version: number
+        [k: string]: unknown
+      }[]
+      direction: ('ltr' | 'rtl') | null
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | ''
+      indent: number
+      version: number
+    }
+    [k: string]: unknown
+  } | null
+  author?: (number | null) | User
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "acknowledgments".
  */
 export interface Acknowledgment {
-  id: number;
-  policy?: (number | null) | Policy;
-  user?: (number | null) | User;
-  updatedAt: string;
-  createdAt: string;
+  id: number
+  policy?: (number | null) | Policy
+  user?: (number | null) | User
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "audit_log".
  */
 export interface AuditLog {
-  id: number;
-  user: number | User;
-  action: 'create' | 'update' | 'delete' | 'approval' | 'flag_resolution' | 'policy_acknowledgment';
-  entity: string;
+  id: number
+  user: number | User
+  action: 'create' | 'update' | 'delete' | 'approval' | 'flag_resolution' | 'policy_acknowledgment'
+  entity: string
   prev?:
     | {
-        [k: string]: unknown;
+        [k: string]: unknown
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null;
+    | null
   current?:
     | {
-        [k: string]: unknown;
+        [k: string]: unknown
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null;
-  organizations?: (number | Organization)[] | null;
+    | null
+  organizations?: (number | Organization)[] | null
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'users'
+        value: number | User
       } | null)
     | ({
-        relationTo: 'organization';
-        value: number | Organization;
+        relationTo: 'organization'
+        value: number | Organization
       } | null)
     | ({
-        relationTo: 'social-medias';
-        value: number | SocialMedia;
+        relationTo: 'social-medias'
+        value: number | SocialMedia
       } | null)
     | ({
-        relationTo: 'organization_access';
-        value: number | OrganizationAccess;
-      } | null);
-  updatedAt: string;
-  createdAt: string;
+        relationTo: 'organization_access'
+        value: number | OrganizationAccess
+      } | null)
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: number;
+  id: number
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'organization'
+        value: number | Organization
       } | null)
     | ({
-        relationTo: 'organization';
-        value: number | Organization;
+        relationTo: 'users'
+        value: number | User
       } | null)
     | ({
-        relationTo: 'organization_access';
-        value: number | OrganizationAccess;
+        relationTo: 'social-medias'
+        value: number | SocialMedia
       } | null)
     | ({
-        relationTo: 'social-medias';
-        value: number | SocialMedia;
+        relationTo: 'organization_access'
+        value: number | OrganizationAccess
       } | null)
     | ({
-        relationTo: 'policies';
-        value: number | Policy;
+        relationTo: 'policies'
+        value: number | Policy
       } | null)
     | ({
-        relationTo: 'acknowledgments';
-        value: number | Acknowledgment;
+        relationTo: 'acknowledgments'
+        value: number | Acknowledgment
       } | null)
     | ({
-        relationTo: 'audit_log';
-        value: number | AuditLog;
-      } | null);
-  globalSlug?: string | null;
+        relationTo: 'audit_log'
+        value: number | AuditLog
+      } | null)
+  globalSlug?: string | null
   user: {
-    relationTo: 'users';
-    value: number | User;
-  };
-  updatedAt: string;
-  createdAt: string;
+    relationTo: 'users'
+    value: number | User
+  }
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: number;
+  id: number
   user: {
-    relationTo: 'users';
-    value: number | User;
-  };
-  key?: string | null;
+    relationTo: 'users'
+    value: number | User
+  }
+  key?: string | null
   value?:
     | {
-        [k: string]: unknown;
+        [k: string]: unknown
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null;
-  updatedAt: string;
-  createdAt: string;
+    | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: number;
-  name?: string | null;
-  batch?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
- */
-export interface UsersSelect<T extends boolean = true> {
-  name?: T;
-  role?: T;
-  status?: T;
-  admin_policy_agreement?: T;
-  date_of_last_policy_review?: T;
-  date_of_last_training?: T;
-  organizations?: T;
-  reject_reason?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
+  id: number
+  name?: string | null
+  batch?: number | null
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "organization_select".
  */
 export interface OrganizationSelect<T extends boolean = true> {
-  name?: T;
-  type?: T;
-  parentOrg?: T;
-  admin?: T;
-  backupAdmins?: T;
-  email?: T;
-  phone?: T;
-  status?: T;
-  description?: T;
-  delegatedPermissions?: T;
-  path?: T;
-  depth?: T;
-  children?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  name?: T
+  type?: T
+  parentOrg?: T
+  admin?: T
+  backupAdmins?: T
+  email?: T
+  phone?: T
+  status?: T
+  description?: T
+  delegatedPermissions?: T
+  path?: T
+  depth?: T
+  children?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "organization_access_select".
+ * via the `definition` "users_select".
  */
-export interface OrganizationAccessSelect<T extends boolean = true> {
-  organization?: T;
-  user?: T;
-  type?: T;
-  start_date?: T;
-  end_date?: T;
-  updatedAt?: T;
-  createdAt?: T;
+export interface UsersSelect<T extends boolean = true> {
+  name?: T
+  role?: T
+  status?: T
+  admin_policy_agreement?: T
+  date_of_last_policy_review?: T
+  date_of_last_training?: T
+  organizations?: T
+  reject_reason?: T
+  updatedAt?: T
+  createdAt?: T
+  email?: T
+  resetPasswordToken?: T
+  resetPasswordExpiration?: T
+  salt?: T
+  hash?: T
+  loginAttempts?: T
+  lockUntil?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "social-medias_select".
  */
 export interface SocialMediasSelect<T extends boolean = true> {
-  name?: T;
-  profileUrl?: T;
-  platform?: T;
-  contactEmail?: T;
-  contactPhone?: T;
-  passwordUpdatedAt?: T;
-  isEnabledTwoFactor?: T;
-  isInUseSecurePassword?: T;
-  isAcceptedPolicies?: T;
-  isCompletedTrainingAccessibility?: T;
-  isCompletedTrainingRisk?: T;
-  isCompletedTrainingBrand?: T;
-  hasKnowledgeStandards?: T;
-  organization?: T;
-  primaryAdmin?: T;
-  backupAdmin?: T;
-  status?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  name?: T
+  profileUrl?: T
+  platform?: T
+  contactEmail?: T
+  contactPhone?: T
+  passwordUpdatedAt?: T
+  isEnabledTwoFactor?: T
+  isInUseSecurePassword?: T
+  isAcceptedPolicies?: T
+  isCompletedTrainingAccessibility?: T
+  isCompletedTrainingRisk?: T
+  isCompletedTrainingBrand?: T
+  hasKnowledgeStandards?: T
+  organization?: T
+  primaryAdmin?: T
+  backupAdmin?: T
+  status?: T
+  updatedAt?: T
+  createdAt?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organization_access_select".
+ */
+export interface OrganizationAccessSelect<T extends boolean = true> {
+  organization?: T
+  user?: T
+  type?: T
+  start_date?: T
+  end_date?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "policies_select".
  */
 export interface PoliciesSelect<T extends boolean = true> {
-  version?: T;
-  text?: T;
-  author?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  version?: T
+  text?: T
+  author?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "acknowledgments_select".
  */
 export interface AcknowledgmentsSelect<T extends boolean = true> {
-  policy?: T;
-  user?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  policy?: T
+  user?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "audit_log_select".
  */
 export interface AuditLogSelect<T extends boolean = true> {
-  user?: T;
-  action?: T;
-  entity?: T;
-  prev?: T;
-  current?: T;
-  organizations?: T;
-  document?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  user?: T
+  action?: T
+  entity?: T
+  prev?: T
+  current?: T
+  organizations?: T
+  document?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
-  document?: T;
-  globalSlug?: T;
-  user?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  document?: T
+  globalSlug?: T
+  user?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences_select".
  */
 export interface PayloadPreferencesSelect<T extends boolean = true> {
-  user?: T;
-  key?: T;
-  value?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  user?: T
+  key?: T
+  value?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-migrations_select".
  */
 export interface PayloadMigrationsSelect<T extends boolean = true> {
-  name?: T;
-  batch?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  name?: T
+  batch?: T
+  updatedAt?: T
+  createdAt?: T
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "auth".
  */
 export interface Auth {
-  [k: string]: unknown;
+  [k: string]: unknown
 }
-
 
 declare module 'payload' {
   export interface GeneratedTypes extends Config {}

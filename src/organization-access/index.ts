@@ -1,2 +1,2 @@
 export * from './schemas'
-export * from './collections'
+export * from '../plugins/organization-access/collections'

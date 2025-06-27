@@ -2,8 +2,7 @@
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle, OrganizationAccessForm } from '@/shared'
 import { getUserById } from '@/users'
-import { getOrganizationAccessByUserId } from '@/organization-access/queries'
-import { Separator } from '@radix-ui/react-separator'
+import { getOrganizationAccessByUserId } from '@/plugins/organization-access/queries'
 
 async function UserAccessPage({ params }: { params: Promise<{ userId: string }> }) {
   const { userId } = await params

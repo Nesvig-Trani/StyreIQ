@@ -1,5 +1,5 @@
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
-import { AcknowledgmentsCollectionSlug, PoliciesCollectionSlug } from '../schemas'
+import { AcknowledgmentsCollectionSlug, PoliciesCollectionSlug } from '../../../policies/schemas'
 
 export const getLastPolicyVersion = async () => {
   const { payload } = await getPayloadContext()

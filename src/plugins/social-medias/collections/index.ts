@@ -1,5 +1,5 @@
 import { CollectionConfig } from 'payload'
-import { createSocialMedia, patchSocialMedia } from '@/social-medias/endpoints'
+import { createSocialMedia, patchSocialMedia } from '@/plugins/social-medias/endpoints'
 import { SocialMediaStatusEnum, statusLabelMap } from '@/social-medias/schemas'
 
 export const SocialMediasCollectionSlug = 'social-medias'

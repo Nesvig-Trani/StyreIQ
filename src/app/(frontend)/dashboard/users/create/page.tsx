@@ -2,7 +2,7 @@ import React from 'react'
 import { CreateUserForm, UserRolesEnum } from '@/users/'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
 import { Organization } from '@/payload-types'
-import { getAllOrganizations } from '@/organizations/queries'
+import { getAllOrganizations } from '@/plugins/organizations/queries'
 
 export default async function CreateUserPage() {
   const { user } = await getAuthUser()
@@ -23,11 +23,11 @@ export default async function CreateUserPage() {
 
   return (
     <div>
-        <CreateUserForm
-          initialOrganizations={organizations.docs}
-          authUserRole={user?.role as UserRolesEnum}
-          topOrgDepth={orgWithMinDepth?.depth || undefined}
-        />
+      <CreateUserForm
+        initialOrganizations={organizations.docs}
+        authUserRole={user?.role as UserRolesEnum}
+        topOrgDepth={orgWithMinDepth?.depth || undefined}
+      />
     </div>
   )
 }

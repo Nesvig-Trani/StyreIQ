@@ -3,10 +3,7 @@ import { AppSidebar } from '@/shared'
 import { SidebarInset, SidebarProvider } from '@/shared/components/ui/sidebar'
 import { serverAuthGuard } from '@/auth/hooks/serverAuthGuard'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
-import {
-  getLastPolicyVersion,
-  hasUserAcknowledged,
-} from '@/policies/queries'
+import { getLastPolicyVersion, hasUserAcknowledged } from '@/plugins/policies/queries'
 import { UserRolesEnum } from '@/users'
 import { LexicalContentModal } from '@/shared/components/rich-text-editor/preview-modal'
 

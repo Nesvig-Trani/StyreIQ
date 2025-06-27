@@ -1,5 +1,5 @@
 import { CollectionConfig } from 'payload'
-import { AcknowledgmentsCollectionSlug, PoliciesCollectionSlug } from '../schemas'
+import { AcknowledgmentsCollectionSlug, PoliciesCollectionSlug } from '@/policies/schemas'
 import { getLastPolicyVersion } from '../queries'
 
 export const Policies: CollectionConfig = {

@@ -8,10 +8,10 @@ import {
 } from '@/users/schemas'
 import { updateOrgAccessSchema, UserAccessTypeEnum } from '@/organization-access'
 import { Organization, User } from '@/payload-types'
-import { checkAndSendPermissionChangeEmail } from '../utils/permissionChangeEmail'
+import { checkAndSendPermissionChangeEmail } from '../../../users/utils/permissionChangeEmail'
 import { JSON_HEADERS } from '@/shared/constants'
 import { setUserStatusSchema } from '@/review-requests'
-import { USER_ALREADY_EXISTS } from '../constants/Errors'
+import { USER_ALREADY_EXISTS } from '../../../users/constants/Errors'
 
 export const createUser: Endpoint = {
   path: '/',

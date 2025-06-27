@@ -1,8 +1,8 @@
 import { z } from 'zod'
 import { EndpointError } from '@/shared'
-import { Endpoint, PaginatedDocs, PayloadRequest } from 'payload'
+import { Endpoint, PayloadRequest } from 'payload'
 import { createSocialMediaFormSchema, SocialMediaStatusEnum } from '@/social-medias/schemas'
-import { SocialMediasCollectionSlug } from '@/social-medias/collections'
+import { SocialMediasCollectionSlug } from '@/plugins/social-medias/collections'
 import { UserRolesEnum } from '@/users/schemas'
 import { JSON_HEADERS } from '@/shared/constants'
 import { Organization } from '@/payload-types'
@@ -38,7 +38,7 @@ export const createSocialMedia: Endpoint = {
       }
 
       if (UserRolesEnum.UnitAdmin === (user.role as UserRolesEnum)) {
-         const organizations = await req.payload.find({
+        const organizations = await req.payload.find({
           collection: 'organization',
           depth: 0,
           select: {
