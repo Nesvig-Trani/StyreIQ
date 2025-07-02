@@ -47,34 +47,45 @@ interface TreeSelectProps {
   tree: Tree[]
   value?: string
   onChange: (value: string) => void
+  disabled?: boolean
 }
 
-export function TreeSelect({ options, tree, value, onChange }: TreeSelectProps) {
+export function TreeSelect({ options, tree, value, onChange, disabled }: TreeSelectProps) {
   const [open, setOpen] = useState(false)
 
   const handleSelect = (value: string) => {
-    onChange(value)
-    setOpen(false)
+    if (!disabled) {
+      onChange(value)
+      setOpen(false)
+    }
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={disabled ? false : open} onOpenChange={(val) => !disabled && setOpen(val)}>
       <PopoverTrigger asChild>
-        <button className="w-[300px] flex justify-start p-3 border-solid border-gray-600 text-sm">
+        <button
+          disabled={disabled}
+          className={cn(
+            'w-[300px] flex justify-start p-3 border-solid border-gray-600 text-sm',
+            disabled && 'opacity-50 cursor-not-allowed',
+          )}
+        >
           {value
             ? options.find((opt) => opt.value.toString() === value)?.label
             : 'Select organization'}
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0">
-        <Command>
-          <CommandList>
-            {tree.map((tree) => (
-              <TreeNode key={tree.id} tree={tree} selectedValue={value} onSelect={handleSelect} />
-            ))}
-          </CommandList>
-        </Command>
-      </PopoverContent>
+      {!disabled && (
+        <PopoverContent className="w-[300px] p-0">
+          <Command>
+            <CommandList>
+              {tree.map((tree) => (
+                <TreeNode key={tree.id} tree={tree} selectedValue={value} onSelect={handleSelect} />
+              ))}
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      )}
     </Popover>
   )
 }

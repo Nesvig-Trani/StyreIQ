@@ -1,42 +1,50 @@
-import { Organization, User } from '@/payload-types'
+import { Organization, SocialMedia, User } from '@/payload-types'
 import { paginationSchema } from '@/schemas/pagination'
 import { z } from 'zod'
 
-export const createSocialMediaFormSchema = z
-  .object({
-    name: z.string(),
-    profileUrl: z.string().url(),
-    platform: z.string(),
-    contactEmail: z.string().email().or(z.literal('')).optional(),
-    contactPhone: z.string().optional(),
-    passwordUpdatedAt: z
-      .preprocess((arg) => {
-        if (typeof arg === 'string' || arg instanceof Date) { const date = new Date(arg)
-          return isNaN(date.getTime()) ? undefined : date
-        }
-        return undefined
-      }, z.date())
-      .optional(),
-    isEnabledTwoFactor: z.boolean().optional(),
-    isInUseSecurePassword: z.boolean().optional(),
-    isAcceptedPolicies: z.boolean().optional(),
-    isCompletedTrainingAccessibility: z.boolean().optional(),
-    isCompletedTrainingRisk: z.boolean().optional(),
-    isCompletedTrainingBrand: z.boolean().optional(),
-    hasKnowledgeStandards: z.boolean().optional(),
-    organization: z.string(),
-    primaryAdmin: z.string(),
-    backupAdmin: z.string(),
+const baseSocialMediaSchema = z.object({
+  name: z.string(),
+  profileUrl: z.string().url(),
+  platform: z.string(),
+  contactEmail: z.string().email().or(z.literal('')).optional(),
+  contactPhone: z.string().optional(),
+  passwordUpdatedAt: z
+    .preprocess((arg) => {
+      if (typeof arg === 'string' || arg instanceof Date) {
+        const date = new Date(arg)
+        return isNaN(date.getTime()) ? undefined : date
+      }
+      return undefined
+    }, z.date())
+    .optional(),
+  isEnabledTwoFactor: z.boolean().optional(),
+  isInUseSecurePassword: z.boolean().optional(),
+  isAcceptedPolicies: z.boolean().optional(),
+  isCompletedTrainingAccessibility: z.boolean().optional(),
+  isCompletedTrainingRisk: z.boolean().optional(),
+  isCompletedTrainingBrand: z.boolean().optional(),
+  hasKnowledgeStandards: z.boolean().optional(),
+  organization: z.string(),
+  primaryAdmin: z.string(),
+  backupAdmin: z.string(),
+})
+
+export const createSocialMediaFormSchema = baseSocialMediaSchema.refine(
+  (data) => data.primaryAdmin !== data.backupAdmin,
+  {
+    message: "Fields 'Administrator' and 'Backup Administrator' must be different.",
+    path: ['backupAdmin'],
+  },
+)
+
+export const updateSocialMediaFormSchema = baseSocialMediaSchema
+  .extend({
+    id: z.number(),
   })
-  .refine(
-    (data) => {
-      return data.primaryAdmin !== data.backupAdmin
-    },
-    {
-      message: "Fields 'Administrator' and 'Backup Administrator' must be differents.",
-      path: ['backupAdmin'],
-    },
-  )
+  .refine((data) => data.primaryAdmin !== data.backupAdmin, {
+    message: "Fields 'Administrator' and 'Backup Administrator' must be different.",
+    path: ['backupAdmin'],
+  })
 
 export enum SocialMediaStatusEnum {
   Active = 'active',
@@ -70,4 +78,11 @@ export type CreateSocialMediaFormProps = {
   organizations: Organization[]
 }
 
+export type UpdateSocialMediaFormProps = {
+  data: SocialMedia
+  user: User | null
+} & CreateSocialMediaFormProps
+
 export const socialMediaSearchSchema = paginationSchema.extend({})
+
+export type UpdateSocialMedia = z.infer<typeof createSocialMediaFormSchema>

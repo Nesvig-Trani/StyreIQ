@@ -64,7 +64,7 @@ export function useSocialMediasTable(user: User | null): { columns: ColumnDef<So
       accessorKey: 'actions',
       header: 'Actions',
       cell: ({ row }) => {
-        return <ActionsRowSocialMedia socialMedia={row.original} />
+        return <ActionsRowSocialMedia socialMedia={row.original} user={user} />
       },
     })
   }

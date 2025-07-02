@@ -136,31 +136,75 @@ export const patchSocialMedia: Endpoint = {
         throw new EndpointError('Social media not found.', 404)
       }
 
-      const user = req.user
-
-      // Validates the role which can create social medias.
-      const rolesWithGrant = [UserRolesEnum.SuperAdmin]
-      if (!user || !user.role || !rolesWithGrant.includes(user.role as UserRolesEnum)) {
-        throw new EndpointError("You don't have permission to perform this action.", 401)
-      }
       const data = await req.json()
 
-      if (!Object.values(SocialMediaStatusEnum).includes(data.status)) {
+      if (data.status && !Object.values(SocialMediaStatusEnum).includes(data.status)) {
         throw new EndpointError('Status is not valid.', 400)
       }
 
       const socialMediaId = Number(req.routeParams?.id)
-
       const updatedSocialMedia = await req.payload.update({
         collection: SocialMediasCollectionSlug,
         id: socialMediaId,
         data: {
-          status: data.status,
+          ...data,
+          primaryAdmin: Number(data.primaryAdmin),
+          backupAdmin: Number(data.backupAdmin),
+          organization: Number(data.organization),
         },
         req,
       })
 
       return new Response(JSON.stringify(updatedSocialMedia), {
+        status: 200,
+        headers: JSON_HEADERS,
+      })
+    } catch (catchError) {
+      if (catchError instanceof EndpointError) {
+        return new Response(JSON.stringify({ error: catchError.message }), {
+          status: catchError.code,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      return new Response(JSON.stringify({ error: 'Internal Server Error', details: catchError }), {
+        status: 500,
+        headers: JSON_HEADERS,
+      })
+    }
+  },
+}
+
+export const updateSocialMediaStatus: Endpoint = {
+  path: '/status/:id',
+  method: 'patch',
+  handler: async (req: PayloadRequest) => {
+    try {
+      if (!req.json) {
+        throw new EndpointError('Missing JSON body', 400)
+      }
+
+      if (!req.routeParams?.id) {
+        throw new EndpointError('Social media not found.', 404)
+      }
+
+      const socialMediaId = Number(req.routeParams?.id)
+      const data = await req.json()
+
+      if (!Object.values(SocialMediaStatusEnum).includes(data.status)) {
+        throw new EndpointError('Status is not valid.', 400)
+      }
+      await req.payload.update({
+        collection: SocialMediasCollectionSlug,
+        id: socialMediaId,
+        data: {
+          status: data.status,
+          ...(data.deactivationReason && { deactivationReason: data.deactivationReason }),
+        },
+        req,
+      })
+
+      return new Response(JSON.stringify({ message: 'Status updated successfully' }), {
         status: 200,
         headers: JSON_HEADERS,
       })

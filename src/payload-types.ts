@@ -203,6 +203,7 @@ export interface SocialMedia {
   primaryAdmin: number | User
   backupAdmin: number | User
   status: 'active' | 'inactive' | 'in_transition' | 'pending_approval'
+  deactivationReason?: string | null
   updatedAt: string
   createdAt: string
 }
@@ -448,6 +449,7 @@ export interface SocialMediasSelect<T extends boolean = true> {
   primaryAdmin?: T
   backupAdmin?: T
   status?: T
+  deactivationReason?: T
   updatedAt?: T
   createdAt?: T
 }

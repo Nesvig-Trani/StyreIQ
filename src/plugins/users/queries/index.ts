@@ -115,6 +115,7 @@ export const getUsersByRoles = async (roles: UserRolesEnum[]) => {
       role: {
         in: roles,
       },
+      status: { equals: UserStatusEnum.Active },
     },
     overrideAccess: false,
     user,

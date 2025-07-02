@@ -1,5 +1,9 @@
 import { CollectionConfig } from 'payload'
-import { createSocialMedia, patchSocialMedia } from '@/plugins/social-medias/endpoints'
+import {
+  createSocialMedia,
+  patchSocialMedia,
+  updateSocialMediaStatus,
+} from '@/plugins/social-medias/endpoints'
 import { SocialMediaStatusEnum, statusLabelMap } from '@/social-medias/schemas'
 
 export const SocialMediasCollectionSlug = 'social-medias'
@@ -20,6 +24,7 @@ export const SocialMedias: CollectionConfig = {
       name: 'profileUrl',
       type: 'text',
       required: true,
+      unique: true,
     },
     {
       name: 'platform',
@@ -107,7 +112,11 @@ export const SocialMedias: CollectionConfig = {
       ],
       required: true,
     },
+    {
+      name: 'deactivationReason',
+      type: 'text',
+    },
   ],
   timestamps: true,
-  endpoints: [createSocialMedia, patchSocialMedia],
+  endpoints: [createSocialMedia, patchSocialMedia, updateSocialMediaStatus],
 }

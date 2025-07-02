@@ -45,3 +45,12 @@ export const getSocialMediaAccounts = async ({
 
   return socialMedias
 }
+
+export const getSocialMediaById = async ({ id }: { id: number }) => {
+  const { payload } = await getPayloadContext()
+  const socialMedia = await payload.findByID({
+    collection: SocialMediasCollectionSlug,
+    id: id,
+  })
+  return socialMedia
+}
