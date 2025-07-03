@@ -121,3 +121,54 @@ export const getUsersByRoles = async (roles: UserRolesEnum[]) => {
   })
   return users
 }
+
+interface DashboardData {
+  totalAccounts: number
+  accountsByStatus: {
+    active: number
+    inactive: number
+    inTransition: number
+  }
+  activeUsers: {
+    unitAdmins: number
+    socialMediaManagers: number
+  }
+  pendingApproval: number
+  unassignedAccounts: number
+}
+
+export const getUsersInfoForDashboard = async () => {
+  const { payload } = await getPayloadContext()
+  const { user } = await getAuthUser()
+
+  const users = await payload.find({
+    collection: 'users',
+    where: {
+      status: {
+        equals: UserStatusEnum.Active,
+      },
+    },
+    depth: 0,
+    overrideAccess: false,
+    user,
+  })
+
+  const dashboardData: DashboardData = {
+    totalAccounts: users.totalDocs,
+    accountsByStatus: {
+      active: users.docs.filter((u) => u.status === UserStatusEnum.Active).length,
+      inactive: users.docs.filter((u) => u.status === UserStatusEnum.Inactive).length,
+      inTransition: users.docs.filter((u) => u.status === UserStatusEnum.PendingActivation).length,
+    },
+    activeUsers: {
+      unitAdmins: users.docs.filter((u) => u.role === UserRolesEnum.UnitAdmin).length,
+      socialMediaManagers: users.docs.filter((u) => u.role === UserRolesEnum.SocialMediaManager)
+        .length,
+    },
+    pendingApproval: users.docs.filter((u) => u.status === UserStatusEnum.PendingActivation).length,
+    unassignedAccounts: users.docs.filter((u) => !u.organizations || u.organizations.length === 0)
+      .length,
+  }
+
+  return dashboardData
+}
