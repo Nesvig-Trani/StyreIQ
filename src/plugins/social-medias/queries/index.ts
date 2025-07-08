@@ -6,6 +6,19 @@ import { UserRolesEnum } from '@/users/schemas'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { SocialMediasCollectionSlug } from '../collections'
 
+export const getAllSocialMediaAccounts = async () => {
+  const { payload } = await getPayloadContext()
+  const { user } = await getAuthUser()
+  const socialMedias = await payload.find({
+    collection: SocialMediasCollectionSlug,
+    limit: 0,
+    user,
+    overrideAccess: false,
+  })
+
+  return socialMedias
+}
+
 export const getSocialMediaAccounts = async ({
   pageSize,
   pageIndex,

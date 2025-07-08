@@ -2,6 +2,7 @@
 import * as React from 'react'
 import {
   Building2Icon,
+  FlagIcon,
   HistoryIcon,
   LogOutIcon,
   ScrollText,
@@ -21,7 +22,7 @@ import {
 } from '@/shared/components/ui/sidebar'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Button } from '../ui/button'
+import { Button } from '@/shared'
 import { UserRolesEnum } from '@/users'
 
 const data = {
@@ -45,6 +46,11 @@ const data = {
       title: 'Policy',
       url: '/dashboard/policies',
       icon: ScrollText,
+    },
+    {
+      title: 'Risk Flags',
+      url: '/dashboard/flags',
+      icon: FlagIcon,
     },
     {
       title: 'Audit Log',
@@ -80,8 +86,7 @@ export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
           <SidebarMenu>
             {data.navMain
               .filter((item) => {
-                if (item.title === 'Policy' && userRole !== UserRolesEnum.SuperAdmin) return false
-                return true
+                return !(item.title === 'Policy' && userRole !== UserRolesEnum.SuperAdmin)
               })
               .map((item) => (
                 <SidebarMenuItem key={item.title}>

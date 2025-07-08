@@ -74,6 +74,9 @@ export interface Config {
     policies: Policy
     acknowledgments: Acknowledgment
     audit_log: AuditLog
+    flags: Flag
+    flagHistory: FlagHistory
+    flagComments: FlagComment
     'payload-locked-documents': PayloadLockedDocument
     'payload-preferences': PayloadPreference
     'payload-migrations': PayloadMigration
@@ -81,6 +84,9 @@ export interface Config {
   collectionsJoins: {
     organization: {
       children: 'organization'
+    }
+    flags: {
+      history: 'flagHistory'
     }
   }
   collectionsSelect: {
@@ -91,6 +97,9 @@ export interface Config {
     policies: PoliciesSelect<false> | PoliciesSelect<true>
     acknowledgments: AcknowledgmentsSelect<false> | AcknowledgmentsSelect<true>
     audit_log: AuditLogSelect<false> | AuditLogSelect<true>
+    flags: FlagsSelect<false> | FlagsSelect<true>
+    flagHistory: FlagHistorySelect<false> | FlagHistorySelect<true>
+    flagComments: FlagCommentsSelect<false> | FlagCommentsSelect<true>
     'payload-locked-documents':
       | PayloadLockedDocumentsSelect<false>
       | PayloadLockedDocumentsSelect<true>
@@ -308,6 +317,63 @@ export interface AuditLog {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "flags".
+ */
+export interface Flag {
+  id: number
+  flagType?: string | null
+  affectedEntity?:
+    | ({
+        relationTo: 'users'
+        value: number | User
+      } | null)
+    | ({
+        relationTo: 'social-medias'
+        value: number | SocialMedia
+      } | null)
+  organization?: (number | null) | Organization
+  status?: ('resolved' | 'pending' | 'not_applicable') | null
+  detectionDate?: string | null
+  source?: ('automated' | 'manual') | null
+  lastActivity?: string | null
+  history?: {
+    docs?: (number | FlagHistory)[]
+    hasNextPage?: boolean
+    totalDocs?: number
+  }
+  description?: string | null
+  suggestedAction?: string | null
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "flagHistory".
+ */
+export interface FlagHistory {
+  id: number
+  flag?: (number | null) | Flag
+  user?: (number | null) | User
+  action?: ('created' | 'status_changed' | 'comment') | null
+  prevStatus?: ('resolved' | 'pending' | 'not_applicable') | null
+  newStatus?: ('resolved' | 'pending' | 'not_applicable') | null
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "flagComments".
+ */
+export interface FlagComment {
+  id: number
+  flag?: (number | null) | Flag
+  user?: (number | null) | User
+  comment?: string | null
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -340,6 +406,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'audit_log'
         value: number | AuditLog
+      } | null)
+    | ({
+        relationTo: 'flags'
+        value: number | Flag
+      } | null)
+    | ({
+        relationTo: 'flagHistory'
+        value: number | FlagHistory
+      } | null)
+    | ({
+        relationTo: 'flagComments'
+        value: number | FlagComment
       } | null)
   globalSlug?: string | null
   user: {
@@ -499,6 +577,48 @@ export interface AuditLogSelect<T extends boolean = true> {
   current?: T
   organizations?: T
   document?: T
+  updatedAt?: T
+  createdAt?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "flags_select".
+ */
+export interface FlagsSelect<T extends boolean = true> {
+  flagType?: T
+  affectedEntity?: T
+  organization?: T
+  status?: T
+  detectionDate?: T
+  source?: T
+  lastActivity?: T
+  history?: T
+  description?: T
+  suggestedAction?: T
+  updatedAt?: T
+  createdAt?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "flagHistory_select".
+ */
+export interface FlagHistorySelect<T extends boolean = true> {
+  flag?: T
+  user?: T
+  action?: T
+  prevStatus?: T
+  newStatus?: T
+  updatedAt?: T
+  createdAt?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "flagComments_select".
+ */
+export interface FlagCommentsSelect<T extends boolean = true> {
+  flag?: T
+  user?: T
+  comment?: T
   updatedAt?: T
   createdAt?: T
 }

@@ -14,6 +14,7 @@ import { UsersPlugin } from '@/plugins/users'
 import { SocialMediasPlugin } from '@/plugins/social-medias'
 import { OrganizationAccessPlugin } from '@/plugins/organization-access'
 import { PoliciesPlugin } from '@/plugins/policies'
+import { FlagsPlugin } from '@/plugins/flags'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -63,6 +64,9 @@ export default buildConfig({
     }),
     AuditLogPlugin({
       collections: auditLogCollections,
+    }),
+    FlagsPlugin({
+      disabled: false,
     }),
   ],
   cors: ['http://localhost:3000'],
