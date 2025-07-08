@@ -16,6 +16,8 @@ import { OrganizationAccessPlugin } from '@/plugins/organization-access'
 import { PoliciesPlugin } from '@/plugins/policies'
 import { FlagsPlugin } from '@/plugins/flags'
 
+import { flagInactiveAccountsTask } from './plugins/social-medias/tasks/flagInactiveAccounts/def'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -72,4 +74,15 @@ export default buildConfig({
   cors: ['http://localhost:3000'],
   cookiePrefix: 'payload',
   email: EmailAdapter(),
+  jobs: {
+    tasks: [flagInactiveAccountsTask],
+    autoRun: [
+      {
+        //Every sunday at midnight
+        cron: '0 0 * * 0',
+        queue: 'default',
+        limit: 1,
+      },
+    ],
+  },
 })

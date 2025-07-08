@@ -116,6 +116,16 @@ export const SocialMedias: CollectionConfig = {
       name: 'deactivationReason',
       type: 'text',
     },
+    {
+      name: 'inactiveFlag',
+      type: 'checkbox',
+      label: 'Inactive Account',
+      admin: {
+        description:
+          'Automatically set if the account has no public activity for 30+ days and is Active or In Transition.',
+      },
+      defaultValue: false,
+    },
   ],
   timestamps: true,
   endpoints: [createSocialMedia, patchSocialMedia, updateSocialMediaStatus],
