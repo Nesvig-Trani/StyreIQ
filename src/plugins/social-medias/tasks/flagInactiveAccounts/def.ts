@@ -4,15 +4,6 @@ import { flagInactiveAccounts } from './flagInactiveAccounts'
 export const flagInactiveAccountsTask = {
   slug: 'flagInactiveAccounts',
   retries: 2,
-  inputSchema: [
-    {
-      name: 'dryRun',
-      type: 'checkbox',
-      required: false,
-      defaultValue: false,
-      label: 'Dry Run (do not update accounts)',
-    },
-  ],
   outputSchema: [
     {
       name: 'success',

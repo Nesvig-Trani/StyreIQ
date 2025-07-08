@@ -84,5 +84,8 @@ export default buildConfig({
         limit: 1,
       },
     ],
+    shouldAutoRun(payload) {
+      return payload.config.jobs?.tasks?.some((task) => task.slug === flagInactiveAccountsTask.slug)
+    },
   },
 })
