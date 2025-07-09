@@ -25,7 +25,7 @@ function useAuditLogsTable({ users }: { users: User[] }) {
         {
           value: 'social-medias',
           label: 'Social Medias',
-        }
+        },
       ],
     },
     {
@@ -100,8 +100,8 @@ function useAuditLogsTable({ users }: { users: User[] }) {
       accessorKey: 'document',
       header: 'Document',
       cell: ({ row }) => {
-        const document = row.getValue('document') as { value: { name: string } }
-        return <span>{document?.value?.name}</span>
+        const document = row.getValue('document') as { value: { name: string; flagType: string } }
+        return <span>{document?.value?.name || document?.value?.flagType}</span>
       },
     },
     {

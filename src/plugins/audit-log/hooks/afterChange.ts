@@ -24,6 +24,7 @@ const AuditLogAfterChange: CollectionAfterChangeHook = async ({
           value: doc.id,
         },
       }
+
       switch (slug) {
         case 'organization':
           data.organizations = [doc.id]
@@ -33,14 +34,22 @@ const AuditLogAfterChange: CollectionAfterChangeHook = async ({
           break
         case 'social-medias':
           data.organizations = [doc.organization.id]
+          break
+        case 'flags':
+          data.organizations = [doc.organization.id]
+          break
+        case 'flagComments':
+          data.organizations = [doc.flag.organization.id]
+          break
         default:
           break
       }
 
       if (operation === 'update') {
         data.prev = previousDoc
-        data.current = doc
       }
+
+      data.current = doc
       await req.payload.create({
         collection: 'audit_log',
         data: {

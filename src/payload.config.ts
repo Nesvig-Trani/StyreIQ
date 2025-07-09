@@ -26,6 +26,8 @@ const auditLogCollections = {
   organization: true,
   'social-medias': true,
   organization_access: true,
+  flags: true,
+  flagComments: true,
 } as const
 
 export type AuditLogCollectionKey = keyof typeof auditLogCollections
@@ -64,11 +66,11 @@ export default buildConfig({
     PoliciesPlugin({
       disabled: false,
     }),
-    AuditLogPlugin({
-      collections: auditLogCollections,
-    }),
     FlagsPlugin({
       disabled: false,
+    }),
+    AuditLogPlugin({
+      collections: auditLogCollections,
     }),
   ],
   cors: ['http://localhost:3000'],
