@@ -24,6 +24,16 @@ export const createOrganization = async (data: z.infer<typeof createOrgFormSchem
     }),
   })
 
+  if (response?.status === 400) {
+    const errorData = await response.json()
+    if (errorData?.error && errorData.details.name === 'ValidationError') {
+      const validationErrors = errorData.details.data.errors.map(
+        (error: { message: string; path: string }) => `${error.path}: ${error.message}`,
+      )
+      throw new Error(`${validationErrors.join('\n')}`)
+    }
+  }
+
   if (!response.ok) {
     throw new Error('Failed to create organization')
   }

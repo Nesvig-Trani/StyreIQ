@@ -96,8 +96,10 @@ function useCreateOrganization({ users, organizations }: CreateOrgFormProps) {
           form.reset()
           toast.success('Organization created successfully')
           router.push('/dashboard/organizations')
-        } catch {
-          toast.error('An error occurred while creating the organization, please try again')
+        } catch (error) {
+          toast.error(
+            `An error occurred while creating the organization, please try again \n(${error})`,
+          )
         }
       },
     },
