@@ -1,7 +1,7 @@
 import { flagSourceLabels } from '@/flags/constants/flagSourceLabels'
 import { FlagSourceEnum, FlagStatusEnum } from '@/flags/schemas'
 import { getStatusColor, isActivityStale } from '@/flags/utils'
-import { Flag } from '@/payload-types'
+import { Flag, SocialMedia, User } from '@/payload-types'
 import { Badge, Button, Separator } from '@/shared'
 import {
   Dialog,
@@ -16,11 +16,62 @@ import {
   CalendarIcon,
   ClockIcon,
   EditIcon,
-  ExternalLinkIcon,
   EyeIcon,
 } from 'lucide-react'
+import { ViewSocialMedia } from '../view-social-media'
+import { ViewUser } from '../view-user'
+import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 
 export function FlagDetails({ flag }: { flag: Flag }) {
+  const searchParams = useSearchParams()
+  const currentFilters = searchParams.toString()
+
+  const renderActions = () => {
+    const entity = flag.affectedEntity
+    const relation = entity?.relationTo
+    const value = entity?.value
+
+    if (!value || typeof value !== 'object') return null
+
+    switch (relation) {
+      case 'social-medias':
+        const social = value as SocialMedia
+
+        return (
+          <>
+            <ViewSocialMedia account={social} />
+            <Link
+              href={`/dashboard/social-medias/update/${social.id}?returnTo=${encodeURIComponent(`/dashboard/flags?${currentFilters}`)}`}
+            >
+              <Button variant="outline">
+                <EditIcon className="h-4 w-4 mr-2" />
+                Edit Account
+              </Button>
+            </Link>
+          </>
+        )
+      case 'users':
+        const user = value as User
+
+        return (
+          <>
+            <ViewUser user={user} />
+            <Link
+              href={`/dashboard/users/update/${user.id}?returnTo=${encodeURIComponent(`/dashboard/flags?${currentFilters}`)}`}
+            >
+              <Button variant="outline">
+                <EditIcon className="h-4 w-4 mr-2" />
+                Edit Account
+              </Button>
+            </Link>
+          </>
+        )
+      default:
+        return null
+    }
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -28,7 +79,7 @@ export function FlagDetails({ flag }: { flag: Flag }) {
           <EyeIcon className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="!max-w-4xl max-h-[80vh] w-full overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <AlertTriangle className="h-5 w-5" />
@@ -111,56 +162,7 @@ export function FlagDetails({ flag }: { flag: Flag }) {
               </div>
             )}
             <Separator />
-            <div>
-              <h4 className="font-semibold mb-3">Account Information</h4>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <h5 className="font-medium mb-1">Account Name</h5>
-                  <p className="text-sm">
-                    {flag &&
-                      typeof flag.affectedEntity?.value === 'object' &&
-                      flag.affectedEntity.value.name}
-                  </p>
-                </div>
-                <div>
-                  <h5 className="font-medium mb-1">Account URL</h5>
-                  {flag &&
-                    typeof flag.affectedEntity?.value === 'object' &&
-                    flag.affectedEntity.relationTo === 'social-medias' &&
-                    flag.affectedEntity.value.profileUrl && (
-                      <a
-                        href={flag.affectedEntity.value.profileUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm text-blue-600 underline inline-flex items-center gap-1"
-                      >
-                        {flag.affectedEntity.value.profileUrl}
-                        <ExternalLinkIcon className="h-3 w-3" />
-                      </a>
-                    )}
-                </div>
-                <div>
-                  <h5 className="font-medium mb-1">Account Status</h5>
-                  <Badge>
-                    {flag &&
-                      flag.affectedEntity &&
-                      typeof flag.affectedEntity.value === 'object' &&
-                      flag.affectedEntity.value.status}
-                  </Badge>
-                </div>
-              </div>
-            </div>
-            <Separator />
-            <div className="flex gap-2">
-              <Button variant="outline">
-                <EyeIcon className="h-4 w-4 mr-2" />
-                View Account
-              </Button>
-              <Button variant="outline">
-                <EditIcon className="h-4 w-4 mr-2" />
-                Edit Account
-              </Button>
-            </div>
+            <div className="flex gap-2">{renderActions()}</div>
           </div>
         )}
       </DialogContent>

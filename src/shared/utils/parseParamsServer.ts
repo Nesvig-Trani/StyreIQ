@@ -10,7 +10,7 @@ export function parseSearchParamsWithSchema<O, Z extends z.ZodSchema<O>>(
 
   for (const [key, value] of Object.entries(rawParams)) {
     try {
-      parsedParams[key] = JSON.parse(decodeURIComponent(value))
+      parsedParams[key] = Array.isArray(value) ? value : JSON.parse(decodeURIComponent(value))
     } catch {
       parsedParams[key] = value
     }

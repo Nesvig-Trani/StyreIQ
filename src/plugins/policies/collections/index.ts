@@ -10,6 +10,14 @@ export const Policies: CollectionConfig = {
         if (!req.user) return
         if (operation !== 'create') return
         const lastPolicy = await getLastPolicyVersion()
+        await req.payload.update({
+          collection: 'users',
+          where: {},
+          data: {
+            date_of_last_policy_review: new Date().toISOString(),
+            admin_policy_agreement: false,
+          },
+        })
         return {
           ...data,
           version:
@@ -47,6 +55,15 @@ export const Acknowledgments: CollectionConfig = {
       async ({ data, operation, req }) => {
         if (!req.user) return
         if (operation !== 'create') return
+        await req.payload.update({
+          collection: 'users',
+          where: { id: { equals: req.user.id } },
+          data: {
+            date_of_last_policy_review: new Date().toISOString(),
+            admin_policy_agreement: true,
+          },
+        })
+
         return {
           ...data,
           user: req.user.id,

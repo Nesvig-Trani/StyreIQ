@@ -10,10 +10,13 @@ import {
 import { updateUser } from '@/sdk/users'
 import { toast } from 'sonner'
 import { Organization } from '@/payload-types'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const returnTo = searchParams.get('returnTo') || `/dashboard/users/access/${id}`
+
   const { formComponent } = useFormHelper(
     {
       schema: updateUserFormSchema,
@@ -59,7 +62,7 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
       onSubmit: async (submitData) => {
         try {
           await updateUser({ ...submitData, id: Number(id) })
-          router.push(`/dashboard/users/access/${id}`)
+          router.push(returnTo)
           toast.success('User updated successfully')
         } catch (err) {
           if (typeof err === 'object' && err !== null && 'status' in err && 'data' in err) {

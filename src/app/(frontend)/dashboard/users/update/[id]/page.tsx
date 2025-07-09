@@ -1,4 +1,3 @@
-import { Card, CardContent } from '@/shared/components/ui/card'
 import { getUserById, UpdateUserForm } from '@/users'
 import { getAllOrganizations } from '@/plugins/organizations/queries'
 
@@ -18,12 +17,7 @@ export default async function UpdateUser({ params }: { params: Promise<{ id: str
 
   return (
     <div>
-      <h1>Update user</h1>
-      <Card>
-        <CardContent>
-          <UpdateUserForm organizations={organizations.docs} data={data} id={id} />
-        </CardContent>
-      </Card>
+      <UpdateUserForm organizations={organizations.docs} data={data} id={id} />
     </div>
   )
 }
