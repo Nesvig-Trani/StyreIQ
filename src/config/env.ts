@@ -12,6 +12,7 @@ export const env = createEnv({
     SMTP_PASS: z.string(),
     FROM_ADDRESS: z.string(),
     FROM_NAME: z.string(),
+    PAYLOAD_SECRET: z.string(),
   },
 
   runtimeEnv: {
@@ -22,5 +23,6 @@ export const env = createEnv({
     SMTP_PASS: process.env.SMTP_PASS,
     FROM_NAME: process.env.FROM_NAME,
     FROM_ADDRESS: process.env.FROM_ADDRESS,
+    PAYLOAD_SECRET: process.env.PAYLOAD_SECRET,
   },
 })

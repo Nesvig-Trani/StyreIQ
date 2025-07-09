@@ -15,6 +15,7 @@ export enum AffectedEntityTypeEnum {
 export enum FlagTypeEnum {
   NO_PRIMARY_ADMIN = 'no_primary_administrator',
   INCOMPLETE_TRAINING = 'incomplete_training',
+  SECURITY_RISK = 'security_risk',
 }
 
 export enum FlagSourceEnum {
