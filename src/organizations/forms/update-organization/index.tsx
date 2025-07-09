@@ -10,6 +10,7 @@ import { toast } from 'sonner'
 import { updateOrganization } from '@/sdk/organization'
 import { UserRolesEnum } from '@/users'
 import { useRouter } from 'next/navigation'
+import { organizationTypeOptions } from '@/organizations/constants/organizationTypeOptions'
 
 export const UpdateOrganizationForm = ({
   users,
@@ -82,11 +83,11 @@ export const UpdateOrganizationForm = ({
               <SelectValue placeholder="Select organization type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="university">University</SelectItem>
-              <SelectItem value="college">College</SelectItem>
-              <SelectItem value="department">Department</SelectItem>
-              <SelectItem value="faculty">Faculty</SelectItem>
-              <SelectItem value="other">Other</SelectItem>
+              {organizationTypeOptions.map((option) => (
+                <SelectItem value={option.value} key={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}{' '}
             </SelectContent>
           </Select>
           {errors.type && <p className="text-sm text-red-500">{errors.type.message}</p>}

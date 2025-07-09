@@ -3,6 +3,7 @@ import { createOrgFormSchema, UpdateOrgFormProps } from '@/organizations'
 import { updateOrganization } from '@/sdk/organization'
 import { toast } from 'sonner'
 import { CreateOrganizationsTree } from '@/organizations/utils/createOrgTree'
+import { organizationTypeOptions } from '../constants/organizationTypeOptions'
 
 function useUpdateOrganization({ users, data, organizations }: UpdateOrgFormProps) {
   const tree = CreateOrganizationsTree(organizations)
@@ -19,13 +20,7 @@ function useUpdateOrganization({ users, data, organizations }: UpdateOrgFormProp
           label: 'Type',
           name: 'type',
           type: 'select',
-          options: [
-            { value: 'university', label: 'University' },
-            { value: 'faculty', label: 'Faculty' },
-            { value: 'department', label: 'Department' },
-            { value: 'office', label: 'Office' },
-            { value: 'project', label: 'Project' },
-          ],
+          options: organizationTypeOptions,
         },
         {
           label: 'Parent',

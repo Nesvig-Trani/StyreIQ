@@ -10,13 +10,14 @@ import { Button } from '@/shared'
 import OrganizationDetailPage from '@/organizations/components/organization-detail'
 import { UpdateOrganizationForm } from '@/organizations/forms/update-organization'
 import { ScrollArea } from '@/shared'
+import { organizationTypeOptions } from '@/organizations/constants/organizationTypeOptions'
 
 export default function OrganizationHierarchy({
   organizations,
   originalData,
   pagination,
   users,
-  user
+  user,
 }: OrganizationHierarchyProps) {
   const {
     searchTerm,
@@ -65,11 +66,11 @@ export default function OrganizationHierarchy({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="university">University</SelectItem>
-                  <SelectItem value="faculty">Faculty</SelectItem>
-                  <SelectItem value="department">Department</SelectItem>
-                  <SelectItem value="office">Office</SelectItem>
-                  <SelectItem value="project">Project</SelectItem>
+                  {organizationTypeOptions.map((option) => (
+                    <SelectItem value={option.value} key={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

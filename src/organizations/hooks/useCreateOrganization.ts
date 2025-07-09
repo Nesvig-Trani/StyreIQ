@@ -5,6 +5,7 @@ import { createOrganization } from '@/sdk/organization'
 import { toast } from 'sonner'
 import { CreateOrganizationsTree } from '@/organizations/utils/createOrgTree'
 import { useRouter } from 'next/navigation'
+import { organizationTypeOptions } from '../constants/organizationTypeOptions'
 
 function useCreateOrganization({ users, organizations }: CreateOrgFormProps) {
   const router = useRouter()
@@ -22,13 +23,7 @@ function useCreateOrganization({ users, organizations }: CreateOrgFormProps) {
           label: 'Type',
           name: 'type',
           type: 'select',
-          options: [
-            { value: 'university', label: 'University' },
-            { value: 'faculty', label: 'Faculty' },
-            { value: 'department', label: 'Department' },
-            { value: 'office', label: 'Office' },
-            { value: 'project', label: 'Project' },
-          ],
+          options: organizationTypeOptions,
         },
         {
           label: 'Parent',
