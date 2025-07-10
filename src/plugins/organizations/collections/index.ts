@@ -15,6 +15,7 @@ export const Organizations: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
+      maxLength: 100,
       required: true,
       unique: true,
     },

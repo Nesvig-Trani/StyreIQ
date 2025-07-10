@@ -5,7 +5,10 @@ import { statusConfig } from '../constants/statusConfig'
 import { typeConfig } from '../constants/typeConfig'
 
 export const createOrgFormSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
+  name: z
+    .string()
+    .min(1, 'Name is required')
+    .max(100, "Organization name can\'t exceed 100 characters"),
   type: z.enum(['university', 'faculty', 'department', 'office', 'project']),
   parent: z.string().optional(),
   admin: z.string().min(1, 'Admin is required'),
