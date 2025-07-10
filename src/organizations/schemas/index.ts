@@ -13,8 +13,12 @@ export const createOrgFormSchema = z.object({
   parent: z.string().optional(),
   admin: z.string().min(1, 'Admin is required'),
   backupAdmins: z.string().array().optional(),
-  email: z.string().optional(),
-  phone: z.string().optional(),
+  email: z.string().email().or(z.literal('')).optional(),
+  phone: z
+    .string()
+    .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number format')
+    .or(z.literal(''))
+    .optional(),
   status: z.enum(['active', 'inactive', 'pending_review']),
   description: z.string().optional(),
   delegatedPermissions: z.boolean().optional(),

@@ -7,7 +7,12 @@ const baseSocialMediaSchema = z.object({
   profileUrl: z.string().url(),
   platform: z.string(),
   contactEmail: z.string().email().or(z.literal('')).optional(),
-  contactPhone: z.string().optional(),
+  contactPhone: z
+    .string()
+    .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number format')
+    .or(z.literal(''))
+    .optional(),
+  // Ensure passwordUpdatedAt is a valid date or undefined
   passwordUpdatedAt: z
     .preprocess((arg) => {
       if (typeof arg === 'string' || arg instanceof Date) {
