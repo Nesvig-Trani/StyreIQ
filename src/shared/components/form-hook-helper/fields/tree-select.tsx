@@ -21,6 +21,11 @@ export const TreeSelectHelper = <TFieldValues extends FieldValues>({
   form,
   fieldData,
 }: TreeSelectHelperProps<TFieldValues>): React.ReactNode => {
+  const {
+    formState: { errors },
+  } = form
+
+  const error = errors[fieldData.name]
   return (
     <FormField
       control={form.control}
@@ -32,8 +37,9 @@ export const TreeSelectHelper = <TFieldValues extends FieldValues>({
             <TreeSelect
               options={fieldData.options || []}
               tree={fieldData.tree || []}
-              onChange={field.onChange}
+              handleChangeAction={field.onChange}
               value={field.value}
+              errors={error}
             />
           </FormControl>
           <FormMessage />

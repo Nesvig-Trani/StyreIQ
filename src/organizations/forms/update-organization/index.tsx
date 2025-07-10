@@ -97,7 +97,9 @@ export const UpdateOrganizationForm = ({
             <Label htmlFor="parent">Parent Organization</Label>
 
             <TreeSelect
-              onChange={(value) => setValue('parent', value)}
+              errors={errors?.parent}
+              disabled={disabledField}
+              handleChangeAction={(value) => setValue('parent', value)}
               value={watch('parent')}
               tree={tree}
               options={organizations.map((org) => ({

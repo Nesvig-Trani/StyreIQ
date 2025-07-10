@@ -5,6 +5,7 @@ import { Tree } from '@/organizations'
 import { Command, CommandItem, CommandList } from '@/shared/components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/shared/components/ui/popover'
 import { FieldDataOption } from '@/shared/components/form-hook-helper'
+import { FieldErrors, FieldValues, Path } from 'react-hook-form'
 
 interface TreeNodeProps {
   tree: Tree
@@ -46,16 +47,23 @@ interface TreeSelectProps {
   options: FieldDataOption[]
   tree: Tree[]
   value?: string
-  onChange: (value: string) => void
+  handleChangeAction: (value: string) => void
   disabled?: boolean
+  errors: FieldErrors[Path<FieldValues>]
 }
 
-export function TreeSelect({ options, tree, value, onChange, disabled }: TreeSelectProps) {
+export function TreeSelect({
+  options,
+  tree,
+  value,
+  handleChangeAction,
+  disabled,
+  errors,
+}: TreeSelectProps) {
   const [open, setOpen] = useState(false)
-
   const handleSelect = (value: string) => {
     if (!disabled) {
-      onChange(value)
+      handleChangeAction(value)
       setOpen(false)
     }
   }
@@ -66,8 +74,9 @@ export function TreeSelect({ options, tree, value, onChange, disabled }: TreeSel
         <button
           disabled={disabled}
           className={cn(
-            'w-[300px] flex justify-start p-3 border-solid border-gray-600 text-sm',
+            'w-[300px] flex justify-start p-3 border text-sm rounded-md text-gray-500',
             disabled && 'opacity-50 cursor-not-allowed',
+            errors ? 'border-red-500' : 'border-gray-200',
           )}
         >
           {value

@@ -220,9 +220,10 @@ export const UpdateSocialMediaForm: React.FC<UpdateSocialMediaFormProps> = ({
               }))}
               tree={tree}
               {...register('organization', { required: 'Organization is required' })}
-              onChange={(organization: string) => setValue('organization', organization)}
+              handleChangeAction={(organization: string) => setValue('organization', organization)}
               value={watch('organization')}
               disabled={user?.role !== UserRolesEnum.SuperAdmin}
+              errors={errors.organization}
             />
 
             {errors.organization && <p className="text-red-500">{errors.organization.message}</p>}
