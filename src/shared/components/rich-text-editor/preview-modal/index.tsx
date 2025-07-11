@@ -35,7 +35,7 @@ interface LexicalNode {
 }
 
 function renderLexicalNode(node: LexicalNode, index: number): React.ReactNode {
-  if (!node) return null
+  if (!node) return
 
   switch (node.type) {
     case 'root':
@@ -48,9 +48,19 @@ function renderLexicalNode(node: LexicalNode, index: number): React.ReactNode {
         </HeadingTag>
       )
     case 'paragraph':
+      let paragraphClass = 'mb-4 text-sm text-muted-foreground leading-relaxed '
+      if (typeof node.format === 'string') {
+        if (node.format === 'center') paragraphClass += 'text-center'
+        if (node.format === 'right') paragraphClass += 'text-right'
+        if (node.format === 'left') paragraphClass += 'text-left'
+      }
       return (
-        <p key={index} className="mb-4 text-sm text-muted-foreground leading-relaxed">
-          {node.children?.map((child, i) => renderLexicalNode(child, i))}
+        <p key={index} className={paragraphClass}>
+          {node.children?.length === 0 ? (
+            <br />
+          ) : (
+            node.children?.map((child, i) => renderLexicalNode(child, i))
+          )}
         </p>
       )
     case 'text':
@@ -66,6 +76,8 @@ function renderLexicalNode(node: LexicalNode, index: number): React.ReactNode {
           {node.text}
         </span>
       )
+    case 'linebreak':
+      return <br />
     default:
       return null
   }

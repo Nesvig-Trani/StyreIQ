@@ -2,14 +2,7 @@
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { $setBlocksType } from '@lexical/selection'
-import {
-  $getSelection,
-  $setSelection,
-  $createTextNode,
-  $createParagraphNode,
-  $getRoot,
-  $isRangeSelection,
-} from 'lexical'
+import { $getSelection, $createParagraphNode, $isRangeSelection } from 'lexical'
 import { $createHeadingNode } from '@lexical/rich-text'
 import {
   FORMAT_TEXT_COMMAND,
@@ -56,7 +49,6 @@ const Toolbar = () => {
   const convertToParagraph = () => {
     editor.update(() => {
       const selection = $getSelection()
-      console.log('selection', selection)
       if ($isRangeSelection(selection)) {
         $setBlocksType(selection, () => $createParagraphNode())
       }
