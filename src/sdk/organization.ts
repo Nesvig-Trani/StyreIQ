@@ -80,3 +80,17 @@ export const getOrganizationById = async (id: number): Promise<Organization> => 
   })
   return organization
 }
+
+export const disableOrganization = async (id: number) => {
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/organization/disable/${id}`, {
+    method: 'PUT',
+    headers: JSON_HEADERS,
+    credentials: 'include',
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to disable organization')
+  }
+
+  return response.json()
+}

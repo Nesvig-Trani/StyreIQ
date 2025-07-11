@@ -1,5 +1,5 @@
 import { Building2, CheckCircle, ChevronDown, ChevronRight } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import { Badge, Button } from '@/shared'
 import {
   FlattenedTree,
@@ -11,6 +11,8 @@ import {
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { statusConfig } from '../constants/statusConfig'
 import { typeConfig } from '../constants/typeConfig'
+import { disableOrganization } from '@/sdk/organization'
+import { toast } from 'sonner'
 
 export const useOrganizationHierarchy = ({
   originalData,
@@ -22,21 +24,25 @@ export const useOrganizationHierarchy = ({
   const [statusFilter, setStatusFilter] = useState<StatusType | 'all'>('all')
   const [typeFilter, setTypeFilter] = useState<OrganizationType | 'all'>('all')
   const [isEditing, setIsEditing] = useState<boolean>(false)
+  const [isDisableModalOpen, setIsDisableModalOpen] = useState<boolean>(false)
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  const updateSearchParams = (newParams: Record<string, string | null>) => {
-    const params = new URLSearchParams(searchParams)
-    Object.entries(newParams).forEach(([key, value]) => {
-      if (value === null) {
-        params.delete(key)
-      } else {
-        params.set(key, value)
-      }
-    })
-    router.push(`${pathname}?${params.toString()}`)
-  }
+  const updateSearchParams = useCallback(
+    (newParams: Record<string, string | null>) => {
+      const params = new URLSearchParams(searchParams)
+      Object.entries(newParams).forEach(([key, value]) => {
+        if (value === null) {
+          params.delete(key)
+        } else {
+          params.set(key, value)
+        }
+      })
+      router.push(`${pathname}?${params.toString()}`)
+    },
+    [searchParams, pathname, router],
+  )
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -45,7 +51,7 @@ export const useOrganizationHierarchy = ({
     return () => {
       clearTimeout(handler)
     }
-  }, [searchTerm])
+  }, [searchTerm, updateSearchParams])
 
   const handlePageChange = (newPageIndex: number) => {
     const updatedPagination = {
@@ -66,7 +72,7 @@ export const useOrganizationHierarchy = ({
     return map
   }, [originalData])
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value)
   }
 
@@ -78,6 +84,18 @@ export const useOrganizationHierarchy = ({
   const handleTypeChange = (value: OrganizationType | 'all') => {
     setTypeFilter(value)
     updateSearchParams({ type: value === 'all' ? null : value })
+  }
+  const handleConfirmDisable = async () => {
+    try {
+      if (!selectedOrg?.id) return
+      await disableOrganization(selectedOrg.id)
+      toast.success('Organization disabled successfully')
+      setIsDisableModalOpen(false)
+      setSelectedOrg(null)
+      router.refresh()
+    } catch {
+      toast.error('Failed to disable organization')
+    }
   }
 
   const toggleNode = (nodeId: number) => {
@@ -186,5 +204,8 @@ export const useOrganizationHierarchy = ({
     selectedOrg,
     setIsEditing,
     isEditing,
+    handleConfirmDisable,
+    isDisableModalOpen,
+    setIsDisableModalOpen,
   }
 }

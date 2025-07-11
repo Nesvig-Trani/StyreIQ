@@ -1,6 +1,14 @@
 'use client'
 
-import { Building2, ChevronLeftIcon, ChevronRightIcon, EditIcon, Search, X } from 'lucide-react'
+import {
+  Building2,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  EditIcon,
+  Search,
+  X,
+  XCircleIcon,
+} from 'lucide-react'
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@/shared'
 import { Input } from '@/shared'
 import { OrganizationHierarchyProps } from '@/organizations'
@@ -11,6 +19,7 @@ import OrganizationDetailPage from '@/organizations/components/organization-deta
 import { UpdateOrganizationForm } from '@/organizations/forms/update-organization'
 import { ScrollArea } from '@/shared'
 import { organizationTypeOptions } from '@/organizations/constants/organizationTypeOptions'
+import { DisableOrganizationButton } from '@/organizations/components/disable-organization'
 
 export default function OrganizationHierarchy({
   organizations,
@@ -31,6 +40,9 @@ export default function OrganizationHierarchy({
     selectedOrg,
     isEditing,
     setIsEditing,
+    handleConfirmDisable,
+    isDisableModalOpen,
+    setIsDisableModalOpen,
   } = useOrganizationHierarchy({ organizations, originalData, pagination, users })
   return (
     <div className="flex">
@@ -118,6 +130,20 @@ export default function OrganizationHierarchy({
                       <EditIcon />
                     </Button>
                   )}
+                  <Button
+                    variant="destructive"
+                    className="ml-2"
+                    onClick={() => setIsDisableModalOpen(true)}
+                  >
+                    <XCircleIcon className="h-4 w-4 mr-2" />
+                    Disable
+                  </Button>
+                  <DisableOrganizationButton
+                    open={isDisableModalOpen}
+                    handleOpenChange={setIsDisableModalOpen}
+                    id={selectedOrg.id}
+                    onConfirmDisable={handleConfirmDisable}
+                  />
                 </div>
               </CardHeader>
               {isEditing ? (

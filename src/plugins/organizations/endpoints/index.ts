@@ -1,7 +1,9 @@
 import { JSON_HEADERS } from '@/shared/constants'
 import { UserRolesEnum } from '@/users/schemas'
 import { Endpoint } from 'payload'
-import { calcParentPathAndDepth } from '../../../organizations/utils/calcPathAndDepth'
+import { calcParentPathAndDepth } from '@/organizations/utils/calcPathAndDepth'
+import { EndpointError } from '@/shared'
+import { z } from 'zod'
 
 export const createOrganization: Endpoint = {
   path: '/',
@@ -206,6 +208,53 @@ export const updateOrganization: Endpoint = {
           headers: JSON_HEADERS,
         },
       )
+    }
+  },
+}
+
+export const disableOrganization: Endpoint = {
+  path: '/disable/:id',
+  method: 'put',
+  handler: async (req) => {
+    try {
+      if (!req.routeParams?.id) {
+        throw new EndpointError('Organization not found.', 404)
+      }
+      const user = req.user
+      if (!user || user.role !== UserRolesEnum.SuperAdmin) {
+        throw new EndpointError('Unauthorized', 401)
+      }
+      const { id } = req.routeParams
+      const disabledOrg = await req.payload.update({
+        collection: 'organization',
+        where: { id: { equals: id } },
+        data: {
+          disabled: true,
+        },
+      })
+
+      return new Response(JSON.stringify(disabledOrg), {
+        status: 200,
+        headers: JSON_HEADERS,
+      })
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return new Response(JSON.stringify({ error: error.message }), {
+          status: 400,
+          headers: JSON_HEADERS,
+        })
+      }
+      if (error instanceof EndpointError) {
+        return new Response(JSON.stringify({ error: error.message }), {
+          status: error.code,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      return new Response(JSON.stringify({ error: 'Internal Server Error', details: error }), {
+        status: 500,
+        headers: JSON_HEADERS,
+      })
     }
   },
 }

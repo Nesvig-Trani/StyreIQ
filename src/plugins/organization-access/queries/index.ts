@@ -6,7 +6,7 @@ export const getOrganizationAccessByUserId = async ({ id }: { id: number }) => {
   const orgAccessResult = await payload.find({
     collection: 'organization_access',
     where: {
-      'user.id': { equals: id },
+      and: [{ 'user.id': { equals: id } }, { 'organization.disabled': { not_equals: true } }],
     },
   })
 

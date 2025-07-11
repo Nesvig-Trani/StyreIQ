@@ -1,5 +1,9 @@
 import { CollectionConfig } from 'payload'
-import { createOrganization, updateOrganization } from '@/plugins/organizations/endpoints'
+import {
+  createOrganization,
+  disableOrganization,
+  updateOrganization,
+} from '@/plugins/organizations/endpoints'
 import { canDeleteOrganizations, canReadOrganizations } from '@/plugins/organizations/access'
 
 export const Organizations: CollectionConfig = {
@@ -88,7 +92,11 @@ export const Organizations: CollectionConfig = {
       collection: 'organization',
       on: 'parentOrg',
     },
+    {
+      name: 'disabled',
+      type: 'checkbox',
+    },
   ],
   timestamps: true,
-  endpoints: [createOrganization, updateOrganization],
+  endpoints: [createOrganization, updateOrganization, disableOrganization],
 }
