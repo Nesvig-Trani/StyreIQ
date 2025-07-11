@@ -77,25 +77,27 @@ export default function OrganizationHierarchy({
           </div>
         </div>
 
-        <ScrollArea className="flex-1 p-2">{renderFilteredResults()}</ScrollArea>
-        <div className="flex justify-end">
-          <div className="flex">
-            <ChevronLeftIcon
-              onClick={() => {
-                if (pagination.pageIndex > 0) {
-                  handlePageChange(pagination.pageIndex - 1)
-                }
-              }}
-            />
-            <ChevronRightIcon
-              onClick={() => {
-                if (pagination.pageIndex + 1 < pagination.pageCount) {
-                  handlePageChange(pagination.pageIndex + 1)
-                }
-              }}
-            />
+        <ScrollArea className="flex-1 p-2">
+          {renderFilteredResults()}
+          <div className="flex justify-end">
+            <div className="flex">
+              <ChevronLeftIcon
+                onClick={() => {
+                  if (pagination.pageIndex > 0) {
+                    handlePageChange(pagination.pageIndex - 1)
+                  }
+                }}
+              />
+              <ChevronRightIcon
+                onClick={() => {
+                  if (pagination.pageIndex + 1 < pagination.pageCount) {
+                    handlePageChange(pagination.pageIndex + 1)
+                  }
+                }}
+              />
+            </div>
           </div>
-        </div>
+        </ScrollArea>
       </div>
 
       <div className="w-1/2 flex flex-col">
