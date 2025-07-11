@@ -51,8 +51,8 @@ export const DataTablePagination = <TData,>(
         </div>
       )}
 
-      <div className="flex flex-col items-end space-y-2 md:flex-row md:space-x-6 md:space-y-0 lg:space-x-8">
-        <div className="flex items-center space-x-2">
+      <div className="flex flex-col items-end space-y-2 md:flex-row md:space-x-6 md:space-y-0 lg:space-x-4">
+        <div className="flex items-center gap-4">
           <p className="text-sm font-medium !my-0 ">Rows per page</p>
           <Select value={pageSize.toString()} onValueChange={handlePageSizeChange}>
             <SelectTrigger className="h-8 w-[80px]">
