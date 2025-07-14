@@ -6,6 +6,7 @@ import { getAuthUser } from '@/auth/utils/getAuthUser'
 import { getLastPolicyVersion, hasUserAcknowledged } from '@/plugins/policies/queries'
 import { UserRolesEnum } from '@/users'
 import { LexicalContentModal } from '@/shared/components/rich-text-editor/preview-modal'
+import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 
 export const metadata = {
   description: 'GovernIq Dashboard',
@@ -17,7 +18,12 @@ export default async function DashboardLayout(props: { children: React.ReactNode
 
   await serverAuthGuard()
   const { user } = await getAuthUser()
-
+  const { payload } = await getPayloadContext()
+  await payload.jobs.queue({
+    task: 'detectRisks',
+    input: {},
+  })
+  await payload.jobs.run()
   const lastVersion = await getLastPolicyVersion()
   let open = false
   if (user && user.id && user.role !== UserRolesEnum.SuperAdmin && lastVersion) {

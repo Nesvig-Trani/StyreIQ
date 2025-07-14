@@ -1,15 +1,9 @@
-import { FlagSourceEnum, FlagStatusEnum, FlagTypeEnum } from '@/flags/schemas'
-import { FlagsCollectionSlug } from '@/plugins/flags/types'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { SocialMediasCollectionSlug } from '@/social-medias'
-import { NextResponse } from 'next/server'
+import { FlagsCollectionSlug } from '../../types'
+import { FlagSourceEnum, FlagStatusEnum, FlagTypeEnum } from '@/flags/schemas'
 
-export async function GET(req: Request) {
-  const authHeader = req.headers.get('authorization')
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return new Response('Unauthorized', { status: 401 })
-  }
-
+export async function FindRisksAndCreateFlag() {
   const { payload } = await getPayloadContext()
   const result = await payload.find({
     collection: SocialMediasCollectionSlug,
@@ -68,5 +62,4 @@ export async function GET(req: Request) {
       })
     }),
   )
-  return NextResponse.json({ success: true })
 }

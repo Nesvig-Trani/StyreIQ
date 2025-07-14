@@ -17,6 +17,7 @@ import { PoliciesPlugin } from '@/plugins/policies'
 import { FlagsPlugin } from '@/plugins/flags'
 
 import { flagInactiveAccountsTask } from './plugins/social-medias/tasks/flagInactiveAccounts/def'
+import { detectRisksTask } from './plugins/flags/tasks/detectRisks/def'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -78,7 +79,7 @@ export default buildConfig({
   cookiePrefix: 'payload',
   email: EmailAdapter(),
   jobs: {
-    tasks: [flagInactiveAccountsTask],
+    tasks: [flagInactiveAccountsTask, detectRisksTask],
     autoRun: [
       {
         //Every sunday at midnight

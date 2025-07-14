@@ -13,8 +13,14 @@ export enum AffectedEntityTypeEnum {
 }
 
 export enum FlagTypeEnum {
-  NO_PRIMARY_ADMIN = 'no_primary_administrator',
+  MISSING_2FA = 'missing_2fa',
+  OUTDATED_PASSWORD = 'outdated_password',
   INCOMPLETE_TRAINING = 'incomplete_training',
+  UNACKNOWLEDGED_POLICIES = 'unacknowledged_policies',
+  INACTIVE_ACCOUNT = 'inactive_account',
+  NO_ASSIGNED_OWNER = 'no_assigned_owner',
+  LEGAL_NOT_CONFIRMED = 'legal_not_confirmed',
+  INCIDENT_OPEN = 'incident_open',
   SECURITY_RISK = 'security_risk',
 }
 
