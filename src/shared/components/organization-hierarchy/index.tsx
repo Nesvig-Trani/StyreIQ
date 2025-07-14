@@ -20,6 +20,7 @@ import { UpdateOrganizationForm } from '@/organizations/forms/update-organizatio
 import { ScrollArea } from '@/shared'
 import { organizationTypeOptions } from '@/organizations/constants/organizationTypeOptions'
 import { DisableOrganizationButton } from '@/organizations/components/disable-organization'
+import { UserRolesEnum } from '@/users'
 
 export default function OrganizationHierarchy({
   organizations,
@@ -138,31 +139,35 @@ export default function OrganizationHierarchy({
                     </CardTitle>
                   </div>
                   <div className="flex gap-2 shrink-0">
-                    {isEditing ? (
-                      <Button size="sm" variant="outline" onClick={() => setIsEditing(false)}>
-                        <X className="h-4 w-4" />
-                        <span className="ml-1 hidden sm:inline">Cancel</span>
-                      </Button>
-                    ) : (
-                      <Button size="sm" onClick={() => setIsEditing(true)}>
-                        <EditIcon className="h-4 w-4" />
-                        <span className="ml-1 hidden sm:inline">Edit</span>
-                      </Button>
+                    {user?.role !== UserRolesEnum.SocialMediaManager && (
+                      <>
+                        {isEditing ? (
+                          <Button size="sm" variant="outline" onClick={() => setIsEditing(false)}>
+                            <X className="h-4 w-4" />
+                            <span className="ml-1 hidden sm:inline">Cancel</span>
+                          </Button>
+                        ) : (
+                          <Button size="sm" onClick={() => setIsEditing(true)}>
+                            <EditIcon className="h-4 w-4" />
+                            <span className="ml-1 hidden sm:inline">Edit</span>
+                          </Button>
+                        )}
+                        <Button
+                          variant="destructive"
+                          className="ml-2"
+                          onClick={() => setIsDisableModalOpen(true)}
+                        >
+                          <XCircleIcon className="h-4 w-4 mr-2" />
+                          Disable
+                        </Button>
+                        <DisableOrganizationButton
+                          open={isDisableModalOpen}
+                          handleOpenChange={setIsDisableModalOpen}
+                          id={selectedOrg.id}
+                          onConfirmDisable={handleConfirmDisable}
+                        />
+                      </>
                     )}
-                    <Button
-                      variant="destructive"
-                      className="ml-2"
-                      onClick={() => setIsDisableModalOpen(true)}
-                    >
-                      <XCircleIcon className="h-4 w-4 mr-2" />
-                      Disable
-                    </Button>
-                    <DisableOrganizationButton
-                      open={isDisableModalOpen}
-                      handleOpenChange={setIsDisableModalOpen}
-                      id={selectedOrg.id}
-                      onConfirmDisable={handleConfirmDisable}
-                    />
                   </div>
                 </CardHeader>
                 {isEditing ? (
