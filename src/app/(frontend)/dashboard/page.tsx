@@ -9,7 +9,13 @@ import {
   Activity,
   Pause,
   ArrowUpDown,
+  ClipboardList,
+  FileWarning,
+  ActivityIcon,
+  ShieldAlert,
+  ScaleIcon,
 } from 'lucide-react'
+import { getFlagInfoForDashboard } from '@/plugins/flags/queries'
 
 const getRiskLevel = (value: number, thresholds: { low: number; medium: number }) => {
   if (value >= thresholds.medium) return 'high'
@@ -19,12 +25,19 @@ const getRiskLevel = (value: number, thresholds: { low: number; medium: number }
 
 export default async function DashboardPage() {
   const data = await getUsersInfoForDashboard()
+  const flags = await getFlagInfoForDashboard()
   if (!data) {
     return <div className="text-center text-red-500">Failed to load dashboard data</div>
   }
   const pendingRisk = getRiskLevel(data.pendingApproval, { low: 5, medium: 10 })
   const unassignedRisk = getRiskLevel(data.unassignedAccounts, { low: 3, medium: 6 })
   const inactiveRisk = getRiskLevel(data.accountsByStatus.inactive, { low: 10, medium: 20 })
+
+  const securityRisk = getRiskLevel(flags.security, { low: 0, medium: 2 })
+  const legalRisk = getRiskLevel(flags.legal, { low: 0, medium: 2 })
+  const complianceRisk = getRiskLevel(flags.compliance, { low: 0, medium: 2 })
+  const incidentRisk = getRiskLevel(flags.incident, { low: 0, medium: 2 })
+  const activityRisk = getRiskLevel(flags.activity, { low: 0, medium: 2 })
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -98,6 +111,44 @@ export default async function DashboardPage() {
             value={data.accountsByStatus.inTransition}
             icon={ArrowUpDown}
             subtitle="Status being updated"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <MetricCard
+            title="Security Risks"
+            value={flags.security}
+            icon={ShieldAlert}
+            subtitle="Missing 2FA, outdated password"
+            riskLevel={securityRisk}
+          />
+          <MetricCard
+            title="Legal Risks"
+            value={flags.legal}
+            icon={ScaleIcon}
+            riskLevel={legalRisk}
+            subtitle="FOIA/HIPAA/FERPA not confirmed or incomplete"
+          />
+          <MetricCard
+            title="Activity Risks"
+            value={flags.activity}
+            icon={ActivityIcon}
+            riskLevel={activityRisk}
+            subtitle="Inactive accounts, no assigned owner"
+          />
+          <MetricCard
+            title="Incident Reports"
+            value={flags.incident}
+            icon={FileWarning}
+            riskLevel={incidentRisk}
+            subtitle="Open incident reports"
+          />
+          <MetricCard
+            title="Compliance Risks"
+            value={flags.compliance}
+            icon={ClipboardList}
+            riskLevel={complianceRisk}
+            subtitle="Incomplete training, unacknowledged policies"
           />
         </div>
 

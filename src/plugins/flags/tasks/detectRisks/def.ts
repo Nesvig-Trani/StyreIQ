@@ -21,7 +21,7 @@ export const detectRisksTask = {
     return {
       output: {
         success: true,
-        message: 'Inactive accounts flagged successfully',
+        message: 'Risk detection completed successfully',
       },
     }
   },
