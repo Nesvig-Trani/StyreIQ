@@ -17,6 +17,7 @@ type DataTableDateRangeFilterProps<TData> = {
   table: Table<TData>
   id: string
   isGlobal: boolean
+  title?: string
   disabledDays?: 'past' | 'future'
 }
 

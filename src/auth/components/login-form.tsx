@@ -22,8 +22,8 @@ export function LoginForm() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-3">
+            <div className="flex flex-col gap-4 sm:gap-6">
+              <div className="grid gap-2 sm:gap-3">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
@@ -34,7 +34,7 @@ export function LoginForm() {
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="grid gap-3">
+              <div className="grid gap-2 sm:gap-3">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                   <a

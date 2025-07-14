@@ -12,6 +12,7 @@ type DataTableDateFilterProps<TData> = {
   id: string
   isGlobal: boolean
   disabledDays?: 'past' | 'future'
+  title?: string
 }
 
 export const DataTableDateFilter = <TData,>(

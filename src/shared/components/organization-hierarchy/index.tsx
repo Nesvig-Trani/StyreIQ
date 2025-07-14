@@ -45,24 +45,24 @@ export default function OrganizationHierarchy({
     setIsDisableModalOpen,
   } = useOrganizationHierarchy({ organizations, originalData, pagination, users })
   return (
-    <div className="flex">
-      <div className="w-1/2 border-r flex flex-col">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[600px]">
+      <div className="flex flex-col border rounded-lg">
         <div className="p-4 border-b">
           <div className="space-y-3">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search by name or admin email..."
+                placeholder="Search by name..."
                 value={searchTerm}
                 className="pl-10"
                 onChange={handleSearchChange}
               />
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <Select value={statusFilter} onValueChange={handleStatusChange}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Filter by status" />
+                  <SelectValue placeholder="All Status" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Status</SelectItem>
@@ -74,7 +74,7 @@ export default function OrganizationHierarchy({
 
               <Select value={typeFilter} onValueChange={handleTypeChange}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Filter by type" />
+                  <SelectValue placeholder="All Types" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Types</SelectItem>
@@ -89,45 +89,63 @@ export default function OrganizationHierarchy({
           </div>
         </div>
 
-        <ScrollArea className="flex-1 p-2">
-          {renderFilteredResults()}
-          <div className="flex justify-end">
-            <div className="flex">
-              <ChevronLeftIcon
-                onClick={() => {
-                  if (pagination.pageIndex > 0) {
-                    handlePageChange(pagination.pageIndex - 1)
-                  }
-                }}
-              />
-              <ChevronRightIcon
-                onClick={() => {
-                  if (pagination.pageIndex + 1 < pagination.pageCount) {
-                    handlePageChange(pagination.pageIndex + 1)
-                  }
-                }}
-              />
-            </div>
+        <ScrollArea className="flex-1 p-2">{renderFilteredResults()}</ScrollArea>
+
+        <div className="flex justify-center p-2 border-t">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                if (pagination.pageIndex > 0) {
+                  handlePageChange(pagination.pageIndex - 1)
+                }
+              }}
+              disabled={pagination.pageIndex === 0}
+            >
+              <ChevronLeftIcon className="h-4 w-4" />
+            </Button>
+
+            <span className="text-sm text-muted-foreground px-2">
+              Page {pagination.pageIndex + 1} of {pagination.pageCount}
+            </span>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                if (pagination.pageIndex + 1 < pagination.pageCount) {
+                  handlePageChange(pagination.pageIndex + 1)
+                }
+              }}
+              disabled={pagination.pageIndex + 1 >= pagination.pageCount}
+            >
+              <ChevronRightIcon className="h-4 w-4" />
+            </Button>
           </div>
-        </ScrollArea>
+        </div>
       </div>
 
-      <div className="w-1/2 flex flex-col">
+      <div className="flex flex-col">
         {selectedOrg ? (
-          <div className="flex-1 p-4">
+          <div className="flex-1">
             <Card className="h-full">
-              <CardHeader className="flex flex-row items-center justify-between">
-                <div>
-                  <CardTitle className="flex items-center gap-2">{selectedOrg.name}</CardTitle>
+              <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="min-w-0 flex-1">
+                  <CardTitle className="flex items-center gap-2 truncate">
+                    {selectedOrg.name}
+                  </CardTitle>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 shrink-0">
                   {isEditing ? (
-                    <Button onClick={() => setIsEditing(false)}>
-                      <X />
+                    <Button size="sm" variant="outline" onClick={() => setIsEditing(false)}>
+                      <X className="h-4 w-4" />
+                      <span className="ml-1 hidden sm:inline">Cancel</span>
                     </Button>
                   ) : (
-                    <Button onClick={() => setIsEditing(true)}>
-                      <EditIcon />
+                    <Button size="sm" onClick={() => setIsEditing(true)}>
+                      <EditIcon className="h-4 w-4" />
+                      <span className="ml-1 hidden sm:inline">Edit</span>
                     </Button>
                   )}
                   <Button
@@ -163,10 +181,10 @@ export default function OrganizationHierarchy({
             </Card>
           </div>
         ) : (
-          <div className="flex-1 flex items-center justify-center text-muted-foreground">
-            <div className="text-center">
+          <div className="flex-1 flex items-center justify-center text-muted-foreground border rounded-lg">
+            <div className="text-center p-8">
               <Building2 className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p>Select an organization to view details</p>
+              <p className="text-sm">Select an organization to view details</p>
             </div>
           </div>
         )}

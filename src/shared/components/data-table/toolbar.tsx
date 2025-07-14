@@ -46,9 +46,14 @@ export const DataTableToolbar = <TData,>(props: DataTableToolbarProps<TData>): R
   }
 
   return (
-    <div className={cn('flex', hasFilters ? 'justify-between' : 'justify-end')}>
+    <div
+      className={cn(
+        'flex flex-col gap-4',
+        hasFilters ? 'lg:flex-row lg:justify-between' : 'lg:justify-end',
+      )}
+    >
       {hasFilters && (
-        <div className="flex flex-col justify-start space-y-2 md:flex-row md:items-center md:space-x-2 md:space-y-0">
+        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
           {globalFiltersDefs.map((filter) => {
             if (filter.type === 'search') {
               return (
@@ -82,6 +87,7 @@ export const DataTableToolbar = <TData,>(props: DataTableToolbarProps<TData>): R
                   table={table}
                   id={filter.id}
                   isGlobal
+                  title={filter.title}
                   disabledDays={filter.disabledDays}
                 />
               )
@@ -112,6 +118,7 @@ export const DataTableToolbar = <TData,>(props: DataTableToolbarProps<TData>): R
                   table={table}
                   isGlobal={false}
                   id={filter.id}
+                  title={filter.title}
                   disabledDays={filter.disabledDays}
                 />
               )
@@ -124,6 +131,7 @@ export const DataTableToolbar = <TData,>(props: DataTableToolbarProps<TData>): R
                   table={table}
                   id={filter.id}
                   isGlobal={false}
+                  title={filter.title}
                   disabledDays={filter.disabledDays}
                 />
               )
@@ -133,7 +141,11 @@ export const DataTableToolbar = <TData,>(props: DataTableToolbarProps<TData>): R
           })}
 
           {isFiltered && (
-            <Button variant="ghost" onClick={handleResetClick} className="h-8 px-2 lg:px-3">
+            <Button
+              variant="ghost"
+              onClick={handleResetClick}
+              className="h-8 px-2 lg:px-3 w-full sm:w-auto"
+            >
               Reset
               <CrossIcon className="ml-2 h-4 w-4" />
             </Button>
@@ -141,7 +153,9 @@ export const DataTableToolbar = <TData,>(props: DataTableToolbarProps<TData>): R
         </div>
       )}
 
-      <DataTableViewOptions table={table} />
+      <div className="flex justify-end">
+        <DataTableViewOptions table={table} />
+      </div>
     </div>
   )
 }

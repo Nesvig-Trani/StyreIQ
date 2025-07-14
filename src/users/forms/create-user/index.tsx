@@ -54,7 +54,7 @@ export function CreateUserForm({
         <CardTitle>Create User</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -131,7 +131,7 @@ export function CreateUserForm({
           <div className="space-y-2">
             <Label>Organizations</Label>
             <div className="border rounded-md p-3">
-              <ScrollArea className="h-32">
+              <ScrollArea className="h-32 sm:h-40">
                 {isLoading ? (
                   <div className="flex items-center justify-center h-full">
                     <span className="text-sm text-muted-foreground">Loading organizations...</span>
@@ -149,7 +149,7 @@ export function CreateUserForm({
                         />
                         <Label
                           htmlFor={`org-${org.id}`}
-                          className="text-sm font-normal cursor-pointer"
+                          className="text-sm font-normal cursor-pointer leading-relaxed"
                         >
                           {org.name}
                         </Label>

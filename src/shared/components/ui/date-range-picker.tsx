@@ -25,28 +25,39 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = (props) => {
             variant="outline"
             size={size}
             className={cn(
-              'w-[300px] justify-start text-left font-normal',
+              'w-[180px] sm:w-[250px] lg:w-[300px] justify-start text-left font-normal',
               !selected && 'text-muted-foreground',
             )}
           >
             <Calendar1 className="mr-2 size-4" />
-            {selected == null && <span>Pick a date</span>}
+            {selected == null && <span className="truncate">Pick a date</span>}
             {selected != null && (
-              <>
-                {selected.from && `${format(selected.from, 'LLL dd, y')} - `}
-                {selected.to && format(selected.to, 'LLL dd, y')}
-              </>
+              <span className="truncate">
+                {selected.from && `${format(selected.from, 'MMM dd')} - `}
+                {selected.to && format(selected.to, 'MMM dd, y')}
+              </span>
             )}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            initialFocus
-            mode={'range'}
-            defaultMonth={selected?.from}
-            numberOfMonths={2}
-            {...extra}
-          />
+          <div className="block sm:hidden">
+            <Calendar
+              initialFocus
+              mode={'range'}
+              defaultMonth={selected?.from}
+              numberOfMonths={1}
+              {...extra}
+            />
+          </div>
+          <div className="hidden sm:block">
+            <Calendar
+              initialFocus
+              mode={'range'}
+              defaultMonth={selected?.from}
+              numberOfMonths={2}
+              {...extra}
+            />
+          </div>
         </PopoverContent>
       </Popover>
     </div>

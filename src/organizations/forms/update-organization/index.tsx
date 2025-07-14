@@ -135,7 +135,6 @@ export const UpdateOrganizationForm = ({
             onValueChange={(value) => setValue('backupAdmins', value)}
             value={watch('backupAdmins')}
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2"></div>
         </div>
 
         <div className="space-y-2">
@@ -210,11 +209,16 @@ export const UpdateOrganizationForm = ({
           <Label htmlFor="delegatedPermissions">Delegated Permissions</Label>
         </div>
 
-        <div className="flex justify-end space-x-4 pt-4">
-          <Button type="button" variant="outline" onClick={() => reset()}>
+        <div className="flex flex-col sm:flex-row sm:justify-end gap-3 pt-6">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => reset()}
+            className="w-full sm:w-auto"
+          >
             Reset
           </Button>
-          <Button type="submit" disabled={isSubmitting}>
+          <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
             {isSubmitting ? 'Saving...' : 'Save Changes'}
           </Button>
         </div>

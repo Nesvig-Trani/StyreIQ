@@ -41,19 +41,26 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
+      <header className="bg-white border-b border-gray-200 hidden lg:block">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+          <div className="flex justify-between items-center py-3 sm:py-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Social Media Dashboard</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+                Social Media Dashboard
+              </h1>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
+        {/* Mobile Title */}
+        <div className="lg:hidden mb-6">
+          <h1 className="text-xl font-bold text-gray-900">Social Media Dashboard</h1>
+        </div>
+
         {/* Key Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Total Accounts */}
           <MetricCard
             title="Total Accounts"
@@ -90,7 +97,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Account Status Breakdown */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <MetricCard
             title="Active Accounts"
             value={data.accountsByStatus.active}
@@ -153,7 +160,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* User Role Breakdown */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           <MetricCard
             title="Unit Administrators"
             value={data.activeUsers.unitAdmins}

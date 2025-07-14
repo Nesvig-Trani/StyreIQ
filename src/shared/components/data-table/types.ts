@@ -25,12 +25,14 @@ export type DataTableSelectFilter = {
 export type DataTableDateFilter = {
   type: 'date'
   id: string
+  title?: string
   disabledDays?: 'past' | 'future'
 }
 
 export type DataTableDateRangeFilter = {
   type: 'date-range'
   id: string
+  title?: string
   disabledDays?: 'past' | 'future'
 }
 

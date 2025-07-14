@@ -41,7 +41,7 @@ function useFlagsTable({
   const columnFiltersDefs: DataTableFilter[] = [
     {
       id: 'flagType',
-      title: 'Risk Flag Type',
+      title: 'Type',
       type: 'select',
       allowMultiple: true,
       options: flagTypeOptions,
@@ -65,11 +65,13 @@ function useFlagsTable({
     },
     {
       id: 'detectionDate',
+      title: 'Detection Date',
       type: 'date-range',
       disabledDays: 'future',
     },
     {
       id: 'lastActivity',
+      title: 'Last Activity',
       type: 'date-range',
       disabledDays: 'future',
     },

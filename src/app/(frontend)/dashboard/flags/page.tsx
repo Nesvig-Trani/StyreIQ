@@ -7,6 +7,7 @@ import { getFlags } from '@/plugins/flags/queries'
 import Link from 'next/link'
 import { CirclePlus } from 'lucide-react'
 import { getAllOrganizations } from '@/plugins/organizations/queries'
+import { Badge } from '@/shared/components/ui/badge'
 
 export default async function FlagsPage(props: {
   searchParams?: Promise<{
@@ -35,13 +36,32 @@ export default async function FlagsPage(props: {
   return (
     <Card>
       <CardContent>
-        <div className={'flex justify-end gap-4'}>
-          <Button size="sm">
-            <Link className={'flex items-center gap-2'} href={'/dashboard/flags/create'} prefetch>
-              <CirclePlus />
-              Create Risk Flag
-            </Link>
-          </Button>
+        <div className="mb-6">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+            <div className="space-y-2">
+              <div className="flex items-center gap-3">
+                <h2 className="text-2xl font-bold">Risk Flags</h2>
+                <Badge variant="secondary" className="text-xs">
+                  {flags.totalDocs} Active Flags
+                </Badge>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Monitor and manage risk indicators across your social media accounts
+              </p>
+            </div>
+            <div className="w-full sm:w-auto">
+              <Button size="sm" className="w-full sm:w-auto">
+                <Link
+                  className="flex items-center justify-center gap-2"
+                  href="/dashboard/flags/create"
+                  prefetch
+                >
+                  <CirclePlus className="h-4 w-4" />
+                  Create Risk Flag
+                </Link>
+              </Button>
+            </div>
+          </div>
         </div>
         <FlagsTable
           user={user}
