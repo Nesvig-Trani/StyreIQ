@@ -1,12 +1,14 @@
 'use client'
 import React from 'react'
-import type { SocialMedia, User } from '@/payload-types'
+import type { Organization, SocialMedia, User } from '@/payload-types'
 import { DataTable } from '@/shared'
 import { useSocialMediasTable } from '@/social-medias'
 
 export type SocialMediasTableProps = {
   user: User | null
   data: SocialMedia[]
+  organizations: Organization[]
+  users: User[]
   pagination: {
     pageSize: number
     pageIndex: number
@@ -15,8 +17,18 @@ export type SocialMediasTableProps = {
   }
 }
 
-export const SocialMediasTable: React.FC<SocialMediasTableProps> = ({ user, data, pagination }) => {
-  const { columns } = useSocialMediasTable(user)
+export const SocialMediasTable: React.FC<SocialMediasTableProps> = ({
+  user,
+  data,
+  organizations,
+  users,
+  pagination,
+}) => {
+  const { columns, columnFiltersDefs, searchParams } = useSocialMediasTable({
+    user,
+    organizations,
+    users,
+  })
 
   return (
     <DataTable
@@ -25,6 +37,15 @@ export const SocialMediasTable: React.FC<SocialMediasTableProps> = ({ user, data
       pagination={pagination}
       pageSizeOptions={[5, 10, 20]}
       pageCount={pagination.pageCount}
+      columnFiltersDefs={columnFiltersDefs}
+      columnFilters={{
+        status: searchParams.status,
+        platform: searchParams.platform,
+        organization: searchParams.organization,
+        primaryAdmin: searchParams.primaryAdmin,
+        isInUseSecurePassword: searchParams.hasSecurePassword,
+        isEnabledTwoFactor: searchParams.hasTwoFactor,
+      }}
     />
   )
 }

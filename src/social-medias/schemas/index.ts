@@ -71,6 +71,21 @@ export const statusLabelMap: Record<SocialMediaStatusEnum, string> = {
   [SocialMediaStatusEnum.PendingApproval]: 'Pending Approval',
 }
 
+export const statusOptions = Object.values(SocialMediaStatusEnum).map((status) => ({
+  label: statusLabelMap[status],
+  value: status,
+}))
+
+export enum PlatformEnum {
+  Facebook = 'facebook',
+  Instagram = 'instagram',
+  Twitter = 'twitter',
+  LinkedIn = 'linkedin',
+  TikTok = 'tiktok',
+  YouTube = 'youtube',
+  Other = 'other',
+}
+
 export const statusColorMap: Record<SocialMediaStatusEnum, string> = {
   [SocialMediaStatusEnum.Active]: 'green',
   [SocialMediaStatusEnum.Inactive]: 'red',
@@ -88,6 +103,13 @@ export type UpdateSocialMediaFormProps = {
   user: User | null
 } & CreateSocialMediaFormProps
 
-export const socialMediaSearchSchema = paginationSchema.extend({})
+export const socialMediaSearchSchema = paginationSchema.extend({
+  status: z.array(z.nativeEnum(SocialMediaStatusEnum)).optional(),
+  platform: z.array(z.string()).optional(),
+  organization: z.array(z.string()).optional(),
+  primaryAdmin: z.array(z.string()).optional(),
+  hasSecurePassword: z.boolean().optional(),
+  hasTwoFactor: z.boolean().optional(),
+})
 
 export type UpdateSocialMedia = z.infer<typeof createSocialMediaFormSchema>

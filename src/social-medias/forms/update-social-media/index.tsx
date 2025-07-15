@@ -23,6 +23,7 @@ import { DatePicker } from '@/shared/components/ui/datepicker'
 
 import { UserRolesEnum } from '@/users'
 import { useUpdateSocialMedia } from '@/social-medias/hooks/useUpdateSocialMedia'
+import { platformOptions } from '@/social-medias/constants/platformOptions'
 
 export const UpdateSocialMediaForm: React.FC<UpdateSocialMediaFormProps> = ({
   data,
@@ -75,11 +76,18 @@ export const UpdateSocialMediaForm: React.FC<UpdateSocialMediaFormProps> = ({
 
           <div className={'space-y-2'}>
             <Label htmlFor="platform">Platform</Label>
-            <Input
-              id={'platform'}
-              placeholder={'Enter platform'}
-              {...register('platform', { required: 'Platform is required' })}
-            />
+            <Select name="platform" onValueChange={(value: string) => setValue('platform', value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select platform" />
+              </SelectTrigger>
+              <SelectContent>
+                {platformOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             {errors.platform && <p className="text-red-500">{errors.platform.message}</p>}
           </div>
 

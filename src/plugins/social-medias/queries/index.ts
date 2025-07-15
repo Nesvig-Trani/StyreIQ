@@ -22,32 +22,50 @@ export const getAllSocialMediaAccounts = async () => {
 export const getSocialMediaAccounts = async ({
   pageSize,
   pageIndex,
+  status,
+  platform,
+  organization,
+  primaryAdmin,
 }: {
   pageSize: number
   pageIndex: number
+  status?: string[]
+  platform?: string[]
+  organization?: string[]
+  primaryAdmin?: string[]
 }) => {
   const { user } = await getAuthUser()
   const { payload } = await getPayloadContext()
-  const where: Where =
+
+  const baseWhere: Where =
     user && user.role !== UserRolesEnum.SuperAdmin && user.organizations
       ? {
           or: [
             {
               'organization.id': {
-                in: user.organizations.map((organization) =>
-                  typeof organization === 'number' ? organization : organization.id,
-                ),
+                in: user.organizations.map((o) => (typeof o === 'number' ? o : o.id)),
               },
             },
-            {
-              'primaryAdmin.id': { equals: user.id },
-            },
-            {
-              'backupAdmin.id': { equals: user.id },
-            },
+            { 'primaryAdmin.id': { equals: user.id } },
+            { 'backupAdmin.id': { equals: user.id } },
           ],
         }
       : {}
+
+  const where: Where = {
+    ...(status?.length && { status: { in: status } }),
+    ...(platform?.length && {
+      // Let DB handle case-insensitive comparison if your adapter supports it.
+      platform: { in: platform },
+    }),
+    ...(organization?.length && {
+      'organization.id': { in: organization.map(Number) },
+    }),
+    ...(primaryAdmin?.length && {
+      'primaryAdmin.id': { in: primaryAdmin.map(Number) },
+    }),
+    ...(Object.keys(baseWhere).length > 0 && baseWhere),
+  }
 
   const socialMedias = await payload.find({
     collection: SocialMediasCollectionSlug,

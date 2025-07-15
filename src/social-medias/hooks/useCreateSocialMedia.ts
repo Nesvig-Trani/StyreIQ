@@ -7,6 +7,7 @@ import { toast } from 'sonner'
 import { CreateOrganizationsTree } from '@/organizations/utils/createOrgTree'
 import { EndpointError } from '@/shared'
 import { useRouter } from 'next/navigation'
+import { platformOptions } from '@/social-medias/constants/platformOptions'
 
 export function useCreateSocialMedia({ users, organizations }: CreateSocialMediaFormProps) {
   const tree = CreateOrganizationsTree(organizations as OrganizationWithDepth[])
@@ -28,7 +29,8 @@ export function useCreateSocialMedia({ users, organizations }: CreateSocialMedia
         {
           label: 'Platform *',
           name: 'platform',
-          type: 'text',
+          type: 'select',
+          options: platformOptions,
         },
         {
           label: 'Contact Email',
