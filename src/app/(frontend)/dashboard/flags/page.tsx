@@ -1,18 +1,15 @@
 import React from 'react'
 import FlagsTable from '@/flags/components/flags-table'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
-import { Button, Card, CardContent, parseSearchParamsWithSchema } from '@/shared'
+import { Badge, Button, Card, CardContent, parseSearchParamsWithSchema } from '@/shared'
 import { flagsSearchSchema } from '@/flags/schemas'
 import { getFlags } from '@/plugins/flags/queries'
 import Link from 'next/link'
 import { CirclePlus } from 'lucide-react'
 import { getAllOrganizations } from '@/plugins/organizations/queries'
-import { Badge } from '@/shared/components/ui/badge'
 
 export default async function FlagsPage(props: {
-  searchParams?: Promise<{
-    [key: string]: string
-  }>
+  searchParams?: Promise<{ [key: string]: string }>
 }) {
   const { user } = await getAuthUser()
   const searchParams = await props.searchParams
@@ -42,14 +39,14 @@ export default async function FlagsPage(props: {
               <div className="flex items-center gap-3">
                 <h2 className="text-2xl font-bold">Risk Flags</h2>
                 <Badge variant="secondary" className="text-xs">
-                  {flags.totalDocs} Active Flags
+                  {flags.totalDocs} Total Flags
                 </Badge>
               </div>
               <p className="text-sm text-muted-foreground">
-                Monitor and manage risk indicators across your social media accounts
+                Monitor and manage risk flags detected in your organization
               </p>
             </div>
-            <div className="w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
               <Button size="sm" className="w-full sm:w-auto">
                 <Link
                   className="flex items-center justify-center gap-2"
@@ -63,6 +60,7 @@ export default async function FlagsPage(props: {
             </div>
           </div>
         </div>
+
         <FlagsTable
           user={user}
           data={flags.docs}
