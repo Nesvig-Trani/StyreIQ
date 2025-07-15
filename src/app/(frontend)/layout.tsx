@@ -3,8 +3,8 @@ import './styles.css'
 import { Toaster } from '@/shared/components/ui/sonner'
 
 export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+  description: 'StyreIQ - Social Media Risk Management Platform',
+  title: 'StyreIQ',
 }
 
 export default async function RootLayout(props: { children: React.ReactNode }) {

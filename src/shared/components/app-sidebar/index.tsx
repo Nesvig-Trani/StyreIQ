@@ -22,7 +22,6 @@ import {
 } from '@/shared/components/ui/sidebar'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Button } from '@/shared'
 import { UserRolesEnum } from '@/users'
 
 const data = {
@@ -72,9 +71,9 @@ export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="#">
+              <a href="/dashboard">
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-medium">GovernIq</span>
+                  <span className="font-medium text-sm lg:text-base">StyreIQ</span>
                 </div>
               </a>
             </SidebarMenuButton>
@@ -93,16 +92,27 @@ export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
                   <Link href={item.url}>
                     <SidebarMenuButton>
                       {item.icon && <item.icon />}
-                      <span className="font-medium cursor-pointer">{item.title}</span>
+                      <span className="font-medium cursor-pointer text-xs lg:text-sm">
+                        {item.title}
+                      </span>
                     </SidebarMenuButton>
                   </Link>
                 </SidebarMenuItem>
               ))}
           </SidebarMenu>
         </SidebarGroup>
-        <Button onClick={() => router.push('/api/logout')}>
-          <LogOutIcon />
-        </Button>
+        <SidebarGroup className="mt-auto">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <button onClick={() => router.push('/api/logout')}>
+                  <LogOutIcon />
+                  <span className="font-medium text-xs lg:text-sm">Logout</span>
+                </button>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
