@@ -7,8 +7,6 @@ import {
   CardTitle,
   CardContent,
   SelectItem,
-  Checkbox,
-  ScrollArea,
   Label,
   Input,
   Select,
@@ -16,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
   Button,
+  TreeSelect,
 } from '@/shared'
 import { roleLabelMap, statusLabelMap, UserRolesEnum, UserStatusEnum } from '@/users/schemas'
 import useCreateUserForm from '@/users/hooks/useCreateUserForm'
@@ -37,16 +36,15 @@ export function CreateUserForm({
     allowedStatuses,
     allowedRoles,
     organizations,
-    handleOrganizationToggle,
     handleRoleChange,
     isLoading,
     register,
     errors,
     watch,
     setValue,
+    selectedRole,
+    tree,
   } = useCreateUserForm({ authUserRole, initialOrganizations, topOrgDepth })
-
-  const selectedOrganizations = watch('organizations') || []
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
@@ -127,48 +125,39 @@ export function CreateUserForm({
               </Select>
             </div>
           )}
-
-          <div className="space-y-2">
-            <Label>Organizations</Label>
-            <div className="border rounded-md p-3">
-              <ScrollArea className="h-32 sm:h-40">
-                {isLoading ? (
-                  <div className="flex items-center justify-center h-full">
-                    <span className="text-sm text-muted-foreground">Loading organizations...</span>
-                  </div>
-                ) : organizations.length > 0 ? (
+          {selectedRole !== UserRolesEnum.SuperAdmin && (
+            <div className="space-y-2">
+              <Label>Organizations</Label>
+              <div className="border rounded-md p-3">
+                {organizations.length > 0 ? (
                   <div className="space-y-2">
-                    {organizations.map((org) => (
-                      <div key={org.id} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`org-${org.id}`}
-                          checked={selectedOrganizations.includes(org.id.toString())}
-                          onCheckedChange={(checked) =>
-                            handleOrganizationToggle(org.id.toString(), checked as boolean)
-                          }
-                        />
-                        <Label
-                          htmlFor={`org-${org.id}`}
-                          className="text-sm font-normal cursor-pointer leading-relaxed"
-                        >
-                          {org.name}
-                        </Label>
-                      </div>
-                    ))}
+                    <TreeSelect
+                      options={organizations.map((org) => ({
+                        value: org.id.toString(),
+                        label: org.name,
+                      }))}
+                      tree={tree}
+                      value={watch('organizations')}
+                      handleChangeAction={(val) =>
+                        setValue('organizations', typeof val === 'string' ? [val] : val)
+                      }
+                      errors={!!errors.organizations}
+                      multiple
+                      disabled={isLoading}
+                    />
+
+                    {errors.organizations && (
+                      <p className="text-sm text-red-500">{errors.organizations.message}</p>
+                    )}
                   </div>
                 ) : (
                   <div className="text-sm text-muted-foreground text-center">
                     No organizations available
                   </div>
                 )}
-              </ScrollArea>
+              </div>
             </div>
-            {selectedOrganizations.length > 0 && (
-              <p className="text-sm text-muted-foreground">
-                {selectedOrganizations.length} organization(s) selected
-              </p>
-            )}
-          </div>
+          )}
 
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? 'Creating User...' : 'Create User'}

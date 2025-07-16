@@ -111,7 +111,6 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
 
   if (type === 'array') {
     return (
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       <InputListHelper
         key={fieldData.name}
         form={form}
@@ -122,7 +121,14 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
   }
 
   if (type === 'tree-select') {
-    return <TreeSelectHelper key={fieldData.name} form={form} fieldData={fieldData} />
+    return (
+      <TreeSelectHelper
+        key={fieldData.name}
+        form={form}
+        fieldData={fieldData}
+        multiple={!!fieldData.multiple}
+      />
+    )
   }
 
   throw new Error(`Unsupported field type: ${type as string}`)
@@ -156,7 +162,7 @@ export const InputListHelper = <TFieldValues extends FieldValues>({
               onClick={(): void => {
                 const object = getFieldListDefaultValues(fieldData.children || [])
                 // expected type is dependent of some specific types that cannot be easily inferred here
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 append(object as any)
               }}
             >

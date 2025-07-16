@@ -11,12 +11,13 @@ import { updateUser } from '@/sdk/users'
 import { toast } from 'sonner'
 import { Organization } from '@/payload-types'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { CreateOrganizationsTree, OrganizationWithDepth } from '@/organizations'
 
 function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const returnTo = searchParams.get('returnTo') || `/dashboard/users/access/${id}`
-
+  const tree = CreateOrganizationsTree(organizations as OrganizationWithDepth[])
   const { formComponent } = useFormHelper(
     {
       schema: updateUserFormSchema,
@@ -52,11 +53,17 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
         {
           label: 'Organization',
           name: 'organizations',
-          type: 'multiselect',
+          type: 'tree-select',
           options: organizations.map((org) => ({
             value: org.id.toString(),
             label: org.name,
           })),
+          tree: tree,
+          multiple: true,
+          dependsOn: {
+            field: 'role',
+            value: [UserRolesEnum.SocialMediaManager, UserRolesEnum.UnitAdmin],
+          },
         },
       ],
       onSubmit: async (submitData) => {

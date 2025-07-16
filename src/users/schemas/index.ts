@@ -31,7 +31,7 @@ export const statusLabelMap: Record<UserStatusEnum, string> = {
 const RoleEnum = z.nativeEnum(UserRolesEnum)
 const StatusEnum = z.nativeEnum(UserStatusEnum)
 
-export const createUserFormSchema = z.object({
+export const userBaseSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8, 'Password should have at least 8 characters'),
   name: z.string(),
@@ -40,13 +40,25 @@ export const createUserFormSchema = z.object({
   organizations: z.array(z.string()).optional(),
 })
 
+export const createUserFormSchema = userBaseSchema.superRefine((data, ctx) => {
+  if (data.role !== UserRolesEnum.SuperAdmin) {
+    if (!data.organizations || data.organizations.length === 0) {
+      ctx.addIssue({
+        path: ['organizations'],
+        code: z.ZodIssueCode.custom,
+        message: 'Organizations are required unless the role is Super Admin.',
+      })
+    }
+  }
+})
+
 export const createFirstUserFormSchema = z.object({
   name: z.string(),
   email: z.string().email(),
   password: z.string().min(8),
 })
 
-export const updateUserFormSchema = createUserFormSchema.omit({
+export const updateUserFormSchema = userBaseSchema.omit({
   password: true,
 })
 

@@ -1,4 +1,4 @@
-import { CreateUser, UserRolesEnum, UserStatusEnum } from '@/users'
+import { CreateUser, createUserFormSchema, UserRolesEnum, UserStatusEnum } from '@/users'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Organization } from '@/payload-types'
@@ -7,6 +7,7 @@ import { toast } from 'sonner'
 import { isApiError } from '@/shared'
 import { createUser } from '@/sdk/users'
 import { USER_ALREADY_EXISTS } from '../constants/Errors'
+import { CreateOrganizationsTree, OrganizationWithDepth } from '@/organizations'
 
 interface UserFormProps {
   authUserRole?: UserRolesEnum | null
@@ -24,6 +25,7 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
     setValue,
     formState: { errors, isSubmitting },
     reset,
+    setError,
   } = useForm<CreateUser>({
     defaultValues: {
       email: '',
@@ -37,6 +39,9 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
 
   const [organizations, setOrganizations] = useState<Organization[]>(initialOrganizations)
   const [isLoading, setIsLoading] = useState(false)
+
+  const selectedRole = watch('role')
+  const tree = CreateOrganizationsTree(organizations as OrganizationWithDepth[])
 
   const allowedRoles =
     authUserRole === UserRolesEnum.UnitAdmin
@@ -62,20 +67,29 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
     }
   }
 
-  const handleOrganizationToggle = (orgId: string, checked: boolean) => {
-    const currentOrgs = watch('organizations') || []
-    const newOrgs = checked
-      ? [...currentOrgs, orgId]
-      : currentOrgs.filter((id: string) => id !== orgId)
-    setValue('organizations', newOrgs)
-  }
-
   const onSubmit = async (data: CreateUser) => {
+    const result = createUserFormSchema.safeParse(data)
+    if (!result.success) {
+      const zodErrors = result.error.flatten()
+
+      Object.entries(zodErrors.fieldErrors).forEach(([field, messages]) => {
+        if (!messages) return
+        setError(field as keyof CreateUser, {
+          type: 'manual',
+          message: messages[0],
+        })
+      })
+      return
+    }
     try {
       const user = await createUser(data)
-      reset()
       toast.success('User created successfully')
-      router.push(`/dashboard/users/access/${user.id}`)
+      reset()
+      if (user.role === UserRolesEnum.SuperAdmin) {
+        router.push('/dashboard/users')
+      } else {
+        router.push(`/dashboard/users/access/${user.id}`)
+      }
     } catch (error) {
       if (isApiError(error)) {
         if (error.data?.message === USER_ALREADY_EXISTS) {
@@ -97,12 +111,13 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
     allowedRoles,
     allowedStatuses,
     handleRoleChange,
-    handleOrganizationToggle,
     isLoading: isLoading || isSubmitting,
     register,
     errors,
     watch,
     setValue,
+    selectedRole,
+    tree,
   }
 }
 

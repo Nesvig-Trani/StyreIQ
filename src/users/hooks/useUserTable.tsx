@@ -5,6 +5,7 @@ import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
 import { FileLock2, PencilIcon } from 'lucide-react'
 import { OrganizationCell } from '@/organizations/components/organizations-cell'
+import { Badge } from '@/shared'
 
 function useUserTable({ user }: { user: User | null }) {
   const columns: ColumnDef<User>[] = [
@@ -37,6 +38,13 @@ function useUserTable({ user }: { user: User | null }) {
       header: 'Organizations',
       cell: ({ row }) => {
         const organizations = row.original.organizations as Organization[]
+        if (row.original.role === UserRolesEnum.SuperAdmin) {
+          return (
+            <Badge variant="secondary" className="text-xs">
+              StyreIq
+            </Badge>
+          )
+        }
         return organizations && organizations?.length > 0 ? (
           <OrganizationCell organizations={organizations} />
         ) : (

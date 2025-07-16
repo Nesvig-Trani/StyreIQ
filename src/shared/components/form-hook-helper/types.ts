@@ -60,7 +60,7 @@ export type FieldData<TFieldValues extends FieldValues = FieldValues> = {
   /** Used to specify that the field is required */
   dependsOn?: {
     field: keyof TFieldValues
-    value: string | number | boolean
+    value: string | number | boolean | Array<string | number | boolean>
   }
   placeholder?: string
   tree?: Tree[]
