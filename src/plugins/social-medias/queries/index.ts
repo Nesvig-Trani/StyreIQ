@@ -37,21 +37,6 @@ export const getSocialMediaAccounts = async ({
   const { user } = await getAuthUser()
   const { payload } = await getPayloadContext()
 
-  const baseWhere: Where =
-    user && user.role !== UserRolesEnum.SuperAdmin && user.organizations
-      ? {
-          or: [
-            {
-              'organization.id': {
-                in: user.organizations.map((o) => (typeof o === 'number' ? o : o.id)),
-              },
-            },
-            { 'primaryAdmin.id': { equals: user.id } },
-            { 'backupAdmin.id': { equals: user.id } },
-          ],
-        }
-      : {}
-
   const where: Where = {
     ...(status?.length && { status: { in: status } }),
     ...(platform?.length && {
@@ -64,14 +49,15 @@ export const getSocialMediaAccounts = async ({
     ...(primaryAdmin?.length && {
       'primaryAdmin.id': { in: primaryAdmin.map(Number) },
     }),
-    ...(Object.keys(baseWhere).length > 0 && baseWhere),
-  }
+ }
 
   const socialMedias = await payload.find({
     collection: SocialMediasCollectionSlug,
     where,
     limit: pageSize,
     page: pageIndex + 1,
+    user,
+    overrideAccess: false,
   })
 
   return socialMedias

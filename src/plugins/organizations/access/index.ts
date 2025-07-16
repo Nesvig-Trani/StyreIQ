@@ -1,29 +1,15 @@
 import { Organization } from '@/payload-types'
-import { Access, Where } from 'payload'
+import { Access } from 'payload'
 import { UserRolesEnum } from '@/users'
+import { buildAccessibleOrgsFilter } from '../utils'
 
 export const canReadOrganizations: Access = ({ req: { user } }) => {
   if (!user) return false
+  if (user.role === UserRolesEnum.SuperAdmin) return true
 
   const orgs = user.organizations as Organization[]
-  const organizationIds = orgs.map((org) => org.id)
 
-  const orgWhere: Where[] = organizationIds.reduce<Where[]>((acc, orgId) => {
-    acc.push({ id: { equals: orgId } })
-    acc.push({ path: { contains: orgId } })
-    return acc
-  }, [])
-
-  const where: Where = {
-    and: [
-      {
-        or: orgWhere,
-      },
-      {
-        disabled: { not_equals: true },
-      },
-    ],
-  }
+  const where = buildAccessibleOrgsFilter({ orgs })
 
   return where
 }

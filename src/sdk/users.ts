@@ -4,10 +4,6 @@ import { env } from '@/config/env'
 import { updateOrgAccessSchema } from '@/organization-access'
 import { setUserStatusSchema } from '@/review-requests'
 import { JSON_HEADERS } from '@/shared/constants'
-import { getPayloadContext } from '@/shared/utils/getPayloadContext'
-import { Organization, User } from '@/payload-types'
-import { getOrganizationById } from '@/sdk/organization'
-import { PaginatedDocs } from 'payload'
 
 /**
  * Makes a request to the api for creating a user for the first time.
@@ -89,31 +85,6 @@ export const updateUser = async (data: z.infer<typeof updateUserSchema>) => {
       status: response.status,
       data: errorData,
     }
-  }
-
-  return response.json()
-}
-
-export const getUsers = async ({
-  params,
-  cookie,
-}: {
-  params: {
-    page: string
-    limit: string
-  }
-  cookie: string
-}) => {
-  const search = new URLSearchParams(params as Record<string, string>)
-  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users?${search}`, {
-    credentials: 'include',
-    headers: {
-      cookie: cookie,
-    },
-  })
-
-  if (!response.ok) {
-    throw new Error('Failed to get users')
   }
 
   return response.json()

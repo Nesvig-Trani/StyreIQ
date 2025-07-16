@@ -7,6 +7,7 @@ import {
   updateUserAccess,
   setUserApprovalStatus,
 } from '@/plugins/users/endpoints'
+import { canReadUsers } from '../access'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -14,6 +15,9 @@ export const Users: CollectionConfig = {
     useAsTitle: 'email',
   },
   auth: true,
+  access: {
+    read: canReadUsers,
+  },
   fields: [
     {
       name: 'name',

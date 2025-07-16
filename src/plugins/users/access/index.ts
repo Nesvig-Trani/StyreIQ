@@ -1,11 +1,14 @@
 import { Organization } from '@/payload-types'
 import { buildAccessibleOrgsFilter } from '@/plugins/organizations/utils'
-import { Access } from 'payload'
 import { UserRolesEnum } from '@/users'
+import { Access, Where } from 'payload'
 
-export const canReadFlags: Access = async ({ req: { user, payload } }) => {
+export const canReadUsers: Access = async ({ req: { user, payload } }) => {
   if (!user) return false
-  if (user.role === UserRolesEnum.SuperAdmin) return true
+  if (user.role === UserRolesEnum.SuperAdmin) {
+    return true
+  }
+
   const orgs = user.organizations as Organization[]
   const whereOrg = buildAccessibleOrgsFilter({ orgs })
 
@@ -16,9 +19,12 @@ export const canReadFlags: Access = async ({ req: { user, payload } }) => {
   })
 
   const orgIds = organizations.docs.map((org) => org.id)
-  return {
-    organization: {
+
+  const where: Where = {
+    'organizations.id': {
       in: orgIds,
     },
   }
+
+  return where
 }

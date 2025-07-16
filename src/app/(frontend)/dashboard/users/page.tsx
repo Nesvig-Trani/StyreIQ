@@ -1,14 +1,11 @@
 'use server'
 import React from 'react'
-import { PaginatedDocs } from 'payload'
 import { Card, CardContent } from '@/shared/components/ui/card'
 import { userSearchSchema } from '@/users/schemas'
-import { UserTable } from '@/users'
+import { getUsers, UserTable } from '@/users'
 import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
 import { parseSearchParamsWithSchema } from '@/shared/utils/parseParamsServer'
-import { getUsers } from '@/sdk/users'
-import { User } from '@/payload-types'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
 import { CirclePlus } from 'lucide-react'
 import { Badge } from '@/shared/components/ui/badge'
@@ -18,17 +15,14 @@ export default async function UsersPage(props: {
     [key: string]: string
   }>
 }) {
-  const { user, headers } = await getAuthUser()
+  const { user } = await getAuthUser()
   const searchParams = await props.searchParams
 
   const parsedParams = parseSearchParamsWithSchema(searchParams, userSearchSchema)
 
-  const users: PaginatedDocs<User> = await getUsers({
-    params: {
-      page: String(parsedParams.pagination.pageIndex + 1),
-      limit: String(parsedParams.pagination.pageSize),
-    },
-    cookie: headers.get('cookie') || '',
+  const users = await getUsers({
+    pageIndex: parsedParams.pagination.pageIndex + 1,
+    pageSize: parsedParams.pagination.pageSize,
   })
 
   return (

@@ -173,3 +173,24 @@ export const getUsersInfoForDashboard = async () => {
 
   return dashboardData
 }
+
+export const getUsers = async ({
+  pageSize,
+  pageIndex,
+}: {
+  pageSize: number
+  pageIndex: number
+}) => {
+  const { user } = await getAuthUser()
+  const { payload } = await getPayloadContext()
+
+  const users = await payload.find({
+    collection: 'users',
+    page: pageIndex,
+    limit: pageSize,
+    overrideAccess: false,
+    user,
+  })
+
+  return users
+}

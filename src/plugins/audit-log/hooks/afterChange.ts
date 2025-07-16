@@ -41,6 +41,9 @@ const AuditLogAfterChange: CollectionAfterChangeHook = async ({
         case 'flagComments':
           data.organizations = [doc.flag.organization.id]
           break
+        case 'organization_access':
+          data.organizations = [doc.organization.id]
+          break
         default:
           break
       }

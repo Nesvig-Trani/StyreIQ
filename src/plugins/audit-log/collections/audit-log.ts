@@ -1,20 +1,11 @@
 import { CollectionConfig } from 'payload'
 import { AuditLogActionEnum } from '../types/index'
-import { Organization } from '@/payload-types'
+import { canReadAuditLog } from '../access'
 
 export const AuditLogs: CollectionConfig = {
   slug: 'audit_log',
   access: {
-    read: async ({ req: { user } }) => {
-      if (!user) return false
-      const orgs = user.organizations as Organization[]
-      const organizationIds = orgs.map((org) => org.id)
-      return {
-        'organizations.id': {
-          in: organizationIds,
-        },
-      }
-    },
+    read: canReadAuditLog,
   },
   fields: [
     {

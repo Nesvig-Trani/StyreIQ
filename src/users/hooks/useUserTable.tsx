@@ -37,7 +37,6 @@ function useUserTable({ user }: { user: User | null }) {
       header: 'Organizations',
       cell: ({ row }) => {
         const organizations = row.original.organizations as Organization[]
-
         return organizations && organizations?.length > 0 ? (
           <OrganizationCell organizations={organizations} />
         ) : (

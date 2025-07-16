@@ -5,6 +5,7 @@ import {
   updateSocialMediaStatus,
 } from '@/plugins/social-medias/endpoints'
 import { SocialMediaStatusEnum, statusLabelMap } from '@/social-medias/schemas'
+import { canReadSocialMedias } from '../access'
 
 export const SocialMediasCollectionSlug = 'social-medias'
 
@@ -13,7 +14,9 @@ export const SocialMedias: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
   },
-  access: {},
+  access: {
+    read: canReadSocialMedias,
+  },
   fields: [
     {
       name: 'name',

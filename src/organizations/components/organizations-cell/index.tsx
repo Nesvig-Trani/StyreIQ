@@ -4,13 +4,14 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/shared/componen
 
 export function OrganizationCell({ organizations }: { organizations: Organization[] }) {
   const maxVisible = 1
-  const visibleOrgs = organizations.slice(0, maxVisible)
-  const remainingCount = organizations.length - maxVisible
+  const filterOrgs = organizations.filter((org) => org.name)
+  const visibleOrgs = filterOrgs.slice(0, maxVisible)
+  const remainingCount = filterOrgs.length - maxVisible
 
-  if (organizations.length <= maxVisible) {
+  if (filterOrgs.length <= maxVisible) {
     return (
       <div className="flex flex-wrap gap-1">
-        {organizations.map((org, index) => (
+        {filterOrgs.map((org, index) => (
           <Badge key={index} variant="secondary" className="text-xs">
             {org.name}
           </Badge>
@@ -36,7 +37,7 @@ export function OrganizationCell({ organizations }: { organizations: Organizatio
           <div className="space-y-2">
             <h4 className="text-sm font-semibold">All Organizations</h4>
             <div className="flex flex-wrap gap-1">
-              {organizations.map((org, index) => (
+              {filterOrgs.map((org, index) => (
                 <Badge key={index} variant="secondary" className="text-xs">
                   {org.name}
                 </Badge>

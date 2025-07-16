@@ -1,9 +1,9 @@
 import { Organization } from '@/payload-types'
 import { buildAccessibleOrgsFilter } from '@/plugins/organizations/utils'
+import { UserRolesEnum } from '@/users/schemas'
 import { Access } from 'payload'
-import { UserRolesEnum } from '@/users'
 
-export const canReadFlags: Access = async ({ req: { user, payload } }) => {
+export const canReadAuditLog: Access = async ({ req: { user, payload } }) => {
   if (!user) return false
   if (user.role === UserRolesEnum.SuperAdmin) return true
   const orgs = user.organizations as Organization[]
@@ -15,10 +15,10 @@ export const canReadFlags: Access = async ({ req: { user, payload } }) => {
     limit: 0,
   })
 
-  const orgIds = organizations.docs.map((org) => org.id)
+  const organizationIds = organizations.docs.map((org) => org.id)
   return {
-    organization: {
-      in: orgIds,
+    'organizations.id': {
+      in: organizationIds,
     },
   }
 }
