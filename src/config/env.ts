@@ -7,22 +7,20 @@ export const env = createEnv({
     NEXT_PUBLIC_NODE_ENV: z.enum(['production', 'development', 'test']),
   },
   server: {
-    SMTP_HOST: z.string(),
-    SMTP_USER: z.string(),
-    SMTP_PASS: z.string(),
     FROM_ADDRESS: z.string(),
     FROM_NAME: z.string(),
     PAYLOAD_SECRET: z.string(),
+    RESEND_API_KEY: z.string(),
+    LOCAL_EMAIL_TO_ADDRESS: z.string(),
   },
 
   runtimeEnv: {
-    NEXT_PUBLIC_NODE_ENV: process.env.NODE_ENV || 'development',
+    NEXT_PUBLIC_NODE_ENV: process.env.NEXT_PUBLIC_NODE_ENV || 'development',
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
-    SMTP_HOST: process.env.SMTP_HOST,
-    SMTP_USER: process.env.SMTP_USER,
-    SMTP_PASS: process.env.SMTP_PASS,
     FROM_NAME: process.env.FROM_NAME,
     FROM_ADDRESS: process.env.FROM_ADDRESS,
     PAYLOAD_SECRET: process.env.PAYLOAD_SECRET,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+    LOCAL_EMAIL_TO_ADDRESS: process.env.LOCAL_EMAIL_TO_ADDRESS,
   },
 })

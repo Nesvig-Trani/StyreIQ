@@ -1,5 +1,11 @@
 import { z } from 'zod'
-import { createFirstUserFormSchema, createUserFormSchema, updateUserSchema } from '@/users'
+import {
+  createFirstUserFormSchema,
+  createUserFormSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+  updateUserSchema,
+} from '@/users'
 import { env } from '@/config/env'
 import { updateOrgAccessSchema } from '@/organization-access'
 import { setUserStatusSchema } from '@/review-requests'
@@ -133,6 +139,36 @@ export const setUserApprovalStatus = async ({
 
   if (!response.ok) {
     throw new Error('Failed to set user status')
+  }
+
+  return response.json()
+}
+
+export const sendForgotPasswordRequest = async (data: z.infer<typeof forgotPasswordSchema>) => {
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/forgot-password`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: JSON_HEADERS,
+    body: JSON.stringify({ ...data }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to send forgot password email instructions')
+  }
+
+  return response.json()
+}
+
+export const resetPasswordRequest = async (data: z.infer<typeof resetPasswordSchema>) => {
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/reset-password`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: JSON_HEADERS,
+    body: JSON.stringify({ ...data }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to reset password')
   }
 
   return response.json()

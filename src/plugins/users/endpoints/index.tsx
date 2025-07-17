@@ -2,6 +2,8 @@ import { Endpoint, Where } from 'payload'
 import { parseSearchParamsWithSchema } from '@/shared'
 import {
   createUserFormSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
   updateUserSchema,
   UserRolesEnum,
   UserStatusEnum,
@@ -12,6 +14,10 @@ import { checkAndSendPermissionChangeEmail } from '../../../users/utils/permissi
 import { JSON_HEADERS } from '@/shared/constants'
 import { setUserStatusSchema } from '@/review-requests'
 import { USER_ALREADY_EXISTS } from '../../../users/constants/Errors'
+import { forgotPasswordEmailBody } from '@/users/constants/forgotPasswordEmailBody'
+import { resetPasswordEmailBody } from '@/users/constants/resetPasswordEmailBody'
+import z from 'zod'
+import { env } from '@/config/env'
 
 export const createUser: Endpoint = {
   path: '/',
@@ -383,6 +389,128 @@ export const getOrganizationUsers: Endpoint = {
       })
     } catch (error) {
       console.error('Error getting users:', error)
+      return new Response(JSON.stringify({ error: 'Error getting users', details: error }), {
+        status: 400,
+        headers: JSON_HEADERS,
+      })
+    }
+  },
+}
+
+export const userForgotPassword: Endpoint = {
+  path: '/forgot-password',
+  method: 'post',
+  handler: async (req) => {
+    try {
+      if (!req.json)
+        return new Response(JSON.stringify({ error: 'Missing JSON body' }), {
+          status: 400,
+          headers: JSON_HEADERS,
+        })
+
+      const data = await req.json()
+      const parseData = forgotPasswordSchema.parse(data)
+
+      const user = await req.payload.find({
+        collection: 'users',
+        where: { email: { equals: parseData.email } },
+      })
+
+      if (user.totalDocs === 0) {
+        return new Response(JSON.stringify({ success: true }), {
+          status: 200,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      const token = await req.payload.forgotPassword({
+        collection: 'users',
+        data: {
+          email: parseData.email,
+        },
+        req: req,
+        disableEmail: true,
+      })
+
+      await req.payload.sendEmail({
+        to:
+          env.NEXT_PUBLIC_NODE_ENV === 'production' ? parseData.email : env.LOCAL_EMAIL_TO_ADDRESS,
+        subject: 'Password recovery instructions',
+        html: forgotPasswordEmailBody({
+          token,
+          name: user.docs[0].name,
+        }),
+      })
+
+      return new Response(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: JSON_HEADERS,
+      })
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: 'Error sending recovery email', details: error }),
+        {
+          status: 400,
+          headers: JSON_HEADERS,
+        },
+      )
+    }
+  },
+}
+
+export const userResetPassword: Endpoint = {
+  path: '/reset-password',
+  method: 'post',
+  handler: async (req) => {
+    try {
+      if (!req.json)
+        return new Response(JSON.stringify({ error: 'Missing JSON body' }), {
+          status: 400,
+          headers: JSON_HEADERS,
+        })
+
+      const data = await req.json()
+      const parseData = resetPasswordSchema.parse(data)
+      const result = await req.payload.resetPassword({
+        collection: 'users',
+        data: {
+          password: parseData.password,
+          token: parseData.token,
+        },
+        req,
+        overrideAccess: true,
+      })
+
+      const userSchema = z.object({
+        id: z.number(),
+        email: z.string(),
+        name: z.string(),
+      })
+
+      const user = userSchema.parse(result.user)
+
+      await req.payload.update({
+        collection: 'users',
+        where: { id: { equals: user.id } },
+        data: {
+          lockUntil: null,
+          loginAttempts: 0,
+        },
+      })
+
+      await req.payload.sendEmail({
+        to: env.NEXT_PUBLIC_NODE_ENV === 'production' ? user.email : env.LOCAL_EMAIL_TO_ADDRESS,
+        subject: 'Your account password was changed',
+        html: resetPasswordEmailBody({
+          name: user.name,
+        }),
+      })
+
+      return new Response(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: JSON_HEADERS,
+      })
+    } catch (error) {
       return new Response(JSON.stringify({ error: 'Error getting users', details: error }), {
         status: 400,
         headers: JSON_HEADERS,

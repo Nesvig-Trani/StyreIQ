@@ -62,6 +62,15 @@ export const updateUserFormSchema = userBaseSchema.omit({
   password: true,
 })
 
+export const forgotPasswordSchema = z.object({
+  email: z.string().email(),
+})
+
+export const resetPasswordSchema = z.object({
+  token: z.string(),
+  password: z.string(),
+})
+
 export const updateUserSchema = updateUserFormSchema.extend({ id: z.number() })
 
 export const userSearchSchema = paginationSchema.extend({})

@@ -6,6 +6,8 @@ import {
   getOrganizationUsers,
   updateUserAccess,
   setUserApprovalStatus,
+  userForgotPassword,
+  userResetPassword,
 } from '@/plugins/users/endpoints'
 import { canReadUsers } from '../access'
 
@@ -80,5 +82,7 @@ export const Users: CollectionConfig = {
     updateUser,
     updateUserAccess,
     setUserApprovalStatus,
+    userForgotPassword,
+    userResetPassword,
   ],
 }

@@ -10,6 +10,7 @@ import {
 import { Input } from '@/shared/components/ui/input'
 import { Label } from '@/shared/components/ui/label'
 import { useLogin } from '@/auth'
+import Link from 'next/link'
 
 export function LoginForm() {
   const { loginFields, handleInputChange, handleSubmit } = useLogin()
@@ -37,12 +38,12 @@ export function LoginForm() {
               <div className="grid gap-2 sm:gap-3">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                  <a
-                    href="#"
+                  <Link
+                    href="/forgot-password"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
                     Forgot your password?
-                  </a>
+                  </Link>
                 </div>
                 <Input
                   id="password"
