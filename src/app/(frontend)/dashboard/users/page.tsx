@@ -1,14 +1,17 @@
 'use server'
 import React from 'react'
 import { Card, CardContent } from '@/shared/components/ui/card'
-import { userSearchSchema } from '@/users/schemas'
-import { getUsers, UserTable } from '@/users'
+import { UserRolesEnum, userSearchSchema, WelcomeEmailSchema } from '@/users/schemas'
+import { UserTable } from '@/users/components/user-table'
 import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
 import { parseSearchParamsWithSchema } from '@/shared/utils/parseParamsServer'
 import { getAuthUser } from '@/auth/utils/getAuthUser'
 import { CirclePlus } from 'lucide-react'
 import { Badge } from '@/shared/components/ui/badge'
+import WelcomeEmailModal from '@/users/components/welcome-email-modal'
+import { getLastWelcomeEmail } from '@/plugins/welcome-emails/queries'
+import { getUsers } from '@/plugins/users/queries'
 
 export default async function UsersPage(props: {
   searchParams?: Promise<{
@@ -24,6 +27,8 @@ export default async function UsersPage(props: {
     pageIndex: parsedParams.pagination.pageIndex + 1,
     pageSize: parsedParams.pagination.pageSize,
   })
+
+  const welcomeEmail = await getLastWelcomeEmail()
 
   return (
     <Card>
@@ -42,11 +47,17 @@ export default async function UsersPage(props: {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-              <Button size="sm" variant="outline" className="w-full sm:w-auto">
-                <Link href={'/dashboard/review-requests'} prefetch>
-                  Review user requests
-                </Link>
-              </Button>
+              {user?.role === UserRolesEnum.SuperAdmin && (
+                <>
+                  <WelcomeEmailModal email={welcomeEmail as WelcomeEmailSchema} />
+                  <Button size="sm" variant="outline" className="w-full sm:w-auto">
+                    <Link href={'/dashboard/review-requests'} prefetch>
+                      Review user requests
+                    </Link>
+                  </Button>
+                </>
+              )}
+
               <Button size="sm" className="w-full sm:w-auto">
                 <Link
                   className={'flex items-center justify-center gap-2'}

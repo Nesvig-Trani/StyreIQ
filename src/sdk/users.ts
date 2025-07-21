@@ -5,6 +5,7 @@ import {
   forgotPasswordSchema,
   resetPasswordSchema,
   updateUserSchema,
+  WelcomeEmailSchema,
 } from '@/users'
 import { env } from '@/config/env'
 import { updateOrgAccessSchema } from '@/organization-access'
@@ -169,6 +170,30 @@ export const resetPasswordRequest = async (data: z.infer<typeof resetPasswordSch
 
   if (!response.ok) {
     throw new Error('Failed to reset password')
+  }
+
+  return response.json()
+}
+
+export const createWelcomeEmail = async (data: WelcomeEmailSchema) => {
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/welcome-emails`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify({
+      ...data,
+    }),
+  })
+
+  if (!response.ok) {
+    const errorResponse = await response.json()
+
+    throw {
+      message: 'Failed to create welcome email',
+      data: { message: errorResponse.message, details: errorResponse.details },
+    }
   }
 
   return response.json()

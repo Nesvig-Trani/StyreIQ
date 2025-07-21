@@ -1,5 +1,5 @@
 import { MetricCard } from '@/dashboard/components/metric-card'
-import { getUsersInfoForDashboard } from '@/users'
+import { getUsersInfoForDashboard } from '@/plugins/users/queries'
 import {
   Users,
   UserCheck,

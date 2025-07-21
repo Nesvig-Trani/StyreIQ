@@ -15,6 +15,7 @@ import { SocialMediasPlugin } from '@/plugins/social-medias'
 import { OrganizationAccessPlugin } from '@/plugins/organization-access'
 import { PoliciesPlugin } from '@/plugins/policies'
 import { FlagsPlugin } from '@/plugins/flags'
+import { WelcomeEmailsPlugin } from '@/plugins/welcome-emails'
 
 import { flagInactiveAccountsTask } from './plugins/social-medias/tasks/flagInactiveAccounts/def'
 import { detectRisksTask } from './plugins/flags/tasks/detectRisks/def'
@@ -54,6 +55,9 @@ export default buildConfig({
   sharp,
   plugins: [
     OrganizationsPlugin({
+      disabled: false,
+    }),
+    WelcomeEmailsPlugin({
       disabled: false,
     }),
     UsersPlugin({

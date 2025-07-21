@@ -1,4 +1,6 @@
 import { Endpoint, Where } from 'payload'
+import z from 'zod'
+import { env } from '@/config/env'
 import { parseSearchParamsWithSchema } from '@/shared'
 import {
   createUserFormSchema,
@@ -8,16 +10,16 @@ import {
   UserRolesEnum,
   UserStatusEnum,
 } from '@/users/schemas'
-import { updateOrgAccessSchema, UserAccessTypeEnum } from '@/organization-access'
+import { updateOrgAccessSchema, UserAccessTypeEnum } from '@/organization-access/schemas'
 import { Organization, User } from '@/payload-types'
-import { checkAndSendPermissionChangeEmail } from '../../../users/utils/permissionChangeEmail'
+import { checkAndSendPermissionChangeEmail } from '@/users/utils/permissionChangeEmail'
 import { JSON_HEADERS } from '@/shared/constants'
-import { setUserStatusSchema } from '@/review-requests'
-import { USER_ALREADY_EXISTS } from '../../../users/constants/Errors'
+import { setUserStatusSchema } from '@/review-requests/schemas'
+import { USER_ALREADY_EXISTS } from '@/users/constants/Errors'
 import { forgotPasswordEmailBody } from '@/users/constants/forgotPasswordEmailBody'
 import { resetPasswordEmailBody } from '@/users/constants/resetPasswordEmailBody'
-import z from 'zod'
-import { env } from '@/config/env'
+import { welcomeEmailBody } from '@/users/constants/welcomeEmailBody'
+import { WelcomeEmailCollectionSlug } from '@/plugins/welcome-emails/types'
 
 export const createUser: Endpoint = {
   path: '/',
@@ -94,6 +96,24 @@ export const createUser: Endpoint = {
           }),
         ) || [],
       )
+
+      const welcomeEmail = await req.payload.find({
+        collection: WelcomeEmailCollectionSlug,
+        sort: '-createdAt',
+        limit: 1,
+      })
+      const emailData = welcomeEmail.docs[0]
+      await req.payload.sendEmail({
+        to:
+          env.NEXT_PUBLIC_NODE_ENV === 'production' ? createUser.email : env.LOCAL_EMAIL_TO_ADDRESS,
+        subject: 'Welcome to StyreIq',
+        html: welcomeEmailBody({
+          name: createUser.name,
+          instructions: emailData.instructions,
+          policyLinks: emailData.policyLinks || [],
+          responsibilities: emailData.responsibilities || [],
+        }),
+      })
 
       return new Response(JSON.stringify(createUser), {
         status: 201,

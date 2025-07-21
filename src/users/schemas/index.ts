@@ -75,6 +75,21 @@ export const updateUserSchema = updateUserFormSchema.extend({ id: z.number() })
 
 export const userSearchSchema = paginationSchema.extend({})
 
+const responsibilitySchema = z.object({ responsibility: z.string() })
+const policySchema = z.object({
+  id: z.string().optional(),
+  title: z.string(),
+  url: z.string().url(),
+})
+
+export const createWelcomeEmailSchema = z.object({
+  instructions: z.string(),
+  responsibilities: z.array(responsibilitySchema).optional(),
+  policyLinks: z.array(policySchema).optional(),
+})
+
+export type WelcomeEmailSchema = z.infer<typeof createWelcomeEmailSchema>
+
 export type CreateUser = z.infer<typeof createUserFormSchema>
 export type CreateUserFormProps = {
   organizations: Organization[]
