@@ -6,6 +6,7 @@ import { AuditLog, User } from '@/payload-types'
 import { ColumnDef } from '@tanstack/table-core'
 import { Badge } from '@/shared/components/ui/badge'
 import { format } from 'date-fns'
+import { DiffView } from '../components/diff-view'
 
 function useAuditLogsTable({ users }: { users: User[] }) {
   const searchParams = useParsedSearchParams(auditLogSearchSchema)
@@ -111,6 +112,14 @@ function useAuditLogsTable({ users }: { users: User[] }) {
       cell: ({ row }) => {
         const createdAt = row.getValue('createdAt') as string
         return <span>{format(new Date(createdAt), 'LLL dd, y')}</span>
+      },
+    },
+    {
+      accessorKey: 'details',
+      header: 'Details',
+      cell: ({ row }) => {
+        const log = row.original as AuditLog
+        return <DiffView log={log} />
       },
     },
   ]

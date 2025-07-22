@@ -3,6 +3,7 @@ import type { CollectionSlug, Config } from 'payload'
 import AuditLogAfterChange from '@/plugins/audit-log/hooks/afterChange'
 import AuditLogAfterDelete from '@/plugins/audit-log/hooks/afterDelete'
 import { AuditLogs } from '@/plugins/audit-log/collections/audit-log'
+import AuditLogBeforeChange from './hooks/beforeChange'
 
 export type AuditLogConfig = {
   collections?: Partial<Record<CollectionSlug, true>>
@@ -46,6 +47,7 @@ const attachHooksToCollections = ({
         ...collection.hooks,
         afterChange: [...(collection.hooks?.afterChange || []), AuditLogAfterChange],
         afterDelete: [...(collection.hooks?.afterDelete || []), AuditLogAfterDelete],
+        beforeChange: [...(collection.hooks?.beforeChange || []), AuditLogBeforeChange],
       }
     }
   }

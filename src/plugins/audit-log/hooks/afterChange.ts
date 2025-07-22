@@ -8,6 +8,7 @@ const AuditLogAfterChange: CollectionAfterChangeHook = async ({
   collection,
   operation,
   req,
+  context,
 }) => {
   setTimeout(async () => {
     try {
@@ -47,8 +48,10 @@ const AuditLogAfterChange: CollectionAfterChangeHook = async ({
         default:
           break
       }
-
-      if (operation === 'update') {
+      if (operation === 'update' && context.prev) {
+        const parsePrevCtx = JSON.stringify(context.prev)
+        data.prev = JSON.parse(parsePrevCtx)
+      } else {
         data.prev = previousDoc
       }
 
