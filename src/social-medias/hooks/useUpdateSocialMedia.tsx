@@ -26,14 +26,6 @@ export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocia
       platform: data.platform,
       contactEmail: data.contactEmail || '',
       contactPhone: data.contactPhone || undefined,
-      passwordUpdatedAt: data.passwordUpdatedAt ? new Date(data.passwordUpdatedAt) : undefined,
-      isEnabledTwoFactor: data.isEnabledTwoFactor || false,
-      isInUseSecurePassword: data.isInUseSecurePassword || false,
-      isAcceptedPolicies: data.isAcceptedPolicies || false,
-      isCompletedTrainingAccessibility: data.isCompletedTrainingAccessibility || false,
-      isCompletedTrainingRisk: data.isCompletedTrainingRisk || false,
-      isCompletedTrainingBrand: data.isCompletedTrainingBrand || false,
-      hasKnowledgeStandards: data.hasKnowledgeStandards || false,
       organization:
         typeof data.organization === 'object'
           ? data.organization.id.toString()
@@ -62,7 +54,6 @@ export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocia
       }
     }
   }
-  const passwordUpdatedAt = watch('passwordUpdatedAt')
   return {
     register,
     handleSubmit,
@@ -71,7 +62,6 @@ export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocia
     errors,
     isSubmitting,
     onSubmit,
-    passwordUpdatedAt,
     tree,
     users,
   }

@@ -35,7 +35,7 @@ export default function FlagsTable({
         status: searchParams.status,
         detectionDate: searchParams.detectionDate,
         lastActivity: searchParams.lastActivity,
-        organization: searchParams.organization,
+        organizations: searchParams.organizations,
       }}
     />
   )

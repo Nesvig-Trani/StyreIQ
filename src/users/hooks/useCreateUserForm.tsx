@@ -34,6 +34,12 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
       role: undefined,
       status: undefined,
       organizations: [],
+      isEnabledTwoFactor: false,
+      isInUseSecurePassword: false,
+      isCompletedTrainingAccessibility: false,
+      isCompletedTrainingRisk: false,
+      isCompletedTrainingBrand: false,
+      hasKnowledgeStandards: false,
     },
   })
 
@@ -41,6 +47,7 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
   const [isLoading, setIsLoading] = useState(false)
 
   const selectedRole = watch('role')
+  const passwordUpdatedAt = watch('passwordUpdatedAt')
   const tree = CreateOrganizationsTree(organizations as OrganizationWithDepth[])
 
   const allowedRoles =
@@ -118,6 +125,7 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
     setValue,
     selectedRole,
     tree,
+    passwordUpdatedAt,
   }
 }
 

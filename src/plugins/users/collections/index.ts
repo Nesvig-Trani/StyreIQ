@@ -75,6 +75,34 @@ export const Users: CollectionConfig = {
       name: 'reject_reason',
       type: 'text',
     },
+    {
+      name: 'isEnabledTwoFactor',
+      type: 'checkbox',
+    },
+    {
+      name: 'isInUseSecurePassword',
+      type: 'checkbox',
+    },
+    {
+      name: 'isCompletedTrainingAccessibility',
+      type: 'checkbox',
+    },
+    {
+      name: 'isCompletedTrainingRisk',
+      type: 'checkbox',
+    },
+    {
+      name: 'isCompletedTrainingBrand',
+      type: 'checkbox',
+    },
+    {
+      name: 'hasKnowledgeStandards',
+      type: 'checkbox',
+    },
+    {
+      name: 'passwordUpdatedAt',
+      type: 'date',
+    },
   ],
   endpoints: [
     createUser,

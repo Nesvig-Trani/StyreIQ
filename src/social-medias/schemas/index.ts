@@ -12,23 +12,6 @@ const baseSocialMediaSchema = z.object({
     .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number format')
     .or(z.literal(''))
     .optional(),
-  // Ensure passwordUpdatedAt is a valid date or undefined
-  passwordUpdatedAt: z
-    .preprocess((arg) => {
-      if (typeof arg === 'string' || arg instanceof Date) {
-        const date = new Date(arg)
-        return isNaN(date.getTime()) ? undefined : date
-      }
-      return undefined
-    }, z.date())
-    .optional(),
-  isEnabledTwoFactor: z.boolean().optional(),
-  isInUseSecurePassword: z.boolean().optional(),
-  isAcceptedPolicies: z.boolean().optional(),
-  isCompletedTrainingAccessibility: z.boolean().optional(),
-  isCompletedTrainingRisk: z.boolean().optional(),
-  isCompletedTrainingBrand: z.boolean().optional(),
-  hasKnowledgeStandards: z.boolean().optional(),
   organization: z.string(),
   primaryAdmin: z.string(),
   backupAdmin: z.string(),

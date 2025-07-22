@@ -34,7 +34,7 @@ export const createFlag: Endpoint = {
       const data = await req.json()
       const dataParsed = createFlagSchema.parse(data)
 
-      let organization
+      let organizations
 
       switch (dataParsed.affectedEntityType) {
         case AffectedEntityTypeEnum.USER:
@@ -44,7 +44,7 @@ export const createFlag: Endpoint = {
             depth: 0,
           })
           if (user) {
-            organization = user.organizations?.[0]
+            organizations = user.organizations
           }
           break
         case AffectedEntityTypeEnum.SOCIAL_MEDIA:
@@ -55,7 +55,7 @@ export const createFlag: Endpoint = {
           })
 
           if (socialMedia) {
-            organization = socialMedia.organization
+            organizations = [socialMedia.organization]
           }
           break
         default:
@@ -71,7 +71,7 @@ export const createFlag: Endpoint = {
             relationTo: dataParsed.affectedEntityType,
             value: Number(dataParsed.affectedEntity),
           },
-          organization,
+          organizations,
           detectionDate: new Date().toISOString(),
           source: FlagSourceEnum.MANUAL_FLAG,
           lastActivity: new Date().toISOString(),

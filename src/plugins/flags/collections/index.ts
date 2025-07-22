@@ -25,9 +25,10 @@ export const Flags: CollectionConfig = {
       relationTo: ['users', 'social-medias'],
     },
     {
-      name: 'organization',
+      name: 'organizations',
       type: 'relationship',
       relationTo: 'organization',
+      hasMany: true,
     },
     {
       name: 'status',

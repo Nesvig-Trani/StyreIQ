@@ -80,6 +80,13 @@ export const createUser: Endpoint = {
               : dataParsed.status,
           organizations: dataParsed.organizations?.map((org) => Number(org)),
           admin_policy_agreement: false,
+          hasKnowledgeStandards: dataParsed.hasKnowledgeStandards,
+          isCompletedTrainingAccessibility: dataParsed.isCompletedTrainingAccessibility,
+          isCompletedTrainingRisk: dataParsed.isCompletedTrainingRisk,
+          isEnabledTwoFactor: dataParsed.isEnabledTwoFactor,
+          isInUseSecurePassword: dataParsed.isInUseSecurePassword,
+          isCompletedTrainingBrand: dataParsed.isCompletedTrainingBrand,
+          passwordUpdatedAt: dataParsed.passwordUpdatedAt?.toString(),
         },
         req,
       })
@@ -198,7 +205,7 @@ export const updateUser: Endpoint = {
           )
         }
       }
-
+      console.log('data parsed', dataParsed)
       const updatedUser = await req.payload.update({
         collection: 'users',
         id: dataParsed.id,
@@ -209,6 +216,13 @@ export const updateUser: Endpoint = {
           status: dataParsed.status,
           organizations: dataParsed.organizations?.map((org) => Number(org)),
           admin_policy_agreement: false,
+          hasKnowledgeStandards: dataParsed.hasKnowledgeStandards,
+          isCompletedTrainingAccessibility: dataParsed.isCompletedTrainingAccessibility,
+          isCompletedTrainingRisk: dataParsed.isCompletedTrainingRisk,
+          isEnabledTwoFactor: dataParsed.isEnabledTwoFactor,
+          isInUseSecurePassword: dataParsed.isInUseSecurePassword,
+          isCompletedTrainingBrand: dataParsed.isCompletedTrainingBrand,
+          passwordUpdatedAt: dataParsed.passwordUpdatedAt?.toISOString(),
         },
         req,
       })

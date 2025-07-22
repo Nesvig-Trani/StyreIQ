@@ -38,6 +38,22 @@ export const userBaseSchema = z.object({
   role: RoleEnum.optional(),
   status: StatusEnum.optional(),
   organizations: z.array(z.string()).optional(),
+  passwordUpdatedAt: z
+    .preprocess((arg) => {
+      if (typeof arg === 'string' || arg instanceof Date) {
+        const date = new Date(arg)
+        return isNaN(date.getTime()) ? undefined : date
+      }
+      return undefined
+    }, z.date())
+    .optional(),
+  isEnabledTwoFactor: z.boolean().optional(),
+  isInUseSecurePassword: z.boolean().optional(),
+  isAcceptedPolicies: z.boolean().optional(),
+  isCompletedTrainingAccessibility: z.boolean().optional(),
+  isCompletedTrainingRisk: z.boolean().optional(),
+  isCompletedTrainingBrand: z.boolean().optional(),
+  hasKnowledgeStandards: z.boolean().optional(),
 })
 
 export const createUserFormSchema = userBaseSchema.superRefine((data, ctx) => {

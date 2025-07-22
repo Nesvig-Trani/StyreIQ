@@ -106,30 +106,6 @@ export function useSocialMediasTable({
         return <span>{admin.name}</span>
       },
     },
-    {
-      accessorKey: 'isInUseSecurePassword',
-      header: 'Secure Password',
-      enableColumnFilter: true,
-      cell: ({ row }) => {
-        const hasSecure = row.getValue('isInUseSecurePassword') as boolean
-        return (
-          <Badge variant={hasSecure ? 'default' : 'destructive'}>{hasSecure ? 'Yes' : 'No'}</Badge>
-        )
-      },
-    },
-    {
-      accessorKey: 'isEnabledTwoFactor',
-      header: 'Two Factor',
-      enableColumnFilter: true,
-      cell: ({ row }) => {
-        const hasTwoFactor = row.getValue('isEnabledTwoFactor') as boolean
-        return (
-          <Badge variant={hasTwoFactor ? 'default' : 'destructive'}>
-            {hasTwoFactor ? 'Yes' : 'No'}
-          </Badge>
-        )
-      },
-    },
   ]
 
   if (user?.role === 'super_admin') {

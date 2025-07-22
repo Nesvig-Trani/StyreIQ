@@ -61,7 +61,7 @@ export type CreateFlagCommentSchema = z.infer<typeof createFlagCommentSchema>
 export const flagsSearchSchema = paginationSchema.extend({
   flagType: z.array(z.string()).optional(),
   status: z.array(FlagStatus).optional(),
-  organization: z.array(z.string()).optional(),
+  organizations: z.array(z.string()).optional(),
   detectionDate: z
     .object({
       from: z.string().catch(''),

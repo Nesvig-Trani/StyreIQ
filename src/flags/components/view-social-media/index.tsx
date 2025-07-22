@@ -14,10 +14,7 @@ import {
   ClockIcon,
   ExternalLinkIcon,
   EyeIcon,
-  FileCheckIcon,
   Globe,
-  GraduationCapIcon,
-  LockIcon,
   MailIcon,
   PhoneIcon,
   Shield,
@@ -41,14 +38,6 @@ const getStatusBadgeVariant = (status: string) => {
     default:
       return 'outline'
   }
-}
-
-const formatTrainingStatus = (completed: boolean) => {
-  return completed ? 'Completed' : 'Pending'
-}
-
-const getTrainingStatusColor = (completed: boolean) => {
-  return completed ? 'text-green-600' : 'text-orange-600'
 }
 
 export function ViewSocialMedia({ account }: { account: SocialMedia }) {
@@ -130,109 +119,6 @@ export function ViewSocialMedia({ account }: { account: SocialMedia }) {
               </div>
             </div>
           </div>
-
-          <Separator />
-
-          <div>
-            <h4 className="font-semibold mb-3 flex items-center gap-2">
-              <LockIcon className="h-4 w-4" />
-              Security & Compliance
-            </h4>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <h5 className="font-medium mb-1">Two-Factor Authentication</h5>
-                <div className="flex items-center gap-1">
-                  <Shield
-                    className={`h-4 w-4 ${account.isEnabledTwoFactor ? 'text-green-600' : 'text-red-600'}`}
-                  />
-                  <span
-                    className={`text-sm ${account.isEnabledTwoFactor ? 'text-green-600' : 'text-red-600'}`}
-                  >
-                    {account.isEnabledTwoFactor ? 'Enabled' : 'Disabled'}
-                  </span>
-                </div>
-              </div>
-              <div>
-                <h5 className="font-medium mb-1">Secure Password</h5>
-                <div className="flex items-center gap-1">
-                  <LockIcon
-                    className={`h-4 w-4 ${account.isInUseSecurePassword ? 'text-green-600' : 'text-red-600'}`}
-                  />
-                  <span
-                    className={`text-sm ${account.isInUseSecurePassword ? 'text-green-600' : 'text-red-600'}`}
-                  >
-                    {account.isInUseSecurePassword ? 'Secure' : 'Needs Update'}
-                  </span>
-                </div>
-              </div>
-              <div>
-                <h5 className="font-medium mb-1">Password Last Updated</h5>
-                <div className="flex items-center gap-1">
-                  <CalendarIcon className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">
-                    {account.passwordUpdatedAt ? formatDate(account.passwordUpdatedAt) : 'Never'}
-                  </span>
-                </div>
-              </div>
-              <div>
-                <h5 className="font-medium mb-1">Policies Accepted</h5>
-                <div className="flex items-center gap-1">
-                  <FileCheckIcon
-                    className={`h-4 w-4 ${account.isAcceptedPolicies ? 'text-green-600' : 'text-red-600'}`}
-                  />
-                  <span
-                    className={`text-sm ${account.isAcceptedPolicies ? 'text-green-600' : 'text-red-600'}`}
-                  >
-                    {account.isAcceptedPolicies ? 'Accepted' : 'Not Accepted'}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <Separator />
-
-          <div>
-            <h4 className="font-semibold mb-3 flex items-center gap-2">
-              <GraduationCapIcon className="h-4 w-4" />
-              Training Status
-            </h4>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <h5 className="font-medium mb-1">Accessibility Training</h5>
-                <span
-                  className={`text-sm ${getTrainingStatusColor(account.isCompletedTrainingAccessibility || false)}`}
-                >
-                  {formatTrainingStatus(account.isCompletedTrainingAccessibility || false)}
-                </span>
-              </div>
-              <div>
-                <h5 className="font-medium mb-1">Risk Training</h5>
-                <span
-                  className={`text-sm ${getTrainingStatusColor(account.isCompletedTrainingRisk || false)}`}
-                >
-                  {formatTrainingStatus(account.isCompletedTrainingRisk || false)}
-                </span>
-              </div>
-              <div>
-                <h5 className="font-medium mb-1">Brand Training</h5>
-                <span
-                  className={`text-sm ${getTrainingStatusColor(account.isCompletedTrainingBrand || false)}`}
-                >
-                  {formatTrainingStatus(account.isCompletedTrainingBrand || false)}
-                </span>
-              </div>
-              <div>
-                <h5 className="font-medium mb-1">Knowledge Standards</h5>
-                <span
-                  className={`text-sm ${getTrainingStatusColor(account.hasKnowledgeStandards || false)}`}
-                >
-                  {account.hasKnowledgeStandards ? 'Met' : 'Not Met'}
-                </span>
-              </div>
-            </div>
-          </div>
-
           {account.inactiveFlag && (
             <>
               <Separator />

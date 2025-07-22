@@ -8,7 +8,7 @@ import { Where } from 'payload'
 export const getFlags = async ({
   flagType,
   status,
-  organization,
+  organizations,
   lastActivityFrom,
   lastActivityTo,
   detectionDateFrom,
@@ -18,7 +18,7 @@ export const getFlags = async ({
 }: {
   flagType?: string[]
   status?: FlagStatusEnum[]
-  organization?: number
+  organizations?: number[]
   lastActivityFrom: string
   lastActivityTo: string
   detectionDateFrom: string
@@ -51,7 +51,7 @@ export const getFlags = async ({
   const where: Where = {
     ...(flagType && flagType?.length > 0 && { flagType: { in: flagType } }),
     ...(status && status?.length > 0 && { status: { in: status } }),
-    ...(organization && { organization: { in: organization } }),
+    ...(organizations && { organizations: { in: organizations } }),
     ...(Object.keys(lastActivity).length > 0 && { lastActivity }),
     ...(Object.keys(detectionDate).length > 0 && { detectionDate }),
   }

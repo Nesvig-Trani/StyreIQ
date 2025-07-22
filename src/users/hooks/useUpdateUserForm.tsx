@@ -65,6 +65,49 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
             value: [UserRolesEnum.SocialMediaManager, UserRolesEnum.UnitAdmin],
           },
         },
+        {
+          label: 'Recent Password Update',
+          name: 'passwordUpdatedAt',
+          type: 'date',
+        },
+
+        {
+          label: 'Is enabled two factor authentication?',
+          name: 'isEnabledTwoFactor',
+          type: 'checkbox',
+          checkboxMode: 'boolean',
+        },
+
+        {
+          label: 'Are you using a secure password?',
+          name: 'isInUseSecurePassword',
+          type: 'checkbox',
+          checkboxMode: 'boolean',
+        },
+        {
+          label: 'Have you completed accessibility training?',
+          name: 'isCompletedTrainingAccessibility',
+          type: 'checkbox',
+          checkboxMode: 'boolean',
+        },
+        {
+          label: 'Have you completed risk mitigation training?',
+          name: 'isCompletedTrainingRisk',
+          type: 'checkbox',
+          checkboxMode: 'boolean',
+        },
+        {
+          label: 'Have you completed brand and identity usage training?',
+          name: 'isCompletedTrainingBrand',
+          type: 'checkbox',
+          checkboxMode: 'boolean',
+        },
+        {
+          label: 'Do you have acknowledgment of naming and branding standards?',
+          name: 'hasKnowledgeStandards',
+          type: 'checkbox',
+          checkboxMode: 'boolean',
+        },
       ],
       onSubmit: async (submitData) => {
         try {
@@ -100,6 +143,13 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
         role: data.role as UserRolesEnum,
         status: data.status as UserStatusEnum,
         organizations: data.organizations?.map((org) => org.toString()),
+        isEnabledTwoFactor: data.isEnabledTwoFactor || false,
+        isInUseSecurePassword: data.isInUseSecurePassword || false,
+        isCompletedTrainingAccessibility: data.isCompletedTrainingAccessibility || false,
+        isCompletedTrainingRisk: data.isCompletedTrainingRisk || false,
+        isCompletedTrainingBrand: data.isCompletedTrainingBrand || false,
+        hasKnowledgeStandards: data.hasKnowledgeStandards || false,
+        passwordUpdatedAt: data.passwordUpdatedAt ? new Date(data.passwordUpdatedAt) : undefined,
       },
     },
   )

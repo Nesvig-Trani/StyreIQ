@@ -23,7 +23,7 @@ export default async function FlagsPage(props: {
     lastActivityFrom: parsedParams.lastActivity.from,
     detectionDateFrom: parsedParams.detectionDate.from,
     detectionDateTo: parsedParams.detectionDate.to,
-    organization: Number(parsedParams.organization),
+    organizations: parsedParams.organizations?.map((org) => Number(org)),
     pageSize: parsedParams.pagination.pageSize,
     pageIndex: parsedParams.pagination.pageIndex,
   })

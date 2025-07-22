@@ -43,38 +43,6 @@ export const SocialMedias: CollectionConfig = {
       type: 'text',
     },
     {
-      name: 'passwordUpdatedAt',
-      type: 'date',
-    },
-    {
-      name: 'isEnabledTwoFactor',
-      type: 'checkbox',
-    },
-    {
-      name: 'isInUseSecurePassword',
-      type: 'checkbox',
-    },
-    {
-      name: 'isAcceptedPolicies',
-      type: 'checkbox',
-    },
-    {
-      name: 'isCompletedTrainingAccessibility',
-      type: 'checkbox',
-    },
-    {
-      name: 'isCompletedTrainingRisk',
-      type: 'checkbox',
-    },
-    {
-      name: 'isCompletedTrainingBrand',
-      type: 'checkbox',
-    },
-    {
-      name: 'hasKnowledgeStandards',
-      type: 'checkbox',
-    },
-    {
       name: 'organization',
       type: 'relationship',
       relationTo: 'organization',

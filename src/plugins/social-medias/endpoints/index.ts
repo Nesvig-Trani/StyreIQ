@@ -84,7 +84,6 @@ export const createSocialMedia: Endpoint = {
         collection: SocialMediasCollectionSlug,
         data: {
           ...dataParsed,
-          passwordUpdatedAt: dataParsed.passwordUpdatedAt?.toISOString(),
           organization: Number(dataParsed.organization),
           primaryAdmin: selectedPrimaryAdmin,
           backupAdmin: selectedBackupAdmin,

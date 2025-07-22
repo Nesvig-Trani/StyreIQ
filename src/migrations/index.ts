@@ -5,6 +5,7 @@ import * as migration_20250710_134307 from './20250710_134307'
 import * as migration_20250711_123736_disable_org from './20250711_123736_disable_org'
 import * as migration_20250711_202206 from './20250711_202206'
 import * as migration_20250718_205857_welcome_email from './20250718_205857_welcome_email'
+import * as migration_20250722_194435_link_compliance_to_user from './20250722_194435_link_compliance_to_user'
 
 export const migrations = [
   {
@@ -41,5 +42,10 @@ export const migrations = [
     up: migration_20250718_205857_welcome_email.up,
     down: migration_20250718_205857_welcome_email.down,
     name: '20250718_205857_welcome_email',
+  },
+  {
+    up: migration_20250722_194435_link_compliance_to_user.up,
+    down: migration_20250722_194435_link_compliance_to_user.down,
+    name: '20250722_194435_link_compliance_to_user',
   },
 ]

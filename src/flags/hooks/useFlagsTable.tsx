@@ -17,6 +17,7 @@ import { flagStatusLabels } from '../constants/flagStatusLabels'
 import { FlagCommentsModal } from '../components/flag-comments'
 import { flagTypeOptions } from '../constants/flagTypeOptions'
 import { flagStatusOptions } from '../constants/flagStatusOptions'
+import { OrganizationCell } from '@/organizations/components/organizations-cell'
 
 function useFlagsTable({
   user,
@@ -55,8 +56,8 @@ function useFlagsTable({
       options: flagStatusOptions,
     },
     {
-      id: 'organization',
-      title: 'Organization',
+      id: 'organizations',
+      title: 'Organizations',
       type: 'select',
       allowMultiple: true,
       options: organizations.map((org) => {
@@ -88,13 +89,17 @@ function useFlagsTable({
       },
     },
     {
-      accessorKey: 'organization',
-      header: 'Organization',
+      accessorKey: 'organizations',
+      header: 'Organizations',
       enableColumnFilter: true,
       cell: ({ row }) => {
-        const organization = row.original.organization
+        const organizations = row.original.organizations
 
-        return <div>{typeof organization === 'object' ? organization?.name : ''}</div>
+        return organizations && organizations?.length > 0 ? (
+          <OrganizationCell organizations={organizations as Organization[]} />
+        ) : (
+          <span> - </span>
+        )
       },
     },
     {

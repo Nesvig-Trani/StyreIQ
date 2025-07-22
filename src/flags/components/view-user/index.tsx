@@ -1,4 +1,4 @@
-import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from '@/shared'
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Separator } from '@/shared'
 import {
   Dialog,
   DialogContent,
@@ -8,14 +8,14 @@ import {
 } from '@/shared/components/ui/dialog'
 import { UserRolesEnum, UserStatusEnum } from '@/users'
 import {
-  BadgeCheckIcon,
-  CalendarDaysIcon,
+  CalendarIcon,
   CheckCircleIcon,
   ClockIcon,
   EyeIcon,
-  MailIcon,
+  FileCheckIcon,
+  GraduationCapIcon,
+  LockIcon,
   ShieldIcon,
-  UserIcon,
   XCircleIcon,
 } from 'lucide-react'
 import { User } from '@/payload-types'
@@ -85,6 +85,14 @@ const formatDate = (dateString?: string) => {
   })
 }
 
+const formatTrainingStatus = (completed: boolean) => {
+  return completed ? 'Completed' : 'Pending'
+}
+
+const getTrainingStatusColor = (completed: boolean) => {
+  return completed ? 'text-green-600' : 'text-orange-600'
+}
+
 export function ViewUser({ user }: { user: User }) {
   return (
     <Dialog>
@@ -123,60 +131,117 @@ export function ViewUser({ user }: { user: User }) {
             </Badge>
           </div>
 
+          <Separator />
+
           <div>
-            <h4 className="text-base flex items-center gap-2 mb-2">
-              <UserIcon className="w-4 h-4" />
-              Basic Information
+            <h4 className="font-semibold mb-3 flex items-center gap-2">
+              <LockIcon className="h-4 w-4" />
+              Security & Compliance
             </h4>
-            <div className="space-y-4">
-              <div className="flex flex-col gap-1">
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">Full Name</label>
-                  <p className="text-sm !my-1">{user.name}</p>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <h5 className="font-medium mb-1">Two-Factor Authentication</h5>
+                <div className="flex items-center gap-1">
+                  <ShieldIcon
+                    className={`h-4 w-4 ${user.isEnabledTwoFactor ? 'text-green-600' : 'text-red-600'}`}
+                  />
+                  <span
+                    className={`text-sm ${user.isEnabledTwoFactor ? 'text-green-600' : 'text-red-600'}`}
+                  >
+                    {user.isEnabledTwoFactor ? 'Enabled' : 'Disabled'}
+                  </span>
                 </div>
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">Email Address</label>
-                  <p className="text-sm !my-1 flex items-center gap-1">
-                    <MailIcon className="w-3 h-3" />
-                    {user.email}
-                  </p>
+              </div>
+              <div>
+                <h5 className="font-medium mb-1">Secure Password</h5>
+                <div className="flex items-center gap-1">
+                  <LockIcon
+                    className={`h-4 w-4 ${user.isInUseSecurePassword ? 'text-green-600' : 'text-red-600'}`}
+                  />
+                  <span
+                    className={`text-sm ${user.isInUseSecurePassword ? 'text-green-600' : 'text-red-600'}`}
+                  >
+                    {user.isInUseSecurePassword ? 'Secure' : 'Needs Update'}
+                  </span>
+                </div>
+              </div>
+              <div>
+                <h5 className="font-medium mb-1">Password Last Updated</h5>
+                <div className="flex items-center gap-1">
+                  <CalendarIcon className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm">
+                    {user.passwordUpdatedAt ? formatDate(user.passwordUpdatedAt) : 'Never'}
+                  </span>
+                </div>
+              </div>
+              <div>
+                <h5 className="font-medium mb-1">Policies Accepted</h5>
+                <div className="flex items-center gap-1">
+                  <FileCheckIcon
+                    className={`h-4 w-4 ${user.admin_policy_agreement ? 'text-green-600' : 'text-red-600'}`}
+                  />
+                  <span
+                    className={`text-sm ${user.admin_policy_agreement ? 'text-green-600' : 'text-red-600'}`}
+                  >
+                    {user.admin_policy_agreement ? 'Accepted' : 'Not Accepted'}
+                  </span>
+                </div>
+              </div>
+              <div>
+                <h5 className="font-medium mb-1">Last Policy Review</h5>
+                <div className="flex items-center gap-1">
+                  <CalendarIcon className="h-4 w-4 text-muted-foreground" />
+                  <span className={`text-sm `}>
+                    {user.date_of_last_policy_review ? (
+                      <span className="text-sm !mt-1">
+                        {formatDate(user.date_of_last_policy_review)}
+                      </span>
+                    ) : null}
+                  </span>
                 </div>
               </div>
             </div>
           </div>
 
-          <div>
-            <h4 className="text-base flex items-center gap-2 mb-2">
-              <CalendarDaysIcon className="w-4 h-4" />
-              Policy & Training
-            </h4>
-            <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <label className="text-sm font-medium text-muted-foreground">
-                  Admin Policy Agreement
-                </label>
-                {user.admin_policy_agreement ? (
-                  <Badge className="bg-green-100 text-green-800 border-green-200">
-                    <BadgeCheckIcon className="w-3 h-3 mr-1" />
-                    Agreed
-                  </Badge>
-                ) : (
-                  <Badge className="bg-red-100 text-red-800 border-red-200">
-                    <XCircleIcon className="w-3 h-3 mr-1" />
-                    Not Agreed
-                  </Badge>
-                )}
-              </div>
+          <Separator />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">
-                    Last Policy Review
-                  </label>
-                  {user.date_of_last_policy_review ? (
-                    <p className="text-sm !mt-1">{formatDate(user.date_of_last_policy_review)}</p>
-                  ) : null}
-                </div>
+          <div>
+            <h4 className="font-semibold mb-3 flex items-center gap-2">
+              <GraduationCapIcon className="h-4 w-4" />
+              Training Status
+            </h4>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <h5 className="font-medium mb-1">Accessibility Training</h5>
+                <span
+                  className={`text-sm ${getTrainingStatusColor(user.isCompletedTrainingAccessibility || false)}`}
+                >
+                  {formatTrainingStatus(user.isCompletedTrainingAccessibility || false)}
+                </span>
+              </div>
+              <div>
+                <h5 className="font-medium mb-1">Risk Training</h5>
+                <span
+                  className={`text-sm ${getTrainingStatusColor(user.isCompletedTrainingRisk || false)}`}
+                >
+                  {formatTrainingStatus(user.isCompletedTrainingRisk || false)}
+                </span>
+              </div>
+              <div>
+                <h5 className="font-medium mb-1">Brand Training</h5>
+                <span
+                  className={`text-sm ${getTrainingStatusColor(user.isCompletedTrainingBrand || false)}`}
+                >
+                  {formatTrainingStatus(user.isCompletedTrainingBrand || false)}
+                </span>
+              </div>
+              <div>
+                <h5 className="font-medium mb-1">Knowledge Standards</h5>
+                <span
+                  className={`text-sm ${getTrainingStatusColor(user.hasKnowledgeStandards || false)}`}
+                >
+                  {user.hasKnowledgeStandards ? 'Met' : 'Not Met'}
+                </span>
               </div>
             </div>
           </div>

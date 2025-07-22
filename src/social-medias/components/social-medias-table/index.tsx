@@ -43,8 +43,6 @@ export const SocialMediasTable: React.FC<SocialMediasTableProps> = ({
         platform: searchParams.platform,
         organization: searchParams.organization,
         primaryAdmin: searchParams.primaryAdmin,
-        isInUseSecurePassword: searchParams.hasSecurePassword,
-        isEnabledTwoFactor: searchParams.hasTwoFactor,
       }}
     />
   )
