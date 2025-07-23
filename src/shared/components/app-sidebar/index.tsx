@@ -73,7 +73,7 @@ export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
             <SidebarMenuButton size="lg" asChild>
               <Link href="/dashboard">
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-medium">GovernIq</span>
+                  <span className="font-medium">StyreIQ</span>
                 </div>
               </Link>
             </SidebarMenuButton>

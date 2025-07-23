@@ -153,6 +153,7 @@ export default function OrganizationHierarchy({
                           </Button>
                         )}
                         <Button
+                          size="sm"
                           variant="destructive"
                           className="ml-2"
                           onClick={() => setIsDisableModalOpen(true)}

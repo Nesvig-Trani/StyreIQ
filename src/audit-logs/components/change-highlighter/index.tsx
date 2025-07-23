@@ -42,7 +42,7 @@ export const ChangeHighlighter = ({
     return <div className="text-muted-foreground italic">No data</div>
   }
 
-  if (!prev && current) {
+  if (Object.keys(prev).length === 0 && current) {
     return (
       <div className="space-y-2">
         <h4 className="font-medium text-sm text-green-700">{title} (Created)</h4>
