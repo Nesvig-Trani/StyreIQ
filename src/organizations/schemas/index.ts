@@ -3,13 +3,31 @@ import { z } from 'zod'
 import { paginationSchema } from '@/schemas/pagination'
 import { statusConfig } from '../constants/statusConfig'
 import { typeConfig } from '../constants/typeConfig'
+import { UserRolesEnum } from '@/users'
+
+export enum OrganizationTypeEnum {
+  HIGHER_EDUCATION_INSTITUTION = 'higher_education_institution',
+  GOVERNMENT_AGENCY = 'government_agency',
+  HEALTHCARE_SYSTEM = 'healthcare_system',
+  CORPORATE_ENTERPRISE = 'corporate_enterprise',
+  NONPROFIT_ORGANIZATION = 'nonprofit_organization',
+  DIVISION = 'division',
+  SCHOOL_FACULTY = 'school_faculty',
+  DEPARTMENT = 'department',
+  OFFICE = 'office',
+  PROGRAM = 'program',
+  INITIATIVE = 'initiative',
+  OTHER = 'other',
+}
+
+const OrganizationType = z.nativeEnum(OrganizationTypeEnum)
 
 export const createOrgFormSchema = z.object({
   name: z
     .string()
     .min(1, 'Name is required')
     .max(100, "Organization name can\'t exceed 100 characters"),
-  type: z.enum(['university', 'faculty', 'department', 'office', 'project']),
+  type: OrganizationType,
   parent: z.string().optional(),
   admin: z.string().min(1, 'Admin is required'),
   backupAdmins: z.string().array().optional(),
@@ -51,6 +69,7 @@ export type Tree = {
 }
 
 export type CreateOrgFormProps = {
+  userRole?: UserRolesEnum
   users: User[]
   organizations: Organization[]
 }

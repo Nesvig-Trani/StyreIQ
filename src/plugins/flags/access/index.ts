@@ -17,7 +17,7 @@ export const canReadFlags: Access = async ({ req: { user, payload } }) => {
 
   const orgIds = organizations.docs.map((org) => org.id)
   return {
-    organization: {
+    organizations: {
       in: orgIds,
     },
   }

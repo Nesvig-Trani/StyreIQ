@@ -1,15 +1,23 @@
 'use client'
 import { useFormHelper } from '@/shared/components/form-hook-helper'
-import { CreateOrgFormProps, createOrgFormSchema, OrganizationWithDepth } from '@/organizations'
+import {
+  CreateOrgFormProps,
+  createOrgFormSchema,
+  OrganizationTypeEnum,
+  OrganizationWithDepth,
+} from '@/organizations'
 import { createOrganization } from '@/sdk/organization'
 import { toast } from 'sonner'
 import { CreateOrganizationsTree } from '@/organizations/utils/createOrgTree'
 import { useRouter } from 'next/navigation'
-import { organizationTypeOptions } from '../constants/organizationTypeOptions'
+import { industryLevelOptions, unitLevelOptions } from '../constants/organizationTypeOptions'
+import { UserRolesEnum } from '@/users'
 
-function useCreateOrganization({ users, organizations }: CreateOrgFormProps) {
+function useCreateOrganization({ userRole, users, organizations }: CreateOrgFormProps) {
   const router = useRouter()
   const tree = CreateOrganizationsTree(organizations as OrganizationWithDepth[])
+  const typeOptions =
+    userRole === UserRolesEnum.SuperAdmin ? industryLevelOptions : unitLevelOptions
   const { formComponent, form } = useFormHelper(
     {
       schema: createOrgFormSchema,
@@ -23,7 +31,7 @@ function useCreateOrganization({ users, organizations }: CreateOrgFormProps) {
           label: 'Type',
           name: 'type',
           type: 'select',
-          options: organizationTypeOptions,
+          options: typeOptions,
         },
         {
           label: 'Parent',
@@ -101,7 +109,7 @@ function useCreateOrganization({ users, organizations }: CreateOrgFormProps) {
     {
       defaultValues: {
         name: '',
-        type: 'university',
+        type: OrganizationTypeEnum.HIGHER_EDUCATION_INSTITUTION,
         parent: '',
         admin: '',
         email: '',

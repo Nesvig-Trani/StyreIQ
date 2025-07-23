@@ -35,7 +35,11 @@ export default async function CreateOrganization() {
   }
   return (
     <div>
-      <CreateOrganizationForm users={users.docs} organizations={organizations.docs} />
+      <CreateOrganizationForm
+        userRole={user?.role as UserRolesEnum}
+        users={users.docs}
+        organizations={organizations.docs}
+      />
     </div>
   )
 }

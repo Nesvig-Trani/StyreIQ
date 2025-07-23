@@ -5,6 +5,7 @@ import {
   updateOrganization,
 } from '@/plugins/organizations/endpoints'
 import { canDeleteOrganizations, canReadOrganizations } from '@/plugins/organizations/access'
+import { organizationTypeOptions } from '@/organizations/constants/organizationTypeOptions'
 
 export const Organizations: CollectionConfig = {
   slug: 'organization',
@@ -26,13 +27,7 @@ export const Organizations: CollectionConfig = {
     {
       name: 'type',
       type: 'select',
-      options: [
-        { label: 'University', value: 'university' },
-        { label: 'Faculty', value: 'faculty' },
-        { label: 'Department', value: 'department' },
-        { label: 'Office', value: 'office' },
-        { label: 'Project', value: 'project' },
-      ],
+      options: organizationTypeOptions,
       required: true,
     },
     {

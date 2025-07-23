@@ -4,8 +4,9 @@ import useCreateOrganization from '@/organizations/hooks/useCreateOrganization'
 import { CreateOrgFormProps } from '@/organizations'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
 
-export const CreateOrganizationForm = ({ users, organizations }: CreateOrgFormProps) => {
+export const CreateOrganizationForm = ({ userRole, users, organizations }: CreateOrgFormProps) => {
   const { formComponent } = useCreateOrganization({
+    userRole,
     users,
     organizations,
   })

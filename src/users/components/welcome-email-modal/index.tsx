@@ -50,7 +50,7 @@ export default function WelcomeEmailModal({ email }: { email: WelcomeEmailSchema
         responsibilities: template.responsibilities?.map((r) => {
           return { responsibility: r.responsibility }
         }),
-        policyLinks: template.policyLinks?.map((p) => {
+        policyLinks: template?.policyLinks?.map((p) => {
           return {
             title: p.title,
             url: p.url,
@@ -202,7 +202,7 @@ export default function WelcomeEmailModal({ email }: { email: WelcomeEmailSchema
                   <div>
                     <p className="font-medium text-primary !mt-0">Required Policies and Training</p>
                     <div className="bg-purple-50 p-3 rounded border-l-4 border-purple-200 space-y-1">
-                      {template.policyLinks?.map((policy) => (
+                      {template?.policyLinks?.map((policy) => (
                         <p key={policy.id}>
                           • <span className="text-blue-600 underline">{policy.title}</span>
                         </p>
@@ -240,7 +240,7 @@ export default function WelcomeEmailModal({ email }: { email: WelcomeEmailSchema
                     <Textarea
                       id="instructions"
                       placeholder="Enter instructions for new users..."
-                      value={template.instructions}
+                      value={template?.instructions}
                       onChange={(e) =>
                         setTemplate((prev) => ({ ...prev, instructions: e.target.value }))
                       }
@@ -270,7 +270,7 @@ export default function WelcomeEmailModal({ email }: { email: WelcomeEmailSchema
                       </Button>
                     </div>
                     <div className="space-y-2 max-h-[300px] overflow-y-auto">
-                      {template.responsibilities?.map((responsibility, index) => (
+                      {template?.responsibilities?.map((responsibility, index) => (
                         <div key={index} className="flex items-center gap-2 p-2 bg-muted rounded">
                           <span className="flex-1 text-sm">{responsibility.responsibility}</span>
                           <Button
@@ -314,7 +314,7 @@ export default function WelcomeEmailModal({ email }: { email: WelcomeEmailSchema
                       </div>
                     </div>
                     <div className="space-y-2 max-h-[250px] overflow-y-auto">
-                      {template.policyLinks?.map((policy, index) => (
+                      {template?.policyLinks?.map((policy, index) => (
                         <div key={index} className="p-3 bg-muted rounded space-y-2">
                           <div className="flex items-center gap-2">
                             <Input

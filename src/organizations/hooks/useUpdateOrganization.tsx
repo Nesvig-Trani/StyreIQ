@@ -1,5 +1,5 @@
 import { useFormHelper } from '@/shared/components/form-hook-helper'
-import { createOrgFormSchema, UpdateOrgFormProps } from '@/organizations'
+import { createOrgFormSchema, OrganizationTypeEnum, UpdateOrgFormProps } from '@/organizations'
 import { updateOrganization } from '@/sdk/organization'
 import { toast } from 'sonner'
 import { CreateOrganizationsTree } from '@/organizations/utils/createOrgTree'
@@ -97,7 +97,7 @@ function useUpdateOrganization({ users, data, organizations }: UpdateOrgFormProp
     {
       values: {
         name: data?.name || '',
-        type: data?.type || 'university',
+        type: data?.type as OrganizationTypeEnum,
         parent: data?.parentOrg?.toString(),
         admin: data?.admin.id?.toString() || '',
         email: data?.email || '',

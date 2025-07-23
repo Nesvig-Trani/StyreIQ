@@ -36,25 +36,6 @@ export const createOrganization: Endpoint = {
           },
         )
       }
-      if (parentOrg) {
-        const siblings = await req.payload.find({
-          collection: 'organization',
-          where: {
-            parentOrg: { equals: parentOrg },
-          },
-        })
-
-        const sameName = siblings.docs.find((sibling) => sibling.name === name)
-        if (sameName) {
-          return new Response(
-            JSON.stringify({ error: 'Organization with the same name already exists' }),
-            {
-              status: 400,
-              headers: JSON_HEADERS,
-            },
-          )
-        }
-      }
 
       const createOrganization = await req.payload.create({
         collection: 'organization',
@@ -142,26 +123,6 @@ export const updateOrganization: Endpoint = {
             headers: JSON_HEADERS,
           },
         )
-      }
-
-      if (parentOrg) {
-        const siblings = await req.payload.find({
-          collection: 'organization',
-          where: {
-            parentOrg: { equals: parentOrg },
-          },
-        })
-
-        const sameName = siblings.docs.find((sibling) => sibling.name === name)
-        if (sameName) {
-          return new Response(
-            JSON.stringify({ error: 'Organization with the same name already exists' }),
-            {
-              status: 400,
-              headers: JSON_HEADERS,
-            },
-          )
-        }
       }
 
       const { parentPath, parentDepth } = await calcParentPathAndDepth({

@@ -1,3 +1,4 @@
+import { organizationTypeLabels } from '@/organizations/constants/organizationTypeLabels'
 import { OrganizationWithDepth } from '@/organizations/schemas'
 import { Organization, User } from '@/payload-types'
 import { Badge, Card, CardHeader, CardTitle, CardContent, Separator } from '@/shared'
@@ -18,21 +19,13 @@ export default function OrganizationDetail({
     pending_review: 'bg-yellow-500',
   }
 
-  const typeLabels = {
-    university: 'University',
-    faculty: 'Faculty',
-    department: 'Department',
-    office: 'Office',
-    project: 'Project',
-  }
-
   return (
     <div className="container mx-auto py-6 space-y-6 max-w-4xl">
       <div className="flex justify-between items-center">
         <div>
           <div className="flex items-center gap-2 mt-2">
             <Badge variant="outline">
-              {typeLabels[organization.type as keyof typeof typeLabels]}
+              {organizationTypeLabels[organization.type as keyof typeof organizationTypeLabels]}
             </Badge>
             <div className="flex items-center">
               <div
@@ -100,7 +93,11 @@ export default function OrganizationDetail({
                         <div>
                           <div>{child.name}</div>
                           <div className="text-xs text-muted-foreground capitalize">
-                            {child.type}
+                            {
+                              organizationTypeLabels[
+                                child.type as keyof typeof organizationTypeLabels
+                              ]
+                            }
                           </div>
                         </div>
                       </div>

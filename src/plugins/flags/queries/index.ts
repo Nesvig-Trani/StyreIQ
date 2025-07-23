@@ -28,7 +28,6 @@ export const getFlags = async ({
 }) => {
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
-
   const lastActivity: Record<string, string | Date> = {}
 
   if (lastActivityFrom) {
@@ -79,7 +78,6 @@ interface FlagsData {
 export const getFlagInfoForDashboard = async (): Promise<FlagsData> => {
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
-
   const flags = await payload.find({
     collection: FlagsCollectionSlug,
     where: {},
@@ -87,7 +85,6 @@ export const getFlagInfoForDashboard = async (): Promise<FlagsData> => {
     overrideAccess: false,
     user,
   })
-
   return {
     security: flags.docs.filter(
       (f) =>

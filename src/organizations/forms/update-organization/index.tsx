@@ -1,16 +1,19 @@
 'use client'
 import React from 'react'
-import { CreateOrganizationsTree, UpdateOrgFormProps } from '@/organizations'
+import { CreateOrganizationsTree, OrganizationTypeEnum, UpdateOrgFormProps } from '@/organizations'
 import { Button, Input, Label, MultiSelect, TreeSelect } from '@/shared'
 import { FieldValues, useForm } from 'react-hook-form'
 import { Select, SelectValue, SelectTrigger, SelectContent, SelectItem } from '@/shared'
-import { CreateOrganization, OrganizationType, StatusType } from '@/organizations/schemas'
+import { CreateOrganization, StatusType } from '@/organizations/schemas'
 import { Textarea } from '@/shared/components/ui/textarea'
 import { toast } from 'sonner'
 import { updateOrganization } from '@/sdk/organization'
 import { UserRolesEnum } from '@/users'
 import { useRouter } from 'next/navigation'
-import { organizationTypeOptions } from '@/organizations/constants/organizationTypeOptions'
+import {
+  unitLevelOptions,
+  industryLevelOptions,
+} from '@/organizations/constants/organizationTypeOptions'
 
 export const UpdateOrganizationForm = ({
   users,
@@ -29,7 +32,7 @@ export const UpdateOrganizationForm = ({
   } = useForm<CreateOrganization>({
     values: {
       name: data?.name || '',
-      type: data?.type || 'university',
+      type: data?.type as OrganizationTypeEnum,
       parent: data?.parentOrg?.id?.toString(),
       admin: data?.admin.id?.toString() || '',
       email: data?.email || '',
@@ -57,6 +60,9 @@ export const UpdateOrganizationForm = ({
   const childrenDocs = data?.children?.docs ?? []
   const activeChildren = childrenDocs.filter((child) => child.status === 'active')
   const disabledField = user?.role !== UserRolesEnum.SuperAdmin && activeChildren?.length > 0
+  const organizationTypeOptions =
+    user?.role === UserRolesEnum.SuperAdmin ? industryLevelOptions : unitLevelOptions
+
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -75,7 +81,7 @@ export const UpdateOrganizationForm = ({
           <Label htmlFor="type">Type</Label>
           <Select
             name="type"
-            onValueChange={(value: OrganizationType) => setValue('type', value)}
+            onValueChange={(value: OrganizationTypeEnum) => setValue('type', value)}
             value={watch('type')}
             disabled={disabledField}
           >
@@ -87,7 +93,7 @@ export const UpdateOrganizationForm = ({
                 <SelectItem value={option.value} key={option.value}>
                   {option.label}
                 </SelectItem>
-              ))}{' '}
+              ))}
             </SelectContent>
           </Select>
           {errors.type && <p className="text-sm text-red-500">{errors.type.message}</p>}
