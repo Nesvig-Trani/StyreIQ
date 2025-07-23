@@ -17,7 +17,7 @@ export function useCreateSocialMedia({ users, organizations }: CreateSocialMedia
       schema: createSocialMediaFormSchema,
       fields: [
         {
-          label: 'Name *',
+          label: 'Account Name *',
           name: 'name',
           type: 'text',
         },

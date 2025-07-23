@@ -45,10 +45,10 @@ export const UpdateSocialMediaForm: React.FC<UpdateSocialMediaFormProps> = ({
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className={'space-y-4'}>
           <div className={'space-y-2'}>
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">Account Name</Label>
             <Input
               id={'name'}
-              placeholder={'Enter name'}
+              placeholder={'Enter account name'}
               {...register('name', { required: 'Name is required' })}
             />
             {errors.name && <p className="text-red-500">{errors.name.message}</p>}
