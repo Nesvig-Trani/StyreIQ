@@ -105,10 +105,7 @@ export const createUser: Endpoint = {
         ) || [],
       )
 
-      console.log('User created successfully:', createUser)
-
       // Send welcome email
-      console.log('Sending welcome email to:', createUser.email)
       const welcomeEmail = await req.payload.find({
         collection: WelcomeEmailCollectionSlug,
         sort: '-createdAt',
@@ -132,10 +129,7 @@ export const createUser: Endpoint = {
           }),
         })
         emailSent = true
-        console.log('Welcome email sent successfully to:', createUser.email)
-      } catch (emailError) {
-        console.log(emailError)
-        console.error('Failed to send welcome email:', emailError)
+      } catch {
         emailSent = false
       }
 

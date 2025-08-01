@@ -18,9 +18,10 @@ const formatDate = (dateString: string) => {
 }
 
 export const DiffView = ({ log }: { log: AuditLog }) => {
-  const prev = JSON.parse(JSON.stringify(log.prev))
-  const current = JSON.parse(JSON.stringify(log.current))
-  const metadata = JSON.parse(JSON.stringify(log.metadata))
+  const { prev: logPrev, current: logCurrent, metadata: logMetadata } = log
+  const prev = JSON.parse(JSON.stringify(logPrev))
+  const current = JSON.parse(JSON.stringify(logCurrent))
+  const metadata = JSON.parse(JSON.stringify(logMetadata))
 
   return (
     <Dialog>

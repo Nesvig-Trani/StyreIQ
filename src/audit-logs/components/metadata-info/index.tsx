@@ -5,7 +5,7 @@ export const MetadataInfo = ({
 }: {
   metadata: Record<string, string | number | object | undefined>
 }) => {
-  if (!metadata || Object.keys(metadata).length === 0) {
+  if (!metadata || (typeof metadata === 'object' && Object.keys(metadata).length === 0)) {
     return <div className="text-muted-foreground italic">No data</div>
   }
 
