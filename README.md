@@ -1,4 +1,4 @@
-# GovernIQ - v1.0.7
+# GovernIQ - v1.0.8
 
 This template comes configured with the bare minimum to get started on anything you need.
 
