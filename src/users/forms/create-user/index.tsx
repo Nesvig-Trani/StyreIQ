@@ -9,6 +9,7 @@ import {
   SelectItem,
   Label,
   Input,
+  PasswordInput,
   Select,
   SelectContent,
   SelectTrigger,
@@ -69,9 +70,8 @@ export function CreateUserForm({
 
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input
+            <PasswordInput
               id="password"
-              type="password"
               placeholder="Enter password"
               {...register('password', {
                 required: 'Password is required',

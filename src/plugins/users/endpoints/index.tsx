@@ -20,6 +20,7 @@ import { forgotPasswordEmailBody } from '@/users/constants/forgotPasswordEmailBo
 import { resetPasswordEmailBody } from '@/users/constants/resetPasswordEmailBody'
 import { welcomeEmailBody } from '@/users/constants/welcomeEmailBody'
 import { WelcomeEmailCollectionSlug } from '@/plugins/welcome-emails/types'
+import { AuditLogActionEnum } from '@/plugins/audit-log/types'
 
 export const createUser: Endpoint = {
   path: '/',
@@ -104,23 +105,77 @@ export const createUser: Endpoint = {
         ) || [],
       )
 
+      console.log('User created successfully:', createUser)
+
+      // Send welcome email
+      console.log('Sending welcome email to:', createUser.email)
       const welcomeEmail = await req.payload.find({
         collection: WelcomeEmailCollectionSlug,
         sort: '-createdAt',
         limit: 1,
       })
       const emailData = welcomeEmail.docs[0]
-      await req.payload.sendEmail({
-        to:
-          env.NEXT_PUBLIC_NODE_ENV === 'production' ? createUser.email : env.LOCAL_EMAIL_TO_ADDRESS,
-        subject: 'Welcome to StyreIq',
-        html: welcomeEmailBody({
-          name: createUser.name,
-          instructions: emailData.instructions,
-          policyLinks: emailData.policyLinks || [],
-          responsibilities: emailData.responsibilities || [],
-        }),
-      })
+
+      let emailSent = false
+      try {
+        await req.payload.sendEmail({
+          to:
+            env.NEXT_PUBLIC_NODE_ENV === 'production'
+              ? createUser.email
+              : env.LOCAL_EMAIL_TO_ADDRESS,
+          subject: 'Welcome to StyreIq',
+          html: welcomeEmailBody({
+            name: createUser.name,
+            instructions: emailData.instructions || '',
+            policyLinks: emailData.policyLinks || [],
+            responsibilities: emailData.responsibilities || [],
+          }),
+        })
+        emailSent = true
+        console.log('Welcome email sent successfully to:', createUser.email)
+      } catch (emailError) {
+        console.log(emailError)
+        console.error('Failed to send welcome email:', emailError)
+        emailSent = false
+      }
+
+      // Log user creation event in audit log
+      if (req.user) {
+        try {
+          console.log('Creating audit log for user creation:', createUser.id)
+          await req.payload.create({
+            collection: 'audit_log',
+            data: {
+              user: req.user.id,
+              action: AuditLogActionEnum.UserCreation,
+              entity: 'users',
+              document: {
+                relationTo: 'users',
+                value: createUser.id,
+              },
+              current: {
+                id: createUser.id,
+                email: createUser.email,
+                name: createUser.name,
+                role: createUser.role,
+                status: createUser.status,
+                organizations: createUser.organizations,
+              },
+              organizations: createUser.organizations,
+              metadata: {
+                emailSent,
+                emailAddress: createUser.email,
+                createdBy: req.user.id,
+                timestamp: new Date().toISOString(),
+                actionType: 'user_creation',
+              },
+            },
+          })
+          console.log('Audit log created for user creation:', createUser.id)
+        } catch (auditError) {
+          console.error('Failed to create audit log for user creation:', auditError)
+        }
+      }
 
       return new Response(JSON.stringify(createUser), {
         status: 201,
@@ -466,15 +521,50 @@ export const userForgotPassword: Endpoint = {
         disableEmail: true,
       })
 
-      await req.payload.sendEmail({
-        to:
-          env.NEXT_PUBLIC_NODE_ENV === 'production' ? parseData.email : env.LOCAL_EMAIL_TO_ADDRESS,
-        subject: 'Password recovery instructions',
-        html: forgotPasswordEmailBody({
-          token,
-          name: user.docs[0].name,
-        }),
-      })
+      let emailSent = false
+      try {
+        await req.payload.sendEmail({
+          to:
+            env.NEXT_PUBLIC_NODE_ENV === 'production'
+              ? parseData.email
+              : env.LOCAL_EMAIL_TO_ADDRESS,
+          subject: 'Password recovery instructions',
+          html: forgotPasswordEmailBody({
+            token,
+            name: user.docs[0].name,
+          }),
+        })
+        emailSent = true
+      } catch (emailError) {
+        console.error('Failed to send password recovery email:', emailError)
+        emailSent = false
+      }
+
+      // Log password recovery event in audit log
+      try {
+        await req.payload.create({
+          collection: 'audit_log',
+          data: {
+            user: user.docs[0].id,
+            action: AuditLogActionEnum.PasswordRecovery,
+            entity: 'password_recovery',
+            current: {
+              email: parseData.email,
+              tokenGenerated: !!token,
+              emailSent,
+            },
+            metadata: {
+              emailSent,
+              emailAddress: parseData.email,
+              tokenGenerated: !!token,
+              timestamp: new Date().toISOString(),
+              actionType: 'password_recovery',
+            },
+          },
+        })
+      } catch (auditError) {
+        console.error('Failed to create audit log for password recovery:', auditError)
+      }
 
       return new Response(JSON.stringify({ success: true }), {
         status: 200,
@@ -532,13 +622,46 @@ export const userResetPassword: Endpoint = {
         },
       })
 
-      await req.payload.sendEmail({
-        to: env.NEXT_PUBLIC_NODE_ENV === 'production' ? user.email : env.LOCAL_EMAIL_TO_ADDRESS,
-        subject: 'Your account password was changed',
-        html: resetPasswordEmailBody({
-          name: user.name,
-        }),
-      })
+      let emailSent = false
+      try {
+        await req.payload.sendEmail({
+          to: env.NEXT_PUBLIC_NODE_ENV === 'production' ? user.email : env.LOCAL_EMAIL_TO_ADDRESS,
+          subject: 'Your account password was changed',
+          html: resetPasswordEmailBody({
+            name: user.name,
+          }),
+        })
+        emailSent = true
+      } catch (emailError) {
+        console.error('Failed to send password reset confirmation email:', emailError)
+        emailSent = false
+      }
+
+      // Log password reset event in audit log
+      try {
+        await req.payload.create({
+          collection: 'audit_log',
+          data: {
+            user: user.id,
+            action: AuditLogActionEnum.PasswordReset,
+            entity: 'password_reset',
+            current: {
+              email: user.email,
+              passwordReset: true,
+              emailSent,
+            },
+            metadata: {
+              emailSent,
+              emailAddress: user.email,
+              passwordReset: true,
+              timestamp: new Date().toISOString(),
+              actionType: 'password_reset',
+            },
+          },
+        })
+      } catch (auditError) {
+        console.error('Failed to create audit log for password reset:', auditError)
+      }
 
       return new Response(JSON.stringify({ success: true }), {
         status: 200,

@@ -11,6 +11,7 @@ import { EyeIcon } from 'lucide-react'
 import { AuditLog } from '@/payload-types'
 import { actionLabels } from '@/audit-logs/constants/actionLabels'
 import { ChangeHighlighter } from '../change-highlighter'
+import { MetadataInfo } from '../metadata-info'
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleString()
@@ -19,6 +20,7 @@ const formatDate = (dateString: string) => {
 export const DiffView = ({ log }: { log: AuditLog }) => {
   const prev = JSON.parse(JSON.stringify(log.prev))
   const current = JSON.parse(JSON.stringify(log.current))
+  const metadata = JSON.parse(JSON.stringify(log.metadata))
 
   return (
     <Dialog>
@@ -76,7 +78,10 @@ export const DiffView = ({ log }: { log: AuditLog }) => {
           </div>
 
           <div className="space-y-4">
-            <ChangeHighlighter prev={prev} current={current} title="Changes" />
+            {prev || current ? (
+              <ChangeHighlighter prev={prev} current={current} title="Changes" />
+            ) : null}
+            {metadata ? <MetadataInfo metadata={metadata} /> : null}
           </div>
         </div>
       </DialogContent>

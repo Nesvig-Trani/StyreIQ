@@ -39,6 +39,18 @@ export const AuditLogs: CollectionConfig = {
           label: 'Policy Acknowledgment',
           value: AuditLogActionEnum.PolicyAcknowledgement,
         },
+        {
+          label: 'User Creation',
+          value: AuditLogActionEnum.UserCreation,
+        },
+        {
+          label: 'Password Recovery',
+          value: AuditLogActionEnum.PasswordRecovery,
+        },
+        {
+          label: 'Password Reset',
+          value: AuditLogActionEnum.PasswordReset,
+        },
       ],
       required: true,
     },
@@ -60,6 +72,10 @@ export const AuditLogs: CollectionConfig = {
       type: 'relationship',
       relationTo: 'organization',
       hasMany: true,
+    },
+    {
+      name: 'metadata',
+      type: 'json',
     },
   ],
   timestamps: true,

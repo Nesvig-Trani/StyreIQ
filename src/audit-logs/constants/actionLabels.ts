@@ -7,4 +7,7 @@ export const actionLabels = {
   [AuditLogActionEnum.Approval]: 'Approval',
   [AuditLogActionEnum.FlagResolution]: 'Flag Resolution',
   [AuditLogActionEnum.PolicyAcknowledgement]: 'Policy Acknowledgment',
+  [AuditLogActionEnum.UserCreation]: 'User Creation',
+  [AuditLogActionEnum.PasswordRecovery]: 'Password Recovery',
+  [AuditLogActionEnum.PasswordReset]: 'Password Reset',
 }

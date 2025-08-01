@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from '@/shared/components/ui/card'
 import { Input } from '@/shared/components/ui/input'
+import { PasswordInput } from '@/shared/components/ui/password-input'
 import { Label } from '@/shared/components/ui/label'
 import { useLogin } from '@/auth'
 import Link from 'next/link'
@@ -45,10 +46,9 @@ export function LoginForm() {
                     Forgot your password?
                   </Link>
                 </div>
-                <Input
+                <PasswordInput
                   id="password"
                   name="password"
-                  type="password"
                   required
                   value={loginFields.password}
                   onChange={handleInputChange}

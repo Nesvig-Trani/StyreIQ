@@ -399,7 +399,16 @@ export interface FlagComment {
 export interface AuditLog {
   id: number
   user: number | User
-  action: 'create' | 'update' | 'delete' | 'approval' | 'flag_resolution' | 'policy_acknowledgment'
+  action:
+    | 'create'
+    | 'update'
+    | 'delete'
+    | 'approval'
+    | 'flag_resolution'
+    | 'policy_acknowledgment'
+    | 'user_creation'
+    | 'password_recovery'
+    | 'password_reset'
   entity: string
   prev?:
     | {
@@ -420,6 +429,15 @@ export interface AuditLog {
     | boolean
     | null
   organizations?: (number | Organization)[] | null
+  metadata?:
+    | {
+        [k: string]: unknown
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null
   document?:
     | ({
         relationTo: 'users'
@@ -835,6 +853,7 @@ export interface AuditLogSelect<T extends boolean = true> {
   prev?: T
   current?: T
   organizations?: T
+  metadata?: T
   document?: T
   updatedAt?: T
   createdAt?: T

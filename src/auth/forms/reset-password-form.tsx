@@ -7,20 +7,16 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  Input,
   Label,
+  PasswordInput,
 } from '@/shared'
-import { ArrowLeftIcon, EyeIcon, EyeOffIcon, LockIcon } from 'lucide-react'
+import { ArrowLeftIcon, LockIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useResetPasswordForm } from '../hooks/useResetPasswordForm'
 
 export function ResetPasswordForm() {
   const {
     isLoading,
-    showPassword,
-    setShowPassword,
-    showConfirmPassword,
-    setShowConfirmPassword,
     register,
     handleSubmit,
     handleBackToLogin,
@@ -58,27 +54,13 @@ export function ResetPasswordForm() {
               <Label htmlFor="password">New Password</Label>
               <div className="relative">
                 <LockIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
+                <PasswordInput
                   id="password"
-                  type={showPassword ? 'text' : 'password'}
                   placeholder="Enter your new password"
                   {...register('password')}
-                  className={`pl-10 pr-10 ${errors.password ? 'border-red-500' : ''}`}
+                  className={`pl-10 ${errors.password ? 'border-red-500' : ''}`}
                   disabled={isLoading}
                 />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <EyeOffIcon className="h-4 w-4 text-muted-foreground" />
-                  ) : (
-                    <EyeIcon className="h-4 w-4 text-muted-foreground" />
-                  )}
-                </Button>
               </div>
               {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
             </div>
@@ -87,27 +69,13 @@ export function ResetPasswordForm() {
               <Label htmlFor="confirmPassword">Confirm New Password</Label>
               <div className="relative">
                 <LockIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
+                <PasswordInput
                   id="confirmPassword"
-                  type={showConfirmPassword ? 'text' : 'password'}
                   placeholder="Confirm your new password"
                   {...register('confirmPassword')}
-                  className={`pl-10 pr-10 ${errors.confirmPassword ? 'border-red-500' : ''}`}
+                  className={`pl-10 ${errors.confirmPassword ? 'border-red-500' : ''}`}
                   disabled={isLoading}
                 />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  {showConfirmPassword ? (
-                    <EyeOffIcon className="h-4 w-4 text-muted-foreground" />
-                  ) : (
-                    <EyeIcon className="h-4 w-4 text-muted-foreground" />
-                  )}
-                </Button>
               </div>
               {errors.confirmPassword && (
                 <p className="text-sm text-red-500">{errors.confirmPassword.message}</p>

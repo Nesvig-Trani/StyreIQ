@@ -17,6 +17,7 @@ import { MultiSelectInputHelper } from './fields/multiselect'
 import { NumberInputHelper } from './fields/number'
 import { SelectInputHelper } from './fields/select'
 import { TextInputHelper } from './fields/text'
+import { PasswordInputHelper } from './fields/password'
 import { TextAreaHelper } from './fields/text-area'
 import { getFieldListDefaultValues } from './get-field-default-value'
 import { FieldData } from '@/shared/components/form-hook-helper/types'
@@ -38,9 +39,19 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
   if (size === 'half') {
     sizeClassName = cn(sizeClassName, 'md:col-span-6')
   }
-  if (type === 'text' || type === 'password') {
+  if (type === 'text') {
     return (
       <TextInputHelper
+        key={fieldData.name}
+        form={form}
+        fieldData={fieldData}
+        className={sizeClassName}
+      />
+    )
+  }
+  if (type === 'password') {
+    return (
+      <PasswordInputHelper
         key={fieldData.name}
         form={form}
         fieldData={fieldData}

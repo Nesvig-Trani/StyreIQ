@@ -24,8 +24,7 @@ export function useResetPasswordForm() {
   const router = useRouter()
   const [token, setToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
   const [apiError, setApiError] = useState<string | null>(null)
 
   const {
@@ -74,10 +73,6 @@ export function useResetPasswordForm() {
   }
   return {
     isLoading,
-    showPassword,
-    setShowPassword,
-    showConfirmPassword,
-    setShowConfirmPassword,
     register,
     handleSubmit,
     handleBackToLogin,
