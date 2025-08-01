@@ -1,7 +1,15 @@
 import { z } from 'zod'
 import { EndpointError } from '@/shared'
 import { Endpoint, PayloadRequest } from 'payload'
-import { createSocialMediaFormSchema, SocialMediaStatusEnum } from '@/social-medias/schemas'
+import {
+  createSocialMediaFormSchema,
+  LinkedToolsEnum,
+  PasswordManagementPracticeEnum,
+  PlatformEnum,
+  SocialMediaStatusEnum,
+  ThirdPartyManagementEnum,
+  VerificationStatusEnum,
+} from '@/social-medias/schemas'
 import { SocialMediasCollectionSlug } from '@/plugins/social-medias/collections'
 import { UserRolesEnum } from '@/users/schemas'
 import { JSON_HEADERS } from '@/shared/constants'
@@ -88,10 +96,21 @@ export const createSocialMedia: Endpoint = {
           primaryAdmin: selectedPrimaryAdmin,
           backupAdmin: selectedBackupAdmin,
           status: SocialMediaStatusEnum.PendingApproval,
+          platform: dataParsed.platform as PlatformEnum,
+          thirdPartyManagement: dataParsed.thirdPartyManagement as
+            | ThirdPartyManagementEnum
+            | undefined,
+          passwordManagementPractice: dataParsed.passwordManagementPractice as
+            | PasswordManagementPracticeEnum
+            | undefined,
+          verificationStatus: dataParsed.verificationStatus as VerificationStatusEnum | undefined,
+          linkedTools: dataParsed.linkedTools as LinkedToolsEnum[] | undefined,
+          adminContactEmails: Array.isArray(dataParsed.adminContactEmails)
+            ? dataParsed.adminContactEmails.map((email) => ({ email }))
+            : [],
         },
         req,
       })
-
       return new Response(JSON.stringify(socialMedia), {
         status: 201,
         headers: JSON_HEADERS,

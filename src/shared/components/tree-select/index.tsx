@@ -5,6 +5,7 @@ import { Tree } from '@/organizations'
 import { Command, CommandEmpty, CommandInput, CommandList } from '@/shared/components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/shared/components/ui/popover'
 import { FieldDataOption } from '@/shared/components/form-hook-helper'
+import { ChevronDown } from 'lucide-react'
 
 interface TreeNodeProps {
   tree: Tree
@@ -117,23 +118,26 @@ export function TreeSelect({
         <button
           disabled={disabled}
           className={cn(
-            'w-[300px] flex justify-start p-3 border text-sm rounded-md text-gray-500',
+            'w-[700px] flex justify-between items-center h-9 px-3 py-2 border text-sm rounded-md text-gray-500 bg-background',
             disabled && 'opacity-50 cursor-not-allowed',
-            errors ? 'border-red-500' : 'border-gray-200',
+            errors ? 'border-red-500' : 'border-input',
           )}
         >
-          {value && multiple
-            ? (value as string[])
-                .map((val) => options.find((opt) => opt.value.toString() === val)?.label)
-                .filter(Boolean)
-                .join(', ') || 'Select organizations'
-            : value
-              ? options.find((opt) => opt.value.toString() === value)?.label
-              : 'Select organization'}
+          <span className="truncate">
+            {value && multiple
+              ? (value as string[])
+                  .map((val) => options.find((opt) => opt.value.toString() === val)?.label)
+                  .filter(Boolean)
+                  .join(', ') || 'Select organizations'
+              : value
+                ? options.find((opt) => opt.value.toString() === value)?.label
+                : 'Select organization'}
+          </span>
+          <ChevronDown className="h-4 cursor-pointer text-gray-300" />
         </button>
       </PopoverTrigger>
       {!disabled && (
-        <PopoverContent className="w-[300px] p-0">
+        <PopoverContent className="w-[700px] p-0">
           <Command>
             <CommandInput placeholder="Search…" value={search} onValueChange={setSearch} />
             <CommandList>

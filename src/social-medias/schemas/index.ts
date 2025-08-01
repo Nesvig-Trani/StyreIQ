@@ -6,15 +6,28 @@ const baseSocialMediaSchema = z.object({
   name: z.string(),
   profileUrl: z.string().url(),
   platform: z.string(),
+  creationDate: z.string(),
+  organization: z.string(),
+  primaryAdmin: z.string(),
+  adminContactEmails: z.array(z.string().email()),
+  accountHandle: z.string().optional(),
+  businessId: z.string().optional(),
+  backupAdmin: z.string().optional(),
+  backupContactInfo: z.string().email().optional(),
   contactEmail: z.string().email().or(z.literal('')).optional(),
   contactPhone: z
     .string()
     .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number format')
     .or(z.literal(''))
     .optional(),
-  organization: z.string(),
-  primaryAdmin: z.string(),
-  backupAdmin: z.string(),
+  thirdPartyManagement: z.string(),
+  thirdPartyProvider: z.string().optional(),
+  thirdPartyContact: z.string().optional(),
+  passwordManagementPractice: z.string().optional(),
+  linkedTools: z.array(z.string()).optional(),
+  verificationStatus: z.string().optional(),
+  platformSupportDetails: z.string().optional(),
+  notes: z.string().optional(),
 })
 
 export const createSocialMediaFormSchema = baseSocialMediaSchema.refine(
@@ -68,6 +81,93 @@ export enum PlatformEnum {
   YouTube = 'youtube',
   Other = 'other',
 }
+
+export const platformLabelMap: Record<PlatformEnum, string> = {
+  [PlatformEnum.Facebook]: 'Facebook',
+  [PlatformEnum.Instagram]: 'Instagram',
+  [PlatformEnum.Twitter]: 'Twitter',
+  [PlatformEnum.LinkedIn]: 'LinkedIn',
+  [PlatformEnum.TikTok]: 'TikTok',
+  [PlatformEnum.YouTube]: 'YouTube',
+  [PlatformEnum.Other]: 'Other',
+}
+
+export const platformOptions = Object.values(PlatformEnum).map((platform) => ({
+  value: platform,
+  label: platformLabelMap[platform],
+}))
+
+export enum ThirdPartyManagementEnum {
+  Yes = 'yes',
+  No = 'no',
+}
+
+export const thirdPartyManagementLabelMap: Record<ThirdPartyManagementEnum, string> = {
+  [ThirdPartyManagementEnum.Yes]: 'Yes',
+  [ThirdPartyManagementEnum.No]: 'No',
+}
+
+export const thirdPartyManagementOptions = Object.values(ThirdPartyManagementEnum).map(
+  (option) => ({
+    value: option,
+    label: thirdPartyManagementLabelMap[option],
+  }),
+)
+
+export enum PasswordManagementPracticeEnum {
+  PasswordManager = 'Password Manager',
+  Manual = 'Manual',
+  Other = 'Other',
+}
+
+export const passwordManagementPracticeLabelMap: Record<PasswordManagementPracticeEnum, string> = {
+  [PasswordManagementPracticeEnum.PasswordManager]: 'Password Manager',
+  [PasswordManagementPracticeEnum.Manual]: 'Manual',
+  [PasswordManagementPracticeEnum.Other]: 'Other',
+}
+
+export const passwordManagementPracticeOptions = Object.values(PasswordManagementPracticeEnum).map(
+  (practice) => ({
+    value: practice,
+    label: passwordManagementPracticeLabelMap[practice],
+  }),
+)
+
+export enum LinkedToolsEnum {
+  Hootsuite = 'Hootsuite',
+  Canva = 'Canva',
+  Sprout = 'Sprout',
+  Other = 'Other',
+}
+
+export const linkedToolsLabelMap: Record<LinkedToolsEnum, string> = {
+  [LinkedToolsEnum.Hootsuite]: 'Hootsuite',
+  [LinkedToolsEnum.Canva]: 'Canva',
+  [LinkedToolsEnum.Sprout]: 'Sprout',
+  [LinkedToolsEnum.Other]: 'Other',
+}
+
+export const linkedToolsOptions = Object.values(LinkedToolsEnum).map((tool) => ({
+  value: tool,
+  label: linkedToolsLabelMap[tool],
+}))
+
+export enum VerificationStatusEnum {
+  Verified = 'verified',
+  NotVerified = 'notVerified',
+  Pending = 'pending',
+}
+
+export const verificationStatusLabelMap: Record<VerificationStatusEnum, string> = {
+  [VerificationStatusEnum.Verified]: 'Verified',
+  [VerificationStatusEnum.NotVerified]: 'Not Verified',
+  [VerificationStatusEnum.Pending]: 'Pending',
+}
+
+export const verificationStatusOptions = Object.values(VerificationStatusEnum).map((status) => ({
+  value: status,
+  label: verificationStatusLabelMap[status],
+}))
 
 export const statusColorMap: Record<SocialMediaStatusEnum, string> = {
   [SocialMediaStatusEnum.Active]: 'green',

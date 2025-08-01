@@ -73,8 +73,6 @@ type MultiSelectProps = {
    * Optional, can be used to add custom styles.
    */
   className?: string
-
-  variant?: string
 } & React.ButtonHTMLAttributes<HTMLButtonElement>
 
 const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
@@ -82,7 +80,6 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
     {
       options,
       onValueChange,
-      variant = 'default',
       defaultValue = [],
       value: valueFromProps,
       placeholder = 'Select options',
@@ -168,18 +165,18 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
               {...props}
               onClick={handleTogglePopover}
               className={cn(
-                'flex w-full p-1 rounded-md border min-h-[36px] h-auto items-center justify-between bg-inherit hover:bg-inherit',
+                'flex w-full p-1 font-normal text-muted-foreground rounded-md border h-10 items-center justify-between bg-inherit hover:bg-inherit',
                 className,
               )}
             >
               <div className="mx-auto flex w-full items-center justify-between">
-                <span className="mx-3 text-sm text-muted-foreground">{placeholder}</span>
-                <ChevronDown className="mx-2 h-4 cursor-pointer text-muted-foreground" />
+                <span className="mx-3 text-sm">{placeholder}</span>
+                <ChevronDown className="mx-2 h-4 cursor-pointer font-normal text-gray-300" />
               </div>
             </Button>
           </PopoverTrigger>
           <PopoverContent
-            className="w-auto p-0"
+            className="w-[700px] p-0"
             align="start"
             onEscapeKeyDown={(): void => setIsPopoverOpen(false)}
           >
@@ -195,7 +192,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
                   <p>No results found.</p>
                 </CommandEmpty>
                 <CommandGroup key="items-list">
-                  <CommandItem key="all" onSelect={toggleAll} className="cursor-pointer">
+                  <CommandItem key="all" onSelect={toggleAll} className="cursor-pointer  h-[35px]">
                     <div
                       className={cn(
                         'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
@@ -244,7 +241,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
                     <div className="flex items-center justify-between">
                       <CommandItem
                         onSelect={handleClear}
-                        className="flex-1 cursor-pointer justify-center"
+                        className="flex-1 cursor-pointer justify-center h-[35px]"
                       >
                         <p>Clear</p>
                       </CommandItem>
@@ -283,7 +280,7 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
             <div className="pl-px leading-none">
               <Button
                 type="button"
-                className={cn(defaultButtonClassname, 'm-0 ml-2')}
+                className={cn(defaultButtonClassname, 'm-0 ml-2 h-[25px]')}
                 onClick={handleClear}
               >
                 <p>Clear all</p>

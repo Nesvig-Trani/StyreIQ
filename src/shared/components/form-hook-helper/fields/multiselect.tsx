@@ -36,7 +36,6 @@ export const MultiSelectInputHelper = <TFieldValues extends FieldValues>({
               onValueChange={field.onChange}
               value={field.value}
               placeholder={fieldData.placeholder || 'Select options'}
-              variant="default"
             />
           </FormControl>
           <FormMessage />

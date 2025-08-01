@@ -7,6 +7,7 @@ import * as migration_20250711_202206 from './20250711_202206'
 import * as migration_20250718_205857_welcome_email from './20250718_205857_welcome_email'
 import * as migration_20250722_194435_link_compliance_to_user from './20250722_194435_link_compliance_to_user'
 import * as migration_20250723_162524_organization_types from './20250723_162524_organization_types'
+import * as migration_20250731_204646_add_new_fields_to_social_media from './20250731_204646_add_new_fields_to_social_media'
 
 export const migrations = [
   {
@@ -53,5 +54,10 @@ export const migrations = [
     up: migration_20250723_162524_organization_types.up,
     down: migration_20250723_162524_organization_types.down,
     name: '20250723_162524_organization_types',
+  },
+  {
+    up: migration_20250731_204646_add_new_fields_to_social_media.up,
+    down: migration_20250731_204646_add_new_fields_to_social_media.down,
+    name: '20250731_204646_add_new_fields_to_social_media',
   },
 ]

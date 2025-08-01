@@ -38,6 +38,11 @@ export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocia
         typeof data.backupAdmin === 'object'
           ? data.backupAdmin.id.toString()
           : data.backupAdmin.toString(),
+      adminContactEmails: (data.adminContactEmails ?? [])
+        .map((item) => item.email)
+        .filter((email): email is string => typeof email === 'string'),
+      thirdPartyManagement: data.thirdPartyManagement ?? '',
+      creationDate: data.creationDate ?? new Date().toISOString(),
     },
   })
 

@@ -4,8 +4,12 @@ import {
   patchSocialMedia,
   updateSocialMediaStatus,
 } from '@/plugins/social-medias/endpoints'
-import { SocialMediaStatusEnum, statusLabelMap } from '@/social-medias/schemas'
+import { linkedToolsOptions, SocialMediaStatusEnum, statusLabelMap } from '@/social-medias/schemas'
 import { canReadSocialMedias } from '../access'
+import { platformOptions } from '@/social-medias/constants/platformOptions'
+import { thirdPartyManagementOptions } from '@/social-medias/constants/thirdPartyManagementOptions'
+import { passwordManagementPracticeOptions } from '@/social-medias/constants/passwordManagementPracticeOptions'
+import { verificationStatusOptions } from '@/social-medias/constants/verificationStatusOptions'
 
 export const SocialMediasCollectionSlug = 'social-medias'
 
@@ -31,8 +35,72 @@ export const SocialMedias: CollectionConfig = {
     },
     {
       name: 'platform',
-      type: 'text',
+      type: 'select',
       required: true,
+      options: platformOptions,
+    },
+    {
+      name: 'accountHandle',
+      type: 'text',
+    },
+    {
+      name: 'businessId',
+      type: 'text',
+    },
+    {
+      name: 'adminContactEmails',
+      type: 'array',
+      fields: [
+        {
+          name: 'email',
+          type: 'email',
+        },
+      ],
+    },
+    {
+      name: 'backupContactInfo',
+      type: 'email',
+    },
+    {
+      name: 'thirdPartyManagement',
+      type: 'select',
+      options: thirdPartyManagementOptions,
+    },
+    {
+      name: 'thirdPartyProvider',
+      type: 'text',
+    },
+    {
+      name: 'thirdPartyContact',
+      type: 'text',
+    },
+    {
+      name: 'passwordManagementPractice',
+      type: 'select',
+      options: passwordManagementPracticeOptions,
+    },
+    {
+      name: 'creationDate',
+      type: 'date',
+    },
+    {
+      name: 'linkedTools',
+      type: 'select',
+      hasMany: true,
+      options: linkedToolsOptions,
+    },
+    {
+      name: 'verificationStatus',
+      type: 'select',
+      options: verificationStatusOptions,
+    },
+    {
+      name: 'platformSupportDetails',
+      type: 'text',
+    },
+    {
+      name: 'notes',
+      type: 'textarea',
     },
     {
       name: 'contactEmail',

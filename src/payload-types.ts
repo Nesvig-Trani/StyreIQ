@@ -251,7 +251,25 @@ export interface SocialMedia {
   id: number
   name: string
   profileUrl: string
-  platform: string
+  platform: 'facebook' | 'instagram' | 'twitter' | 'linkedin' | 'tiktok' | 'youtube' | 'other'
+  accountHandle?: string | null
+  businessId?: string | null
+  adminContactEmails?:
+    | {
+        email?: string | null
+        id?: string | null
+      }[]
+    | null
+  backupContactInfo?: string | null
+  thirdPartyManagement?: ('yes' | 'no') | null
+  thirdPartyProvider?: string | null
+  thirdPartyContact?: string | null
+  passwordManagementPractice?: ('Password Manager' | 'Manual' | 'Other') | null
+  creationDate?: string | null
+  linkedTools?: ('Hootsuite' | 'Canva' | 'Sprout' | 'Other')[] | null
+  verificationStatus?: ('verified' | 'notVerified' | 'pending') | null
+  platformSupportDetails?: string | null
+  notes?: string | null
   contactEmail?: string | null
   contactPhone?: string | null
   organization: number | Organization
@@ -701,6 +719,24 @@ export interface SocialMediasSelect<T extends boolean = true> {
   name?: T
   profileUrl?: T
   platform?: T
+  accountHandle?: T
+  businessId?: T
+  adminContactEmails?:
+    | T
+    | {
+        email?: T
+        id?: T
+      }
+  backupContactInfo?: T
+  thirdPartyManagement?: T
+  thirdPartyProvider?: T
+  thirdPartyContact?: T
+  passwordManagementPractice?: T
+  creationDate?: T
+  linkedTools?: T
+  verificationStatus?: T
+  platformSupportDetails?: T
+  notes?: T
   contactEmail?: T
   contactPhone?: T
   organization?: T

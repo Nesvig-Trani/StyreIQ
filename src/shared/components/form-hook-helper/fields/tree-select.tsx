@@ -33,9 +33,9 @@ export const TreeSelectHelper = <TFieldValues extends FieldValues>({
       control={form.control}
       name={fieldData.name}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className="w-full">
           <FormLabel>{fieldData.label}</FormLabel>
-          <FormControl>
+          <FormControl className="w-full">
             <TreeSelect
               options={fieldData.options || []}
               tree={fieldData.tree || []}

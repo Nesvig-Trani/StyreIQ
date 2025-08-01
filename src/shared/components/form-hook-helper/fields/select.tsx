@@ -47,7 +47,7 @@ export const SelectInputHelper = <TFieldValues extends FieldValues>({
             }}
           >
             <FormControl>
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder={fieldData.placeholder || 'Select an option'} />
               </SelectTrigger>
             </FormControl>
