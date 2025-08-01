@@ -136,7 +136,6 @@ export const createUser: Endpoint = {
       // Log user creation event in audit log
       if (req.user) {
         try {
-          console.log('Creating audit log for user creation:', createUser.id)
           await req.payload.create({
             collection: 'audit_log',
             data: {
@@ -165,7 +164,6 @@ export const createUser: Endpoint = {
               },
             },
           })
-          console.log('Audit log created for user creation:', createUser.id)
         } catch (auditError) {
           console.error('Failed to create audit log for user creation:', auditError)
         }
@@ -254,7 +252,6 @@ export const updateUser: Endpoint = {
           )
         }
       }
-      console.log('data parsed', dataParsed)
       const updatedUser = await req.payload.update({
         collection: 'users',
         id: dataParsed.id,
