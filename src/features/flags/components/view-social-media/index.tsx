@@ -1,4 +1,4 @@
-import { SocialMedia } from '@/lib/payload/payload-types'
+import { SocialMedia } from '@/types/payload-types'
 import { Badge, Button, Separator } from '@/shared'
 import {
   Dialog,

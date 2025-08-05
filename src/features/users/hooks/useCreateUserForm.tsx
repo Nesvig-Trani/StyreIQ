@@ -1,7 +1,7 @@
 import { CreateUser, createUserFormSchema, UserRolesEnum, UserStatusEnum } from '@/features/users'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { Organization } from '@/lib/payload/payload-types'
+import { Organization } from '@/types/payload-types'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { isApiError } from '@/shared'

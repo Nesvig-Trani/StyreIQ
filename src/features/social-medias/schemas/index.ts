@@ -1,4 +1,4 @@
-import { Organization, SocialMedia, User } from '@/lib/payload/payload-types'
+import { Organization, SocialMedia, User } from '@/types/payload-types'
 import { paginationSchema } from '@/shared/schemas/pagination'
 import { z } from 'zod'
 

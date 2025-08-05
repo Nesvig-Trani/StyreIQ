@@ -1,7 +1,7 @@
 'use server'
 import { headers as getHeaders } from 'next/headers'
 import { UserAccessTypeEnum } from '@/features/organization-access'
-import { OrganizationAccess } from '@/lib/payload/payload-types'
+import { OrganizationAccess } from '@/types/payload-types'
 import { getOrganizationAccessByUserId } from '@/features/organization-access/plugins/queries'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { UserRolesEnum, UserStatusEnum } from '@/features/users'

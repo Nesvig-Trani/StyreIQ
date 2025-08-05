@@ -1,6 +1,6 @@
 'use client'
 
-import { User } from '@/lib/payload/payload-types'
+import { User } from '@/types/payload-types'
 import useReviewRequestTable from '@/features/review-requests/hooks/useReviewRequestTable'
 
 import { DataTable } from '@/shared'

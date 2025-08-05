@@ -7,7 +7,7 @@ import { EndpointError } from '@/shared'
 
 //Interfaces and types
 import { SocialMediaStatusEnum } from '@/features/social-medias'
-import { SocialMedia } from '@/lib/payload/payload-types'
+import { SocialMedia } from '@/types/payload-types'
 import { useRouter } from 'next/navigation'
 
 export type ChangeStatusSocialMediaReturn = {

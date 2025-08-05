@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/table-core'
-import { Organization, User } from '@/lib/payload/payload-types'
+import { Organization, User } from '@/types/payload-types'
 import { Badge } from '@/shared/components/ui/badge'
 
 function useOrganizationTable() {

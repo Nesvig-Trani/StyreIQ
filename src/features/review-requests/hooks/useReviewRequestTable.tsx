@@ -1,6 +1,6 @@
 'use client'
 import { ColumnDef } from '@tanstack/table-core'
-import { Organization, User } from '@/lib/payload/payload-types'
+import { Organization, User } from '@/types/payload-types'
 import { Check, PencilIcon } from 'lucide-react'
 import { roleLabelMap, statusLabelMap, UserRolesEnum, UserStatusEnum } from '@/features/users'
 import { Button } from '@/shared/components/ui/button'

@@ -1,5 +1,5 @@
 'use client'
-import { Organization } from '@/lib/payload/payload-types'
+import { Organization } from '@/types/payload-types'
 import { DataTable } from '@/shared'
 import useOrganizationTable from '@/features/organizations/hooks/useOrganizationTable'
 

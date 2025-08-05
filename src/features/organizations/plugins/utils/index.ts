@@ -1,4 +1,4 @@
-import { Organization } from '@/lib/payload/payload-types'
+import { Organization } from '@/types/payload-types'
 import { Where } from 'payload'
 
 export const buildAccessibleOrgsFilter = ({ orgs }: { orgs: Organization[] }) => {

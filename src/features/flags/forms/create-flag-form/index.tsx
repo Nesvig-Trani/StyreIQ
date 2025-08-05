@@ -3,7 +3,7 @@ import { affectedEntityOptions } from '../../constants/affectedEntityOptions'
 import { flagTypeOptions } from '../../constants/flagTypeOptions'
 import { useCreateFlag } from '../../hooks/useCreateFlag'
 import { AffectedEntityTypeEnum, FlagTypeEnum } from '../../schemas'
-import { SocialMedia, User } from '@/lib/payload/payload-types'
+import { SocialMedia, User } from '@/types/payload-types'
 import {
   Label,
   SelectContent,

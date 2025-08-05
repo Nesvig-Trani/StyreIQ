@@ -8,7 +8,7 @@ import {
 } from '@/shared/components/ui/dialog'
 import { Badge, Button } from '@/shared'
 import { EyeIcon } from 'lucide-react'
-import { AuditLog } from '@/lib/payload/payload-types'
+import { AuditLog } from '@/types/payload-types'
 import { actionLabels } from '../../constants/actionLabels'
 import { ChangeHighlighter } from '../change-highlighter'
 import { MetadataInfo } from '../metadata-info'

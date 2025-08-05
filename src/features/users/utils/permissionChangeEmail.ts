@@ -1,4 +1,4 @@
-import { Organization, User } from '@/lib/payload/payload-types'
+import { Organization, User } from '@/types/payload-types'
 import { Payload } from 'payload'
 import { updatedPermsEmailBody } from '../constants/updatedPermsEmailBody'
 

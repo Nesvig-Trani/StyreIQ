@@ -1,5 +1,5 @@
 'use client'
-import { FlagComment } from '@/lib/payload/payload-types'
+import { FlagComment } from '@/types/payload-types'
 import { createComment, getComments } from '@/sdk/flags'
 import { Button, Textarea, useLoading } from '@/shared'
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/shared/components/ui/dialog'

@@ -1,7 +1,7 @@
 import React from 'react'
 import { CreateUserForm, UserRolesEnum } from '@/features/users'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
-import { Organization } from '@/lib/payload/payload-types'
+import { Organization } from '@/types/payload-types'
 import { getAllOrganizations } from '@/features/organizations/plugins/queries'
 
 export default async function CreateUserPage() {

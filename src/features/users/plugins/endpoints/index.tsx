@@ -11,7 +11,7 @@ import {
   UserStatusEnum,
 } from '@/features/users/schemas'
 import { updateOrgAccessSchema, UserAccessTypeEnum } from '@/features/organization-access/schemas'
-import { Organization, User } from '@/lib/payload/payload-types'
+import { Organization, User } from '@/types/payload-types'
 import { checkAndSendPermissionChangeEmail } from '@/features/users/utils/permissionChangeEmail'
 import { JSON_HEADERS } from '@/shared/constants'
 import { setUserStatusSchema } from '@/features/review-requests/schemas'

@@ -1,4 +1,4 @@
-import { Organization } from '@/lib/payload/payload-types'
+import { Organization } from '@/types/payload-types'
 import { Badge } from '@/shared'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/shared/components/ui/hover-card'
 

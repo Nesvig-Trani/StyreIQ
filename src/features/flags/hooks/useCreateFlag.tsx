@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { createFlag } from '@/sdk/flags'
 import { toast } from 'sonner'
-import { SocialMedia, User } from '@/lib/payload/payload-types'
+import { SocialMedia, User } from '@/types/payload-types'
 
 export const useCreateFlag = ({
   users,

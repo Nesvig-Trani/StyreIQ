@@ -1,6 +1,6 @@
 'use client'
 
-import { User } from '@/lib/payload/payload-types'
+import { User } from '@/types/payload-types'
 
 import { DataTable } from '@/shared'
 import useUserTable from '@/features/users/hooks/useUserTable'

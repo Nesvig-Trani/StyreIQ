@@ -1,4 +1,4 @@
-import { Organization, User } from '@/lib/payload/payload-types'
+import { Organization, User } from '@/types/payload-types'
 import { z } from 'zod'
 import { paginationSchema } from '@/shared/schemas/pagination'
 import { statusConfig } from '../constants/statusConfig'

@@ -1,6 +1,6 @@
 import { AuditLogActionEnum } from '../types'
 import { CollectionAfterDeleteHook } from 'payload'
-import { AuditLog } from '@/lib/payload/payload-types'
+import { AuditLog } from '@/types/payload-types'
 
 export const AuditLogAfterDelete: CollectionAfterDeleteHook = async ({ doc, req, collection }) => {
   setTimeout(async () => {

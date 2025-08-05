@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import type { Organization, SocialMedia, User } from '@/lib/payload/payload-types'
+import type { Organization, SocialMedia, User } from '@/types/payload-types'
 import { DataTable } from '@/shared'
 import { useSocialMediasTable } from '@/features/social-medias'
 

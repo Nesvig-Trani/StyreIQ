@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { paginationSchema } from '@/shared/schemas/pagination'
-import { Organization, User } from '@/lib/payload/payload-types'
+import { Organization, User } from '@/types/payload-types'
 
 export enum UserRolesEnum {
   SuperAdmin = 'super_admin',

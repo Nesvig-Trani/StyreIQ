@@ -1,7 +1,7 @@
 'use client'
 
 import { DataTable } from '@/shared'
-import { Flag, Organization, User } from '@/lib/payload/payload-types'
+import { Flag, Organization, User } from '@/types/payload-types'
 import useFlagsTable from '@/features/flags/hooks/useFlagsTable'
 
 export default function FlagsTable({

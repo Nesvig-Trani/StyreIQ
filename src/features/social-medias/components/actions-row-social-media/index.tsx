@@ -11,7 +11,7 @@ import { SocialMediaStatusEnum, useChangeStatusSocialMedia } from '@/features/so
 import { Button } from '@/shared/components/ui/button'
 
 // Types
-import type { SocialMedia, User } from '@/lib/payload/payload-types'
+import type { SocialMedia, User } from '@/types/payload-types'
 import { Switch } from '@/shared/components/ui/switch'
 import { UserRolesEnum } from '@/features/users'
 import {

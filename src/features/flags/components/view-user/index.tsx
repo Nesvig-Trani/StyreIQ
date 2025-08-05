@@ -18,7 +18,7 @@ import {
   ShieldIcon,
   XCircleIcon,
 } from 'lucide-react'
-import { User } from '@/lib/payload/payload-types'
+import { User } from '@/types/payload-types'
 
 const getRoleLabel = (role: UserRolesEnum) => {
   switch (role) {

@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/table-core'
-import { Organization, User } from '@/lib/payload/payload-types'
+import { Organization, User } from '@/types/payload-types'
 import { roleLabelMap, statusLabelMap, UserRolesEnum, UserStatusEnum } from '@/features/users'
 import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'

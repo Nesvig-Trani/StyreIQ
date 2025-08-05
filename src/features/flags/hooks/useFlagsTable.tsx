@@ -1,5 +1,5 @@
 'use client'
-import { User, Flag, Organization } from '@/lib/payload/payload-types'
+import { User, Flag, Organization } from '@/types/payload-types'
 import { ColumnDef } from '@tanstack/table-core'
 import { FlagSourceEnum, flagsSearchSchema, FlagStatusEnum, FlagTypeEnum } from '../schemas'
 import { flagTypeLabels } from '../constants/flagTypeLabels'

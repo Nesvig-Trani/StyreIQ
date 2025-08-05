@@ -13,7 +13,7 @@ import {
 import { SocialMediasCollectionSlug } from '../collections'
 import { UserRolesEnum } from '@/features/users/schemas'
 import { JSON_HEADERS } from '@/shared/constants'
-import { Organization } from '@/lib/payload/payload-types'
+import { Organization } from '@/types/payload-types'
 import { getUserById } from '@/features/users'
 
 /**

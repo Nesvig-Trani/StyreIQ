@@ -1,4 +1,4 @@
-import { Organization } from '@/lib/payload/payload-types'
+import { Organization } from '@/types/payload-types'
 import { buildAccessibleOrgsFilter } from '@/features/organizations/plugins/utils'
 import { Access } from 'payload'
 import { UserRolesEnum } from '@/features/users'

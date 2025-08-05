@@ -1,6 +1,6 @@
 import { organizationTypeLabels } from '@/features/organizations/constants/organizationTypeLabels'
 import { OrganizationWithDepth } from '@/features/organizations/schemas'
-import { Organization, User } from '@/lib/payload/payload-types'
+import { Organization, User } from '@/types/payload-types'
 import { Badge, Card, CardHeader, CardTitle, CardContent, Separator } from '@/shared'
 import { Avatar, AvatarFallback } from '@/shared/components/ui/avatar'
 import { Building, Mail, Phone } from 'lucide-react'

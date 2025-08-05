@@ -1,6 +1,6 @@
 'use client'
 
-import { AuditLog, User } from '@/lib/payload/payload-types'
+import { AuditLog, User } from '@/types/payload-types'
 import { DataTable } from '@/shared'
 import useAuditLogsTable from '../../hooks/useAuditLogsTable'
 

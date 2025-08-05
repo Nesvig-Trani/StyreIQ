@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/components/ui/dialog'
-import { Policy } from '@/lib/payload/payload-types'
+import { Policy } from '@/types/payload-types'
 import { LexicalContentModal } from '@/shared/components/rich-text-editor/preview-modal'
 
 export default function PolicyHistory({ policies }: { policies: Policy[] }) {

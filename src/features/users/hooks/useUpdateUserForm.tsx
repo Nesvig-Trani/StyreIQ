@@ -9,7 +9,7 @@ import {
 } from '@/features/users'
 import { updateUser } from '@/sdk/users'
 import { toast } from 'sonner'
-import { Organization } from '@/lib/payload/payload-types'
+import { Organization } from '@/types/payload-types'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { CreateOrganizationsTree, OrganizationWithDepth } from '@/features/organizations'
 

@@ -25,7 +25,7 @@ import {
   UserStatusEnum,
 } from '@/features/users/schemas'
 import useCreateUserForm from '@/features/users/hooks/useCreateUserForm'
-import { Organization } from '@/lib/payload/payload-types'
+import { Organization } from '@/types/payload-types'
 import { DatePicker } from '@/shared/components/ui/datepicker'
 
 interface UserFormProps {

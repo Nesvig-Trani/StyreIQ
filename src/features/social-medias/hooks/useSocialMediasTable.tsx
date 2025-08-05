@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table'
-import type { Organization, SocialMedia, User } from '@/lib/payload/payload-types'
+import type { Organization, SocialMedia, User } from '@/types/payload-types'
 import { Badge, DataTableFilter, useParsedSearchParams } from '@/shared'
 import {
   ActionsRowSocialMedia,

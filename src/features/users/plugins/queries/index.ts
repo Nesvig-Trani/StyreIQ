@@ -1,7 +1,7 @@
 'use server'
 import { PaginatedDocs, Where } from 'payload'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
-import { User } from '@/lib/payload/payload-types'
+import { User } from '@/types/payload-types'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { UserRolesEnum, UserStatusEnum } from '@/features/users'
 

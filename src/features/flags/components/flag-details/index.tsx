@@ -1,7 +1,7 @@
 import { flagSourceLabels } from '@/features/flags/constants/flagSourceLabels'
 import { FlagSourceEnum, FlagStatusEnum } from '@/features/flags/schemas'
 import { getStatusColor, isActivityStale } from '@/features/flags/utils'
-import { Flag, Organization, SocialMedia, User } from '@/lib/payload/payload-types'
+import { Flag, Organization, SocialMedia, User } from '@/types/payload-types'
 import { Badge, Button, Separator } from '@/shared'
 import {
   Dialog,

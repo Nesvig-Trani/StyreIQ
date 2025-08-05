@@ -1,4 +1,4 @@
-import { AuditLog } from '@/lib/payload/payload-types'
+import { AuditLog } from '@/types/payload-types'
 import { CollectionAfterChangeHook } from 'payload'
 import { AuditLogCollectionKey } from '@/lib/payload/payload.config'
 
