@@ -22,7 +22,7 @@ import {
 } from '@/shared/components/ui/sidebar'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { UserRolesEnum } from '@/users'
+import { UserRolesEnum } from '@/features/users'
 
 const data = {
   navMain: [

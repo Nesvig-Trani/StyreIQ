@@ -11,16 +11,16 @@ import {
 } from 'lucide-react'
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@/shared'
 import { Input } from '@/shared'
-import { OrganizationHierarchyProps } from '@/organizations'
+import { OrganizationHierarchyProps } from '@/features/organizations'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
-import { useOrganizationHierarchy } from '@/organizations/hooks/useOrganizationHierarchy'
+import { useOrganizationHierarchy } from '@/features/organizations/hooks/useOrganizationHierarchy'
 import { Button } from '@/shared'
-import OrganizationDetailPage from '@/organizations/components/organization-detail'
-import { UpdateOrganizationForm } from '@/organizations/forms/update-organization'
+import OrganizationDetailPage from '@/features/organizations/components/organization-detail'
+import { UpdateOrganizationForm } from '@/features/organizations/forms/update-organization'
 import { ScrollArea } from '@/shared'
-import { organizationTypeOptions } from '@/organizations/constants/organizationTypeOptions'
-import { DisableOrganizationButton } from '@/organizations/components/disable-organization'
-import { UserRolesEnum } from '@/users'
+import { organizationTypeOptions } from '@/features/organizations/constants/organizationTypeOptions'
+import { DisableOrganizationButton } from '@/features/organizations/components/disable-organization'
+import { UserRolesEnum } from '@/features/users'
 
 export default function OrganizationHierarchy({
   organizations,

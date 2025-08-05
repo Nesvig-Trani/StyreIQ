@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import type { FieldValues, Path } from 'react-hook-form'
 import { DatePickerProps } from 'react-datepicker'
-import { Tree } from '@/organizations'
+import { Tree } from '@/features/organizations'
 
 export type FieldDataType =
   | 'text'

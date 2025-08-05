@@ -1,4 +1,4 @@
-import { getTotalUsers } from '@/users'
+import { getTotalUsers } from '@/features/users'
 import LandingPage from './landing-page'
 
 export default async function Page() {

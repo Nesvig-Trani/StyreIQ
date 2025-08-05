@@ -1,5 +1,0 @@
-export * from './components'
-export * from './schemas'
-export * from '../plugins/social-medias/collections'
-export * from './forms'
-export * from './hooks'

@@ -1,17 +1,17 @@
 'use server'
 import React from 'react'
 import { Card, CardContent } from '@/shared/components/ui/card'
-import { UserRolesEnum, userSearchSchema, WelcomeEmailSchema } from '@/users/schemas'
-import { UserTable } from '@/users/components/user-table'
+import { UserRolesEnum, userSearchSchema, WelcomeEmailSchema } from '@/features/users/schemas'
+import { UserTable } from '@/features/users/components/user-table'
 import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
 import { parseSearchParamsWithSchema } from '@/shared/utils/parseParamsServer'
-import { getAuthUser } from '@/auth/utils/getAuthUser'
+import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { CirclePlus } from 'lucide-react'
 import { Badge } from '@/shared/components/ui/badge'
-import WelcomeEmailModal from '@/users/components/welcome-email-modal'
-import { getLastWelcomeEmail } from '@/plugins/welcome-emails/queries'
-import { getUsers } from '@/plugins/users/queries'
+import WelcomeEmailModal from '@/features/users/components/welcome-email-modal'
+import { getLastWelcomeEmail } from '@/features/welcome-emails/plugins/queries'
+import { getUsers } from '@/features/users/plugins/queries'
 
 export default async function UsersPage(props: {
   searchParams?: Promise<{

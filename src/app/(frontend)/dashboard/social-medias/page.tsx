@@ -1,14 +1,14 @@
-import { socialMediaSearchSchema } from '@/social-medias/schemas'
+import { socialMediaSearchSchema } from '@/features/social-medias/schemas'
 
 //Components
-import { DashboardSocialMedias } from '@/social-medias'
+import { DashboardSocialMedias } from '@/features/social-medias'
 
 //Interfaces and types
 import { parseSearchParamsWithSchema, type AppPageProps } from '@/shared'
-import { getAuthUser } from '@/auth/utils/getAuthUser'
-import { getSocialMediaAccounts } from '@/plugins/social-medias/queries'
-import { getAllOrganizations } from '@/plugins/organizations/queries'
-import { getAllUsers } from '@/users'
+import { getAuthUser } from '@/features/auth/utils/getAuthUser'
+import { getSocialMediaAccounts } from '@/features/social-medias/plugins/queries'
+import { getAllOrganizations } from '@/features/organizations/plugins/queries'
+import { getAllUsers } from '@/features/users'
 
 export default async function SocialMediasPage(props: AppPageProps) {
   const { user } = await getAuthUser()

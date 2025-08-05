@@ -1,12 +1,12 @@
 import React from 'react'
-import FlagsTable from '@/flags/components/flags-table'
-import { getAuthUser } from '@/auth/utils/getAuthUser'
+import FlagsTable from '@/features/flags/components/flags-table'
+import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { Badge, Button, Card, CardContent, parseSearchParamsWithSchema } from '@/shared'
-import { flagsSearchSchema } from '@/flags/schemas'
-import { getFlags } from '@/plugins/flags/queries'
+import { flagsSearchSchema } from '@/features/flags/schemas'
+import { getFlags } from '@/features/flags/plugins/queries'
 import Link from 'next/link'
 import { CirclePlus } from 'lucide-react'
-import { getAllOrganizations } from '@/plugins/organizations/queries'
+import { getAllOrganizations } from '@/features/organizations/plugins/queries'
 
 export default async function FlagsPage(props: {
   searchParams?: Promise<{ [key: string]: string }>

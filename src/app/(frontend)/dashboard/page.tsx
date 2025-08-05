@@ -1,5 +1,5 @@
-import { MetricCard } from '@/dashboard/components/metric-card'
-import { getUsersInfoForDashboard } from '@/plugins/users/queries'
+import { MetricCard } from '@/features/dashboard/components/metric-card'
+import { getUsersInfoForDashboard } from '@/features/users/plugins/queries'
 import {
   Users,
   UserCheck,
@@ -15,7 +15,7 @@ import {
   ShieldAlert,
   ScaleIcon,
 } from 'lucide-react'
-import { getFlagInfoForDashboard } from '@/plugins/flags/queries'
+import { getFlagInfoForDashboard } from '@/features/flags/plugins/queries'
 
 const getRiskLevel = (value: number, thresholds: { low: number; medium: number }) => {
   if (value >= thresholds.medium) return 'high'

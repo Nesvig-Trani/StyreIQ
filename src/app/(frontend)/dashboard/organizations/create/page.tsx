@@ -1,10 +1,10 @@
 'use server'
 import React from 'react'
-import { CreateOrganizationForm } from '@/organizations'
-import { getUsersByOrganizations, UserRolesEnum } from '@/users'
-import { getAuthUser } from '@/auth/utils/getAuthUser'
+import { CreateOrganizationForm } from '@/features/organizations'
+import { getUsersByOrganizations, UserRolesEnum } from '@/features/users'
+import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import Link from 'next/link'
-import { getAllOrganizations } from '@/plugins/organizations/queries'
+import { getAllOrganizations } from '@/features/organizations/plugins/queries'
 import { Button } from '@/shared/components/ui/button'
 
 export default async function CreateOrganization() {

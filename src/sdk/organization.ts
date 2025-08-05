@@ -1,8 +1,8 @@
-import { createOrgFormSchema, updateOrgFormSchema } from '@/organizations'
+import { createOrgFormSchema, updateOrgFormSchema } from '@/features/organizations'
 import { z } from 'zod'
 import { env } from '@/config/env'
 import { JSON_HEADERS } from '@/shared/constants'
-import { Organization } from '@/payload-types'
+import { Organization } from '@/lib/payload/payload-types'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 
 export const createOrganization = async (data: z.infer<typeof createOrgFormSchema>) => {

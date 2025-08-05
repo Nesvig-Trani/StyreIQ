@@ -1,8 +1,8 @@
-import { getAuthUser } from '@/auth/utils/getAuthUser'
-import { getAllOrganizations } from '@/plugins/organizations/queries'
+import { getAuthUser } from '@/features/auth/utils/getAuthUser'
+import { getAllOrganizations } from '@/features/organizations/plugins/queries'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
-import { CreateSocialMediaForm } from '@/social-medias'
-import { getUsersByRoles, UserRolesEnum } from '@/users'
+import { CreateSocialMediaForm } from '@/features/social-medias'
+import { getUsersByRoles, UserRolesEnum } from '@/features/users'
 import { redirect } from 'next/navigation'
 
 export default async function CreateSocialMediaPage() {

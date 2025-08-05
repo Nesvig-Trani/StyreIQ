@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export function parseSearchParamsWithSchema<O, Z extends z.ZodSchema<O>>(
-  rawParams: Record<string, string> | undefined,
+  rawParams: Record<string, string | string[] | undefined> | undefined,
   schema: Z,
 ): z.output<Z> {
   if (!rawParams) return schema.parse({})
@@ -9,10 +9,16 @@ export function parseSearchParamsWithSchema<O, Z extends z.ZodSchema<O>>(
   const parsedParams: Record<string, unknown> = {}
 
   for (const [key, value] of Object.entries(rawParams)) {
-    try {
-      parsedParams[key] = Array.isArray(value) ? value : JSON.parse(decodeURIComponent(value))
-    } catch {
+    if (value === undefined) {
+      parsedParams[key] = undefined
+    } else if (Array.isArray(value)) {
       parsedParams[key] = value
+    } else {
+      try {
+        parsedParams[key] = JSON.parse(decodeURIComponent(value))
+      } catch {
+        parsedParams[key] = value
+      }
     }
   }
 

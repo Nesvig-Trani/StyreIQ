@@ -1,5 +1,5 @@
-import { ForgotPasswordForm } from '@/auth'
-import { getAuthUser } from '@/auth/utils/getAuthUser'
+import { ForgotPasswordForm } from '@/features/auth'
+import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { redirect } from 'next/navigation'
 
 export default async function ForgotPasswordPage() {

@@ -3,14 +3,12 @@ import React, { useState } from 'react'
 import { Label } from '@radix-ui/react-label'
 import { DatePicker } from '../ui/datepicker'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/'
-import { Card } from '../ui/card'
-import { OrganizationAccess } from '@/payload-types'
+import { OrganizationAccess } from '@/lib/payload/payload-types'
 import { Button } from '../ui/button'
 import { updateUserAccess } from '@/sdk/users'
 import { z } from 'zod'
-import { organizationAccess, UserAccessTypeEnum } from '@/organization-access'
+import { organizationAccess, UserAccessTypeEnum } from '@/features/organization-access'
 import { toast } from 'sonner'
-import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 interface OrganizationAccessFormProps {
@@ -65,7 +63,7 @@ export const OrganizationAccessForm = ({ initialAccess = [] }: OrganizationAcces
     e.preventDefault()
     setIsSubmitting(true)
     try {
-      await updateUserAccess({ access: accessList as any })
+      await updateUserAccess({ access: accessList as OrgAccess[] })
       toast.success('Access updated')
       router.push('/dashboard/users')
     } finally {
@@ -127,7 +125,7 @@ export const OrganizationAccessForm = ({ initialAccess = [] }: OrganizationAcces
         ))}
       </div>
       <Button disabled={isSubmitting} loading={isSubmitting} loadingText={'Loading ...'}>
-         Update Access
+        Update Access
       </Button>
     </form>
   )

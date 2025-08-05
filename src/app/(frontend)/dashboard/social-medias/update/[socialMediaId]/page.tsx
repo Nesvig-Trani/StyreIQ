@@ -1,8 +1,8 @@
-import { UpdateSocialMediaForm } from '@/social-medias/forms/update-social-media'
-import { getUsersByRoles, UserRolesEnum } from '@/users'
-import { getAuthUser } from '@/auth/utils/getAuthUser'
-import { getSocialMediaById } from '@/plugins/social-medias/queries'
-import { getAllOrganizations } from '@/plugins/organizations/queries'
+import { UpdateSocialMediaForm } from '@/features/social-medias/forms/update-social-media'
+import { getUsersByRoles, UserRolesEnum } from '@/features/users'
+import { getAuthUser } from '@/features/auth/utils/getAuthUser'
+import { getSocialMediaById } from '@/features/social-medias/plugins/queries'
+import { getAllOrganizations } from '@/features/organizations/plugins/queries'
 import React from 'react'
 
 export default async function UpdateSocialMediaPage({

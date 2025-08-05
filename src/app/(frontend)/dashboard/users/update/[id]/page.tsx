@@ -1,5 +1,5 @@
-import { getUserById, UpdateUserForm } from '@/users'
-import { getAllOrganizations } from '@/plugins/organizations/queries'
+import { getUserById, UpdateUserForm } from '@/features/users'
+import { getAllOrganizations } from '@/features/organizations/plugins/queries'
 
 export default async function UpdateUser({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params

@@ -1,8 +1,8 @@
 'use server'
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle, OrganizationAccessForm } from '@/shared'
-import { getUserById } from '@/users'
-import { getOrganizationAccessByUserId } from '@/plugins/organization-access/queries'
+import { getUserById } from '@/features/users'
+import { getOrganizationAccessByUserId } from '@/features/organization-access/plugins/queries'
 
 async function UserAccessPage({ params }: { params: Promise<{ userId: string }> }) {
   const { userId } = await params

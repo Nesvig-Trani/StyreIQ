@@ -2,7 +2,7 @@ import {
   createSocialMediaFormSchema,
   SocialMediaStatusEnum,
   updateSocialMediaFormSchema,
-} from '@/social-medias'
+} from '@/features/social-medias'
 import { z } from 'zod'
 import { env } from '@/config/env'
 import { EndpointError } from '@/shared'

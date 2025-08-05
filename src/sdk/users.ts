@@ -6,10 +6,10 @@ import {
   resetPasswordSchema,
   updateUserSchema,
   WelcomeEmailSchema,
-} from '@/users'
+} from '@/features/users'
 import { env } from '@/config/env'
-import { updateOrgAccessSchema } from '@/organization-access'
-import { setUserStatusSchema } from '@/review-requests'
+import { updateOrgAccessSchema } from '@/features/organization-access'
+import { setUserStatusSchema } from '@/features/review-requests'
 import { JSON_HEADERS } from '@/shared/constants'
 
 /**

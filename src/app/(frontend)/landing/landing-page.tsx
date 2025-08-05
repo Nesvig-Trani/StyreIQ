@@ -1,12 +1,12 @@
 'use client'
 import React from 'react'
 import { FileCheck, Target, BarChart3, Shield, Building2, GraduationCap, Heart } from 'lucide-react'
-import { Footer } from '@/landing/components/footer'
-import { FeatureSection } from '@/landing/components/feature-section'
-import { Navbar } from '@/landing/components/navbar'
+import { Footer } from '@/features/landing/components/footer'
+import { FeatureSection } from '@/features/landing/components/feature-section'
+import { Navbar } from '@/features/landing/components/navbar'
 
-import { ProcessSection } from '@/landing/components/process-section'
-import { HeroSection } from '@/landing/components/hero-section'
+import { ProcessSection } from '@/features/landing/components/process-section'
+import { HeroSection } from '@/features/landing/components/hero-section'
 
 type LandingPageProps = {
   showGetStarted: boolean

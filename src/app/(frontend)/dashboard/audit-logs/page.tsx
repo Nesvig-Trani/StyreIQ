@@ -1,10 +1,10 @@
 import React from 'react'
 import { Card, CardContent } from '@/shared/components/ui/card'
-import { AuditLogsTable } from '@/audit-logs'
+import { AuditLogsTable } from '@/features/audit-log'
 import { parseSearchParamsWithSchema } from '@/shared/utils/parseParamsServer'
-import { auditLogSearchSchema } from '@/audit-logs/schemas'
-import { getAuditLogs } from '@/plugins/audit-log/queries'
-import { getAllUsers } from '@/users'
+import { auditLogSearchSchema } from '@/features/audit-log/schemas'
+import { getAuditLogs } from '@/features/audit-log/plugins/queries'
+import { getAllUsers } from '@/features/users'
 import { Badge } from '@/shared/components/ui/badge'
 
 export default async function AuditLogsPage(props: {
