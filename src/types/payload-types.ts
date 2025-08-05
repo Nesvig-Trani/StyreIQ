@@ -273,6 +273,7 @@ export interface SocialMedia {
   contactEmail?: string | null
   contactPhone?: string | null
   organization: number | Organization
+  socialMediaManagers: (number | User)[]
   primaryAdmin: number | User
   backupAdmin: number | User
   status: 'active' | 'inactive' | 'in_transition' | 'pending_approval'
@@ -758,6 +759,7 @@ export interface SocialMediasSelect<T extends boolean = true> {
   contactEmail?: T
   contactPhone?: T
   organization?: T
+  socialMediaManagers?: T
   primaryAdmin?: T
   backupAdmin?: T
   status?: T

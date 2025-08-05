@@ -18,7 +18,11 @@ export default async function CreateSocialMediaPage() {
     redirect('/dashboard/social-medias')
   }
 
-  const users = await getUsersByRoles([UserRolesEnum.SuperAdmin, UserRolesEnum.UnitAdmin])
+  const users = await getUsersByRoles([
+    UserRolesEnum.SuperAdmin,
+    UserRolesEnum.UnitAdmin,
+    UserRolesEnum.SocialMediaManager,
+  ])
 
   const organizations = await getAllOrganizations()
 

@@ -27,6 +27,10 @@ export const createSocialMedia = async (data: z.infer<typeof createSocialMediaFo
       organization: data.organization,
       primaryAdmin: data.primaryAdmin,
       backupAdmin: data.backupAdmin,
+      creationDate: data.creationDate || new Date().toISOString(),
+      adminContactEmails: data.adminContactEmails,
+      thirdPartyManagement: data.thirdPartyManagement,
+      socialMediaManagers: data.socialMediaManagers,
     }),
   })
 

@@ -108,6 +108,9 @@ export const createSocialMedia: Endpoint = {
           adminContactEmails: Array.isArray(dataParsed.adminContactEmails)
             ? dataParsed.adminContactEmails.map((email) => ({ email }))
             : [],
+          socialMediaManagers: Array.isArray(dataParsed.socialMediaManagers)
+            ? dataParsed.socialMediaManagers.map(Number)
+            : [],
         },
         req,
       })

@@ -15,10 +15,59 @@ import { CreateOrganizationsTree } from '@/features/organizations/utils/createOr
 import { EndpointError } from '@/shared'
 import { useRouter } from 'next/navigation'
 import { platformOptions } from '@/features/social-medias/constants/platformOptions'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 export function useCreateSocialMedia({ users, organizations }: CreateSocialMediaFormProps) {
   const tree = CreateOrganizationsTree(organizations as OrganizationWithDepth[])
   const router = useRouter()
+
+  const [selectedOrganizationId, setSelectedOrganizationId] = useState<string | null>(null)
+
+  const filterUsersByOrganizationAndRoles = useCallback(
+    (organizationId: string | null, roles: string | string[]) => {
+      if (!organizationId) return []
+
+      const numericOrgId = parseInt(organizationId, 10)
+      const roleArray = Array.isArray(roles) ? roles : [roles]
+
+      return users
+        .filter((user) => {
+          if (!user.role || !roleArray.includes(user.role)) return false
+          if (!user.organizations || user.organizations.length === 0) return false
+
+          return user.organizations.some((org) => {
+            if (typeof org === 'number') {
+              return org === numericOrgId
+            }
+            if (typeof org === 'object' && org !== null) {
+              return org.id === numericOrgId
+            }
+            return false
+          })
+        })
+        .map((user) => ({
+          value: user.id.toString(),
+          label: user.name,
+        }))
+    },
+    [users],
+  )
+
+  const socialMediaManagerOptions = useMemo(
+    () => filterUsersByOrganizationAndRoles(selectedOrganizationId, 'social_media_manager'),
+    [selectedOrganizationId, filterUsersByOrganizationAndRoles],
+  )
+
+  const administratorOptions = useMemo(
+    () => filterUsersByOrganizationAndRoles(selectedOrganizationId, 'unit_admin'),
+    [selectedOrganizationId, filterUsersByOrganizationAndRoles],
+  )
+
+  const backupAdministratorOptions = useMemo(
+    () => filterUsersByOrganizationAndRoles(selectedOrganizationId, ['unit_admin']),
+    [selectedOrganizationId, filterUsersByOrganizationAndRoles],
+  )
+
   const { formComponent, form } = useFormHelper(
     {
       schema: createSocialMediaFormSchema,
@@ -65,22 +114,35 @@ export function useCreateSocialMedia({ users, organizations }: CreateSocialMedia
           tree: tree,
         },
         {
+          label: 'Social Media Managers *',
+          name: 'socialMediaManagers',
+          type: 'multiselect',
+          options: socialMediaManagerOptions,
+          size: 'full',
+          dependsOn: {
+            field: 'organization',
+            value: selectedOrganizationId || '',
+          },
+        },
+        {
           label: 'Administrator *',
           name: 'primaryAdmin',
           type: 'select',
-          options: users.map((user) => ({
-            value: user.id.toString(),
-            label: user.name,
-          })),
+          options: administratorOptions,
+          dependsOn: {
+            field: 'organization',
+            value: selectedOrganizationId || '',
+          },
         },
         {
           label: 'Backup Administrator',
           name: 'backupAdmin',
           type: 'select',
-          options: users.map((user) => ({
-            value: user.id.toString(),
-            label: user.name,
-          })),
+          options: backupAdministratorOptions,
+          dependsOn: {
+            field: 'organization',
+            value: selectedOrganizationId || '',
+          },
         },
         {
           label: 'Business Id',
@@ -170,6 +232,7 @@ export function useCreateSocialMedia({ users, organizations }: CreateSocialMedia
         try {
           await createSocialMedia(submitData)
           form.reset()
+          setSelectedOrganizationId(null)
           toast.success('Social media account created successfully')
           router.push('/dashboard/social-medias')
         } catch (catchError) {
@@ -192,11 +255,12 @@ export function useCreateSocialMedia({ users, organizations }: CreateSocialMedia
         contactEmail: undefined,
         contactPhone: undefined,
         organization: undefined,
+        socialMediaManagers: [],
         primaryAdmin: undefined,
         backupAdmin: undefined,
         businessId: undefined,
         creationDate: new Date().toISOString().split('T')[0],
-        adminContactEmails: undefined,
+        adminContactEmails: [],
         backupContactInfo: undefined,
         thirdPartyManagement: undefined,
         thirdPartyProvider: undefined,
@@ -209,6 +273,21 @@ export function useCreateSocialMedia({ users, organizations }: CreateSocialMedia
       },
     },
   )
+
+  useEffect(() => {
+    const subscription = form.watch(({ organization }, { name }) => {
+      if (name !== 'organization') return
+      const organizationId = organization ? organization.toString() : null
+      setSelectedOrganizationId(organizationId)
+      if (organizationId !== selectedOrganizationId) {
+        form.setValue('socialMediaManagers', [])
+        form.setValue('primaryAdmin', '')
+        form.setValue('backupAdmin', undefined)
+      }
+    })
+
+    return () => subscription.unsubscribe()
+  }, [form, selectedOrganizationId])
 
   return {
     formComponent,

@@ -27,6 +27,7 @@ const baseSocialMediaSchema = z.object({
   linkedTools: z.array(z.string()).optional(),
   verificationStatus: z.string().optional(),
   platformSupportDetails: z.string().optional(),
+  socialMediaManagers: z.array(z.string()),
   notes: z.string().optional(),
 })
 

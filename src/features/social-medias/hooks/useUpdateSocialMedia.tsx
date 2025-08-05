@@ -43,6 +43,11 @@ export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocia
         .filter((email): email is string => typeof email === 'string'),
       thirdPartyManagement: data.thirdPartyManagement ?? '',
       creationDate: data.creationDate ?? new Date().toISOString(),
+      socialMediaManagers: Array.isArray(data.socialMediaManagers)
+        ? data.socialMediaManagers.map((manager) =>
+            typeof manager === 'object' ? manager.id.toString() : manager.toString(),
+          )
+        : [],
     },
   })
 

@@ -117,6 +117,13 @@ export const SocialMedias: CollectionConfig = {
       required: true,
     },
     {
+      name: 'socialMediaManagers',
+      type: 'relationship',
+      relationTo: 'users',
+      hasMany: true,
+      required: true,
+    },
+    {
       name: 'primaryAdmin',
       type: 'relationship',
       relationTo: 'users',
