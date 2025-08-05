@@ -12,11 +12,7 @@ export default async function Page() {
     redirect('/dashboard')
   }
 
-  // If there are users but no authenticated user, redirect to landing
-  if (totalUsers > 0 && !user) {
-    redirect('/landing')
-  }
-
-  // Show landing page for new installations (no users)
-  return <LandingPage showGetStarted={true} />
+  // Show landing page for unauthenticated users or new installations
+  const showGetStarted = totalUsers === 0
+  return <LandingPage showGetStarted={showGetStarted} />
 }
