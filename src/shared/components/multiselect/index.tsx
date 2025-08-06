@@ -188,51 +188,58 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
                 onValueChange={handleInput}
               />
               <CommandList>
-                <CommandEmpty>
-                  <p>No results found.</p>
-                </CommandEmpty>
-                <CommandGroup key="items-list">
-                  <CommandItem key="all" onSelect={toggleAll} className="cursor-pointer  h-[35px]">
-                    <div
-                      className={cn(
-                        'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
-                        selectedValues.length === options.length
-                          ? 'bg-primary text-primary-foreground'
-                          : 'opacity-50 [&_svg]:invisible',
-                      )}
-                    >
-                      <Check className="size-4" />
-                    </div>
-                    <span>
-                      <p>Select All</p>
-                    </span>
-                  </CommandItem>
-                  {filteredValues.map((option) => {
-                    const isSelected = selectedValues.includes(option.value)
-                    return (
-                      <CommandItem
-                        key={option.value}
-                        onSelect={(): void => toggleOption(option.value)}
-                        className="cursor-pointer"
-                      >
-                        <div
-                          className={cn(
-                            'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
-                            isSelected
-                              ? 'bg-primary text-primary-foreground'
-                              : 'opacity-50 [&_svg]:invisible',
-                          )}
-                        >
-                          <Check className="size-4" />
-                        </div>
-                        {option.icon && (
-                          <option.icon className="mr-2 size-4 text-muted-foreground" />
+                {options.length === 0 ? (
+                  <div className="p-4 text-center text-sm text-muted-foreground">
+                    No options available
+                  </div>
+                ) : filteredValues.length === 0 ? (
+                  <CommandEmpty>
+                    <p>No results found.</p>
+                  </CommandEmpty>
+                ) : (
+                  <CommandGroup key="items-list">
+                    <CommandItem key="all" onSelect={toggleAll} className="cursor-pointer h-[35px]">
+                      <div
+                        className={cn(
+                          'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
+                          selectedValues.length === options.length
+                            ? 'bg-primary text-primary-foreground'
+                            : 'opacity-50 [&_svg]:invisible',
                         )}
-                        <span>{option.label}</span>
-                      </CommandItem>
-                    )
-                  })}
-                </CommandGroup>
+                      >
+                        <Check className="size-4" />
+                      </div>
+                      <span>
+                        <p>Select All</p>
+                      </span>
+                    </CommandItem>
+                    {filteredValues.map((option) => {
+                      const isSelected = selectedValues.includes(option.value)
+                      return (
+                        <CommandItem
+                          key={option.value}
+                          onSelect={(): void => toggleOption(option.value)}
+                          className="cursor-pointer"
+                        >
+                          <div
+                            className={cn(
+                              'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
+                              isSelected
+                                ? 'bg-primary text-primary-foreground'
+                                : 'opacity-50 [&_svg]:invisible',
+                            )}
+                          >
+                            <Check className="size-4" />
+                          </div>
+                          {option.icon && (
+                            <option.icon className="mr-2 size-4 text-muted-foreground" />
+                          )}
+                          <span>{option.label}</span>
+                        </CommandItem>
+                      )
+                    })}
+                  </CommandGroup>
+                )}
               </CommandList>
               {!!selectedValues.length && (
                 <>
