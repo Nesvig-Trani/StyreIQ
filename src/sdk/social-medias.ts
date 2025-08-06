@@ -2,7 +2,7 @@ import {
   createSocialMediaFormSchema,
   SocialMediaStatusEnum,
   updateSocialMediaFormSchema,
-} from '@/social-medias'
+} from '@/features/social-medias'
 import { z } from 'zod'
 import { env } from '@/config/env'
 import { EndpointError } from '@/shared'
@@ -24,17 +24,13 @@ export const createSocialMedia = async (data: z.infer<typeof createSocialMediaFo
       platform: data.platform,
       contactEmail: data.contactEmail,
       contactPhone: data.contactPhone,
-      passwordUpdatedAt: data.passwordUpdatedAt,
-      isEnabledTwoFactor: data.isEnabledTwoFactor,
-      isInUseSecurePassword: data.isInUseSecurePassword,
-      isAcceptedPolicies: data.isAcceptedPolicies,
-      isCompletedTrainingAccessibility: data.isCompletedTrainingAccessibility,
-      isCompletedTrainingRisk: data.isCompletedTrainingRisk,
-      isCompletedTrainingBrand: data.isCompletedTrainingBrand,
-      hasKnowledgeStandards: data.hasKnowledgeStandards,
       organization: data.organization,
       primaryAdmin: data.primaryAdmin,
       backupAdmin: data.backupAdmin,
+      creationDate: data.creationDate || new Date().toISOString(),
+      adminContactEmails: data.adminContactEmails,
+      thirdPartyManagement: data.thirdPartyManagement,
+      socialMediaManagers: data.socialMediaManagers,
     }),
   })
 
@@ -65,14 +61,6 @@ export const updateSocialMedia = async (data: z.infer<typeof updateSocialMediaFo
       platform: data.platform,
       contactEmail: data.contactEmail,
       contactPhone: data.contactPhone,
-      passwordUpdatedAt: data.passwordUpdatedAt,
-      isEnabledTwoFactor: data.isEnabledTwoFactor,
-      isInUseSecurePassword: data.isInUseSecurePassword,
-      isAcceptedPolicies: data.isAcceptedPolicies,
-      isCompletedTrainingAccessibility: data.isCompletedTrainingAccessibility,
-      isCompletedTrainingRisk: data.isCompletedTrainingRisk,
-      isCompletedTrainingBrand: data.isCompletedTrainingBrand,
-      hasKnowledgeStandards: data.hasKnowledgeStandards,
       organization: data.organization,
       primaryAdmin: data.primaryAdmin,
       backupAdmin: data.backupAdmin,

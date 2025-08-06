@@ -1,20 +1,39 @@
 'use client'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { cn } from '@/shared/utils/cn'
-import { Tree } from '@/organizations'
-import { Command, CommandItem, CommandList } from '@/shared/components/ui/command'
+import { Tree } from '@/features/organizations'
+import { Command, CommandEmpty, CommandInput, CommandList } from '@/shared/components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/shared/components/ui/popover'
 import { FieldDataOption } from '@/shared/components/form-hook-helper'
-import { FieldErrors, FieldValues, Path } from 'react-hook-form'
+import { ChevronDown } from 'lucide-react'
 
 interface TreeNodeProps {
   tree: Tree
-  selectedValue?: string
+  selectedValue?: string | string[]
   onSelect?: (value: string) => void
+  multiple?: boolean
 }
 
-export function TreeNode({ tree, selectedValue, onSelect }: TreeNodeProps) {
-  const handleSelect = () => {
+const filterTree = (nodes: Tree[], query: string): Tree[] => {
+  if (!query) return nodes
+  return nodes
+    .map((node) => {
+      const children = filterTree(node.children || [], query)
+      const matches = node.name.toLowerCase().includes(query.toLowerCase())
+      if (matches || children.length > 0) {
+        return { ...node, children }
+      }
+      return null
+    })
+    .filter(Boolean) as Tree[]
+}
+
+export function TreeNode({ tree, selectedValue, onSelect, multiple = false }: TreeNodeProps) {
+  const isSelected = multiple
+    ? Array.isArray(selectedValue) && selectedValue.includes(tree.id.toString())
+    : selectedValue === tree.id.toString()
+
+  const handleToggle = () => {
     if (onSelect) {
       onSelect(tree.id.toString())
     }
@@ -22,23 +41,36 @@ export function TreeNode({ tree, selectedValue, onSelect }: TreeNodeProps) {
 
   return (
     <>
-      <CommandItem value={tree.id.toString()} className="flex items-center" onSelect={handleSelect}>
-        <div className="flex items-center">
-          <span
-            className={cn('inline-block cursor-pointer')}
-            style={{
-              marginLeft: `${tree.depth ? tree.depth : 0}rem`,
-            }}
-          >
-            {tree.name}
-          </span>
-        </div>
-      </CommandItem>
+      <div
+        className={cn('flex items-center cursor-pointer px-2 py-1', isSelected && 'bg-gray-100')}
+        style={{ marginLeft: `${(tree.depth ?? 0) * 1}rem` }}
+        onClick={handleToggle}
+      >
+        {multiple ? (
+          <label className="flex items-center w-full cursor-pointer">
+            <input
+              type="checkbox"
+              checked={isSelected}
+              onChange={handleToggle}
+              className="mr-2"
+              onClick={(e) => e.stopPropagation()}
+            />
+            <span className="flex-1">{tree.name}</span>
+          </label>
+        ) : (
+          <span className="pl-2 flex-1">{tree.name}</span>
+        )}
+      </div>
 
-      {tree.children &&
-        tree.children.map((child) => (
-          <TreeNode key={child.id} tree={child} selectedValue={selectedValue} onSelect={onSelect} />
-        ))}
+      {tree.children?.map((child) => (
+        <TreeNode
+          key={child.id}
+          tree={child}
+          selectedValue={selectedValue}
+          onSelect={onSelect}
+          multiple={multiple}
+        />
+      ))}
     </>
   )
 }
@@ -46,10 +78,11 @@ export function TreeNode({ tree, selectedValue, onSelect }: TreeNodeProps) {
 interface TreeSelectProps {
   options: FieldDataOption[]
   tree: Tree[]
-  value?: string
-  handleChangeAction: (value: string) => void
+  value?: string | string[]
+  handleChangeAction: (value: string | string[]) => void
   disabled?: boolean
-  errors: FieldErrors[Path<FieldValues>]
+  errors?: boolean
+  multiple?: boolean
 }
 
 export function TreeSelect({
@@ -59,38 +92,68 @@ export function TreeSelect({
   handleChangeAction,
   disabled,
   errors,
+  multiple,
 }: TreeSelectProps) {
   const [open, setOpen] = useState(false)
-  const handleSelect = (value: string) => {
-    if (!disabled) {
-      handleChangeAction(value)
+  const [search, setSearch] = useState('')
+
+  const handleSelect = (selected: string) => {
+    if (disabled) return
+
+    if (multiple) {
+      const current = Array.isArray(value) ? value : []
+      const exists = current.includes(selected)
+      const updated = exists ? current.filter((v) => v !== selected) : [...current, selected]
+      handleChangeAction(updated)
+    } else {
+      handleChangeAction(selected)
       setOpen(false)
     }
   }
 
+  const filteredTree = useMemo(() => filterTree(tree, search), [tree, search])
   return (
     <Popover open={disabled ? false : open} onOpenChange={(val) => !disabled && setOpen(val)}>
       <PopoverTrigger asChild>
         <button
           disabled={disabled}
           className={cn(
-            'w-[300px] flex justify-start p-3 border text-sm rounded-md text-gray-500',
+            'w-[700px] flex justify-between items-center h-9 px-3 py-2 border text-sm rounded-md text-gray-500 bg-background',
             disabled && 'opacity-50 cursor-not-allowed',
-            errors ? 'border-red-500' : 'border-gray-200',
+            errors ? 'border-red-500' : 'border-input',
           )}
         >
-          {value
-            ? options.find((opt) => opt.value.toString() === value)?.label
-            : 'Select organization'}
+          <span className="truncate">
+            {value && multiple
+              ? (value as string[])
+                  .map((val) => options.find((opt) => opt.value.toString() === val)?.label)
+                  .filter(Boolean)
+                  .join(', ') || 'Select organizations'
+              : value
+                ? options.find((opt) => opt.value.toString() === value)?.label
+                : 'Select organization'}
+          </span>
+          <ChevronDown className="h-4 cursor-pointer text-gray-300" />
         </button>
       </PopoverTrigger>
       {!disabled && (
-        <PopoverContent className="w-[300px] p-0">
+        <PopoverContent className="w-[700px] p-0">
           <Command>
+            <CommandInput placeholder="Search…" value={search} onValueChange={setSearch} />
             <CommandList>
-              {tree.map((tree) => (
-                <TreeNode key={tree.id} tree={tree} selectedValue={value} onSelect={handleSelect} />
-              ))}
+              {filteredTree.length > 0 ? (
+                filteredTree.map((tree) => (
+                  <TreeNode
+                    key={tree.id}
+                    tree={tree}
+                    selectedValue={value}
+                    onSelect={handleSelect}
+                    multiple={multiple}
+                  />
+                ))
+              ) : (
+                <CommandEmpty>No results found.</CommandEmpty>
+              )}
             </CommandList>
           </Command>
         </PopoverContent>

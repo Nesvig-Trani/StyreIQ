@@ -1,5 +1,5 @@
 import { env } from '@/config/env'
-import { CreateFlagCommentSchema, CreateFlagFormSchema } from '@/flags/schemas'
+import { CreateFlagCommentSchema, CreateFlagFormSchema } from '@/features/flags/schemas'
 import { JSON_HEADERS } from '@/shared/constants'
 
 export const createFlag = async (data: CreateFlagFormSchema) => {

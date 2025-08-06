@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import type { FieldValues, Path } from 'react-hook-form'
 import { DatePickerProps } from 'react-datepicker'
-import { Tree } from '@/organizations'
+import { Tree } from '@/features/organizations'
 
 export type FieldDataType =
   | 'text'
@@ -60,7 +60,7 @@ export type FieldData<TFieldValues extends FieldValues = FieldValues> = {
   /** Used to specify that the field is required */
   dependsOn?: {
     field: keyof TFieldValues
-    value: string | number | boolean
+    value: string | number | boolean | Array<string | number | boolean>
   }
   placeholder?: string
   tree?: Tree[]

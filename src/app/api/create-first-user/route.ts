@@ -1,10 +1,15 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
-import config from '@payload-config'
+import config from '@/lib/payload/payload.config'
 import { getPayload } from 'payload'
 
-import { createFirstUserFormSchema, getTotalUsers, UserRolesEnum, UserStatusEnum } from '@/users'
+import {
+  createFirstUserFormSchema,
+  getTotalUsers,
+  UserRolesEnum,
+  UserStatusEnum,
+} from '@/features/users'
 import { EndpointError } from '@/shared/errors'
 
 /**

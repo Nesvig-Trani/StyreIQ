@@ -11,15 +11,16 @@ import {
 } from 'lucide-react'
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@/shared'
 import { Input } from '@/shared'
-import { OrganizationHierarchyProps } from '@/organizations'
+import { OrganizationHierarchyProps } from '@/features/organizations'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
-import { useOrganizationHierarchy } from '@/organizations/hooks/useOrganizationHierarchy'
+import { useOrganizationHierarchy } from '@/features/organizations/hooks/useOrganizationHierarchy'
 import { Button } from '@/shared'
-import OrganizationDetailPage from '@/organizations/components/organization-detail'
-import { UpdateOrganizationForm } from '@/organizations/forms/update-organization'
+import OrganizationDetailPage from '@/features/organizations/components/organization-detail'
+import { UpdateOrganizationForm } from '@/features/organizations/forms/update-organization'
 import { ScrollArea } from '@/shared'
-import { organizationTypeOptions } from '@/organizations/constants/organizationTypeOptions'
-import { DisableOrganizationButton } from '@/organizations/components/disable-organization'
+import { organizationTypeOptions } from '@/features/organizations/constants/organizationTypeOptions'
+import { DisableOrganizationButton } from '@/features/organizations/components/disable-organization'
+import { UserRolesEnum } from '@/features/users'
 
 export default function OrganizationHierarchy({
   organizations,
@@ -45,7 +46,7 @@ export default function OrganizationHierarchy({
     setIsDisableModalOpen,
   } = useOrganizationHierarchy({ organizations, originalData, pagination, users })
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[600px]">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[700px]">
       <div className="flex flex-col border rounded-lg">
         <div className="p-4 border-b">
           <div className="space-y-3">
@@ -129,55 +130,62 @@ export default function OrganizationHierarchy({
       <div className="flex flex-col">
         {selectedOrg ? (
           <div className="flex-1">
-            <Card className="h-full">
-              <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div className="min-w-0 flex-1">
-                  <CardTitle className="flex items-center gap-2 truncate">
-                    {selectedOrg.name}
-                  </CardTitle>
-                </div>
-                <div className="flex gap-2 shrink-0">
-                  {isEditing ? (
-                    <Button size="sm" variant="outline" onClick={() => setIsEditing(false)}>
-                      <X className="h-4 w-4" />
-                      <span className="ml-1 hidden sm:inline">Cancel</span>
-                    </Button>
-                  ) : (
-                    <Button size="sm" onClick={() => setIsEditing(true)}>
-                      <EditIcon className="h-4 w-4" />
-                      <span className="ml-1 hidden sm:inline">Edit</span>
-                    </Button>
-                  )}
-                  <Button
-                    variant="destructive"
-                    className="ml-2"
-                    onClick={() => setIsDisableModalOpen(true)}
-                  >
-                    <XCircleIcon className="h-4 w-4 mr-2" />
-                    Disable
-                  </Button>
-                  <DisableOrganizationButton
-                    open={isDisableModalOpen}
-                    handleOpenChange={setIsDisableModalOpen}
-                    id={selectedOrg.id}
-                    onConfirmDisable={handleConfirmDisable}
-                  />
-                </div>
-              </CardHeader>
-              {isEditing ? (
-                <CardContent className="space-y-6">
-                  <UpdateOrganizationForm
-                    user={user}
-                    users={users}
-                    organizations={originalData}
-                    data={selectedOrg}
-                  />
-                </CardContent>
-              ) : (
-                <CardContent>
-                  <OrganizationDetailPage organization={selectedOrg} />
-                </CardContent>
-              )}
+            <Card>
+              <ScrollArea className={'h-[650px]'}>
+                <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div className="min-w-0 flex-1">
+                    <CardTitle className="flex items-center gap-2 truncate">
+                      {selectedOrg.name}
+                    </CardTitle>
+                  </div>
+                  <div className="flex gap-2 shrink-0">
+                    {user?.role !== UserRolesEnum.SocialMediaManager && (
+                      <>
+                        {isEditing ? (
+                          <Button size="sm" variant="outline" onClick={() => setIsEditing(false)}>
+                            <X className="h-4 w-4" />
+                            <span className="ml-1 hidden sm:inline">Cancel</span>
+                          </Button>
+                        ) : (
+                          <Button size="sm" onClick={() => setIsEditing(true)}>
+                            <EditIcon className="h-4 w-4" />
+                            <span className="ml-1 hidden sm:inline">Edit</span>
+                          </Button>
+                        )}
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          className="ml-2"
+                          onClick={() => setIsDisableModalOpen(true)}
+                        >
+                          <XCircleIcon className="h-4 w-4 mr-2" />
+                          Disable
+                        </Button>
+                        <DisableOrganizationButton
+                          open={isDisableModalOpen}
+                          handleOpenChange={setIsDisableModalOpen}
+                          id={selectedOrg.id}
+                          onConfirmDisable={handleConfirmDisable}
+                        />
+                      </>
+                    )}
+                  </div>
+                </CardHeader>
+                {isEditing ? (
+                  <CardContent className="space-y-6">
+                    <UpdateOrganizationForm
+                      user={user}
+                      users={users}
+                      organizations={originalData}
+                      data={selectedOrg}
+                    />
+                  </CardContent>
+                ) : (
+                  <CardContent>
+                    <OrganizationDetailPage organization={selectedOrg} />
+                  </CardContent>
+                )}
+              </ScrollArea>
             </Card>
           </div>
         ) : (

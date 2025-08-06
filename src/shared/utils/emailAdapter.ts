@@ -1,19 +1,10 @@
 import { env } from '@/config/env'
-import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
+import { resendAdapter } from '@payloadcms/email-resend'
 
 export function EmailAdapter() {
-  return env.NEXT_PUBLIC_NODE_ENV === 'production'
-    ? nodemailerAdapter({
-        defaultFromAddress: env.FROM_ADDRESS,
-        defaultFromName: env.FROM_NAME,
-        transportOptions: {
-          host: env.SMTP_HOST,
-          port: 587,
-          auth: {
-            user: env.SMTP_USER,
-            pass: env.SMTP_PASS,
-          },
-        },
-      })
-    : nodemailerAdapter()
+  return resendAdapter({
+    defaultFromAddress: env.FROM_ADDRESS,
+    defaultFromName: env.FROM_NAME,
+    apiKey: env.RESEND_API_KEY || '',
+  })
 }

@@ -22,7 +22,7 @@ import {
 } from '@/shared/components/ui/sidebar'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { UserRolesEnum } from '@/users'
+import { UserRolesEnum } from '@/features/users'
 
 const data = {
   navMain: [
@@ -71,11 +71,11 @@ export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="/dashboard">
+              <Link href="/dashboard">
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-medium text-sm lg:text-base">StyreIQ</span>
+                  <span className="font-medium">StyreIQ</span>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -85,7 +85,15 @@ export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
           <SidebarMenu>
             {data.navMain
               .filter((item) => {
-                return !(item.title === 'Policy' && userRole !== UserRolesEnum.SuperAdmin)
+                if (item.title === 'Policy' && userRole !== UserRolesEnum.SuperAdmin) {
+                  return false
+                }
+                if (item.title === 'Users' && userRole === UserRolesEnum.SocialMediaManager) {
+                  return false
+                }
+                return !(
+                  item.title === 'Audit Log' && userRole === UserRolesEnum.SocialMediaManager
+                )
               })
               .map((item) => (
                 <SidebarMenuItem key={item.title}>

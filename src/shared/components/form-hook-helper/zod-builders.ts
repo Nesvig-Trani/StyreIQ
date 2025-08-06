@@ -47,7 +47,6 @@ export function addMinLengthValidationToRequiredStrings<Schema extends z.AnyZodO
   schema: Schema,
 ): Schema {
   const newShape = Object.fromEntries(
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     Object.entries(schema.shape).map(([key, field]) => {
       if (
         field instanceof z.ZodString &&

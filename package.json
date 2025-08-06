@@ -5,6 +5,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
     "@payloadcms/db-vercel-postgres": "3.33.0",
+    "@payloadcms/email-resend": "3.33.0",
     "@payloadcms/next": "3.33.0",
     "@payloadcms/payload-cloud": "3.33.0",
     "@payloadcms/richtext-lexical": "3.33.0",
@@ -80,6 +81,7 @@
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
     "ci:checks": "cross-env NODE_OPTIONS=--no-deprecation next lint && tsc --noEmit",
+    "db:create": "yarn run payload migrate:create",
     "db:migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",

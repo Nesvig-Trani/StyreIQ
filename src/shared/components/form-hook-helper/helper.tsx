@@ -62,7 +62,10 @@ export const FormHelper = <
           // Check the condition for the dependent field
           const shouldRenderField =
             !fieldData.dependsOn ||
-            fieldData.dependsOn.value === watchedValues[fieldData.dependsOn.field]
+            (Array.isArray(fieldData.dependsOn.value)
+              ? fieldData.dependsOn.value.includes(watchedValues[fieldData.dependsOn.field])
+              : fieldData.dependsOn.value === watchedValues[fieldData.dependsOn.field])
+
           if (!shouldRenderField) {
             return null
           }

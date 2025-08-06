@@ -1,8 +1,15 @@
 import { z } from 'zod'
-import { createFirstUserFormSchema, createUserFormSchema, updateUserSchema } from '@/users'
+import {
+  createFirstUserFormSchema,
+  createUserFormSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+  updateUserSchema,
+  WelcomeEmailSchema,
+} from '@/features/users'
 import { env } from '@/config/env'
-import { updateOrgAccessSchema } from '@/organization-access'
-import { setUserStatusSchema } from '@/review-requests'
+import { updateOrgAccessSchema } from '@/features/organization-access'
+import { setUserStatusSchema } from '@/features/review-requests'
 import { JSON_HEADERS } from '@/shared/constants'
 
 /**
@@ -48,6 +55,13 @@ export const createUser = async (data: z.infer<typeof createUserFormSchema>) => 
       role: data.role,
       status: data.status,
       organizations: data.organizations,
+      hasKnowledgeStandards: data.hasKnowledgeStandards,
+      isCompletedTrainingAccessibility: data.isCompletedTrainingAccessibility,
+      isCompletedTrainingRisk: data.isCompletedTrainingRisk,
+      isEnabledTwoFactor: data.isEnabledTwoFactor,
+      isInUseSecurePassword: data.isInUseSecurePassword,
+      isCompletedTrainingBrand: data.isCompletedTrainingBrand,
+      passwordUpdatedAt: data.passwordUpdatedAt,
     }),
   })
 
@@ -75,6 +89,13 @@ export const updateUser = async (data: z.infer<typeof updateUserSchema>) => {
       role: data.role,
       status: data.status,
       organizations: data.organizations,
+      hasKnowledgeStandards: data.hasKnowledgeStandards,
+      isCompletedTrainingAccessibility: data.isCompletedTrainingAccessibility,
+      isCompletedTrainingRisk: data.isCompletedTrainingRisk,
+      isEnabledTwoFactor: data.isEnabledTwoFactor,
+      isInUseSecurePassword: data.isInUseSecurePassword,
+      isCompletedTrainingBrand: data.isCompletedTrainingBrand,
+      passwordUpdatedAt: data.passwordUpdatedAt,
     }),
   })
 
@@ -133,6 +154,60 @@ export const setUserApprovalStatus = async ({
 
   if (!response.ok) {
     throw new Error('Failed to set user status')
+  }
+
+  return response.json()
+}
+
+export const sendForgotPasswordRequest = async (data: z.infer<typeof forgotPasswordSchema>) => {
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/forgot-password`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: JSON_HEADERS,
+    body: JSON.stringify({ ...data }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to send forgot password email instructions')
+  }
+
+  return response.json()
+}
+
+export const resetPasswordRequest = async (data: z.infer<typeof resetPasswordSchema>) => {
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/reset-password`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: JSON_HEADERS,
+    body: JSON.stringify({ ...data }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to reset password')
+  }
+
+  return response.json()
+}
+
+export const createWelcomeEmail = async (data: WelcomeEmailSchema) => {
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/welcome-emails`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify({
+      ...data,
+    }),
+  })
+
+  if (!response.ok) {
+    const errorResponse = await response.json()
+
+    throw {
+      message: 'Failed to create welcome email',
+      data: { message: errorResponse.message, details: errorResponse.details },
+    }
   }
 
   return response.json()

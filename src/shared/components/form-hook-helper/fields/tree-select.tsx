@@ -15,11 +15,13 @@ import { FieldData } from '@/shared/components/form-hook-helper/types'
 export type TreeSelectHelperProps<TFieldValues extends FieldValues> = {
   form: UseFormReturn<TFieldValues>
   fieldData: FieldData<TFieldValues>
+  multiple: boolean
 }
 
 export const TreeSelectHelper = <TFieldValues extends FieldValues>({
   form,
   fieldData,
+  multiple,
 }: TreeSelectHelperProps<TFieldValues>): React.ReactNode => {
   const {
     formState: { errors },
@@ -31,15 +33,16 @@ export const TreeSelectHelper = <TFieldValues extends FieldValues>({
       control={form.control}
       name={fieldData.name}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className="w-full">
           <FormLabel>{fieldData.label}</FormLabel>
-          <FormControl>
+          <FormControl className="w-full">
             <TreeSelect
               options={fieldData.options || []}
               tree={fieldData.tree || []}
               handleChangeAction={field.onChange}
               value={field.value}
-              errors={error}
+              errors={!!error}
+              multiple={multiple}
             />
           </FormControl>
           <FormMessage />

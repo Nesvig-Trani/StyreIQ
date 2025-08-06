@@ -17,6 +17,7 @@ import { MultiSelectInputHelper } from './fields/multiselect'
 import { NumberInputHelper } from './fields/number'
 import { SelectInputHelper } from './fields/select'
 import { TextInputHelper } from './fields/text'
+import { PasswordInputHelper } from './fields/password'
 import { TextAreaHelper } from './fields/text-area'
 import { getFieldListDefaultValues } from './get-field-default-value'
 import { FieldData } from '@/shared/components/form-hook-helper/types'
@@ -38,9 +39,19 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
   if (size === 'half') {
     sizeClassName = cn(sizeClassName, 'md:col-span-6')
   }
-  if (type === 'text' || type === 'password') {
+  if (type === 'text') {
     return (
       <TextInputHelper
+        key={fieldData.name}
+        form={form}
+        fieldData={fieldData}
+        className={sizeClassName}
+      />
+    )
+  }
+  if (type === 'password') {
+    return (
+      <PasswordInputHelper
         key={fieldData.name}
         form={form}
         fieldData={fieldData}
@@ -111,7 +122,6 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
 
   if (type === 'array') {
     return (
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       <InputListHelper
         key={fieldData.name}
         form={form}
@@ -122,7 +132,14 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
   }
 
   if (type === 'tree-select') {
-    return <TreeSelectHelper key={fieldData.name} form={form} fieldData={fieldData} />
+    return (
+      <TreeSelectHelper
+        key={fieldData.name}
+        form={form}
+        fieldData={fieldData}
+        multiple={!!fieldData.multiple}
+      />
+    )
   }
 
   throw new Error(`Unsupported field type: ${type as string}`)
@@ -156,7 +173,7 @@ export const InputListHelper = <TFieldValues extends FieldValues>({
               onClick={(): void => {
                 const object = getFieldListDefaultValues(fieldData.children || [])
                 // expected type is dependent of some specific types that cannot be easily inferred here
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 append(object as any)
               }}
             >
