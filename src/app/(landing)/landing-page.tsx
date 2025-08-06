@@ -1,6 +1,15 @@
 'use client'
 import React from 'react'
-import { FileCheck, Target, BarChart3, Shield, Building2, GraduationCap, Heart } from 'lucide-react'
+import {
+  FileCheck,
+  Target,
+  BarChart3,
+  Shield,
+  Building2,
+  GraduationCap,
+  Heart,
+  Users,
+} from 'lucide-react'
 import { Footer } from '@/features/landing/components/footer'
 import { FeatureSection } from '@/features/landing/components/feature-section'
 import { Navbar } from '@/features/landing/components/navbar'
@@ -30,7 +39,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ showGetStarted }) => {
       icon: BarChart3,
       title: 'Risk & Response',
       description:
-        'Route incidents to the right person with escalation engine. Use built-in crisis templates and automatically track every action for compliance.',
+        'Flag potential risks like unassigned accounts, inactive admins, and missing policy acknowledgments before they become problems. The dashboard helps teams take proactive steps and assign accountability — even without direct platform integrations.',
     },
   ]
 
@@ -39,19 +48,21 @@ const LandingPage: React.FC<LandingPageProps> = ({ showGetStarted }) => {
       number: '01',
       title: 'Connect & Register',
       description:
-        'Connect all social media accounts and register ownership with complete visibility.',
+        'Identify all social media accounts across your organization and assign ownership roles — with visibility into who has access and what platform each account is tied to.',
       icon: Target,
     },
     {
       number: '02',
       title: 'Implement Governance',
-      description: 'Upload policies, assign roles, and set up compliance tracking.',
+      description:
+        'Upload policies, assign responsibilities, and begin tracking compliance tasks like training completions and policy acknowledgment.',
       icon: Shield,
     },
     {
       number: '03',
-      title: 'Monitor & Respond',
-      description: 'Track risks, receive alerts, and respond with built-in crisis templates.',
+      title: 'Monitor & Flag Risks',
+      description:
+        'See potential issues on your risk dashboard — like unassigned accounts, inactive admins, or incomplete training — and take action before they escalate.',
       icon: BarChart3,
     },
   ]
@@ -65,15 +76,21 @@ const LandingPage: React.FC<LandingPageProps> = ({ showGetStarted }) => {
     },
     {
       icon: Building2,
-      title: 'Government Agencies',
+      title: 'Government & Public Sector',
       description:
         'Ensure transparency and compliance across departments. Track policy acknowledgments, user roles, and maintain audit-ready documentation.',
     },
     {
       icon: Heart,
-      title: 'Healthcare Systems',
+      title: 'Healthcare & Regulated Industries',
       description:
         'Maintain HIPAA compliance while coordinating messaging. Track sensitive content, user access, and ensure policy adherence across facilities.',
+    },
+    {
+      icon: Users,
+      title: 'Networked Organizations & Nonprofits',
+      description:
+        'Coordinate messaging across distributed teams and chapters. Maintain brand consistency while enabling local autonomy with centralized oversight and compliance tracking.',
     },
   ]
 
@@ -88,7 +105,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ showGetStarted }) => {
         title="Key Benefits"
         subtitle="Structured governance, compliance visibility, and peace of mind."
         features={benefits}
-        footerText="StyreIQ replaces chaos and guesswork with structured governance, compliance visibility, and peace of mind."
+        footerText="Bring structure to even the most complex social media setups — with visibility, compliance, and shared accountability."
         backgroundClassName="bg-gray-50"
       />
 
@@ -101,7 +118,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ showGetStarted }) => {
 
       <FeatureSection
         id="who-its-for"
-        title="Who It's For"
+        title="Built for Complex Teams and Decentralized Organizations"
         subtitle="Organizations that need complete social media governance and compliance oversight."
         features={audiences}
         backgroundClassName="bg-gray-50"
