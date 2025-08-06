@@ -33,6 +33,12 @@ on:
       postgres_uri:
         description: 'postgres_uri env var'
         required: true
+      resend_api_key:
+        description: 'resend_api_key env var'
+        required: true
+      local_email_to_address:
+        description: 'local_email_to_address env var'
+        required: true
     inputs:
       environment:
         description: 'The deploy environment'
@@ -65,3 +71,5 @@ jobs:
           NEXT_PUBLIC_NODE_ENV: ${{ secrets.next_public_node_env }}
           PAYLOAD_SECRET: ${{ secrets.payload_secret }}
           POSTGRES_URL: ${{ secrets.postgres_uri }}
+          RESEND_API_KEY: ${{ secrets.resend_api_key }}
+          LOCAL_EMAIL_TO_ADDRESS: ${{ secrets.local_email_to_address }}

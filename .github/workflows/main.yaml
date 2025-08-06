@@ -26,3 +26,5 @@ jobs:
       next_public_node_env: ${{ secrets.NEXT_PUBLIC_NODE_ENV }}
       payload_secret: ${{ secrets.PAYLOAD_SECRET }}
       postgres_uri: ${{ secrets.POSTGRES_URL }}
+      resend_api_key: ${{ secrets.RESEND_API_KEY }}
+      local_email_to_address: ${{ secrets.LOCAL_EMAIL_TO_ADDRESS }}
