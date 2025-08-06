@@ -170,7 +170,7 @@ export function useCreateSocialMedia({ users, organizations }: CreateSocialMedia
         },
         {
           name: 'thirdPartyManagement',
-          label: 'Third Party Management',
+          label: 'Third Party Management *',
           type: 'select',
           options: thirdPartyManagementOptions,
         },

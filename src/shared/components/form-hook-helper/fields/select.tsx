@@ -55,11 +55,17 @@ export const SelectInputHelper = <TFieldValues extends FieldValues>({
               <SelectScrollUpButton className="flex items-center justify-center">
                 <ChevronUp className="h-4 w-4" />
               </SelectScrollUpButton>
-              {fieldData.options?.map(({ label: optionLabel, value: optionValue }) => (
-                <SelectItem key={optionValue} value={optionValue}>
-                  {optionLabel}
-                </SelectItem>
-              )) || []}
+              {fieldData.options && fieldData.options.length > 0 ? (
+                fieldData.options.map(({ label: optionLabel, value: optionValue }) => (
+                  <SelectItem key={optionValue} value={optionValue}>
+                    {optionLabel}
+                  </SelectItem>
+                ))
+              ) : (
+                <div className="text-muted-foreground px-4 py-2 text-sm text-center">
+                  No options available
+                </div>
+              )}
 
               <SelectScrollDownButton className="flex items-center justify-center">
                 <ChevronDown className="h-4 w-4" />
