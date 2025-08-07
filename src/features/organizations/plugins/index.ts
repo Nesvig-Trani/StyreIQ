@@ -1,5 +1,5 @@
 import type { Config } from 'payload'
-import { Organizations } from './collections'
+import { Organizations, OrganizationAccess } from './collections'
 
 type OrganizationsPluginConfig = {
   disabled?: boolean
@@ -8,7 +8,7 @@ type OrganizationsPluginConfig = {
 export const OrganizationsPlugin =
   (pluginOptions: OrganizationsPluginConfig) =>
   (config: Config): Config => {
-    config.collections = [...(config.collections || []), Organizations]
+    config.collections = [...(config.collections || []), Organizations, OrganizationAccess]
 
     /**
      * If the plugin is disabled, we still want to keep added collections/fields so the database schema is consistent which is important for migrations.

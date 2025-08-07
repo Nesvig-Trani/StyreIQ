@@ -105,8 +105,8 @@ export const Users: CollectionConfig = {
     },
   ],
   endpoints: [
-    createUser,
     getOrganizationUsers,
+    createUser,
     updateUser,
     updateUserAccess,
     setUserApprovalStatus,

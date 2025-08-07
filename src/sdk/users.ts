@@ -8,7 +8,7 @@ import {
   WelcomeEmailSchema,
 } from '@/features/users'
 import { env } from '@/config/env'
-import { updateOrgAccessSchema } from '@/features/organization-access'
+import { updateOrgAccessSchema } from '@/features/organizations'
 import { setUserStatusSchema } from '@/features/review-requests'
 import { JSON_HEADERS } from '@/shared/constants'
 
