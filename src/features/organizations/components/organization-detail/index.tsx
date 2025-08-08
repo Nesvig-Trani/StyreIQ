@@ -5,11 +5,7 @@ import { Badge, Card, CardHeader, CardTitle, CardContent, Separator } from '@/sh
 import { Avatar, AvatarFallback } from '@/shared/components/ui/avatar'
 import { Building, Mail, Phone } from 'lucide-react'
 
-export default function OrganizationDetail({
-  organization,
-}: {
-  organization: OrganizationWithDepth
-}) {
+export function OrganizationDetail({ organization }: { organization: OrganizationWithDepth }) {
   const admin = organization.admin as User
   const backupAdmins = organization.backupAdmins as User[]
   const parentOrg = organization.parentOrg as Organization

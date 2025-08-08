@@ -68,10 +68,10 @@ export interface Config {
   blocks: {}
   collections: {
     organization: Organization
+    organization_access: OrganizationAccess
     'welcome-emails': WelcomeEmail
     users: User
     'social-medias': SocialMedia
-    organization_access: OrganizationAccess
     policies: Policy
     acknowledgments: Acknowledgment
     flags: Flag
@@ -93,10 +93,10 @@ export interface Config {
   }
   collectionsSelect: {
     organization: OrganizationSelect<false> | OrganizationSelect<true>
+    organization_access: OrganizationAccessSelect<false> | OrganizationAccessSelect<true>
     'welcome-emails': WelcomeEmailsSelect<false> | WelcomeEmailsSelect<true>
     users: UsersSelect<false> | UsersSelect<true>
     'social-medias': SocialMediasSelect<false> | SocialMediasSelect<true>
-    organization_access: OrganizationAccessSelect<false> | OrganizationAccessSelect<true>
     policies: PoliciesSelect<false> | PoliciesSelect<true>
     acknowledgments: AcknowledgmentsSelect<false> | AcknowledgmentsSelect<true>
     flags: FlagsSelect<false> | FlagsSelect<true>
@@ -222,6 +222,20 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organization_access".
+ */
+export interface OrganizationAccess {
+  id: number
+  organization?: (number | null) | Organization
+  user?: (number | null) | User
+  type?: ('temporary' | 'permanent') | null
+  start_date?: string | null
+  end_date?: string | null
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "welcome-emails".
  */
 export interface WelcomeEmail {
@@ -282,20 +296,6 @@ export interface SocialMedia {
    * Automatically set if the account has no public activity for 30+ days and is Active or In Transition.
    */
   inactiveFlag?: boolean | null
-  updatedAt: string
-  createdAt: string
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "organization_access".
- */
-export interface OrganizationAccess {
-  id: number
-  organization?: (number | null) | Organization
-  user?: (number | null) | User
-  type?: ('temporary' | 'permanent') | null
-  start_date?: string | null
-  end_date?: string | null
   updatedAt: string
   createdAt: string
 }
@@ -571,6 +571,10 @@ export interface PayloadLockedDocument {
         value: number | Organization
       } | null)
     | ({
+        relationTo: 'organization_access'
+        value: number | OrganizationAccess
+      } | null)
+    | ({
         relationTo: 'welcome-emails'
         value: number | WelcomeEmail
       } | null)
@@ -581,10 +585,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'social-medias'
         value: number | SocialMedia
-      } | null)
-    | ({
-        relationTo: 'organization_access'
-        value: number | OrganizationAccess
       } | null)
     | ({
         relationTo: 'policies'
@@ -680,6 +680,19 @@ export interface OrganizationSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organization_access_select".
+ */
+export interface OrganizationAccessSelect<T extends boolean = true> {
+  organization?: T
+  user?: T
+  type?: T
+  start_date?: T
+  end_date?: T
+  updatedAt?: T
+  createdAt?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "welcome-emails_select".
  */
 export interface WelcomeEmailsSelect<T extends boolean = true> {
@@ -765,19 +778,6 @@ export interface SocialMediasSelect<T extends boolean = true> {
   status?: T
   deactivationReason?: T
   inactiveFlag?: T
-  updatedAt?: T
-  createdAt?: T
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "organization_access_select".
- */
-export interface OrganizationAccessSelect<T extends boolean = true> {
-  organization?: T
-  user?: T
-  type?: T
-  start_date?: T
-  end_date?: T
   updatedAt?: T
   createdAt?: T
 }
