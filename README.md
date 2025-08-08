@@ -1,67 +1,232 @@
-# GovernIQ - v1.0.11
+# StyreIQ - Governance & Compliance Platform
 
-This template comes configured with the bare minimum to get started on anything you need.
+StyreIQ is a comprehensive governance and compliance platform designed to help organizations manage social media accounts, track policy compliance, and monitor risks across distributed teams.
 
-## Quick start
+## �� Features
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+- **Governance & Ownership**: Track every account and connected user with ownership logs
+- **Compliance & Policy**: Upload institution-specific policies with acknowledgment tracking
+- **Risk & Response**: Flag potential risks like unassigned accounts and inactive admins
+- **Dashboard Analytics**: Centralized visibility and complete account registry
+- **Multi-tenant Support**: Department-level oversight with organization hierarchy
 
-## Quick Start - local setup
+## ��️ Tech Stack
 
-To spin up this template locally, follow these steps:
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **Backend**: Payload CMS 3.33
+- **Database**: PostgreSQL
+- **Styling**: Tailwind CSS 4, Radix UI
+- **Authentication**: Payload Auth
+- **Email**: Resend
+- **Deployment**: Docker, Vercel
 
-### Clone
+## �� Prerequisites
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+Before you begin, ensure you have the following installed:
 
-### Development
+- [Node.js](https://nodejs.org/) (^18.20.2 || >=20.9.0)
+- [Yarn](https://yarnpkg.com/) or [pnpm](https://pnpm.io/)
+- [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/)
+- [Git](https://git-scm.com/)
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URI` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+## �� Quick Start
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+### 1. Clone the Repository
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+```bash
+git clone <repository-url>
+cd StyreIQ
+```
 
-#### Docker (Optional)
+### 2. Set Up Environment Variables
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+Create a `.env` file in the root directory with the following variables:
 
-To do so, follow these steps:
+```bash
+# Required Environment Variables
+PAYLOAD_SECRET=your-payload-secret-here
+POSTGRES_URL=postgres://postgres:postgres@127.0.0.1:5432/web-payload
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+FROM_ADDRESS=noreply@yourdomain.com
+FROM_NAME='Your Organization Name'
+NEXT_PUBLIC_NODE_ENV=development
+RESEND_API_KEY=your-resend-api-key
+LOCAL_EMAIL_TO_ADDRESS=your-email@domain.com
+SMTP_HOST=smtp-relay.brevo.com
+SMTP_USER=your-smtp-user
+SMTP_PASS=your-smtp-password
+NODE_ENV=development
+```
 
-- Modify the `MONGODB_URI` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URI` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+### 3. Start the Database
 
-## How it works
+```bash
+docker compose up -d
+```
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+This will start a PostgreSQL database on port 5432.
 
-### Collections
+### 4. Install Dependencies
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+```bash
+yarn install
+```
 
-- #### Users (Authentication)
+### 5. Run Database Migrations
 
-  Users are auth-enabled collections that have access to the admin panel.
+```bash
+yarn run payload migrate
+```
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+### 6. Start the Development Server
 
-- #### Media
+```bash
+yarn dev
+```
 
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+The application will be available at `http://localhost:3000`.
 
-### Docker
+## �� Development
 
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
+### Available Scripts
 
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
+- `yarn dev` - Start development server
+- `yarn build` - Build for production
+- `yarn start` - Start production server
+- `yarn lint` - Run ESLint
+- `yarn type-check` - Run TypeScript type checking
+- `yarn payload migrate` - Run database migrations
+- `yarn payload migrate:create` - Create new migration
 
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
+### Project Structure
 
-## Questions
+```
+src/
+├── app/                    # Next.js app router
+│   ├── (auth)/            # Authentication pages
+│   ├── (dashboard)/       # Dashboard pages
+│   ├── (landing)/         # Landing page
+│   └── (payload)/         # Payload CMS admin
+├── features/              # Feature modules
+│   ├── audit-log/         # Audit logging
+│   ├── auth/              # Authentication
+│   ├── dashboard/         # Dashboard components
+│   ├── flags/             # Risk flagging
+│   ├── organizations/     # Organization management
+│   ├── policies/          # Policy management
+│   ├── social-medias/     # Social media management
+│   └── users/             # User management
+├── shared/                # Shared components and utilities
+└── types/                 # TypeScript types
+```
 
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+## �� Docker
+
+### Development with Docker
+
+The project includes a `docker-compose.yml` file for easy local development:
+
+```bash
+# Start PostgreSQL database
+docker compose up -d
+
+# Install dependencies and start development server
+yarn install
+yarn dev
+```
+
+### Production Docker
+
+To build and run the application in production:
+
+```bash
+# Build the Docker image
+docker build -t styreiq .
+
+# Run the container
+docker run -p 3000:3000 --env-file .env styreiq
+```
+
+## �� Environment Variables
+
+### Required Variables
+
+| Variable                 | Description                    | Example                                                   |
+| ------------------------ | ------------------------------ | --------------------------------------------------------- |
+| `PAYLOAD_SECRET`         | Secret key for Payload CMS     | `xxxxxxxxxxxxxxxxx`                                       |
+| `POSTGRES_URL`           | PostgreSQL connection string   | `postgres://postgres:postgres@127.0.0.1:5432/web-payload` |
+| `NEXT_PUBLIC_BASE_URL`   | Public URL for the application | `http://localhost:3000`                                   |
+| `FROM_ADDRESS`           | Email sender address           | `noreply@yourdomain.com`                                  |
+| `FROM_NAME`              | Email sender name              | `'Your Organization Name'`                                |
+| `NEXT_PUBLIC_NODE_ENV`   | Environment mode               | `development`                                             |
+| `RESEND_API_KEY`         | Resend API key for email       | `re_your-api-key-here`                                    |
+| `LOCAL_EMAIL_TO_ADDRESS` | Local email recipient          | `your-email@domain.com`                                   |
+| `SMTP_HOST`              | SMTP server host               | `smtp-relay.brevo.com`                                    |
+| `SMTP_USER`              | SMTP username                  | `your-smtp-user`                                          |
+| `SMTP_PASS`              | SMTP password                  | `your-smtp-password`                                      |
+| `NODE_ENV`               | Node environment               | `development`                                             |
+
+## �� Database
+
+The application uses PostgreSQL as the primary database. The database schema is managed through Payload CMS migrations.
+
+### Running Migrations
+
+```bash
+# Run all pending migrations
+yarn run payload migrate
+
+# Create a new migration
+yarn run payload migrate:create
+```
+
+## �� Testing
+
+```bash
+# Run type checking
+yarn type-check
+
+# Run linting
+yarn lint
+
+# Run all checks
+yarn ci:checks
+```
+
+## �� Deployment
+
+### Vercel Deployment
+
+1. Connect your repository to Vercel
+2. Set up environment variables in Vercel dashboard
+3. Deploy automatically on push to main branch
+
+### Manual Deployment
+
+1. Build the application: `yarn build`
+2. Start the production server: `yarn start`
+
+## �� Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature-name`
+3. Commit your changes: `git commit -am 'Add some feature'`
+4. Push to the branch: `git push origin feature/your-feature-name`
+5. Submit a pull request
+
+## �� License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## �� Support
+
+If you encounter any issues or have questions:
+
+1. Check the [documentation](https://payloadcms.com/docs)
+2. Search existing [GitHub issues](https://github.com/payloadcms/payload/issues)
+3. Create a new issue with detailed information
+
+## �� Version History
+
+- **v1.0.11** - Initial release with core governance features
+- **v1.0.0** - Base template with authentication and basic CMS functionality
