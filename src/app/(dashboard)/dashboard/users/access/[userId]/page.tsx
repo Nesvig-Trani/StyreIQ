@@ -2,7 +2,7 @@
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle, OrganizationAccessForm } from '@/shared'
 import { getUserById } from '@/features/users'
-import { getOrganizationAccessByUserId } from '@/features/organization-access/plugins/queries'
+import { getOrganizationAccessByUserId } from '@/features/organizations'
 
 async function UserAccessPage({ params }: { params: Promise<{ userId: string }> }) {
   const { userId } = await params

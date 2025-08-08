@@ -15,7 +15,7 @@ import { OrganizationHierarchyProps } from '@/features/organizations'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
 import { useOrganizationHierarchy } from '@/features/organizations/hooks/useOrganizationHierarchy'
 import { Button } from '@/shared'
-import OrganizationDetailPage from '@/features/organizations/components/organization-detail'
+import { OrganizationDetail } from '@/features/organizations/components/organization-detail'
 import { UpdateOrganizationForm } from '@/features/organizations/forms/update-organization'
 import { ScrollArea } from '@/shared'
 import { organizationTypeOptions } from '@/features/organizations/constants/organizationTypeOptions'
@@ -182,7 +182,7 @@ export default function OrganizationHierarchy({
                   </CardContent>
                 ) : (
                   <CardContent>
-                    <OrganizationDetailPage organization={selectedOrg} />
+                    <OrganizationDetail organization={selectedOrg} />
                   </CardContent>
                 )}
               </ScrollArea>

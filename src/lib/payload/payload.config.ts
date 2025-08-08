@@ -12,7 +12,6 @@ import { Users } from '@/features/users/plugins/collections'
 import { OrganizationsPlugin } from '@/features/organizations/plugins'
 import { UsersPlugin } from '@/features/users/plugins'
 import { SocialMediasPlugin } from '@/features/social-medias/plugins'
-import { OrganizationAccessPlugin } from '@/features/organization-access/plugins'
 import { PoliciesPlugin } from '@/features/policies/plugins'
 import { FlagsPlugin } from '@/features/flags/plugins'
 import { WelcomeEmailsPlugin } from '@/features/welcome-emails/plugins'
@@ -66,9 +65,7 @@ export default buildConfig({
     SocialMediasPlugin({
       disabled: false,
     }),
-    OrganizationAccessPlugin({
-      disabled: false,
-    }),
+
     PoliciesPlugin({
       disabled: false,
     }),

@@ -10,7 +10,7 @@ import {
   UserRolesEnum,
   UserStatusEnum,
 } from '@/features/users/schemas'
-import { updateOrgAccessSchema, UserAccessTypeEnum } from '@/features/organization-access/schemas'
+import { updateOrgAccessSchema, UserAccessTypeEnum } from '@/features/organizations/schemas'
 import { Organization, User } from '@/types/payload-types'
 import { checkAndSendPermissionChangeEmail } from '@/features/users/utils/permissionChangeEmail'
 import { JSON_HEADERS } from '@/shared/constants'
