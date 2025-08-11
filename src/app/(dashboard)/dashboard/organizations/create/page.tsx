@@ -1,7 +1,7 @@
 'use server'
 import React from 'react'
 import { CreateOrganizationForm } from '@/features/organizations'
-import { getUsersByOrganizations, UserRolesEnum } from '@/features/users'
+import { getAllUsers, UserRolesEnum } from '@/features/users'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import Link from 'next/link'
 import { getAllOrganizations } from '@/features/organizations/plugins/queries'
@@ -15,8 +15,7 @@ export default async function CreateOrganization() {
   await ensureStyreIQOrganization()
 
   const organizations = await getAllOrganizations()
-  const orgIds = organizations.docs.map((org) => org.id)
-  const users = await getUsersByOrganizations({ orgIds })
+  const users = await getAllUsers()
 
   if (users.docs.length === 0) {
     return (

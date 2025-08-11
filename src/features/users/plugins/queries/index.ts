@@ -123,6 +123,43 @@ export const getUsersByRoles = async (roles: UserRolesEnum[]) => {
   return users
 }
 
+export const getUsersByOrganizationAndRole = async ({
+  organizationId,
+  roles,
+}: {
+  organizationId: number
+  roles: UserRolesEnum[]
+}): Promise<PaginatedDocs<User>> => {
+  try {
+    const { payload } = await getPayloadContext()
+    const { user } = await getAuthUser()
+
+    const users = await payload.find({
+      collection: 'users',
+      where: {
+        'organizations.id': { equals: organizationId },
+        role: {
+          in: roles,
+        },
+        status: { equals: UserStatusEnum.Active },
+      },
+      overrideAccess: false,
+      user,
+    })
+    return users
+  } catch {
+    return {
+      docs: [],
+      hasNextPage: false,
+      hasPrevPage: false,
+      totalDocs: 0,
+      totalPages: 0,
+      limit: 0,
+      pagingCounter: 0,
+    }
+  }
+}
+
 interface DashboardData {
   totalAccounts: number
   accountsByStatus: {

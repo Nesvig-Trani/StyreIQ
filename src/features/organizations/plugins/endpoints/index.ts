@@ -1,5 +1,6 @@
 import { JSON_HEADERS } from '@/shared/constants'
 import { UserRolesEnum } from '@/features/users/schemas'
+import { getUsersByOrganizationAndRole, getUsersByRoles } from '@/features/users/plugins/queries'
 import { Endpoint } from 'payload'
 import { calcParentPathAndDepth } from '@/features/organizations/utils/calcPathAndDepth'
 import { EndpointError } from '@/shared'
@@ -216,6 +217,44 @@ export const disableOrganization: Endpoint = {
         status: 500,
         headers: JSON_HEADERS,
       })
+    }
+  },
+}
+
+export const filteredUsers: Endpoint = {
+  path: '/filtered-users',
+  method: 'get',
+  handler: async (req) => {
+    try {
+      const { parentOrgId, parentOrgName } = req.query
+      let users
+
+      if (parentOrgName === 'StyreIQ') {
+        // If StyreIQ is selected, get all Super Admins
+        users = await getUsersByRoles([UserRolesEnum.SuperAdmin])
+      } else if (parentOrgId) {
+        // If other organization is selected, get Unit Admins of that organization
+        users = await getUsersByOrganizationAndRole({
+          organizationId: parseInt(parentOrgId as string),
+          roles: [UserRolesEnum.UnitAdmin],
+        })
+      } else {
+        // Default: return empty array
+        users = { docs: [] }
+      }
+      return new Response(JSON.stringify(users), {
+        status: 200,
+        headers: JSON_HEADERS,
+      })
+    } catch (error) {
+      console.error('Error fetching filtered users:', error)
+      return new Response(
+        JSON.stringify({ error: 'Error fetching filtered users', details: error }),
+        {
+          status: 400,
+          headers: JSON_HEADERS,
+        },
+      )
     }
   },
 }

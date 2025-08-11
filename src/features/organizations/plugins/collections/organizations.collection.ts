@@ -1,5 +1,10 @@
 import { CollectionConfig } from 'payload'
-import { createOrganization, disableOrganization, updateOrganization } from '../endpoints'
+import {
+  createOrganization,
+  disableOrganization,
+  filteredUsers,
+  updateOrganization,
+} from '../endpoints'
 import { canDeleteOrganizations, canReadOrganizations } from '../access'
 import { organizationTypeOptions } from '@/features/organizations/constants/organizationTypeOptions'
 
@@ -89,5 +94,5 @@ export const Organizations: CollectionConfig = {
     },
   ],
   timestamps: true,
-  endpoints: [createOrganization, updateOrganization, disableOrganization],
+  endpoints: [createOrganization, updateOrganization, disableOrganization, filteredUsers],
 }
