@@ -10,6 +10,7 @@ import * as migration_20250723_162524_organization_types from './20250723_162524
 import * as migration_20250731_204646_add_new_fields_to_social_media from './20250731_204646_add_new_fields_to_social_media'
 import * as migration_20250801_211652 from './20250801_211652'
 import * as migration_20250805_162244_add_the_social_media_managers_field_to_social_media from './20250805_162244_add_the_social_media_managers_field_to_social_media'
+import * as migration_20250811_181449 from './20250811_181449'
 
 export const migrations = [
   {
@@ -71,5 +72,10 @@ export const migrations = [
     up: migration_20250805_162244_add_the_social_media_managers_field_to_social_media.up,
     down: migration_20250805_162244_add_the_social_media_managers_field_to_social_media.down,
     name: '20250805_162244_add_the_social_media_managers_field_to_social_media',
+  },
+  {
+    up: migration_20250811_181449.up,
+    down: migration_20250811_181449.down,
+    name: '20250811_181449',
   },
 ]

@@ -4,11 +4,17 @@ import useCreateOrganization from '@/features/organizations/hooks/useCreateOrgan
 import { CreateOrgFormProps } from '@/features/organizations'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
 
-export const CreateOrganizationForm = ({ userRole, users, organizations }: CreateOrgFormProps) => {
+export const CreateOrganizationForm = ({
+  userRole,
+  users,
+  organizations,
+  defaultParentOrg,
+}: CreateOrgFormProps) => {
   const { formComponent } = useCreateOrganization({
     userRole,
     users,
     organizations,
+    defaultParentOrg,
   })
   return (
     <Card className="w-full max-w-2xl mx-auto">
