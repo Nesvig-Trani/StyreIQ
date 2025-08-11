@@ -19,18 +19,11 @@ export const createSocialMedia = async (data: z.infer<typeof createSocialMediaFo
     headers: JSON_HEADERS,
     credentials: 'include',
     body: JSON.stringify({
-      name: data.name,
-      profileUrl: data.profileUrl,
-      platform: data.platform,
       contactEmail: data.contactEmail,
       contactPhone: data.contactPhone,
-      organization: data.organization,
-      primaryAdmin: data.primaryAdmin,
       backupAdmin: data.backupAdmin,
-      creationDate: data.creationDate || new Date().toISOString(),
-      adminContactEmails: data.adminContactEmails,
-      thirdPartyManagement: data.thirdPartyManagement,
-      socialMediaManagers: data.socialMediaManagers,
+      passwordManagementPractice: data.passwordManagementPractice,
+      ...data,
     }),
   })
 
@@ -56,14 +49,11 @@ export const updateSocialMedia = async (data: z.infer<typeof updateSocialMediaFo
     headers: JSON_HEADERS,
     credentials: 'include',
     body: JSON.stringify({
-      name: data.name,
-      profileUrl: data.profileUrl,
-      platform: data.platform,
       contactEmail: data.contactEmail,
       contactPhone: data.contactPhone,
-      organization: data.organization,
-      primaryAdmin: data.primaryAdmin,
       backupAdmin: data.backupAdmin,
+      passwordManagementPractice: data.passwordManagementPractice,
+      ...data,
     }),
   })
 

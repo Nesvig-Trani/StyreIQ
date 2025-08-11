@@ -4,6 +4,7 @@ import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { getSocialMediaById } from '@/features/social-medias/plugins/queries'
 import { getAllOrganizations } from '@/features/organizations/plugins/queries'
 import React from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
 
 export default async function UpdateSocialMediaPage({
   params,
@@ -28,12 +29,19 @@ export default async function UpdateSocialMediaPage({
   const organizations = await getAllOrganizations()
   return (
     <div>
-      <UpdateSocialMediaForm
-        data={data}
-        users={users.docs}
-        organizations={organizations.docs}
-        user={user}
-      />
+      <Card className="w-full max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle>Update social media</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <UpdateSocialMediaForm
+            data={data}
+            users={users.docs}
+            organizations={organizations.docs}
+            user={user}
+          />
+        </CardContent>
+      </Card>
     </div>
   )
 }
