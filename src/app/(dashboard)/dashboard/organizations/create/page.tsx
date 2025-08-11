@@ -6,12 +6,18 @@ import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import Link from 'next/link'
 import { getAllOrganizations } from '@/features/organizations/plugins/queries'
 import { Button } from '@/shared/components/ui/button'
+import { ensureStyreIQOrganization } from '@/features/organizations'
 
 export default async function CreateOrganization() {
   const { user } = await getAuthUser()
+
+  // Ensure StyreIQ organization exists
+  await ensureStyreIQOrganization()
+
   const organizations = await getAllOrganizations()
   const orgIds = organizations.docs.map((org) => org.id)
   const users = await getUsersByOrganizations({ orgIds })
+
   if (users.docs.length === 0) {
     return (
       <div>
@@ -21,6 +27,13 @@ export default async function CreateOrganization() {
         </Button>
       </div>
     )
+  }
+
+  // Find StyreIQ organization to set as default parent
+  const styreIQOrg = organizations.docs.find((org) => org.name === 'StyreIQ')
+
+  if (!styreIQOrg) {
+    throw new Error('StyreIQ organization not found')
   }
 
   if (organizations.docs.length === 0 && user?.role !== UserRolesEnum.SuperAdmin) {
@@ -33,12 +46,14 @@ export default async function CreateOrganization() {
       </div>
     )
   }
+
   return (
     <div>
       <CreateOrganizationForm
         userRole={user?.role as UserRolesEnum}
         users={users.docs}
         organizations={organizations.docs}
+        defaultParentOrg={styreIQOrg?.id?.toString()}
       />
     </div>
   )

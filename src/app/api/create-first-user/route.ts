@@ -46,6 +46,33 @@ export async function POST(req: Request) {
       req,
     })
 
+    // Create StyreIQ organization after the first user is created
+    const existingStyreIQ = await payload.find({
+      collection: 'organization',
+      where: {
+        name: { equals: 'StyreIQ' },
+      },
+      limit: 1,
+    })
+
+    if (existingStyreIQ.docs.length === 0) {
+      await payload.create({
+        collection: 'organization',
+        data: {
+          name: 'StyreIQ',
+          type: 'corporate_enterprise',
+          admin: createdUser.id,
+          status: 'active',
+          description:
+            'StyreIQ is the parent organization for all governance and compliance management',
+          delegatedPermissions: true,
+          path: createdUser.id.toString(),
+          depth: 0,
+        },
+        req,
+      })
+    }
+
     return NextResponse.json(createdUser, { status: 201 })
   } catch (catchError) {
     if (catchError instanceof SyntaxError) {

@@ -73,6 +73,7 @@ export type CreateOrgFormProps = {
   userRole?: UserRolesEnum
   users: User[]
   organizations: Organization[]
+  defaultParentOrg?: string
 }
 
 export type UpdateOrgFormProps = {

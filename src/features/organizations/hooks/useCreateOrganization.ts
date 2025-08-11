@@ -13,7 +13,12 @@ import { useRouter } from 'next/navigation'
 import { industryLevelOptions, unitLevelOptions } from '../constants/organizationTypeOptions'
 import { UserRolesEnum } from '@/features/users'
 
-function useCreateOrganization({ userRole, users, organizations }: CreateOrgFormProps) {
+function useCreateOrganization({
+  userRole,
+  users,
+  organizations,
+  defaultParentOrg,
+}: CreateOrgFormProps) {
   const router = useRouter()
   const tree = CreateOrganizationsTree(organizations as OrganizationWithDepth[])
   const typeOptions =
@@ -110,7 +115,7 @@ function useCreateOrganization({ userRole, users, organizations }: CreateOrgForm
       defaultValues: {
         name: '',
         type: OrganizationTypeEnum.HIGHER_EDUCATION_INSTITUTION,
-        parent: '',
+        parent: defaultParentOrg || '',
         admin: '',
         email: '',
         phone: '',
