@@ -45,7 +45,7 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       'active',
       'StyreIQ is the parent organization for all governance and compliance management',
       true,
-      '${adminId}',
+      ${adminId},
       0,
       NOW(),
       NOW()
