@@ -74,7 +74,7 @@ function useCreateOrganization({ userRole, organizations, defaultParentOrg }: Cr
       {
         label: 'Phone',
         name: 'phone' as const,
-        type: 'text' as const,
+        type: 'phone' as const,
       },
       {
         label: 'Status',

@@ -19,6 +19,7 @@ import { SelectInputHelper } from './fields/select'
 import { TextInputHelper } from './fields/text'
 import { PasswordInputHelper } from './fields/password'
 import { TextAreaHelper } from './fields/text-area'
+import { PhoneInputHelper } from './fields/phone'
 import { getFieldListDefaultValues } from './get-field-default-value'
 import { FieldData } from '@/shared/components/form-hook-helper/types'
 import { cn } from '@/shared/utils/cn'
@@ -62,6 +63,16 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
   if (type === 'textarea') {
     return (
       <TextAreaHelper
+        key={fieldData.name}
+        form={form}
+        fieldData={fieldData}
+        className={sizeClassName}
+      />
+    )
+  }
+  if (type === 'phone') {
+    return (
+      <PhoneInputHelper
         key={fieldData.name}
         form={form}
         fieldData={fieldData}

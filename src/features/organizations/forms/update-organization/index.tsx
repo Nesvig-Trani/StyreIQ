@@ -6,6 +6,7 @@ import {
   UpdateOrgFormProps,
 } from '@/features/organizations'
 import { Button, Input, Label, MultiSelect, TreeSelect } from '@/shared'
+import PhoneInput from 'react-phone-number-input'
 import { FieldValues, useForm } from 'react-hook-form'
 import { Select, SelectValue, SelectTrigger, SelectContent, SelectItem } from '@/shared'
 import { CreateOrganization, StatusType } from '@/features/organizations/schemas'
@@ -169,12 +170,15 @@ export const UpdateOrganizationForm = ({
 
         <div className="space-y-2">
           <Label htmlFor="phone">Phone</Label>
-          <Input
+          <PhoneInput
             id="phone"
-            type="tel"
             placeholder="Enter organization phone"
-            {...register('phone')}
+            value={watch('phone')}
+            onChange={(value) => setValue('phone', value || '')}
             disabled={disabledField}
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            international
+            defaultCountry="US"
           />
           {errors.phone && <p className="text-sm text-red-500">{errors.phone.message}</p>}
         </div>

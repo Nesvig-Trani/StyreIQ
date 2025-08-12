@@ -15,6 +15,7 @@ export type FieldDataType =
   | 'array'
   | 'textarea'
   | 'tree-select'
+  | 'phone'
 export type FieldDataSize = 'half' | 'full'
 export type FieldDataOption = {
   value: string
