@@ -172,6 +172,20 @@ export const patchSocialMedia: Endpoint = {
           primaryAdmin: Number(data.primaryAdmin),
           backupAdmin: Number(data.backupAdmin),
           organization: Number(data.organization),
+          status: SocialMediaStatusEnum.PendingApproval,
+          platform: data.platform as PlatformEnum,
+          thirdPartyManagement: data.thirdPartyManagement as ThirdPartyManagementEnum | undefined,
+          passwordManagementPractice: data.passwordManagementPractice as
+            | PasswordManagementPracticeEnum
+            | undefined,
+          verificationStatus: data.verificationStatus as VerificationStatusEnum | undefined,
+          linkedTools: data.linkedTools as LinkedToolsEnum[] | undefined,
+          adminContactEmails: Array.isArray(data.adminContactEmails)
+            ? data.adminContactEmails.map((email: string) => ({ email }))
+            : [],
+          socialMediaManagers: Array.isArray(data.socialMediaManagers)
+            ? data.socialMediaManagers.map(Number)
+            : [],
         },
         req,
       })
