@@ -131,7 +131,7 @@ export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocia
         {
           label: 'Contact Phone',
           name: 'contactPhone',
-          type: 'text',
+          type: 'phone',
         },
         {
           label: 'Organization *',

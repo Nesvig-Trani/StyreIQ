@@ -1,5 +1,6 @@
 import React from 'react'
 import './styles.css'
+import './phone-input.css'
 import { Toaster } from '@/shared/components/ui/sonner'
 
 export const metadata = {
