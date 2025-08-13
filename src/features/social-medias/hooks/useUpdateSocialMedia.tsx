@@ -273,6 +273,9 @@ export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocia
           }
         }
       },
+      onCancel: () => router.push('/dashboard/social-media-accounts/'),
+      cancelContent: 'Cancel',
+      showCancel: true,
     },
     {
       defaultValues: {

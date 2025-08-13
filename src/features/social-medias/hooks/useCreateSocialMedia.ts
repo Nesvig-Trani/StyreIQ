@@ -153,6 +153,7 @@ export function useCreateSocialMedia({ users, organizations }: CreateSocialMedia
           label: 'Creation Date',
           name: 'creationDate',
           type: 'date',
+          disabled: true,
         },
         {
           label: 'Admin Contact Info *',
@@ -245,6 +246,9 @@ export function useCreateSocialMedia({ users, organizations }: CreateSocialMedia
           }
         }
       },
+      onCancel: () => router.push('/dashboard/social-media-accounts/'),
+      cancelContent: 'Cancel',
+      showCancel: true,
     },
     {
       defaultValues: {

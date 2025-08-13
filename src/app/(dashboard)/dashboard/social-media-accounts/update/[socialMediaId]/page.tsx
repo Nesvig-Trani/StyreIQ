@@ -31,7 +31,7 @@ export default async function UpdateSocialMediaPage({
     <div>
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle>Update social media</CardTitle>
+          <CardTitle>Update Social Media Account</CardTitle>
         </CardHeader>
         <CardContent>
           <UpdateSocialMediaForm

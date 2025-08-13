@@ -284,16 +284,6 @@ const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
                 )
               })}
             </div>
-            <div className="pl-px leading-none">
-              <Button
-                type="button"
-                className={cn(defaultButtonClassname, 'm-0 ml-2 h-[25px]')}
-                onClick={handleClear}
-              >
-                <p>Clear all</p>
-                <XCircle className="ml-2 size-4" />
-              </Button>
-            </div>
           </>
         )}
       </div>

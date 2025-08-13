@@ -67,7 +67,7 @@ export const useCreateFlag = ({
       case AffectedEntityTypeEnum.SOCIAL_MEDIA:
         return (
           <div className="space-y-2">
-            <Label htmlFor="name">Social Medias</Label>
+            <Label htmlFor="name">Social Media Accounts</Label>
             <Select
               name="affectedEntitySocial"
               onValueChange={(value: string) => setValue('affectedEntity', value)}

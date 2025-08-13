@@ -35,7 +35,7 @@ export const DashboardSocialMedias: React.FC<DashboardSocialMediasProps> = ({
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="space-y-2">
               <div className="flex items-center gap-3">
-                <h2 className="text-2xl font-bold">Social Medias</h2>
+                <h2 className="text-2xl font-bold">Social Media Accounts</h2>
                 <Badge variant="secondary" className="text-xs">
                   {socialMedias.totalDocs} Accounts
                 </Badge>
@@ -53,10 +53,10 @@ export const DashboardSocialMedias: React.FC<DashboardSocialMediasProps> = ({
                     <Link
                       title="create social media account"
                       className="flex items-center justify-center gap-2"
-                      href="/dashboard/social-medias/create"
+                      href="/dashboard/social-media-accounts/create"
                     >
                       <CirclePlus className="h-4 w-4" />
-                      Create Social Media
+                      Create Social Media Account
                     </Link>
                   </Button>
                 )}
