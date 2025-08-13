@@ -31,6 +31,9 @@ export type FormHelperProps<
       | undefined
   } | null
   customComponent?: ReactNode
+  onCancel?: () => void
+  cancelContent?: React.ReactNode
+  showCancel?: boolean
 }
 
 /**
@@ -49,9 +52,19 @@ export const FormHelper = <
   customSubmit,
   error,
   customComponent,
+  onCancel,
+  cancelContent,
+  showCancel = true,
 }: FormHelperProps<TSchema, TFieldValues>): React.ReactNode => {
   type TTransformedValues = z.infer<TSchema>
   const watchedValues = form.watch() // Watch all form values
+
+  const handleCancel = () => {
+    if (onCancel) {
+      onCancel()
+    }
+  }
+
   return (
     <Form {...form}>
       <form
@@ -82,10 +95,23 @@ export const FormHelper = <
         )}
         {customComponent}
         {!customSubmit && (
-          <Button className="col-span-12" type="submit" disabled={isLoading}>
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {submitContent || 'Submit'}
-          </Button>
+          <div className="col-span-12 flex gap-3 mt-3">
+            {showCancel && onCancel && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleCancel}
+                disabled={isLoading}
+                className="flex-1"
+              >
+                {cancelContent || 'Cancelar'}
+              </Button>
+            )}
+            <Button type="submit" disabled={isLoading} className="flex-1">
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {submitContent || 'Submit'}
+            </Button>
+          </div>
         )}
       </form>
     </Form>

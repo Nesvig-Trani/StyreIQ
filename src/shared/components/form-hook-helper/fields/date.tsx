@@ -29,13 +29,20 @@ export const DateInputHelper = <TFieldValues extends FieldValues>({
       key={fieldData.name}
       render={({ field: { onChange, value } }): React.ReactElement => (
         <FormItem className={cn('col-span-12', className)}>
-          <FormLabel>{fieldData.label}</FormLabel>
+          <FormLabel className={cn(fieldData.disabled && 'text-muted-foreground')}>
+            {fieldData.label}
+          </FormLabel>
           <FormControl>
             <DatePicker
-              className="w-full"
+              className={cn('w-full', fieldData.disabled && 'opacity-60 cursor-not-allowed')}
               {...fieldData.dateInputProps} // TODO - Find a better way to do this
-              selected={value}
-              onSelect={(newValue: Date | undefined) => onChange(newValue ?? null)}
+              disabled={fieldData.disabled}
+              selected={value ? value : undefined}
+              onSelect={(newValue: Date | undefined) => {
+                if (!fieldData.disabled) {
+                  onChange(newValue ?? null)
+                }
+              }}
               locale={undefined}
             />
           </FormControl>

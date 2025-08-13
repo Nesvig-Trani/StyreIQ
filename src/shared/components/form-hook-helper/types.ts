@@ -64,4 +64,5 @@ export type FieldData<TFieldValues extends FieldValues = FieldValues> = {
   }
   placeholder?: string
   tree?: Tree[]
+  disabled?: boolean
 }

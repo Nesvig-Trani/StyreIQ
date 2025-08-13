@@ -34,6 +34,9 @@ export type UseFormHelperProps<
         }[]
       | undefined
   } | null
+  onCancel?: () => void
+  cancelContent?: React.ReactNode
+  showCancel?: boolean
 }
 
 export type UseFormHelperReturn<TFieldValues extends FieldValues> = {
@@ -70,6 +73,9 @@ export const useFormHelper = <
       onSubmit={props.onSubmit}
       customSubmit={props.customSubmit}
       error={props.error}
+      onCancel={props.onCancel}
+      cancelContent={props.cancelContent}
+      showCancel={props.showCancel}
     />
   )
   return { formComponent, form }

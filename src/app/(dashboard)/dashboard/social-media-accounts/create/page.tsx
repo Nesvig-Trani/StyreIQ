@@ -15,7 +15,7 @@ export default async function CreateSocialMediaPage() {
       [UserRolesEnum.SuperAdmin, UserRolesEnum.UnitAdmin].includes(user.role as UserRolesEnum)
     )
   ) {
-    redirect('/dashboard/social-medias')
+    redirect('/dashboard/social-media-accounts')
   }
 
   const users = await getUsersByRoles([
@@ -30,7 +30,7 @@ export default async function CreateSocialMediaPage() {
     <div>
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle>Create social media</CardTitle>
+          <CardTitle>Create Social Media Account</CardTitle>
         </CardHeader>
         <CardContent>
           <CreateSocialMediaForm users={users.docs} organizations={organizations.docs} />

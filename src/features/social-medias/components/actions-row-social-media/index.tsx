@@ -81,7 +81,7 @@ export const ActionsRowSocialMedia: React.FC<ActionsRowSocialMediaProps> = ({
       ) : null}
 
       <Button asChild size="icon" aria-label="Edit social media">
-        <Link href={`/dashboard/social-medias/update/${socialMedia.id}`}>
+        <Link href={`/dashboard/social-media-accounts/update/${socialMedia.id}`}>
           <PencilIcon className="h-4 w-4 text-white" />
         </Link>
       </Button>

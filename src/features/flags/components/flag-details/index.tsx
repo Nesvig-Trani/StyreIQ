@@ -43,7 +43,7 @@ export function FlagDetails({ flag }: { flag: Flag }) {
           <>
             <ViewSocialMedia account={social} />
             <Link
-              href={`/dashboard/social-medias/update/${social.id}?returnTo=${encodeURIComponent(`/dashboard/flags?${currentFilters}`)}`}
+              href={`/dashboard/social-media-accounts/update/${social.id}?returnTo=${encodeURIComponent(`/dashboard/flags?${currentFilters}`)}`}
             >
               <Button variant="outline">
                 <EditIcon className="h-4 w-4 mr-2" />

@@ -42,7 +42,7 @@ export const DataTableDateFilter = <TData,>(
       size="sm"
       selected={value}
       onSelect={handleSelect}
-      disabled={disabled}
+      disabledDays={disabled}
       showOutsideDays={false}
       onGoToToday={handleGoToToday}
     />

@@ -37,8 +37,8 @@ const data = {
       icon: UsersIcon,
     },
     {
-      title: 'Social Medias',
-      url: '/dashboard/social-medias',
+      title: 'Social Media',
+      url: '/dashboard/social-media-accounts',
       icon: Share2Icon,
     },
     {

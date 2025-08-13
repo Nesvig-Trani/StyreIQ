@@ -14,7 +14,7 @@ import { JSON_HEADERS } from '@/shared/constants'
  * @returns
  */
 export const createSocialMedia = async (data: z.infer<typeof createSocialMediaFormSchema>) => {
-  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/social-medias`, {
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/social-media-accounts`, {
     method: 'POST',
     headers: JSON_HEADERS,
     credentials: 'include',
@@ -44,7 +44,7 @@ export const createSocialMedia = async (data: z.infer<typeof createSocialMediaFo
  * @returns
  */
 export const updateSocialMedia = async (data: z.infer<typeof updateSocialMediaFormSchema>) => {
-  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/social-medias/${data.id}`, {
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/social-media-accounts/${data.id}`, {
     method: 'PATCH',
     headers: JSON_HEADERS,
     credentials: 'include',
@@ -80,15 +80,18 @@ export const changeStatusSocialMedia = async (
   newStatus: SocialMediaStatusEnum,
   deactivationReason?: string,
 ) => {
-  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/social-medias/status/${id}`, {
-    method: 'PATCH',
-    headers: JSON_HEADERS,
-    credentials: 'include',
-    body: JSON.stringify({
-      status: newStatus,
-      deactivationReason,
-    }),
-  })
+  const response = await fetch(
+    `${env.NEXT_PUBLIC_BASE_URL}/api/social-media-accounts/status/${id}`,
+    {
+      method: 'PATCH',
+      headers: JSON_HEADERS,
+      credentials: 'include',
+      body: JSON.stringify({
+        status: newStatus,
+        deactivationReason,
+      }),
+    },
+  )
 
   const dataResponse = await response.json()
   if (!response.ok) {

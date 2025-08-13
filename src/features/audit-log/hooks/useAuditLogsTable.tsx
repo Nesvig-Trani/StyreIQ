@@ -25,7 +25,7 @@ function useAuditLogsTable({ users }: { users: User[] }) {
         },
         {
           value: 'social-medias',
-          label: 'Social Medias',
+          label: 'Social Media Accounts',
         },
       ],
     },
