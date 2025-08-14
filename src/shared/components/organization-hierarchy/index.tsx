@@ -13,7 +13,7 @@ import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@
 import { Input } from '@/shared'
 import { UnitHierarchyProps } from '@/features/organizations'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
-import { useOrganizationHierarchy } from '@/features/organizations/hooks/useOrganizationHierarchy'
+import { useUnitHierarchy } from '@/features/organizations/hooks/useUnitHierarchy'
 import { Button } from '@/shared'
 import { UnitDetail } from '@/features/organizations/components/unit-detail'
 import { UpdateUnitForm } from '@/features/organizations/forms/update-unit'
@@ -44,7 +44,7 @@ export default function UnitHierarchy({
     handleConfirmDisable,
     isDisableModalOpen,
     setIsDisableModalOpen,
-  } = useOrganizationHierarchy({ organizations, originalData, pagination, users })
+  } = useUnitHierarchy({ organizations, originalData, pagination, users })
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[700px]">
       <div className="flex flex-col border rounded-lg">

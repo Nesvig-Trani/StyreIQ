@@ -14,7 +14,7 @@ import { typeConfig } from '../constants/typeConfig'
 import { disableUnit } from '@/sdk/organization'
 import { toast } from 'sonner'
 
-export const useOrganizationHierarchy = ({ originalData, organizations }: UnitHierarchyProps) => {
+export const useUnitHierarchy = ({ originalData, organizations }: UnitHierarchyProps) => {
   const [expandedNodes, setExpandedNodes] = useState<Set<number>>(new Set())
   const [selectedOrg, setSelectedOrg] = useState<UnitWithDepth | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
