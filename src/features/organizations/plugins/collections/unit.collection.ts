@@ -3,7 +3,7 @@ import { createUnit, disableUnit, filteredUsers, updateUnit } from '../endpoints
 import { canDeleteUnit, canReadUnit } from '../access'
 import { unitTypeOptions } from '@/features/organizations/constants/unitTypeOptions'
 
-export const Organizations: CollectionConfig = {
+export const Unit: CollectionConfig = {
   slug: 'organization',
   admin: {
     useAsTitle: 'name',
