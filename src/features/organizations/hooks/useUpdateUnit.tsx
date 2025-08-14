@@ -5,7 +5,7 @@ import { toast } from 'sonner'
 import { createUnitTree } from '@/features/organizations/utils/createUnitTree'
 import { unitTypeOptions } from '../constants/unitTypeOptions'
 
-function useUpdateOrganization({ users, data, organizations }: UpdateUnitFormProps) {
+function useUpdateUnit({ users, data, organizations }: UpdateUnitFormProps) {
   const tree = createUnitTree(organizations)
   const { formComponent, form } = useFormHelper(
     {
@@ -116,4 +116,4 @@ function useUpdateOrganization({ users, data, organizations }: UpdateUnitFormPro
   }
 }
 
-export default useUpdateOrganization
+export default useUpdateUnit
