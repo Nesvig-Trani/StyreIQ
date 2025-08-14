@@ -1,5 +1,5 @@
 import { Organization } from '@/types/payload-types'
-import { buildAccessibleOrgsFilter } from '@/features/organizations/plugins/utils'
+import { buildAccessibleUnitFilter } from '@/features/organizations/plugins/utils'
 import { Access } from 'payload'
 import { UserRolesEnum } from '@/features/users'
 
@@ -7,7 +7,7 @@ export const canReadFlags: Access = async ({ req: { user, payload } }) => {
   if (!user) return false
   if (user.role === UserRolesEnum.SuperAdmin) return true
   const orgs = user.organizations as Organization[]
-  const whereOrg = buildAccessibleOrgsFilter({ orgs })
+  const whereOrg = buildAccessibleUnitFilter({ orgs })
 
   const organizations = await payload.find({
     collection: 'organization',
