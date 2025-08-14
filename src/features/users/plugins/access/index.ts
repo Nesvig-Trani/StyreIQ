@@ -1,5 +1,5 @@
 import { Organization } from '@/types/payload-types'
-import { buildAccessibleOrgsFilter } from '@/features/organizations/plugins/utils'
+import { buildAccessibleUnitFilter } from '@/features/organizations/plugins/utils'
 import { UserRolesEnum } from '@/features/users'
 import { Access, Where } from 'payload'
 
@@ -10,7 +10,7 @@ export const canReadUsers: Access = async ({ req: { user, payload } }) => {
   }
 
   const orgs = user.organizations as Organization[]
-  const whereOrg = buildAccessibleOrgsFilter({ orgs })
+  const whereOrg = buildAccessibleUnitFilter({ orgs })
 
   const organizations = await payload.find({
     collection: 'organization',

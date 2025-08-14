@@ -5,7 +5,7 @@ import {
   filteredUsers,
   updateOrganization,
 } from '../endpoints'
-import { canDeleteOrganizations, canReadOrganizations } from '../access'
+import { canDeleteUnit, canReadUnit } from '../access'
 import { unitTypeOptions } from '@/features/organizations/constants/unitTypeOptions'
 
 export const Organizations: CollectionConfig = {
@@ -14,8 +14,8 @@ export const Organizations: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: canReadOrganizations,
-    delete: canDeleteOrganizations,
+    read: canReadUnit,
+    delete: canDeleteUnit,
   },
   fields: [
     {

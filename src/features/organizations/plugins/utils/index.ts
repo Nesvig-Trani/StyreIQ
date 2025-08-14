@@ -1,7 +1,7 @@
 import { Organization } from '@/types/payload-types'
 import { Where } from 'payload'
 
-export const buildAccessibleOrgsFilter = ({ orgs }: { orgs: Organization[] }) => {
+export const buildAccessibleUnitFilter = ({ orgs }: { orgs: Organization[] }) => {
   const organizationIds = orgs.map((org) => org.id)
 
   const orgWhere: Where[] = organizationIds.reduce<Where[]>((acc, orgId) => {
