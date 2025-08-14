@@ -68,7 +68,7 @@ export const DiffView = ({ log }: { log: AuditLog }) => {
           </div>
 
           <div>
-            <h4 className="font-medium text-sm mb-2">Organizations</h4>
+            <h4 className="font-medium text-sm mb-2">Units</h4>
             <div className="flex flex-wrap gap-2">
               {log.organizations?.map((org, index) => (
                 <Badge key={index} variant="outline">

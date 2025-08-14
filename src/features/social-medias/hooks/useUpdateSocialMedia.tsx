@@ -1,6 +1,6 @@
 'use client'
 import { useFormHelper } from '@/shared/components/form-hook-helper'
-import { OrganizationWithDepth } from '@/features/organizations'
+import { UnitWithDepth } from '@/features/organizations'
 import {
   UpdateSocialMediaFormProps,
   createSocialMediaFormSchema,
@@ -26,7 +26,7 @@ function getEntityId<T extends { id: number }>(entity: number | T | undefined): 
 }
 
 export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocialMediaFormProps) {
-  const tree = CreateOrganizationsTree(organizations as OrganizationWithDepth[])
+  const tree = CreateOrganizationsTree(organizations as UnitWithDepth[])
   const router = useRouter()
 
   const getOrganizationId = (organization: number | Organization | undefined) =>

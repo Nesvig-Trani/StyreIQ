@@ -4,7 +4,7 @@ import { roleLabelMap, statusLabelMap, UserRolesEnum, UserStatusEnum } from '@/f
 import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
 import { FileLock2, PencilIcon } from 'lucide-react'
-import { OrganizationCell } from '@/features/organizations/components/organizations-cell'
+import { UnitCell } from '@/features/organizations/components/unit-cell'
 import { Badge } from '@/shared'
 
 function useUserTable({ user }: { user: User | null }) {
@@ -34,8 +34,8 @@ function useUserTable({ user }: { user: User | null }) {
       },
     },
     {
-      accessorKey: 'organizations',
-      header: 'Organizations',
+      accessorKey: 'units',
+      header: 'Units',
       cell: ({ row }) => {
         const organizations = row.original.organizations as Organization[]
         if (row.original.role === UserRolesEnum.SuperAdmin) {
@@ -46,7 +46,7 @@ function useUserTable({ user }: { user: User | null }) {
           )
         }
         return organizations && organizations?.length > 0 ? (
-          <OrganizationCell organizations={organizations} />
+          <UnitCell organizations={organizations} />
         ) : (
           <span> - </span>
         )

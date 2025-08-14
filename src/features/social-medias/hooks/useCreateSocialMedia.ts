@@ -1,6 +1,6 @@
 'use client'
 import { useFormHelper } from '@/shared/components/form-hook-helper'
-import { OrganizationWithDepth } from '@/features/organizations'
+import { UnitWithDepth } from '@/features/organizations'
 import {
   CreateSocialMediaFormProps,
   createSocialMediaFormSchema,
@@ -18,7 +18,7 @@ import { platformOptions } from '@/features/social-medias/constants/platformOpti
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 export function useCreateSocialMedia({ users, organizations }: CreateSocialMediaFormProps) {
-  const tree = CreateOrganizationsTree(organizations as OrganizationWithDepth[])
+  const tree = CreateOrganizationsTree(organizations as UnitWithDepth[])
   const router = useRouter()
 
   const [selectedOrganizationId, setSelectedOrganizationId] = useState<string | null>(null)

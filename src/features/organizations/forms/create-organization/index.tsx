@@ -1,16 +1,16 @@
 'use client'
 import React from 'react'
-import useCreateOrganization from '@/features/organizations/hooks/useCreateOrganization'
-import { CreateOrgFormProps } from '@/features/organizations'
+import useCreateUnit from '@/features/organizations/hooks/useCreateUnit'
+import { CreateUnitFormProps } from '@/features/organizations'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
 
-export const CreateOrganizationForm = ({
+export const CreateUnitForm = ({
   userRole,
   users,
   organizations,
   defaultParentOrg,
-}: CreateOrgFormProps) => {
-  const { formComponent } = useCreateOrganization({
+}: CreateUnitFormProps) => {
+  const { formComponent } = useCreateUnit({
     userRole,
     users,
     organizations,
@@ -19,7 +19,7 @@ export const CreateOrganizationForm = ({
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle>Create organization</CardTitle>
+        <CardTitle>Create unit</CardTitle>
       </CardHeader>
       <CardContent>{formComponent}</CardContent>
     </Card>

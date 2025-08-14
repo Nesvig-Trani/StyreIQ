@@ -17,7 +17,7 @@ import { flagStatusLabels } from '../constants/flagStatusLabels'
 import { FlagCommentsModal } from '../components/flag-comments'
 import { flagTypeOptions } from '../constants/flagTypeOptions'
 import { flagStatusOptions } from '../constants/flagStatusOptions'
-import { OrganizationCell } from '@/features/organizations/components/organizations-cell'
+import { UnitCell } from '@/features/organizations/components/unit-cell'
 
 function useFlagsTable({
   user,
@@ -96,7 +96,7 @@ function useFlagsTable({
         const organizations = row.original.organizations
 
         return organizations && organizations?.length > 0 ? (
-          <OrganizationCell organizations={organizations as Organization[]} />
+          <UnitCell organizations={organizations as Organization[]} />
         ) : (
           <span> - </span>
         )

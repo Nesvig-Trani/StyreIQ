@@ -12,7 +12,7 @@ export const userAccessLabelMap: Record<UserAccessTypeEnum, string> = {
 
 const AccessTypeEnum = z.nativeEnum(UserAccessTypeEnum)
 
-export const organizationAccess = z.object({
+export const unitAccess = z.object({
   id: z.number(),
   organization: z.number(),
   organization_name: z.string(),
@@ -21,8 +21,8 @@ export const organizationAccess = z.object({
   end_date: z.string().optional(),
 })
 
-export const updateOrgAccessSchema = z.object({
-  access: z.array(organizationAccess),
+export const updateUnitAccessSchema = z.object({
+  access: z.array(unitAccess),
 })
 
-export type OrgAccess = z.infer<typeof organizationAccess>
+export type UnitAccess = z.infer<typeof unitAccess>

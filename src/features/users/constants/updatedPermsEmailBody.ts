@@ -30,7 +30,7 @@ export const updatedPermsEmailBody = ({
         ${statusChanged ? `<li><strong>Status:</strong> ${status}</li>` : ''}
         ${
           orgsChanged
-            ? `<li><strong>Organizations:</strong> ${organizations
+            ? `<li><strong>Units:</strong> ${organizations
                 ?.map((o: { name: string }) => o.name)
                 .join(', ')}</li>`
             : ''

@@ -1,9 +1,9 @@
 'use client'
 import { Organization } from '@/types/payload-types'
 import { DataTable } from '@/shared'
-import useOrganizationTable from '@/features/organizations/hooks/useOrganizationTable'
+import useUnitTable from '@/features/organizations/hooks/useUnitTable'
 
-export function OrganizationTable({
+export function UnitTable({
   data,
   pagination,
 }: {
@@ -15,7 +15,7 @@ export function OrganizationTable({
     pageCount: number
   }
 }) {
-  const { columns } = useOrganizationTable()
+  const { columns } = useUnitTable()
 
   return (
     <DataTable

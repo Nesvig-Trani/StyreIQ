@@ -10,7 +10,7 @@ import {
   UserRolesEnum,
   UserStatusEnum,
 } from '@/features/users/schemas'
-import { updateOrgAccessSchema, UserAccessTypeEnum } from '@/features/organizations/schemas'
+import { updateUnitAccessSchema, UserAccessTypeEnum } from '@/features/organizations/schemas'
 import { Organization, User } from '@/types/payload-types'
 import { checkAndSendPermissionChangeEmail } from '@/features/users/utils/permissionChangeEmail'
 import { JSON_HEADERS } from '@/shared/constants'
@@ -343,7 +343,7 @@ export const updateUserAccess: Endpoint = {
       }
 
       const data = await req.json()
-      const dataParsed = parseSearchParamsWithSchema(data, updateOrgAccessSchema)
+      const dataParsed = parseSearchParamsWithSchema(data, updateUnitAccessSchema)
       await Promise.all(
         dataParsed.access.map((access) =>
           req.payload.update({

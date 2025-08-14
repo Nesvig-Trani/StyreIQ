@@ -20,8 +20,8 @@ function useAuditLogsTable({ users }: { users: User[] }) {
       options: [
         { value: 'users', label: 'Users' },
         {
-          value: 'organization',
-          label: 'Organizations',
+          value: 'units',
+          label: 'Units',
         },
         {
           value: 'social-medias',

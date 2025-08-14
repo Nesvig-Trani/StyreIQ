@@ -7,7 +7,7 @@ import { OrganizationAccess } from '@/types/payload-types'
 import { Button } from '../ui/button'
 import { updateUserAccess } from '@/sdk/users'
 import { z } from 'zod'
-import { organizationAccess, UserAccessTypeEnum } from '@/features/organizations'
+import { unitAccess, UserAccessTypeEnum } from '@/features/organizations'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 
@@ -15,9 +15,9 @@ interface OrganizationAccessFormProps {
   initialAccess: OrganizationAccess[]
 }
 
-type OrgAccess = z.infer<typeof organizationAccess>
+type OrgAccess = z.infer<typeof unitAccess>
 
-export const OrganizationAccessForm = ({ initialAccess = [] }: OrganizationAccessFormProps) => {
+export const UnitAccessForm = ({ initialAccess = [] }: OrganizationAccessFormProps) => {
   const map: OrgAccess[] = initialAccess.map((access) => {
     return {
       id: access.id,

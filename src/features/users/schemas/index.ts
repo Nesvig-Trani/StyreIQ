@@ -62,7 +62,7 @@ export const createUserFormSchema = userBaseSchema.superRefine((data, ctx) => {
       ctx.addIssue({
         path: ['organizations'],
         code: z.ZodIssueCode.custom,
-        message: 'Organizations are required unless the role is Super Admin.',
+        message: 'Unit is required unless the role is Super Admin.',
       })
     }
   }

@@ -5,7 +5,7 @@ import { statusConfig } from '../constants/statusConfig'
 import { typeConfig } from '../constants/typeConfig'
 import { UserRolesEnum } from '@/features/users'
 
-export enum OrganizationTypeEnum {
+export enum UnitTypeEnum {
   HIGHER_EDUCATION_INSTITUTION = 'higher_education_institution',
   GOVERNMENT_AGENCY = 'government_agency',
   HEALTHCARE_SYSTEM = 'healthcare_system',
@@ -20,14 +20,11 @@ export enum OrganizationTypeEnum {
   OTHER = 'other',
 }
 
-const OrganizationType = z.nativeEnum(OrganizationTypeEnum)
+const UnitType = z.nativeEnum(UnitTypeEnum)
 
-export const createOrgFormSchema = z.object({
-  name: z
-    .string()
-    .min(1, 'Name is required')
-    .max(100, "Organization name can\'t exceed 100 characters"),
-  type: OrganizationType,
+export const createUnitFormSchema = z.object({
+  name: z.string().min(1, 'Name is required').max(100, "Unit name can\'t exceed 100 characters"),
+  type: UnitType,
   parent: z.string().optional(),
   admin: z.string().min(1, 'Admin is required'),
   backupAdmins: z.string().array().optional(),
@@ -42,16 +39,16 @@ export const createOrgFormSchema = z.object({
   delegatedPermissions: z.boolean().optional(),
 })
 
-export const updateOrgFormSchema = createOrgFormSchema.extend({
+export const updateUnitFormSchema = createUnitFormSchema.extend({
   id: z.number(),
 })
 
-export type OrganizationWithChildren = Organization & {
+export type UnitWithChildren = Organization & {
   parentOrg?: number
-  children?: OrganizationWithChildren[]
+  children?: UnitWithChildren[]
 }
 
-export type OrganizationWithDepth = {
+export type UnitWithDepth = {
   parentOrg: Organization
   admin: User
   backupAdmins?: User[]
@@ -69,37 +66,37 @@ export type Tree = {
   children: Tree[]
 }
 
-export type CreateOrgFormProps = {
+export type CreateUnitFormProps = {
   userRole?: UserRolesEnum
   users: User[]
   organizations: Organization[]
   defaultParentOrg?: string
 }
 
-export type UpdateOrgFormProps = {
+export type UpdateUnitFormProps = {
   users: User[]
-  data?: OrganizationWithDepth | null
-  organizations: OrganizationWithDepth[]
+  data?: UnitWithDepth | null
+  organizations: UnitWithDepth[]
   user?: User | null
 }
 
-export const organizationSearchSchema = paginationSchema.extend({
+export const unitSearchSchema = paginationSchema.extend({
   search: z.string().optional(),
   status: z.enum(['active', 'inactive', 'pending_review']).optional(),
   type: z.enum(['university', 'faculty', 'department', 'office', 'project']).optional(),
 })
 
 export type StatusType = keyof typeof statusConfig
-export type OrganizationType = keyof typeof typeConfig
+export type UnitType = keyof typeof typeConfig
 
 export interface FlattenedTree extends Tree {
   level: number
-  originalData?: OrganizationWithChildren
+  originalData?: UnitWithChildren
 }
 
-export interface OrganizationHierarchyProps {
+export interface UnitHierarchyProps {
   organizations: Tree[]
-  originalData: OrganizationWithDepth[]
+  originalData: UnitWithDepth[]
   users: User[]
   user?: User | null
   pagination: {
@@ -110,4 +107,4 @@ export interface OrganizationHierarchyProps {
   }
 }
 
-export type CreateOrganization = z.infer<typeof createOrgFormSchema>
+export type CreateUnit = z.infer<typeof createUnitFormSchema>

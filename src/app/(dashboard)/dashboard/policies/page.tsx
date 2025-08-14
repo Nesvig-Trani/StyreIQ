@@ -22,7 +22,7 @@ export default async function PoliciesPage() {
                 </Badge>
               </div>
               <p className="text-sm text-muted-foreground">
-                Manage and edit your organization&#39;s usage and governance policies
+                Manage and edit your unit&#39;s usage and governance policies
               </p>
             </div>
             <div className="w-full sm:w-auto">

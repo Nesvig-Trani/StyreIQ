@@ -31,7 +31,7 @@ export const markFlagAsResolved = async (id: number) => {
   })
 
   if (!response.ok) {
-    throw new Error('Failed to create organization')
+    throw new Error('Failed to update flag status')
   }
 
   return response.json()

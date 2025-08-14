@@ -1,11 +1,11 @@
-import { organizationTypeLabels } from '@/features/organizations/constants/organizationTypeLabels'
-import { OrganizationWithDepth } from '@/features/organizations/schemas'
+import { unitTypeLabels } from '@/features/organizations/constants/organizationTypeLabels'
+import { UnitWithDepth } from '@/features/organizations/schemas'
 import { Organization, User } from '@/types/payload-types'
 import { Badge, Card, CardHeader, CardTitle, CardContent, Separator } from '@/shared'
 import { Avatar, AvatarFallback } from '@/shared/components/ui/avatar'
 import { Building, Mail, Phone } from 'lucide-react'
 
-export function OrganizationDetail({ organization }: { organization: OrganizationWithDepth }) {
+export function UnitDetail({ organization }: { organization: UnitWithDepth }) {
   const admin = organization.admin as User
   const backupAdmins = organization.backupAdmins as User[]
   const parentOrg = organization.parentOrg as Organization
@@ -21,7 +21,7 @@ export function OrganizationDetail({ organization }: { organization: Organizatio
         <div>
           <div className="flex items-center gap-2 mt-2">
             <Badge variant="outline">
-              {organizationTypeLabels[organization.type as keyof typeof organizationTypeLabels]}
+              {unitTypeLabels[organization.type as keyof typeof unitTypeLabels]}
             </Badge>
             <div className="flex items-center">
               <div
@@ -80,7 +80,7 @@ export function OrganizationDetail({ organization }: { organization: Organizatio
               {organization.children?.docs && organization.children.docs.length > 0 && (
                 <div>
                   <h4 className="text-xs text-muted-foreground mb-1">
-                    Child Organizations ({organization.children.docs.length})
+                    Child Unit ({organization.children.docs.length})
                   </h4>
                   <div className="space-y-2">
                     {organization.children.docs.map((child) => (
@@ -89,11 +89,7 @@ export function OrganizationDetail({ organization }: { organization: Organizatio
                         <div>
                           <div>{child.name}</div>
                           <div className="text-xs text-muted-foreground capitalize">
-                            {
-                              organizationTypeLabels[
-                                child.type as keyof typeof organizationTypeLabels
-                              ]
-                            }
+                            {unitTypeLabels[child.type as keyof typeof unitTypeLabels]}
                           </div>
                         </div>
                       </div>

@@ -1,6 +1,6 @@
 'use server'
 import React from 'react'
-import { Card, CardContent, CardHeader, CardTitle, OrganizationAccessForm } from '@/shared'
+import { Card, CardContent, CardHeader, CardTitle, UnitAccessForm } from '@/shared'
 import { getUserById } from '@/features/users'
 import { getOrganizationAccessByUserId } from '@/features/organizations'
 
@@ -14,7 +14,7 @@ async function UserAccessPage({ params }: { params: Promise<{ userId: string }> 
     <div>
       <Card>
         <CardHeader>
-          <CardTitle> Set organization access</CardTitle>
+          <CardTitle> Set unit access</CardTitle>
         </CardHeader>
         <CardContent>
           <p>
@@ -24,7 +24,7 @@ async function UserAccessPage({ params }: { params: Promise<{ userId: string }> 
           <p>
             <b>Email: </b> {user.email}
           </p>
-          <OrganizationAccessForm initialAccess={userOrgs.docs} />
+          <UnitAccessForm initialAccess={userOrgs.docs} />
         </CardContent>
       </Card>
     </div>

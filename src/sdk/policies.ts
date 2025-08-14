@@ -10,7 +10,7 @@ export const savePolicy = async ({ data }: { data: unknown }) => {
   })
 
   if (!response.ok) {
-    throw new Error('Failed to create organization')
+    throw new Error('Failed to create policy')
   }
 
   return response.json()

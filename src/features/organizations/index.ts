@@ -1,5 +1,6 @@
-export * from './components/organization-table'
+export * from './components/unit-table'
 export * from './forms/create-organization'
+export * from './forms/update-organization'
 export * from './schemas'
 export * from './utils/createOrgTree'
 export * from './plugins/queries'

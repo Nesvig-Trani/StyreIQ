@@ -64,7 +64,7 @@ export function CreateFlagForm({
               value={watch('affectedEntityType')}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select organization type" />
+                <SelectValue placeholder="Select unit type" />
               </SelectTrigger>
               <SelectContent>
                 {affectedEntityOptions.map((option) => (

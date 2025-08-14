@@ -1,19 +1,15 @@
 import { useFormHelper } from '@/shared/components/form-hook-helper'
-import {
-  createOrgFormSchema,
-  OrganizationTypeEnum,
-  UpdateOrgFormProps,
-} from '@/features/organizations'
-import { updateOrganization } from '@/sdk/organization'
+import { createUnitFormSchema, UnitTypeEnum, UpdateUnitFormProps } from '@/features/organizations'
+import { updateUnit } from '@/sdk/organization'
 import { toast } from 'sonner'
 import { CreateOrganizationsTree } from '@/features/organizations/utils/createOrgTree'
-import { organizationTypeOptions } from '../constants/organizationTypeOptions'
+import { unitTypeOptions } from '../constants/organizationTypeOptions'
 
-function useUpdateOrganization({ users, data, organizations }: UpdateOrgFormProps) {
+function useUpdateOrganization({ users, data, organizations }: UpdateUnitFormProps) {
   const tree = CreateOrganizationsTree(organizations)
   const { formComponent, form } = useFormHelper(
     {
-      schema: createOrgFormSchema,
+      schema: createUnitFormSchema,
       fields: [
         {
           label: 'Name',
@@ -24,7 +20,7 @@ function useUpdateOrganization({ users, data, organizations }: UpdateOrgFormProp
           label: 'Type',
           name: 'type',
           type: 'select',
-          options: organizationTypeOptions,
+          options: unitTypeOptions,
         },
         {
           label: 'Parent',
@@ -89,7 +85,7 @@ function useUpdateOrganization({ users, data, organizations }: UpdateOrgFormProp
       onSubmit: async (submitData) => {
         try {
           if (data && data.id) {
-            await updateOrganization({ ...submitData, id: data.id })
+            await updateUnit({ ...submitData, id: data.id })
             form.reset()
             toast.success('Organization updated successfully')
           }
@@ -101,7 +97,7 @@ function useUpdateOrganization({ users, data, organizations }: UpdateOrgFormProp
     {
       values: {
         name: data?.name || '',
-        type: data?.type as OrganizationTypeEnum,
+        type: data?.type as UnitTypeEnum,
         parent: data?.parentOrg?.toString(),
         admin: data?.admin.id?.toString() || '',
         email: data?.email || '',

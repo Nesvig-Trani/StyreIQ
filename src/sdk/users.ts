@@ -8,7 +8,7 @@ import {
   WelcomeEmailSchema,
 } from '@/features/users'
 import { env } from '@/config/env'
-import { updateOrgAccessSchema } from '@/features/organizations'
+import { updateUnitAccessSchema } from '@/features/organizations'
 import { setUserStatusSchema } from '@/features/review-requests'
 import { JSON_HEADERS } from '@/shared/constants'
 
@@ -111,7 +111,7 @@ export const updateUser = async (data: z.infer<typeof updateUserSchema>) => {
   return response.json()
 }
 
-export const updateUserAccess = async (data: z.infer<typeof updateOrgAccessSchema>) => {
+export const updateUserAccess = async (data: z.infer<typeof updateUnitAccessSchema>) => {
   const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/access`, {
     method: 'PATCH',
     headers: JSON_HEADERS,

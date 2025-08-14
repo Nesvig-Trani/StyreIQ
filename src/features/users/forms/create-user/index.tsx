@@ -135,7 +135,7 @@ export function CreateUserForm({
           )}
           {selectedRole !== UserRolesEnum.SuperAdmin && (
             <div className="space-y-2">
-              <Label>Organizations</Label>
+              <Label>Units</Label>
               <div className="border rounded-md p-3">
                 {organizations.length > 0 ? (
                   <div className="space-y-2">

@@ -11,13 +11,13 @@ import { updateUser } from '@/sdk/users'
 import { toast } from 'sonner'
 import { Organization } from '@/types/payload-types'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { CreateOrganizationsTree, OrganizationWithDepth } from '@/features/organizations'
+import { CreateOrganizationsTree, UnitWithDepth } from '@/features/organizations'
 
 function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const returnTo = searchParams.get('returnTo') || `/dashboard/users/access/${id}`
-  const tree = CreateOrganizationsTree(organizations as OrganizationWithDepth[])
+  const tree = CreateOrganizationsTree(organizations as UnitWithDepth[])
   const { formComponent } = useFormHelper(
     {
       schema: updateUserFormSchema,

@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { setUserApprovalStatus } from '@/sdk/users'
 import { toast } from 'sonner'
-import { OrganizationCell } from '@/features/organizations/components/organizations-cell'
+import { UnitCell } from '@/features/organizations/components/unit-cell'
 
 function useReviewRequestTable() {
   const router = useRouter()
@@ -50,12 +50,12 @@ function useReviewRequestTable() {
     },
     {
       accessorKey: 'organizations',
-      header: 'Organizations',
+      header: 'Units',
       cell: ({ row }) => {
         const organizations = row.original.organizations as Organization[]
 
         return organizations && organizations?.length > 0 ? (
-          <OrganizationCell organizations={organizations} />
+          <UnitCell organizations={organizations} />
         ) : (
           <span> - </span>
         )

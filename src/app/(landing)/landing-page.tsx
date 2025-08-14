@@ -48,7 +48,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ showGetStarted }) => {
       number: '01',
       title: 'Connect & Register',
       description:
-        'Identify all social media accounts across your organization and assign ownership roles — with visibility into who has access and what platform each account is tied to.',
+        'Identify all social media accounts across your unit and assign ownership roles — with visibility into who has access and what platform each account is tied to.',
       icon: Target,
     },
     {
@@ -88,7 +88,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ showGetStarted }) => {
     },
     {
       icon: Users,
-      title: 'Networked Organizations & Nonprofits',
+      title: 'Networked Units & Nonprofits',
       description:
         'Coordinate messaging across distributed teams and chapters. Maintain brand consistency while enabling local autonomy with centralized oversight and compliance tracking.',
     },
@@ -118,8 +118,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ showGetStarted }) => {
 
       <FeatureSection
         id="who-its-for"
-        title="Built for Complex Teams and Decentralized Organizations"
-        subtitle="Organizations that need complete social media governance and compliance oversight."
+        title="Built for Complex Teams and Decentralized Units"
+        subtitle="Units that need complete social media governance and compliance oversight."
         features={audiences}
         backgroundClassName="bg-gray-50"
       />
