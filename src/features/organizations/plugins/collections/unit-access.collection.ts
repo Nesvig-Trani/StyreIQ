@@ -1,6 +1,6 @@
 import { CollectionConfig } from 'payload'
 
-export const OrganizationAccess: CollectionConfig = {
+export const UnitAccess: CollectionConfig = {
   slug: 'organization_access',
   fields: [
     {

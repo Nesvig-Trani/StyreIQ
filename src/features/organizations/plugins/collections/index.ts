@@ -1,2 +1,2 @@
-export { Organizations } from './organizations.collection'
-export { OrganizationAccess } from './organization-access.collection'
+export { Unit as Organizations } from './unit.collection'
+export { UnitAccess as OrganizationAccess } from './unit-access.collection'
