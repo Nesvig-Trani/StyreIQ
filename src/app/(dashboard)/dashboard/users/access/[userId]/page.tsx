@@ -2,13 +2,13 @@
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle, UnitAccessForm } from '@/shared'
 import { getUserById } from '@/features/users'
-import { getOrganizationAccessByUserId } from '@/features/organizations'
+import { getUnitAccessByUserId } from '@/features/organizations'
 
 async function UserAccessPage({ params }: { params: Promise<{ userId: string }> }) {
   const { userId } = await params
 
   const user = await getUserById({ id: Number(userId) })
-  const userOrgs = await getOrganizationAccessByUserId({ id: Number(userId) })
+  const userOrgs = await getUnitAccessByUserId({ id: Number(userId) })
 
   return (
     <div>

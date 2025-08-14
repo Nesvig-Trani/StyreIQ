@@ -3,7 +3,7 @@ import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { Where } from 'payload'
 
-export const getAllOrganizations = async () => {
+export const getAllUnits = async () => {
   try {
     const { payload } = await getPayloadContext()
     const { user } = await getAuthUser()
@@ -35,13 +35,7 @@ export const getAllOrganizations = async () => {
   }
 }
 
-export const getOrganizationsWithFilter = async ({
-  status,
-  type,
-}: {
-  status?: string
-  type?: string
-}) => {
+export const getUnitsWithFilter = async ({ status, type }: { status?: string; type?: string }) => {
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
   const where: Where = {
