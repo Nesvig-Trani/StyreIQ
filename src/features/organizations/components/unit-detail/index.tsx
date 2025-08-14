@@ -1,4 +1,4 @@
-import { unitTypeLabels } from '@/features/organizations/constants/organizationTypeLabels'
+import { unitTypeLabels } from '@/features/organizations/constants/unitTypeLabels'
 import { UnitWithDepth } from '@/features/organizations/schemas'
 import { Organization, User } from '@/types/payload-types'
 import { Badge, Card, CardHeader, CardTitle, CardContent, Separator } from '@/shared'

@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation'
 import {
   unitLevelOptions,
   industryLevelOptions,
-} from '@/features/organizations/constants/organizationTypeOptions'
+} from '@/features/organizations/constants/unitTypeOptions'
 
 export const UpdateUnitForm = ({ users, organizations, data, user }: UpdateUnitFormProps) => {
   const router = useRouter()

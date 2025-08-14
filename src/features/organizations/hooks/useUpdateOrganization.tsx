@@ -3,7 +3,7 @@ import { createUnitFormSchema, UnitTypeEnum, UpdateUnitFormProps } from '@/featu
 import { updateUnit } from '@/sdk/organization'
 import { toast } from 'sonner'
 import { CreateOrganizationsTree } from '@/features/organizations/utils/createOrgTree'
-import { unitTypeOptions } from '../constants/organizationTypeOptions'
+import { unitTypeOptions } from '../constants/unitTypeOptions'
 
 function useUpdateOrganization({ users, data, organizations }: UpdateUnitFormProps) {
   const tree = CreateOrganizationsTree(organizations)
