@@ -2,17 +2,17 @@
 import React from 'react'
 import {
   CreateOrganizationsTree,
-  OrganizationTypeEnum,
-  UpdateOrgFormProps,
+  UnitTypeEnum,
+  UpdateUnitFormProps,
 } from '@/features/organizations'
 import { Button, Input, Label, MultiSelect, TreeSelect } from '@/shared'
 import PhoneInput from 'react-phone-number-input'
 import { FieldValues, useForm } from 'react-hook-form'
 import { Select, SelectValue, SelectTrigger, SelectContent, SelectItem } from '@/shared'
-import { CreateOrganization, StatusType } from '@/features/organizations/schemas'
+import { CreateUnit, StatusType } from '@/features/organizations/schemas'
 import { Textarea } from '@/shared/components/ui/textarea'
 import { toast } from 'sonner'
-import { updateOrganization } from '@/sdk/organization'
+import { updateUnit } from '@/sdk/organization'
 import { UserRolesEnum } from '@/features/users'
 import { useRouter } from 'next/navigation'
 import {
@@ -20,12 +20,7 @@ import {
   industryLevelOptions,
 } from '@/features/organizations/constants/organizationTypeOptions'
 
-export const UpdateOrganizationForm = ({
-  users,
-  organizations,
-  data,
-  user,
-}: UpdateOrgFormProps) => {
+export const UpdateUnitForm = ({ users, organizations, data, user }: UpdateUnitFormProps) => {
   const router = useRouter()
   const {
     register,
@@ -34,10 +29,10 @@ export const UpdateOrganizationForm = ({
     setValue,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<CreateOrganization>({
+  } = useForm<CreateUnit>({
     values: {
       name: data?.name || '',
-      type: data?.type as OrganizationTypeEnum,
+      type: data?.type as UnitTypeEnum,
       parent: data?.parentOrg?.id?.toString(),
       admin: data?.admin.id?.toString() || '',
       email: data?.email || '',
@@ -53,19 +48,19 @@ export const UpdateOrganizationForm = ({
   const onSubmit = async (submitData: FieldValues) => {
     try {
       if (data && data.id) {
-        await updateOrganization({ ...(submitData as CreateOrganization), id: data.id })
+        await updateUnit({ ...(submitData as CreateUnit), id: data.id })
         router.refresh()
-        toast.success('Organization updated successfully')
+        toast.success('Unit updated successfully')
       }
     } catch {
-      toast.error('An error occurred while updating the organization, please try again')
+      toast.error('An error occurred while updating the unit, please try again')
     }
   }
 
   const childrenDocs = data?.children?.docs ?? []
   const activeChildren = childrenDocs.filter((child) => child.status === 'active')
   const disabledField = user?.role !== UserRolesEnum.SuperAdmin && activeChildren?.length > 0
-  const organizationTypeOptions =
+  const unitTypeOptions =
     user?.role === UserRolesEnum.SuperAdmin ? industryLevelOptions : unitLevelOptions
 
   return (
@@ -75,7 +70,7 @@ export const UpdateOrganizationForm = ({
           <Label htmlFor="name">Name</Label>
           <Input
             id="name"
-            placeholder="Enter organization name"
+            placeholder="Enter unit name"
             {...register('name', { required: 'Name is required' })}
             disabled={disabledField}
           />
@@ -86,15 +81,15 @@ export const UpdateOrganizationForm = ({
           <Label htmlFor="type">Type</Label>
           <Select
             name="type"
-            onValueChange={(value: OrganizationTypeEnum) => setValue('type', value)}
+            onValueChange={(value: UnitTypeEnum) => setValue('type', value)}
             value={watch('type')}
             disabled={disabledField}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select organization type" />
+              <SelectValue placeholder="Select unit type" />
             </SelectTrigger>
             <SelectContent>
-              {organizationTypeOptions.map((option) => (
+              {unitTypeOptions.map((option) => (
                 <SelectItem value={option.value} key={option.value}>
                   {option.label}
                 </SelectItem>
@@ -105,7 +100,7 @@ export const UpdateOrganizationForm = ({
         </div>
         {user?.role === UserRolesEnum.SuperAdmin && (
           <div className="space-y-2">
-            <Label htmlFor="parent">Parent Organization</Label>
+            <Label htmlFor="parent">Parent Unit</Label>
 
             <TreeSelect
               errors={!!errors?.parent}
@@ -155,7 +150,7 @@ export const UpdateOrganizationForm = ({
           <Input
             id="email"
             type="email"
-            placeholder="Enter organization email"
+            placeholder="Enter unit email"
             disabled={disabledField}
             {...register('email', {
               required: 'Email is required',
@@ -172,7 +167,7 @@ export const UpdateOrganizationForm = ({
           <Label htmlFor="phone">Phone</Label>
           <PhoneInput
             id="phone"
-            placeholder="Enter organization phone"
+            placeholder="Enter unit phone"
             value={watch('phone')}
             onChange={(value) => setValue('phone', value || '')}
             disabled={disabledField}
@@ -207,7 +202,7 @@ export const UpdateOrganizationForm = ({
           <Textarea
             id="description"
             rows={3}
-            placeholder="Enter organization description"
+            placeholder="Enter unit description"
             {...register('description')}
             disabled={disabledField}
           />

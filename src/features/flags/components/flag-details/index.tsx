@@ -22,7 +22,7 @@ import { ViewSocialMedia } from '../view-social-media'
 import { ViewUser } from '../view-user'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { OrganizationCell } from '@/features/organizations/components/organizations-cell'
+import { UnitCell } from '@/features/organizations/components/unit-cell'
 
 export function FlagDetails({ flag }: { flag: Flag }) {
   const searchParams = useSearchParams()
@@ -112,7 +112,7 @@ export function FlagDetails({ flag }: { flag: Flag }) {
                 <div className="flex items-center gap-1">
                   <Building2Icon className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm">
-                    <OrganizationCell organizations={flag.organizations as Organization[]} />
+                    <UnitCell organizations={flag.organizations as Organization[]} />
                   </span>
                 </div>
               </div>

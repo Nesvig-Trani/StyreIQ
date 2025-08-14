@@ -1,5 +1,5 @@
 import React from 'react'
-import { organizationSearchSchema } from '@/features/organizations'
+import { unitSearchSchema } from '@/features/organizations'
 import { Card, CardContent } from '@/shared/components/ui/card'
 import { parseSearchParamsWithSchema } from '@/shared/utils/parseParamsServer'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
@@ -13,7 +13,7 @@ export default async function ReviewRequestsPage(props: {
 }) {
   const searchParams = await props.searchParams
   const { user } = await getAuthUser()
-  const parsedParams = parseSearchParamsWithSchema(searchParams, organizationSearchSchema)
+  const parsedParams = parseSearchParamsWithSchema(searchParams, unitSearchSchema)
   const users = await getPendingActivationUsers({
     limit: parsedParams.pagination.pageSize,
     page: parsedParams.pagination.pageIndex + 1,

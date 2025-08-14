@@ -27,8 +27,8 @@ import { UserRolesEnum } from '@/features/users'
 const data = {
   navMain: [
     {
-      title: 'Organizations',
-      url: '/dashboard/organizations',
+      title: 'Units',
+      url: '/dashboard/units',
       icon: Building2Icon,
     },
     {

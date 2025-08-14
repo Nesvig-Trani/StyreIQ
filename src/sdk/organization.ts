@@ -1,11 +1,11 @@
-import { createOrgFormSchema, updateOrgFormSchema } from '@/features/organizations'
+import { createUnitFormSchema, updateUnitFormSchema } from '@/features/organizations'
 import { z } from 'zod'
 import { env } from '@/config/env'
 import { JSON_HEADERS } from '@/shared/constants'
 import { Organization } from '@/types/payload-types'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 
-export const createOrganization = async (data: z.infer<typeof createOrgFormSchema>) => {
+export const createUnit = async (data: z.infer<typeof createUnitFormSchema>) => {
   const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/organization`, {
     method: 'POST',
     headers: JSON_HEADERS,
@@ -35,13 +35,13 @@ export const createOrganization = async (data: z.infer<typeof createOrgFormSchem
   }
 
   if (!response.ok) {
-    throw new Error('Failed to create organization')
+    throw new Error('Failed to create unit')
   }
 
   return response.json()
 }
 
-export const updateOrganization = async (data: z.infer<typeof updateOrgFormSchema>) => {
+export const updateUnit = async (data: z.infer<typeof updateUnitFormSchema>) => {
   const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/organization`, {
     method: 'PATCH',
     headers: JSON_HEADERS,
@@ -62,17 +62,17 @@ export const updateOrganization = async (data: z.infer<typeof updateOrgFormSchem
   })
 
   if (!response.ok) {
-    throw new Error('Failed to update organization')
+    throw new Error('Failed to update unit')
   }
 
   return response.json()
 }
 
 /**
- * Returns an organization by id
+ * Returns a unit by id
  * @returns
  */
-export const getOrganizationById = async (id: number): Promise<Organization> => {
+export const getUnitById = async (id: number): Promise<Organization> => {
   const { payload } = await getPayloadContext()
   const organization = await payload.findByID({
     collection: 'organization',
@@ -81,7 +81,7 @@ export const getOrganizationById = async (id: number): Promise<Organization> => 
   return organization
 }
 
-export const disableOrganization = async (id: number) => {
+export const disableUnit = async (id: number) => {
   const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/organization/disable/${id}`, {
     method: 'PUT',
     headers: JSON_HEADERS,
@@ -89,7 +89,7 @@ export const disableOrganization = async (id: number) => {
   })
 
   if (!response.ok) {
-    throw new Error('Failed to disable organization')
+    throw new Error('Failed to disable unit')
   }
 
   return response.json()

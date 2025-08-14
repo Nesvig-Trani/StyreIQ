@@ -1,4 +1,4 @@
-import { CreateOrganizationsTree, OrganizationWithDepth } from '@/features/organizations'
+import { CreateOrganizationsTree, UnitWithDepth } from '@/features/organizations'
 import { filterTreeWithSearch } from './filterTree'
 
 export const treePaginationAndFilter = ({
@@ -7,7 +7,7 @@ export const treePaginationAndFilter = ({
   pageIndex,
   pageSize,
 }: {
-  organizations: OrganizationWithDepth[]
+  organizations: UnitWithDepth[]
   search?: string
   pageIndex: number
   pageSize: number

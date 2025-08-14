@@ -74,7 +74,7 @@ function useCreateUnit({ userRole, organizations, defaultParentOrg }: CreateUnit
       {
         label: 'Phone',
         name: 'phone' as const,
-        type: 'phone' as const,
+        type: 'text' as const,
       },
       {
         label: 'Status',

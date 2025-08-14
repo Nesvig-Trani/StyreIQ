@@ -1,6 +1,6 @@
 'use server'
 import React from 'react'
-import { CreateOrganizationForm } from '@/features/organizations'
+import { CreateUnitForm } from '@/features/organizations'
 import { getAllUsers, UserRolesEnum } from '@/features/users'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import Link from 'next/link'
@@ -8,7 +8,7 @@ import { getAllOrganizations } from '@/features/organizations/plugins/queries'
 import { Button } from '@/shared/components/ui/button'
 import { ensureStyreIQOrganization } from '@/features/organizations'
 
-export default async function CreateOrganization() {
+export default async function CreateUnit() {
   const { user } = await getAuthUser()
 
   // Ensure StyreIQ organization exists
@@ -20,7 +20,7 @@ export default async function CreateOrganization() {
   if (users.docs.length === 0) {
     return (
       <div>
-        <h3>Please create a user before creating an organization.</h3>
+        <h3>Please create a user before creating a unit.</h3>
         <Button>
           <Link href="/dashboard/users/create"> Create User</Link>
         </Button>
@@ -39,8 +39,8 @@ export default async function CreateOrganization() {
     return (
       <div>
         <h3>
-          You can&#39;t create an organization without a parent organization. Please contact your
-          Super Admin to request one.
+          You can&#39;t create a unit without a parent unit. Please contact your Super Admin to
+          request one.
         </h3>
       </div>
     )
@@ -48,7 +48,7 @@ export default async function CreateOrganization() {
 
   return (
     <div>
-      <CreateOrganizationForm
+      <CreateUnitForm
         userRole={user?.role as UserRolesEnum}
         users={users.docs}
         organizations={organizations.docs}

@@ -15,7 +15,7 @@ interface DisableOrganizationProps {
   handleOpenChange: (open: boolean) => void
 }
 
-export function DisableOrganizationButton({
+export function DisableUnitButton({
   id,
   onConfirmDisable,
   open,

@@ -43,7 +43,7 @@ export default async function UsersPage(props: {
                 </Badge>
               </div>
               <p className="text-sm text-muted-foreground">
-                Manage user accounts, permissions, and access across your organization
+                Manage user accounts, permissions, and access across your unit
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">

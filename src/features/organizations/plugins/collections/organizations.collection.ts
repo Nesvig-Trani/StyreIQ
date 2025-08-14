@@ -6,7 +6,7 @@ import {
   updateOrganization,
 } from '../endpoints'
 import { canDeleteOrganizations, canReadOrganizations } from '../access'
-import { organizationTypeOptions } from '@/features/organizations/constants/organizationTypeOptions'
+import { unitTypeOptions } from '@/features/organizations/constants/organizationTypeOptions'
 
 export const Organizations: CollectionConfig = {
   slug: 'organization',
@@ -28,7 +28,7 @@ export const Organizations: CollectionConfig = {
     {
       name: 'type',
       type: 'select',
-      options: organizationTypeOptions,
+      options: unitTypeOptions,
       required: true,
     },
     {

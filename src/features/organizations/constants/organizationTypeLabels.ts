@@ -1,17 +1,17 @@
-import { OrganizationTypeEnum } from '../schemas'
+import { UnitTypeEnum } from '../schemas'
 
-export const organizationTypeLabels: Record<OrganizationTypeEnum, string> = {
-  [OrganizationTypeEnum.HIGHER_EDUCATION_INSTITUTION]: 'Higher Education Institution',
-  [OrganizationTypeEnum.GOVERNMENT_AGENCY]: 'Government Agency',
-  [OrganizationTypeEnum.HEALTHCARE_SYSTEM]: 'Healthcare System',
-  [OrganizationTypeEnum.CORPORATE_ENTERPRISE]: 'Corporate Enterprise',
-  [OrganizationTypeEnum.NONPROFIT_ORGANIZATION]: 'Nonprofit Organization',
-  [OrganizationTypeEnum.OTHER]: 'Other (please specify)',
+export const unitTypeLabels: Record<UnitTypeEnum, string> = {
+  [UnitTypeEnum.HIGHER_EDUCATION_INSTITUTION]: 'Higher Education Institution',
+  [UnitTypeEnum.GOVERNMENT_AGENCY]: 'Government Agency',
+  [UnitTypeEnum.HEALTHCARE_SYSTEM]: 'Healthcare System',
+  [UnitTypeEnum.CORPORATE_ENTERPRISE]: 'Corporate Enterprise',
+  [UnitTypeEnum.NONPROFIT_ORGANIZATION]: 'Nonprofit Organization',
+  [UnitTypeEnum.OTHER]: 'Other (please specify)',
 
-  [OrganizationTypeEnum.DIVISION]: 'Division',
-  [OrganizationTypeEnum.SCHOOL_FACULTY]: 'School/Faculty',
-  [OrganizationTypeEnum.DEPARTMENT]: 'Department',
-  [OrganizationTypeEnum.OFFICE]: 'Office',
-  [OrganizationTypeEnum.PROGRAM]: 'Program',
-  [OrganizationTypeEnum.INITIATIVE]: 'Initiative',
+  [UnitTypeEnum.DIVISION]: 'Division',
+  [UnitTypeEnum.SCHOOL_FACULTY]: 'School/Faculty',
+  [UnitTypeEnum.DEPARTMENT]: 'Department',
+  [UnitTypeEnum.OFFICE]: 'Office',
+  [UnitTypeEnum.PROGRAM]: 'Program',
+  [UnitTypeEnum.INITIATIVE]: 'Initiative',
 }

@@ -11,24 +11,24 @@ import {
 } from 'lucide-react'
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@/shared'
 import { Input } from '@/shared'
-import { OrganizationHierarchyProps } from '@/features/organizations'
+import { UnitHierarchyProps } from '@/features/organizations'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
 import { useOrganizationHierarchy } from '@/features/organizations/hooks/useOrganizationHierarchy'
 import { Button } from '@/shared'
-import { OrganizationDetail } from '@/features/organizations/components/organization-detail'
-import { UpdateOrganizationForm } from '@/features/organizations/forms/update-organization'
+import { UnitDetail } from '@/features/organizations/components/unit-detail'
+import { UpdateUnitForm } from '@/features/organizations/forms/update-organization'
 import { ScrollArea } from '@/shared'
-import { organizationTypeOptions } from '@/features/organizations/constants/organizationTypeOptions'
-import { DisableOrganizationButton } from '@/features/organizations/components/disable-organization'
+import { unitTypeOptions } from '@/features/organizations/constants/organizationTypeOptions'
+import { DisableUnitButton } from '@/features/organizations/components/disable-unit'
 import { UserRolesEnum } from '@/features/users'
 
-export default function OrganizationHierarchy({
+export default function UnitHierarchy({
   organizations,
   originalData,
   pagination,
   users,
   user,
-}: OrganizationHierarchyProps) {
+}: UnitHierarchyProps) {
   const {
     searchTerm,
     handleSearchChange,
@@ -79,7 +79,7 @@ export default function OrganizationHierarchy({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Types</SelectItem>
-                  {organizationTypeOptions.map((option) => (
+                  {unitTypeOptions.map((option) => (
                     <SelectItem value={option.value} key={option.value}>
                       {option.label}
                     </SelectItem>
@@ -161,7 +161,7 @@ export default function OrganizationHierarchy({
                           <XCircleIcon className="h-4 w-4 mr-2" />
                           Disable
                         </Button>
-                        <DisableOrganizationButton
+                        <DisableUnitButton
                           open={isDisableModalOpen}
                           handleOpenChange={setIsDisableModalOpen}
                           id={selectedOrg.id}
@@ -173,7 +173,7 @@ export default function OrganizationHierarchy({
                 </CardHeader>
                 {isEditing ? (
                   <CardContent className="space-y-6">
-                    <UpdateOrganizationForm
+                    <UpdateUnitForm
                       user={user}
                       users={users}
                       organizations={originalData}
@@ -182,7 +182,7 @@ export default function OrganizationHierarchy({
                   </CardContent>
                 ) : (
                   <CardContent>
-                    <OrganizationDetail organization={selectedOrg} />
+                    <UnitDetail organization={selectedOrg} />
                   </CardContent>
                 )}
               </ScrollArea>

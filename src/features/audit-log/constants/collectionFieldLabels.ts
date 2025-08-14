@@ -1,7 +1,7 @@
 export const collectionFieldLabels: Record<string, string> = {
   backupAdmin: 'Backup Admin',
   primaryAdmin: 'Primary Admin',
-  organization: 'Organization',
+  unit: 'Unit',
   isAcceptedPolicies: 'Accepted Policies',
   isEnabledTwoFactor: 'Two-Factor Enabled',
   hasKnowledgeStandards: 'Knowledge Standards',
@@ -26,7 +26,7 @@ export const collectionFieldLabels: Record<string, string> = {
   date_of_last_policy_review: 'Date of Last Policy Review',
   phone: 'Phone',
   disabled: 'Disabled',
-  parentOrg: 'Parent Organization',
+  parentUnit: 'Parent Unit',
   description: 'Description',
   flagType: 'Flag Type',
   affectedEntityType: 'Affected Entity Type',

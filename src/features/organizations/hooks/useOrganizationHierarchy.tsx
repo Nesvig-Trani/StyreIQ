@@ -3,26 +3,23 @@ import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import { Badge, Button } from '@/shared'
 import {
   FlattenedTree,
-  OrganizationHierarchyProps,
-  OrganizationType,
-  OrganizationWithDepth,
+  UnitHierarchyProps,
+  UnitType,
+  UnitWithDepth,
   StatusType,
 } from '@/features/organizations'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { statusConfig } from '../constants/statusConfig'
 import { typeConfig } from '../constants/typeConfig'
-import { disableOrganization } from '@/sdk/organization'
+import { disableUnit } from '@/sdk/organization'
 import { toast } from 'sonner'
 
-export const useOrganizationHierarchy = ({
-  originalData,
-  organizations,
-}: OrganizationHierarchyProps) => {
+export const useOrganizationHierarchy = ({ originalData, organizations }: UnitHierarchyProps) => {
   const [expandedNodes, setExpandedNodes] = useState<Set<number>>(new Set())
-  const [selectedOrg, setSelectedOrg] = useState<OrganizationWithDepth | null>(null)
+  const [selectedOrg, setSelectedOrg] = useState<UnitWithDepth | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState<StatusType | 'all'>('all')
-  const [typeFilter, setTypeFilter] = useState<OrganizationType | 'all'>('all')
+  const [typeFilter, setTypeFilter] = useState<UnitType | 'all'>('all')
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [isDisableModalOpen, setIsDisableModalOpen] = useState<boolean>(false)
   const router = useRouter()
@@ -65,7 +62,7 @@ export const useOrganizationHierarchy = ({
   }
 
   const originalDataMap = useMemo(() => {
-    const map: Record<number, OrganizationWithDepth> = {}
+    const map: Record<number, UnitWithDepth> = {}
     originalData?.forEach((org) => {
       map[org.id] = org
     })
@@ -81,14 +78,14 @@ export const useOrganizationHierarchy = ({
     updateSearchParams({ status: value === 'all' ? null : value })
   }
 
-  const handleTypeChange = (value: OrganizationType | 'all') => {
+  const handleTypeChange = (value: UnitType | 'all') => {
     setTypeFilter(value)
     updateSearchParams({ type: value === 'all' ? null : value })
   }
   const handleConfirmDisable = async () => {
     try {
       if (!selectedOrg?.id) return
-      await disableOrganization(selectedOrg.id)
+      await disableUnit(selectedOrg.id)
       toast.success('Organization disabled successfully')
       setIsDisableModalOpen(false)
       setSelectedOrg(null)

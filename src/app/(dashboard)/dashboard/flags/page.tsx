@@ -43,7 +43,7 @@ export default async function FlagsPage(props: {
                 </Badge>
               </div>
               <p className="text-sm text-muted-foreground">
-                Monitor and manage risk flags detected in your organization
+                Monitor and manage risk flags detected in your unit
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
