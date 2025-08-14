@@ -7,7 +7,7 @@ import { parseSearchParamsWithSchema } from '@/shared/utils/parseParamsServer'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { getAllUsers, UserRolesEnum } from '@/features/users'
 import UnitHierarchy from '@/shared/components/organization-hierarchy'
-import { getOrganizationsWithFilter } from '@/features/organizations/plugins/queries'
+import { getUnitsWithFilter } from '@/features/organizations/plugins/queries'
 import { treePaginationAndFilter } from '@/features/organizations/utils/treePaginationAndFilter'
 import { CirclePlus } from 'lucide-react'
 import { Badge } from '@/shared/components/ui/badge'
@@ -21,7 +21,7 @@ export default async function UnitsPage(props: {
   const { user } = await getAuthUser()
   const parsedParams = parseSearchParamsWithSchema(searchParams, unitSearchSchema)
 
-  const organizations = await getOrganizationsWithFilter({
+  const organizations = await getUnitsWithFilter({
     status: parsedParams.status,
     type: parsedParams.type,
   })

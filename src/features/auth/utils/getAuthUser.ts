@@ -2,7 +2,7 @@
 import { headers as getHeaders } from 'next/headers'
 import { UserAccessTypeEnum } from '@/features/organizations'
 import { OrganizationAccess } from '@/types/payload-types'
-import { getOrganizationAccessByUserId } from '@/features/organizations'
+import { getUnitAccessByUserId } from '@/features/organizations'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { UserRolesEnum, UserStatusEnum } from '@/features/users'
 
@@ -25,7 +25,7 @@ export async function verifyUser() {
   }
 
   const accessibleOrganizations: OrganizationAccess[] = []
-  const orgAccessResult = await getOrganizationAccessByUserId({ id: user.id })
+  const orgAccessResult = await getUnitAccessByUserId({ id: user.id })
   orgAccessResult.docs.forEach((access) => {
     const endDate = access.end_date ? new Date(access.end_date) : null
     if (access.type === UserAccessTypeEnum.Permanent || (endDate && endDate > now)) {

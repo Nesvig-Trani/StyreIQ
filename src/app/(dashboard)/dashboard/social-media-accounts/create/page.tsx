@@ -1,5 +1,5 @@
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
-import { getAllOrganizations } from '@/features/organizations/plugins/queries'
+import { getAllUnits } from '@/features/organizations/plugins/queries'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
 import { CreateSocialMediaForm } from '@/features/social-medias'
 import { getUsersByRoles, UserRolesEnum } from '@/features/users'
@@ -24,7 +24,7 @@ export default async function CreateSocialMediaPage() {
     UserRolesEnum.SocialMediaManager,
   ])
 
-  const organizations = await getAllOrganizations()
+  const organizations = await getAllUnits()
 
   return (
     <div>

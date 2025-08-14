@@ -7,7 +7,7 @@ import { DashboardSocialMedias } from '@/features/social-medias'
 import { parseSearchParamsWithSchema, type AppPageProps } from '@/shared'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { getSocialMediaAccounts } from '@/features/social-medias/plugins/queries'
-import { getAllOrganizations } from '@/features/organizations/plugins/queries'
+import { getAllUnits } from '@/features/organizations/plugins/queries'
 import { getAllUsers } from '@/features/users'
 
 export default async function SocialMediasPage(props: AppPageProps) {
@@ -26,7 +26,7 @@ export default async function SocialMediasPage(props: AppPageProps) {
     primaryAdmin: parsedParams.primaryAdmin,
   })
 
-  const organizations = await getAllOrganizations()
+  const organizations = await getAllUnits()
   const users = await getAllUsers()
 
   return (

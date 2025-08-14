@@ -6,7 +6,7 @@ import { calcParentPathAndDepth } from '@/features/organizations/utils/calcPathA
 import { EndpointError } from '@/shared'
 import { z } from 'zod'
 
-export const createOrganization: Endpoint = {
+export const createUnit: Endpoint = {
   path: '/',
   method: 'post',
   handler: async (req) => {
@@ -95,7 +95,7 @@ export const createOrganization: Endpoint = {
   },
 }
 
-export const updateOrganization: Endpoint = {
+export const updateUnit: Endpoint = {
   path: '/',
   method: 'patch',
   handler: async (req) => {
@@ -157,7 +157,7 @@ export const updateOrganization: Endpoint = {
         },
       })
 
-      return new Response(JSON.stringify(createOrganization), {
+      return new Response(JSON.stringify(createUnit), {
         status: 200,
         headers: JSON_HEADERS,
       })
@@ -174,7 +174,7 @@ export const updateOrganization: Endpoint = {
   },
 }
 
-export const disableOrganization: Endpoint = {
+export const disableUnit: Endpoint = {
   path: '/disable/:id',
   method: 'put',
   handler: async (req) => {

@@ -2,12 +2,12 @@ import React from 'react'
 import { CreateUserForm, UserRolesEnum } from '@/features/users'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { Organization } from '@/types/payload-types'
-import { getAllOrganizations } from '@/features/organizations/plugins/queries'
+import { getAllUnits } from '@/features/organizations/plugins/queries'
 
 export default async function CreateUserPage() {
   const { user } = await getAuthUser()
 
-  const organizations = await getAllOrganizations()
+  const organizations = await getAllUnits()
 
   const userOrgs = user?.organizations as Organization[]
 

@@ -4,7 +4,7 @@ import { CreateUnitForm } from '@/features/organizations'
 import { getAllUsers, UserRolesEnum } from '@/features/users'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import Link from 'next/link'
-import { getAllOrganizations } from '@/features/organizations/plugins/queries'
+import { getAllUnits } from '@/features/organizations/plugins/queries'
 import { Button } from '@/shared/components/ui/button'
 import { ensureStyreIQOrganization } from '@/features/organizations'
 
@@ -14,7 +14,7 @@ export default async function CreateUnit() {
   // Ensure StyreIQ organization exists
   await ensureStyreIQOrganization()
 
-  const organizations = await getAllOrganizations()
+  const organizations = await getAllUnits()
   const users = await getAllUsers()
 
   if (users.docs.length === 0) {

@@ -2,7 +2,7 @@ import { UpdateSocialMediaForm } from '@/features/social-medias/forms/update-soc
 import { getUsersByRoles, UserRolesEnum } from '@/features/users'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { getSocialMediaById } from '@/features/social-medias/plugins/queries'
-import { getAllOrganizations } from '@/features/organizations/plugins/queries'
+import { getAllUnits } from '@/features/organizations/plugins/queries'
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
 
@@ -26,7 +26,7 @@ export default async function UpdateSocialMediaPage({
 
   const users = await getUsersByRoles([UserRolesEnum.SuperAdmin, UserRolesEnum.UnitAdmin])
 
-  const organizations = await getAllOrganizations()
+  const organizations = await getAllUnits()
   return (
     <div>
       <Card className="w-full max-w-2xl mx-auto">

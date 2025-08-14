@@ -6,7 +6,7 @@ import { flagsSearchSchema } from '@/features/flags/schemas'
 import { getFlags } from '@/features/flags/plugins/queries'
 import Link from 'next/link'
 import { CirclePlus } from 'lucide-react'
-import { getAllOrganizations } from '@/features/organizations/plugins/queries'
+import { getAllUnits } from '@/features/organizations/plugins/queries'
 
 export default async function FlagsPage(props: {
   searchParams?: Promise<{ [key: string]: string }>
@@ -28,7 +28,7 @@ export default async function FlagsPage(props: {
     pageIndex: parsedParams.pagination.pageIndex,
   })
 
-  const organizations = await getAllOrganizations()
+  const organizations = await getAllUnits()
 
   return (
     <Card>
