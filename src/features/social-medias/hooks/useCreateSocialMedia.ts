@@ -11,14 +11,14 @@ import {
 } from '@/features/social-medias'
 import { createSocialMedia } from '@/sdk/social-medias'
 import { toast } from 'sonner'
-import { CreateOrganizationsTree } from '@/features/organizations/utils/createOrgTree'
+import { createUnitTree } from '@/features/organizations/utils/createUnitTree'
 import { EndpointError } from '@/shared'
 import { useRouter } from 'next/navigation'
 import { platformOptions } from '@/features/social-medias/constants/platformOptions'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 export function useCreateSocialMedia({ users, organizations }: CreateSocialMediaFormProps) {
-  const tree = CreateOrganizationsTree(organizations as UnitWithDepth[])
+  const tree = createUnitTree(organizations as UnitWithDepth[])
   const router = useRouter()
 
   const [selectedOrganizationId, setSelectedOrganizationId] = useState<string | null>(null)

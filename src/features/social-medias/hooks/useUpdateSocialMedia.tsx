@@ -11,7 +11,7 @@ import {
 } from '@/features/social-medias'
 import { updateSocialMedia } from '@/sdk/social-medias'
 import { toast } from 'sonner'
-import { CreateOrganizationsTree } from '@/features/organizations/utils/createOrgTree'
+import { createUnitTree } from '@/features/organizations/utils/createUnitTree'
 import { EndpointError } from '@/shared'
 import { useRouter } from 'next/navigation'
 import { platformOptions } from '@/features/social-medias/constants/platformOptions'
@@ -26,7 +26,7 @@ function getEntityId<T extends { id: number }>(entity: number | T | undefined): 
 }
 
 export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocialMediaFormProps) {
-  const tree = CreateOrganizationsTree(organizations as UnitWithDepth[])
+  const tree = createUnitTree(organizations as UnitWithDepth[])
   const router = useRouter()
 
   const getOrganizationId = (organization: number | Organization | undefined) =>

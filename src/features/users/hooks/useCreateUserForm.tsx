@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 import { isApiError } from '@/shared'
 import { createUser } from '@/sdk/users'
 import { USER_ALREADY_EXISTS } from '../constants/Errors'
-import { CreateOrganizationsTree, UnitWithDepth } from '@/features/organizations'
+import { createUnitTree, UnitWithDepth } from '@/features/organizations'
 
 interface UserFormProps {
   authUserRole?: UserRolesEnum | null
@@ -48,7 +48,7 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
 
   const selectedRole = watch('role')
   const passwordUpdatedAt = watch('passwordUpdatedAt')
-  const tree = CreateOrganizationsTree(organizations as UnitWithDepth[])
+  const tree = createUnitTree(organizations as UnitWithDepth[])
 
   const allowedRoles =
     authUserRole === UserRolesEnum.UnitAdmin

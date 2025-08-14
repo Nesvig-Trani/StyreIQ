@@ -1,4 +1,4 @@
-import { CreateOrganizationsTree, UnitWithDepth } from '@/features/organizations'
+import { createUnitTree, UnitWithDepth } from '@/features/organizations'
 import { filterTreeWithSearch } from './filterTree'
 
 export const treePaginationAndFilter = ({
@@ -12,7 +12,7 @@ export const treePaginationAndFilter = ({
   pageIndex: number
   pageSize: number
 }) => {
-  const fullTree = CreateOrganizationsTree(organizations)
+  const fullTree = createUnitTree(organizations)
   const filteredTree = search ? filterTreeWithSearch(fullTree, search) : fullTree
 
   const start = Math.max(pageIndex - 1, 0) * pageSize
