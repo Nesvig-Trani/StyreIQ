@@ -1,10 +1,6 @@
 'use client'
 import React from 'react'
-import {
-  CreateOrganizationsTree,
-  UnitTypeEnum,
-  UpdateUnitFormProps,
-} from '@/features/organizations'
+import { createUnitTree, UnitTypeEnum, UpdateUnitFormProps } from '@/features/organizations'
 import { Button, Input, Label, MultiSelect, TreeSelect } from '@/shared'
 import PhoneInput from 'react-phone-number-input'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -43,7 +39,7 @@ export const UpdateUnitForm = ({ users, organizations, data, user }: UpdateUnitF
       backupAdmins: data?.backupAdmins?.map((ba) => ba.id.toString()),
     },
   })
-  const tree = CreateOrganizationsTree(organizations)
+  const tree = createUnitTree(organizations)
 
   const onSubmit = async (submitData: FieldValues) => {
     try {

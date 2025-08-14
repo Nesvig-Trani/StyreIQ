@@ -2,11 +2,11 @@ import { useFormHelper } from '@/shared/components/form-hook-helper'
 import { createUnitFormSchema, UnitTypeEnum, UpdateUnitFormProps } from '@/features/organizations'
 import { updateUnit } from '@/sdk/organization'
 import { toast } from 'sonner'
-import { CreateOrganizationsTree } from '@/features/organizations/utils/createOrgTree'
+import { createUnitTree } from '@/features/organizations/utils/createUnitTree'
 import { unitTypeOptions } from '../constants/unitTypeOptions'
 
 function useUpdateOrganization({ users, data, organizations }: UpdateUnitFormProps) {
-  const tree = CreateOrganizationsTree(organizations)
+  const tree = createUnitTree(organizations)
   const { formComponent, form } = useFormHelper(
     {
       schema: createUnitFormSchema,

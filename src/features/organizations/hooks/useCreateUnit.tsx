@@ -8,7 +8,7 @@ import {
 } from '@/features/organizations'
 import { createUnit } from '@/sdk/organization'
 import { toast } from 'sonner'
-import { CreateOrganizationsTree } from '@/features/organizations/utils/createOrgTree'
+import { createUnitTree } from '@/features/organizations/utils/createUnitTree'
 import { useRouter } from 'next/navigation'
 import { industryLevelOptions, unitLevelOptions } from '../constants/unitTypeOptions'
 import { UserRolesEnum } from '@/features/users'
@@ -20,7 +20,7 @@ function useCreateUnit({ userRole, organizations, defaultParentOrg }: CreateUnit
   const router = useRouter()
   const [filteredUsers, setFilteredUsers] = useState<User[]>([])
 
-  const tree = CreateOrganizationsTree(organizations as UnitWithDepth[])
+  const tree = createUnitTree(organizations as UnitWithDepth[])
   const typeOptions =
     userRole === UserRolesEnum.SuperAdmin ? industryLevelOptions : unitLevelOptions
 

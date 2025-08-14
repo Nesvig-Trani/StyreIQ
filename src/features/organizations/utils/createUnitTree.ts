@@ -1,6 +1,6 @@
 import { UnitWithDepth, Tree } from '@/features/organizations'
 
-export const CreateOrganizationsTree = (organizations: UnitWithDepth[]): Tree[] => {
+export const createUnitTree = (organizations: UnitWithDepth[]): Tree[] => {
   const orgMap: Record<string, Tree> = {}
   organizations.forEach((org) => {
     orgMap[org.id] = {
