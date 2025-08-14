@@ -18,7 +18,7 @@ import { Button } from '@/shared'
 import { UnitDetail } from '@/features/organizations/components/unit-detail'
 import { UpdateUnitForm } from '@/features/organizations/forms/update-organization'
 import { ScrollArea } from '@/shared'
-import { unitTypeOptions } from '@/features/organizations/constants/organizationTypeOptions'
+import { unitTypeOptions } from '@/features/organizations/constants/unitTypeOptions'
 import { DisableUnitButton } from '@/features/organizations/components/disable-unit'
 import { UserRolesEnum } from '@/features/users'
 
