@@ -104,14 +104,14 @@ export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocia
       fields: [
         // Account Details - Row 1
         {
-          label: 'Account Name *',
+          label: 'Account Name',
           name: 'name',
           type: 'text',
           placeholder: 'Enter account name',
           size: 'half',
         },
         {
-          label: 'Platform *',
+          label: 'Platform',
           name: 'platform',
           type: 'select',
           options: platformOptions,
@@ -127,7 +127,7 @@ export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocia
           size: 'half',
         },
         {
-          label: 'Profile URL *',
+          label: 'Profile URL',
           name: 'profileUrl',
           type: 'text',
           placeholder: 'https://platform.com/username',
@@ -143,7 +143,7 @@ export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocia
           size: 'half',
         },
         {
-          label: 'Assigned Unit *',
+          label: 'Assigned Unit',
           name: 'organization',
           type: 'tree-select',
           options: organizations?.map((org) => ({
@@ -163,7 +163,7 @@ export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocia
         },
         // Ownership & Contact - Row 4
         {
-          label: 'Primary Unit Admin *',
+          label: 'Primary Unit Admin',
           name: 'primaryAdmin',
           type: 'select',
           options: administratorOptions,
@@ -188,7 +188,7 @@ export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocia
         },
         // Ownership & Contact - Row 5
         {
-          label: 'Social Media Managers *',
+          label: 'Social Media Managers',
           name: 'socialMediaManagers',
           type: 'multiselect',
           options: socialMediaManagerOptions,
@@ -197,12 +197,12 @@ export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocia
             field: 'organization',
             value: selectedOrganizationId || '',
           },
-          size: 'full',
+          size: 'half',
         },
         // Third Party Management - Row 6
         {
           name: 'thirdPartyManagement',
-          label: 'Third-Party Management *',
+          label: 'Third-Party Management',
           type: 'select',
           options: thirdPartyManagementOptions,
           placeholder: 'Select management type',
@@ -264,7 +264,7 @@ export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocia
           size: 'half',
         },
         {
-          label: 'Admin Contact Emails *',
+          label: 'Admin Contact Emails',
           name: 'adminContactEmails',
           type: 'multiselect',
           options: users.map((user) => ({
