@@ -134,7 +134,7 @@ export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocia
           type: 'phone',
         },
         {
-          label: 'Organization *',
+          label: 'Unit *',
           name: 'organization',
           type: 'tree-select',
           options: organizations?.map((org) => ({

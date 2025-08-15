@@ -36,7 +36,7 @@ export function UnitDetail({ organization }: { organization: UnitWithDepth }) {
       <div className="">
         <Card className="md:col-span-2">
           <CardHeader>
-            <CardTitle>Organization Details</CardTitle>
+            <CardTitle>Unit Details</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {organization.description && (
@@ -68,7 +68,7 @@ export function UnitDetail({ organization }: { organization: UnitWithDepth }) {
               <h3 className="text-sm font-medium text-muted-foreground mb-3">Hierarchy</h3>
               {organization.parentOrg && (
                 <div className="mb-3">
-                  <h4 className="text-xs text-muted-foreground mb-1">Parent Organization</h4>
+                  <h4 className="text-xs text-muted-foreground mb-1">Parent Unit</h4>
 
                   <div className="flex items-center">
                     <Building className="h-4 w-4 mr-2 text-muted-foreground" />

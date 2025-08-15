@@ -192,7 +192,7 @@ export default function UnitHierarchy({
           <div className="flex-1 flex items-center justify-center text-muted-foreground border rounded-lg">
             <div className="text-center p-8">
               <Building2 className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p className="text-sm">Select an organization to view details</p>
+              <p className="text-sm">Select a unit to view details</p>
             </div>
           </div>
         )}

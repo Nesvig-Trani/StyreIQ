@@ -29,14 +29,14 @@ export function DisableUnitButton({
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 <XCircleIcon className="h-5 w-5 text-orange-500" />
-                Disable Organization
+                Disable Unit
               </DialogTitle>
             </DialogHeader>
             <div className="text-sm space-y-2">
-              <p>Are you sure you want to disable this organization?</p>
+              <p>Are you sure you want to disable this unit?</p>
               <p className="text-muted-foreground">
-                The organization will not be visible from the dashboard and will become inaccessible
-                to users.
+                The unit will not be visible from the dashboard and will become inaccessible to
+                users.
               </p>
             </div>
             <DialogFooter>

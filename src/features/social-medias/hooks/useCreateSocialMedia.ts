@@ -104,7 +104,7 @@ export function useCreateSocialMedia({ users, organizations }: CreateSocialMedia
           type: 'phone',
         },
         {
-          label: 'Organization *',
+          label: 'Unit *',
           name: 'organization',
           type: 'tree-select',
           options: organizations?.map((org) => ({
