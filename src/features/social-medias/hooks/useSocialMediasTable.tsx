@@ -42,7 +42,7 @@ export function useSocialMediasTable({
     },
     {
       id: 'organization',
-      title: 'Organization',
+      title: 'Unit',
       type: 'select',
       allowMultiple: true,
       options: organizations.map((org) => ({
@@ -90,7 +90,7 @@ export function useSocialMediasTable({
     },
     {
       accessorKey: 'organization',
-      header: 'Organization',
+      header: 'Unit',
       enableColumnFilter: true,
       cell: ({ row }) => {
         const organization = row.getValue('organization') as Organization

@@ -128,10 +128,10 @@ export function TreeSelect({
               ? (value as string[])
                   .map((val) => options.find((opt) => opt.value.toString() === val)?.label)
                   .filter(Boolean)
-                  .join(', ') || 'Select organizations'
+                  .join(', ') || 'Select units'
               : value
                 ? options.find((opt) => opt.value.toString() === value)?.label
-                : 'Select organization'}
+                : 'Select unit'}
           </span>
           <ChevronDown className="h-4 cursor-pointer text-gray-300" />
         </button>

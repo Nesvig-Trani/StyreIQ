@@ -64,7 +64,7 @@ export const createSocialMedia: Endpoint = {
         const orgIds = organizations.docs.map((organization: Organization) => organization.id)
         // Validates if the organizations selected is valid.
         if (!orgIds.includes(Number(dataParsed.organization))) {
-          throw new EndpointError('Organization selected is not valid.', 409)
+          throw new EndpointError('Unit selected is not valid.', 409)
         }
       }
 
