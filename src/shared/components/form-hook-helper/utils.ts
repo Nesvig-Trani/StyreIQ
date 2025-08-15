@@ -42,35 +42,20 @@ export function analyzeZodSchemaForRequired<TFieldValues extends FieldValues>(
   fieldName: Path<TFieldValues>,
 ): boolean {
   try {
-    if (schema instanceof z.ZodObject) {
-      const shape = schema.shape
-      const fieldSchema = shape[fieldName as keyof typeof shape]
-
-      if (!fieldSchema) {
-        return false
-      }
-
-      if (fieldSchema instanceof z.ZodOptional || fieldSchema instanceof z.ZodNullable) {
-        return false
-      }
-
-      if (fieldSchema instanceof z.ZodUnion) {
-        const options = fieldSchema._def.options
-        const hasOptional = options.some(
-          (option: z.ZodTypeAny) =>
-            option instanceof z.ZodUndefined ||
-            option instanceof z.ZodNull ||
-            option instanceof z.ZodOptional,
-        )
-        if (hasOptional) {
-          return false
-        }
-      }
-
-      return true
+    if (!(schema instanceof z.ZodObject)) return false
+    const fieldSchema = schema.shape[fieldName as keyof typeof schema.shape]
+    if (!fieldSchema) return false
+    // Helper to check if a schema is optional/nullable
+    const isOptionalType = (s: z.ZodTypeAny) =>
+      s instanceof z.ZodOptional ||
+      s instanceof z.ZodNullable ||
+      s instanceof z.ZodUndefined ||
+      s instanceof z.ZodNull
+    if (isOptionalType(fieldSchema)) return false
+    if (fieldSchema instanceof z.ZodUnion) {
+      if (fieldSchema._def.options.some(isOptionalType)) return false
     }
-
-    return false
+    return true
   } catch {
     return false
   }
