@@ -12,6 +12,7 @@ import {
 import { TreeSelect } from '@/shared/components/tree-select'
 import { FieldData } from '@/shared/components/form-hook-helper/types'
 import { cn } from '@/shared/utils/cn'
+import { useFieldRequired } from '../utils'
 
 export type TreeSelectHelperProps<TFieldValues extends FieldValues> = {
   form: UseFormReturn<TFieldValues>
@@ -31,13 +32,7 @@ export const TreeSelectHelper = <TFieldValues extends FieldValues>({
   } = form
 
   const error = errors[fieldData.name]
-
-  // Check if field is required by checking if it's optional in the schema
-  const isRequired =
-    !fieldData.name.toString().includes('?') &&
-    !fieldData.name.toString().includes('optional') &&
-    typeof fieldData.label === 'string' &&
-    fieldData.label.includes('*')
+  const isRequired = useFieldRequired(form, fieldData.name, fieldData.required)
 
   return (
     <FormField

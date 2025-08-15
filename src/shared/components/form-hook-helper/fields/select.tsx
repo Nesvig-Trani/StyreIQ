@@ -20,7 +20,7 @@ import {
 import { cn } from '@/shared/utils/cn'
 import { SelectScrollUpButton } from '@radix-ui/react-select'
 import { ChevronDown, ChevronUp } from 'lucide-react'
-import { determineFieldRequired } from '../utils'
+import { useFieldRequired } from '../utils'
 
 export type SelectInputHelperProps<TFieldValues extends FieldValues> = {
   form: UseFormReturn<TFieldValues>
@@ -33,7 +33,7 @@ export const SelectInputHelper = <TFieldValues extends FieldValues>({
   fieldData,
   className,
 }: SelectInputHelperProps<TFieldValues>): React.ReactNode => {
-  const isRequired = determineFieldRequired(fieldData)
+  const isRequired = useFieldRequired(form, fieldData.name, fieldData.required)
 
   return (
     <FormField

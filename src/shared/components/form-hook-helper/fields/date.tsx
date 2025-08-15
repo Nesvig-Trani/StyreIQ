@@ -10,7 +10,7 @@ import {
 import { cn } from '@/shared/utils/cn'
 import { FieldData } from '@/shared/components/form-hook-helper'
 import { DatePicker } from '@/shared/components/ui/datepicker'
-import { determineFieldRequired } from '../utils'
+import { useFieldRequired } from '../utils'
 
 export type DateInputHelperProps<TFieldValues extends FieldValues> = {
   form: UseFormReturn<TFieldValues>
@@ -23,7 +23,7 @@ export const DateInputHelper = <TFieldValues extends FieldValues>({
   fieldData,
   className,
 }: DateInputHelperProps<TFieldValues>): React.ReactNode => {
-  const isRequired = determineFieldRequired(fieldData)
+  const isRequired = useFieldRequired(form, fieldData.name, fieldData.required)
 
   return (
     <FormField

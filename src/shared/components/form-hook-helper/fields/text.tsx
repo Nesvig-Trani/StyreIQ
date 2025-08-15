@@ -11,7 +11,7 @@ import {
 import { cn } from '@/shared/utils/cn'
 import { Input } from '@/shared/components/ui/input'
 import { FieldData } from '@/shared/components/form-hook-helper'
-import { determineFieldRequired } from '../utils'
+import { useFieldRequired } from '../utils'
 
 export type TextInputHelperProps<TFieldValues extends FieldValues> = {
   form: UseFormReturn<TFieldValues>
@@ -24,8 +24,7 @@ export const TextInputHelper = <TFieldValues extends FieldValues>({
   fieldData,
   className,
 }: TextInputHelperProps<TFieldValues>): React.ReactNode => {
-  // Use the utility function to determine if field is required
-  const isRequired = determineFieldRequired(fieldData)
+  const isRequired = useFieldRequired(form, fieldData.name, fieldData.required)
 
   return (
     <FormField

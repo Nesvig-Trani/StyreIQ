@@ -10,6 +10,7 @@ import {
 import { FieldData } from '@/shared/components/form-hook-helper'
 import { MultiSelect } from '@/shared/components/multiselect'
 import { cn } from '@/shared/utils/cn'
+import { useFieldRequired } from '../utils'
 
 export type MultiSelectInputHelperProps<TFieldValues extends FieldValues> = {
   form: UseFormReturn<TFieldValues>
@@ -22,12 +23,7 @@ export const MultiSelectInputHelper = <TFieldValues extends FieldValues>({
   fieldData,
   className,
 }: MultiSelectInputHelperProps<TFieldValues>): React.ReactNode => {
-  // Check if field is required by checking if it's optional in the schema
-  const isRequired =
-    !fieldData.name.toString().includes('?') &&
-    !fieldData.name.toString().includes('optional') &&
-    typeof fieldData.label === 'string' &&
-    fieldData.label.includes('*')
+  const isRequired = useFieldRequired(form, fieldData.name, fieldData.required)
 
   return (
     <FormField
