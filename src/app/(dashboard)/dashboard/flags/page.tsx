@@ -6,7 +6,7 @@ import { flagsSearchSchema } from '@/features/flags/schemas'
 import { getFlags } from '@/features/flags/plugins/queries'
 import Link from 'next/link'
 import { CirclePlus } from 'lucide-react'
-import { getAllUnits } from '@/features/organizations/plugins/queries'
+import { getAllUnits } from '@/features/units/plugins/queries'
 
 export default async function FlagsPage(props: {
   searchParams?: Promise<{ [key: string]: string }>

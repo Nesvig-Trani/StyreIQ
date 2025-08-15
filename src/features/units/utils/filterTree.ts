@@ -1,4 +1,4 @@
-import { Tree } from '@/features/organizations'
+import { Tree } from '@/features/units'
 
 export function filterTreeWithSearch(tree: Tree[], search: string): Tree[] {
   const searchLowerCase = search.toLowerCase()

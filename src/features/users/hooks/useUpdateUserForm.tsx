@@ -11,7 +11,7 @@ import { updateUser } from '@/sdk/users'
 import { toast } from 'sonner'
 import { Organization } from '@/types/payload-types'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { createUnitTree, UnitWithDepth } from '@/features/organizations'
+import { createUnitTree, UnitWithDepth } from '@/features/units'
 
 function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
   const router = useRouter()

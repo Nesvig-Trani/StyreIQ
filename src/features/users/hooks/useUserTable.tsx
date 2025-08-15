@@ -4,7 +4,7 @@ import { roleLabelMap, statusLabelMap, UserRolesEnum, UserStatusEnum } from '@/f
 import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
 import { FileLock2, PencilIcon } from 'lucide-react'
-import { UnitCell } from '@/features/organizations/components/unit-cell'
+import { UnitCell } from '@/features/units/components/unit-cell'
 import { Badge } from '@/shared'
 
 function useUserTable({ user }: { user: User | null }) {

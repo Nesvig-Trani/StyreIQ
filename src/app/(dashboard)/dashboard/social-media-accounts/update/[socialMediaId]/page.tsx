@@ -2,7 +2,7 @@ import { UpdateSocialMediaForm } from '@/features/social-medias/forms/update-soc
 import { getUsersByRoles, UserRolesEnum } from '@/features/users'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { getSocialMediaById } from '@/features/social-medias/plugins/queries'
-import { getAllUnits } from '@/features/organizations/plugins/queries'
+import { getAllUnits } from '@/features/units/plugins/queries'
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
 

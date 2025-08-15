@@ -1,6 +1,6 @@
 'use client'
 import { useFormHelper } from '@/shared/components/form-hook-helper'
-import { UnitWithDepth } from '@/features/organizations'
+import { UnitWithDepth } from '@/features/units'
 import {
   UpdateSocialMediaFormProps,
   createSocialMediaFormSchema,
@@ -11,7 +11,7 @@ import {
 } from '@/features/social-medias'
 import { updateSocialMedia } from '@/sdk/social-medias'
 import { toast } from 'sonner'
-import { createUnitTree } from '@/features/organizations/utils/createUnitTree'
+import { createUnitTree } from '@/features/units/utils/createUnitTree'
 import { EndpointError } from '@/shared'
 import { useRouter } from 'next/navigation'
 import { platformOptions } from '@/features/social-medias/constants/platformOptions'

@@ -2,7 +2,7 @@ import { JSON_HEADERS } from '@/shared/constants'
 import { UserRolesEnum } from '@/features/users/schemas'
 import { getUsersByOrganizationAndRole, getUsersByRoles } from '@/features/users/plugins/queries'
 import { Endpoint } from 'payload'
-import { calcParentPathAndDepth } from '@/features/organizations/utils/calcPathAndDepth'
+import { calcParentPathAndDepth } from '@/features/units/utils/calcPathAndDepth'
 import { EndpointError } from '@/shared'
 import { z } from 'zod'
 

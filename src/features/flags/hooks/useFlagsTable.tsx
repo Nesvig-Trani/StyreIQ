@@ -17,7 +17,7 @@ import { flagStatusLabels } from '../constants/flagStatusLabels'
 import { FlagCommentsModal } from '../components/flag-comments'
 import { flagTypeOptions } from '../constants/flagTypeOptions'
 import { flagStatusOptions } from '../constants/flagStatusOptions'
-import { UnitCell } from '@/features/organizations/components/unit-cell'
+import { UnitCell } from '@/features/units/components/unit-cell'
 
 function useFlagsTable({
   user,

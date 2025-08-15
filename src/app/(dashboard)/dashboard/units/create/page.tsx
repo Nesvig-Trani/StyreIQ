@@ -1,12 +1,12 @@
 'use server'
 import React from 'react'
-import { CreateUnitForm } from '@/features/organizations'
+import { CreateUnitForm } from '@/features/units'
 import { getAllUsers, UserRolesEnum } from '@/features/users'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import Link from 'next/link'
-import { getAllUnits } from '@/features/organizations/plugins/queries'
+import { getAllUnits } from '@/features/units/plugins/queries'
 import { Button } from '@/shared/components/ui/button'
-import { ensureStyreIQOrganization } from '@/features/organizations'
+import { ensureStyreIQOrganization } from '@/features/units'
 
 export default async function CreateUnit() {
   const { user } = await getAuthUser()

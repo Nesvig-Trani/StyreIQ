@@ -1,4 +1,4 @@
-import { createUnitTree, UnitWithDepth } from '@/features/organizations'
+import { createUnitTree, UnitWithDepth } from '@/features/units'
 import { filterTreeWithSearch } from './filterTree'
 
 export const treePaginationAndFilter = ({

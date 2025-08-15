@@ -1,7 +1,7 @@
 import { CollectionConfig } from 'payload'
 import { createUnit, disableUnit, filteredUsers, updateUnit } from '../endpoints'
 import { canDeleteUnit, canReadUnit } from '../access'
-import { unitTypeOptions } from '@/features/organizations/constants/unitTypeOptions'
+import { unitTypeOptions } from '@/features/units/constants/unitTypeOptions'
 
 export const Unit: CollectionConfig = {
   slug: 'organization',

@@ -1,5 +1,5 @@
-import { unitTypeLabels } from '@/features/organizations/constants/unitTypeLabels'
-import { UnitWithDepth } from '@/features/organizations/schemas'
+import { unitTypeLabels } from '@/features/units/constants/unitTypeLabels'
+import { UnitWithDepth } from '@/features/units/schemas'
 import { Organization, User } from '@/types/payload-types'
 import { Badge, Card, CardHeader, CardTitle, CardContent, Separator } from '@/shared'
 import { Avatar, AvatarFallback } from '@/shared/components/ui/avatar'

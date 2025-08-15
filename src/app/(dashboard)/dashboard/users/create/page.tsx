@@ -2,7 +2,7 @@ import React from 'react'
 import { CreateUserForm, UserRolesEnum } from '@/features/users'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { Organization } from '@/types/payload-types'
-import { getAllUnits } from '@/features/organizations/plugins/queries'
+import { getAllUnits } from '@/features/units/plugins/queries'
 
 export default async function CreateUserPage() {
   const { user } = await getAuthUser()

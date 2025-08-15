@@ -1,8 +1,8 @@
 'use server'
 import { headers as getHeaders } from 'next/headers'
-import { UserAccessTypeEnum } from '@/features/organizations'
+import { UserAccessTypeEnum } from '@/features/units'
 import { OrganizationAccess } from '@/types/payload-types'
-import { getUnitAccessByUserId } from '@/features/organizations'
+import { getUnitAccessByUserId } from '@/features/units'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { UserRolesEnum, UserStatusEnum } from '@/features/users'
 
