@@ -7,7 +7,7 @@ import { OrganizationAccess } from '@/types/payload-types'
 import { Button } from '../ui/button'
 import { updateUserAccess } from '@/sdk/users'
 import { z } from 'zod'
-import { unitAccess, UserAccessTypeEnum } from '@/features/organizations'
+import { unitAccess, UserAccessTypeEnum } from '@/features/units'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 

@@ -1,4 +1,4 @@
-import { createUnitFormSchema, updateUnitFormSchema } from '@/features/organizations'
+import { createUnitFormSchema, updateUnitFormSchema } from '@/features/units'
 import { z } from 'zod'
 import { env } from '@/config/env'
 import { JSON_HEADERS } from '@/shared/constants'

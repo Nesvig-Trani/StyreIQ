@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
-import useCreateUnit from '@/features/organizations/hooks/useCreateUnit'
-import { CreateUnitFormProps } from '@/features/organizations'
+import useCreateUnit from '@/features/units/hooks/useCreateUnit'
+import { CreateUnitFormProps } from '@/features/units'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
 
 export const CreateUnitForm = ({

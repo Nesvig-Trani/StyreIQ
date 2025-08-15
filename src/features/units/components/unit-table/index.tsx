@@ -1,7 +1,7 @@
 'use client'
 import { Organization } from '@/types/payload-types'
 import { DataTable } from '@/shared'
-import useUnitTable from '@/features/organizations/hooks/useUnitTable'
+import useUnitTable from '@/features/units/hooks/useUnitTable'
 
 export function UnitTable({
   data,

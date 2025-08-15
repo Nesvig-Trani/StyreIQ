@@ -1,5 +1,5 @@
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
-import { getAllUnits } from '@/features/organizations/plugins/queries'
+import { getAllUnits } from '@/features/units/plugins/queries'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
 import { CreateSocialMediaForm } from '@/features/social-medias'
 import { getUsersByRoles, UserRolesEnum } from '@/features/users'

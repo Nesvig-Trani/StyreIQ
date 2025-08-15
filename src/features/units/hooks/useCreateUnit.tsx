@@ -5,10 +5,10 @@ import {
   createUnitFormSchema,
   UnitTypeEnum,
   UnitWithDepth,
-} from '@/features/organizations'
+} from '@/features/units'
 import { createUnit } from '@/sdk/organization'
 import { toast } from 'sonner'
-import { createUnitTree } from '@/features/organizations/utils/createUnitTree'
+import { createUnitTree } from '@/features/units/utils/createUnitTree'
 import { useRouter } from 'next/navigation'
 import { industryLevelOptions, unitLevelOptions } from '../constants/unitTypeOptions'
 import { UserRolesEnum } from '@/features/users'

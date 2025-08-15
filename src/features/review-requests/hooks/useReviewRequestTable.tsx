@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { setUserApprovalStatus } from '@/sdk/users'
 import { toast } from 'sonner'
-import { UnitCell } from '@/features/organizations/components/unit-cell'
+import { UnitCell } from '@/features/units/components/unit-cell'
 
 function useReviewRequestTable() {
   const router = useRouter()

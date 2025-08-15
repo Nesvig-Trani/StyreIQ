@@ -22,7 +22,7 @@ import { ViewSocialMedia } from '../view-social-media'
 import { ViewUser } from '../view-user'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { UnitCell } from '@/features/organizations/components/unit-cell'
+import { UnitCell } from '@/features/units/components/unit-cell'
 
 export function FlagDetails({ flag }: { flag: Flag }) {
   const searchParams = useSearchParams()

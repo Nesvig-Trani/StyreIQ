@@ -1,5 +1,5 @@
 import React from 'react'
-import { unitSearchSchema } from '@/features/organizations'
+import { unitSearchSchema } from '@/features/units'
 import { Card, CardContent } from '@/shared/components/ui/card'
 import { parseSearchParamsWithSchema } from '@/shared/utils/parseParamsServer'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'

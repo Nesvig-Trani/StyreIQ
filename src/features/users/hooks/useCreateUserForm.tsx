@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 import { isApiError } from '@/shared'
 import { createUser } from '@/sdk/users'
 import { USER_ALREADY_EXISTS } from '../constants/Errors'
-import { createUnitTree, UnitWithDepth } from '@/features/organizations'
+import { createUnitTree, UnitWithDepth } from '@/features/units'
 
 interface UserFormProps {
   authUserRole?: UserRolesEnum | null

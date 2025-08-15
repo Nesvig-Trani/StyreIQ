@@ -7,7 +7,7 @@ import {
   UnitType,
   UnitWithDepth,
   StatusType,
-} from '@/features/organizations'
+} from '@/features/units'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { statusConfig } from '../constants/statusConfig'
 import { typeConfig } from '../constants/typeConfig'

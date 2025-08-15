@@ -1,8 +1,8 @@
 import { useFormHelper } from '@/shared/components/form-hook-helper'
-import { createUnitFormSchema, UnitTypeEnum, UpdateUnitFormProps } from '@/features/organizations'
+import { createUnitFormSchema, UnitTypeEnum, UpdateUnitFormProps } from '@/features/units'
 import { updateUnit } from '@/sdk/organization'
 import { toast } from 'sonner'
-import { createUnitTree } from '@/features/organizations/utils/createUnitTree'
+import { createUnitTree } from '@/features/units/utils/createUnitTree'
 import { unitTypeOptions } from '../constants/unitTypeOptions'
 
 function useUpdateUnit({ users, data, organizations }: UpdateUnitFormProps) {

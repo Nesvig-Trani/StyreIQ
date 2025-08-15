@@ -1,5 +1,5 @@
 import { getUserById, UpdateUserForm } from '@/features/users'
-import { getAllUnits } from '@/features/organizations/plugins/queries'
+import { getAllUnits } from '@/features/units/plugins/queries'
 
 export default async function UpdateUser({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params

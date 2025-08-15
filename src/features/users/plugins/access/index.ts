@@ -1,5 +1,5 @@
 import { Organization } from '@/types/payload-types'
-import { buildAccessibleUnitFilter } from '@/features/organizations/plugins/utils'
+import { buildAccessibleUnitFilter } from '@/features/units/plugins/utils'
 import { UserRolesEnum } from '@/features/users'
 import { Access, Where } from 'payload'
 

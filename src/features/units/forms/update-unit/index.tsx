@@ -1,20 +1,17 @@
 'use client'
 import React from 'react'
-import { createUnitTree, UnitTypeEnum, UpdateUnitFormProps } from '@/features/organizations'
+import { createUnitTree, UnitTypeEnum, UpdateUnitFormProps } from '@/features/units'
 import { Button, Input, Label, MultiSelect, TreeSelect } from '@/shared'
 import PhoneInput from 'react-phone-number-input'
 import { FieldValues, useForm } from 'react-hook-form'
 import { Select, SelectValue, SelectTrigger, SelectContent, SelectItem } from '@/shared'
-import { CreateUnit, StatusType } from '@/features/organizations/schemas'
+import { CreateUnit, StatusType } from '@/features/units/schemas'
 import { Textarea } from '@/shared/components/ui/textarea'
 import { toast } from 'sonner'
 import { updateUnit } from '@/sdk/organization'
 import { UserRolesEnum } from '@/features/users'
 import { useRouter } from 'next/navigation'
-import {
-  unitLevelOptions,
-  industryLevelOptions,
-} from '@/features/organizations/constants/unitTypeOptions'
+import { unitLevelOptions, industryLevelOptions } from '@/features/units/constants/unitTypeOptions'
 
 export const UpdateUnitForm = ({ users, organizations, data, user }: UpdateUnitFormProps) => {
   const router = useRouter()
