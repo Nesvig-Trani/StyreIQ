@@ -1,6 +1,5 @@
 'use client'
 import React from 'react'
-
 import { UpdateSocialMediaFormProps } from '@/features/social-medias'
 import { useUpdateSocialMedia } from '@/features/social-medias/hooks/useUpdateSocialMedia'
 

@@ -22,6 +22,12 @@ export const MultiSelectInputHelper = <TFieldValues extends FieldValues>({
   fieldData,
   className,
 }: MultiSelectInputHelperProps<TFieldValues>): React.ReactNode => {
+  // Check if field is required by checking if it's optional in the schema
+  const isRequired =
+    !fieldData.name.toString().includes('?') &&
+    !fieldData.name.toString().includes('optional') &&
+    fieldData.label?.includes('*')
+
   return (
     <FormField
       control={form.control}
@@ -29,7 +35,10 @@ export const MultiSelectInputHelper = <TFieldValues extends FieldValues>({
       key={fieldData.name}
       render={({ field: { ...field } }): React.ReactElement => (
         <FormItem className={cn('col-span-12', className)}>
-          <FormLabel>{fieldData.label}</FormLabel>
+          <FormLabel>
+            {fieldData.label}
+            {isRequired && <span className="text-red-500 ml-1">*</span>}
+          </FormLabel>
           <FormControl>
             <MultiSelect
               options={fieldData.options || []}

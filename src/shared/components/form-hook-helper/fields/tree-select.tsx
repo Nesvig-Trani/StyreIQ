@@ -28,13 +28,23 @@ export const TreeSelectHelper = <TFieldValues extends FieldValues>({
   } = form
 
   const error = errors[fieldData.name]
+
+  // Check if field is required by checking if it's optional in the schema
+  const isRequired =
+    !fieldData.name.toString().includes('?') &&
+    !fieldData.name.toString().includes('optional') &&
+    fieldData.label?.includes('*')
+
   return (
     <FormField
       control={form.control}
       name={fieldData.name}
       render={({ field }) => (
         <FormItem className="w-full">
-          <FormLabel>{fieldData.label}</FormLabel>
+          <FormLabel>
+            {fieldData.label}
+            {isRequired && <span className="text-red-500 ml-1">*</span>}
+          </FormLabel>
           <FormControl className="w-full">
             <TreeSelect
               options={fieldData.options || []}

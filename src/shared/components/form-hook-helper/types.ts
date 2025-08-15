@@ -16,6 +16,7 @@ export type FieldDataType =
   | 'textarea'
   | 'tree-select'
   | 'phone'
+  | 'separator'
 export type FieldDataSize = 'half' | 'full'
 export type FieldDataOption = {
   value: string

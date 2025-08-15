@@ -3,13 +3,15 @@ import { paginationSchema } from '@/shared/schemas/pagination'
 import { z } from 'zod'
 
 const baseSocialMediaSchema = z.object({
-  name: z.string(),
-  profileUrl: z.string().url(),
-  platform: z.string(),
-  creationDate: z.string(),
-  organization: z.string(),
-  primaryAdmin: z.string(),
-  adminContactEmails: z.array(z.string().email()),
+  name: z.string().min(1, 'Account name is required'),
+  profileUrl: z.string().min(1, 'Profile URL is required').url('Invalid URL format'),
+  platform: z.string().min(1, 'Platform is required'),
+  creationDate: z.string().min(1, 'Creation date is required'),
+  organization: z.string().min(1, 'Organization is required'),
+  primaryAdmin: z.string().min(1, 'Primary admin is required'),
+  adminContactEmails: z
+    .array(z.string().email())
+    .min(1, 'At least one admin contact email is required'),
   accountHandle: z.string().optional(),
   businessId: z.string().optional(),
   backupAdmin: z.string().optional(),
@@ -20,14 +22,14 @@ const baseSocialMediaSchema = z.object({
     .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number format')
     .or(z.literal(''))
     .optional(),
-  thirdPartyManagement: z.string(),
+  thirdPartyManagement: z.string().min(1, 'Third party management is required'),
   thirdPartyProvider: z.string().optional(),
   thirdPartyContact: z.string().optional(),
   passwordManagementPractice: z.string().optional(),
   linkedTools: z.array(z.string()).optional(),
   verificationStatus: z.string().optional(),
   platformSupportDetails: z.string().optional(),
-  socialMediaManagers: z.array(z.string()),
+  socialMediaManagers: z.array(z.string()).min(1, 'At least one social media manager is required'),
   notes: z.string().optional(),
 })
 

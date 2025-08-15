@@ -68,10 +68,33 @@ export const FormHelper = <
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit((data: TTransformedValues) => onSubmit(data))}
+        onSubmit={async (e) => {
+          e.preventDefault()
+          const isValid = await form.trigger()
+          if (isValid) {
+            const data = form.getValues()
+            onSubmit(data as TTransformedValues)
+          }
+        }}
         className="mb-4 grid w-full grid-cols-12 gap-3"
       >
-        {fields.map((fieldData) => {
+        {/* Validation Errors Summary */}
+        {Object.keys(form.formState.errors).length > 0 && form.formState.isSubmitted && (
+          <div className="col-span-12 p-4 bg-red-50 border border-red-200 rounded-md">
+            <h3 className="text-sm font-medium text-red-800 mb-2">
+              Please fix the following errors:
+            </h3>
+            <ul className="text-sm text-red-700 space-y-1">
+              {Object.keys(form.formState.errors).map((fieldName) => (
+                <li key={fieldName}>
+                  <strong className="capitalize">{fieldName}:</strong> Field is required
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {fields.map((fieldData, index) => {
           // Check the condition for the dependent field
           const shouldRenderField =
             !fieldData.dependsOn ||
@@ -82,7 +105,14 @@ export const FormHelper = <
           if (!shouldRenderField) {
             return null
           }
-          return <FieldResolver key={fieldData.name} form={form} fieldData={fieldData} />
+          return (
+            <FieldResolver
+              key={`${fieldData.name}-${index}`}
+              form={form}
+              fieldData={fieldData}
+              index={index}
+            />
+          )
         })}
         {error?.validationErrors && (
           <ul>

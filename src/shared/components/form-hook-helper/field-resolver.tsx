@@ -20,30 +20,39 @@ import { TextInputHelper } from './fields/text'
 import { PasswordInputHelper } from './fields/password'
 import { TextAreaHelper } from './fields/text-area'
 import { PhoneInputHelper } from './fields/phone'
+import { SeparatorField } from './fields/separator'
 import { getFieldListDefaultValues } from './get-field-default-value'
 import { FieldData } from '@/shared/components/form-hook-helper/types'
 import { cn } from '@/shared/utils/cn'
 import { Button } from '@/shared/components/ui/button'
 import { TreeSelectHelper } from '@/shared/components/form-hook-helper/fields/tree-select'
 
-export type FieldResolverProps<TFieldValues extends FieldValues> = {
+interface FieldResolverProps<TFieldValues extends FieldValues> {
   form: UseFormReturn<TFieldValues>
   fieldData: FieldData<TFieldValues>
+  index: number
 }
 
 export const FieldResolver = <TFieldValues extends FieldValues>({
   form,
   fieldData,
+  index,
 }: FieldResolverProps<TFieldValues>): ReactNode => {
   const { type = 'text', size = 'full' } = fieldData
   let sizeClassName = 'col-span-12'
   if (size === 'half') {
     sizeClassName = cn(sizeClassName, 'md:col-span-6')
   }
+
+  // Handle separator type
+  if (type === 'separator') {
+    return <SeparatorField key={`separator-${index}`} />
+  }
+
   if (type === 'text') {
     return (
       <TextInputHelper
-        key={fieldData.name}
+        key={`${fieldData.name}-${index}`}
         form={form}
         fieldData={fieldData}
         className={sizeClassName}
@@ -53,7 +62,7 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
   if (type === 'password') {
     return (
       <PasswordInputHelper
-        key={fieldData.name}
+        key={`${fieldData.name}-${index}`}
         form={form}
         fieldData={fieldData}
         className={sizeClassName}
@@ -63,7 +72,7 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
   if (type === 'textarea') {
     return (
       <TextAreaHelper
-        key={fieldData.name}
+        key={`${fieldData.name}-${index}`}
         form={form}
         fieldData={fieldData}
         className={sizeClassName}
@@ -73,7 +82,7 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
   if (type === 'phone') {
     return (
       <PhoneInputHelper
-        key={fieldData.name}
+        key={`${fieldData.name}-${index}`}
         form={form}
         fieldData={fieldData}
         className={sizeClassName}
@@ -83,7 +92,7 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
   if (type === 'number') {
     return (
       <NumberInputHelper
-        key={fieldData.name}
+        key={`${fieldData.name}-${index}`}
         form={form}
         fieldData={fieldData}
         className={sizeClassName}
@@ -93,7 +102,7 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
   if (type === 'select') {
     return (
       <SelectInputHelper
-        key={fieldData.name}
+        key={`${fieldData.name}-${index}`}
         form={form}
         fieldData={fieldData}
         className={sizeClassName}
@@ -103,7 +112,7 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
   if (type === 'multiselect') {
     return (
       <MultiSelectInputHelper
-        key={fieldData.name}
+        key={`${fieldData.name}-${index}`}
         form={form}
         fieldData={fieldData}
         className={sizeClassName}
@@ -113,7 +122,7 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
   if (type === 'checkbox') {
     return (
       <CheckboxInputHelper
-        key={fieldData.name}
+        key={`${fieldData.name}-${index}`}
         form={form}
         fieldData={fieldData}
         className={sizeClassName}
@@ -123,7 +132,7 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
   if (type === 'date') {
     return (
       <DateInputHelper
-        key={fieldData.name}
+        key={`${fieldData.name}-${index}`}
         form={form}
         fieldData={fieldData}
         className={sizeClassName}
@@ -134,7 +143,7 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
   if (type === 'array') {
     return (
       <InputListHelper
-        key={fieldData.name}
+        key={`${fieldData.name}-${index}`}
         form={form}
         fieldData={fieldData}
         className={sizeClassName}
@@ -145,7 +154,7 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
   if (type === 'tree-select') {
     return (
       <TreeSelectHelper
-        key={fieldData.name}
+        key={`${fieldData.name}-${index}`}
         form={form}
         fieldData={fieldData}
         multiple={!!fieldData.multiple}
@@ -206,6 +215,7 @@ export const InputListHelper = <TFieldValues extends FieldValues>({
                     ...child,
                     name: `${fieldData.name}.${index}.${child.name}` as Path<TFieldValues>,
                   }}
+                  index={index}
                 />
               )) || []}
               <div className="col-span-12">

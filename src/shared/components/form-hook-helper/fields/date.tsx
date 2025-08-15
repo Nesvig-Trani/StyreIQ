@@ -22,6 +22,12 @@ export const DateInputHelper = <TFieldValues extends FieldValues>({
   fieldData,
   className,
 }: DateInputHelperProps<TFieldValues>): React.ReactNode => {
+  // Check if field is required by checking if it's optional in the schema
+  const isRequired =
+    !fieldData.name.toString().includes('?') &&
+    !fieldData.name.toString().includes('optional') &&
+    fieldData.label?.includes('*')
+
   return (
     <FormField
       control={form.control}
@@ -31,6 +37,7 @@ export const DateInputHelper = <TFieldValues extends FieldValues>({
         <FormItem className={cn('col-span-12', className)}>
           <FormLabel className={cn(fieldData.disabled && 'text-muted-foreground')}>
             {fieldData.label}
+            {isRequired && <span className="text-red-500 ml-1">*</span>}
           </FormLabel>
           <FormControl>
             <DatePicker
