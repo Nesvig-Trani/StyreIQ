@@ -50,3 +50,36 @@ export const getAuditLogs = async ({
 
   return auditLogs
 }
+
+export const getSocialMediaAuditLogs = async ({
+  socialMediaId,
+  action,
+  userId,
+}: {
+  socialMediaId: number
+  action?: string[]
+  userId?: number
+}) => {
+  const { payload } = await getPayloadContext()
+  const { user } = await getAuthUser()
+
+  const createdAt: Record<string, string | Date> = {}
+
+  const where: Where = {
+    entity: { equals: 'social-medias' },
+    ...(action && action.length > 0 && { action: { in: action } }),
+    ...(userId && { user: { equals: userId } }),
+    ...(Object.keys(createdAt).length > 0 && { createdAt }),
+    or: [{ 'current.id': { equals: socialMediaId } }, { 'prev.id': { equals: socialMediaId } }],
+  }
+
+  const auditLogs = await payload.find({
+    collection: 'audit_log',
+    depth: 1,
+    where,
+    overrideAccess: false,
+    user,
+  })
+
+  return auditLogs
+}
