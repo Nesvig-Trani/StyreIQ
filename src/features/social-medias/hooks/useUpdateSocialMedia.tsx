@@ -183,6 +183,7 @@ export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocia
           label: 'Creation Date',
           name: 'creationDate',
           type: 'date',
+          disabled: true,
         },
         {
           label: 'Admin Contact Info *',

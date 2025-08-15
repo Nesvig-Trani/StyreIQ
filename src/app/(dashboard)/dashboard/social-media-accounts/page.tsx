@@ -9,6 +9,7 @@ import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { getSocialMediaAccounts } from '@/features/social-medias/plugins/queries'
 import { getAllOrganizations } from '@/features/organizations/plugins/queries'
 import { getAllUsers } from '@/features/users'
+import { getSocialMediaAuditLogs } from '@/features/audit-log/plugins/queries'
 
 export default async function SocialMediasPage(props: AppPageProps) {
   const { user } = await getAuthUser()
@@ -29,10 +30,30 @@ export default async function SocialMediasPage(props: AppPageProps) {
   const organizations = await getAllOrganizations()
   const users = await getAllUsers()
 
+  let socialMediasWithAuditLogs = socialMediaAccounts.docs
+
+  if (user?.role === 'super_admin') {
+    socialMediasWithAuditLogs = await Promise.all(
+      socialMediaAccounts.docs.map(async (socialMedia) => {
+        const auditLogs = await getSocialMediaAuditLogs({
+          socialMediaId: socialMedia.id,
+        })
+
+        return {
+          ...socialMedia,
+          auditLogs,
+        }
+      }),
+    )
+  }
+
   return (
     <DashboardSocialMedias
       user={user}
-      socialMedias={socialMediaAccounts}
+      socialMedias={{
+        ...socialMediaAccounts,
+        docs: socialMediasWithAuditLogs,
+      }}
       organizations={organizations.docs}
       users={users.docs}
     />

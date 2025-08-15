@@ -11,13 +11,21 @@ import { Badge } from '@/shared/components/ui/badge'
 
 //Interfaces and types
 import type { PaginatedDocs } from 'payload'
-import type { Organization, SocialMedia, User } from '@/types/payload-types'
+import type { AuditLog, Organization, SocialMedia, User } from '@/types/payload-types'
 
 import { UserRolesEnum } from '@/features/users'
 
+export type SocialMediaWithAuditLogs = SocialMedia & {
+  auditLogs?: AuditLog[]
+}
+
+export type SocialMediasPaginated = Omit<PaginatedDocs<SocialMedia>, 'docs'> & {
+  docs: SocialMediaWithAuditLogs[]
+}
+
 export type DashboardSocialMediasProps = {
   user: User | null
-  socialMedias: PaginatedDocs<SocialMedia>
+  socialMedias: SocialMediasPaginated
   organizations: Organization[]
   users: User[]
 }

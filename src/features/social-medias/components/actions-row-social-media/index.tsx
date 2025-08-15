@@ -1,17 +1,10 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
-import { PencilIcon } from 'lucide-react'
-
-// Hooks
+import { EyeIcon, PencilIcon } from 'lucide-react'
 import { SocialMediaStatusEnum, useChangeStatusSocialMedia } from '@/features/social-medias'
-
-// Components
 import { Button } from '@/shared/components/ui/button'
-
-// Types
-import type { SocialMedia, User } from '@/types/payload-types'
 import { Switch } from '@/shared/components/ui/switch'
 import { UserRolesEnum } from '@/features/users'
 import {
@@ -23,9 +16,17 @@ import {
   DialogTitle,
 } from '@/shared/components/ui/dialog'
 import { Textarea } from '@/shared'
+import type { AuditLog, SocialMedia, User } from '@/types/payload-types'
+import { SocialMediaDetailsDialog } from '../social-media-details'
+
+interface SocialMediaWithLogs extends SocialMedia {
+  auditLogs?: {
+    docs: AuditLog[]
+  }
+}
 
 interface ActionsRowSocialMediaProps {
-  socialMedia: SocialMedia
+  socialMedia: SocialMediaWithLogs
   user: User | null
 }
 
@@ -46,6 +47,8 @@ export const ActionsRowSocialMedia: React.FC<ActionsRowSocialMediaProps> = ({
     showDeactivateModal,
     setShowDeactivateModal,
   } = useChangeStatusSocialMedia(socialMedia)
+
+  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false)
 
   const renderActionButtons = () => {
     switch (stateSocialMedia.status) {
@@ -68,8 +71,8 @@ export const ActionsRowSocialMedia: React.FC<ActionsRowSocialMediaProps> = ({
 
   return (
     <div className="flex gap-4 items-center">
-      {stateSocialMedia.status === SocialMediaStatusEnum.Active ||
-      stateSocialMedia.status === SocialMediaStatusEnum.Inactive ? (
+      {(stateSocialMedia.status === SocialMediaStatusEnum.Active ||
+        stateSocialMedia.status === SocialMediaStatusEnum.Inactive) && (
         <Switch
           checked={stateSocialMedia.status === SocialMediaStatusEnum.Active}
           onCheckedChange={onChangeStatus}
@@ -78,15 +81,27 @@ export const ActionsRowSocialMedia: React.FC<ActionsRowSocialMediaProps> = ({
             stateSocialMedia.status === SocialMediaStatusEnum.Inactive
           }
         />
-      ) : null}
+      )}
 
-      <Button asChild size="icon" aria-label="Edit social media">
+      <SocialMediaDetailsDialog
+        socialMedia={socialMedia}
+        isOpen={isDetailsDialogOpen}
+        onOpenChange={setIsDetailsDialogOpen}
+        trigger={
+          <Button size="icon" aria-label="View social media details">
+            <EyeIcon className="h-4 w-4" />
+          </Button>
+        }
+      />
+
+      <Button className="!text-white" asChild size="icon" aria-label="Edit social media">
         <Link href={`/dashboard/social-media-accounts/update/${socialMedia.id}`}>
-          <PencilIcon className="h-4 w-4 text-white" />
+          <PencilIcon className="h-4 w-4" />
         </Link>
       </Button>
 
       {renderActionButtons()}
+
       <Dialog open={showDeactivateModal} onOpenChange={setShowDeactivateModal}>
         <DialogContent>
           <DialogHeader>
