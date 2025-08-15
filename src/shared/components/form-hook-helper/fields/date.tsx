@@ -10,6 +10,7 @@ import {
 import { cn } from '@/shared/utils/cn'
 import { FieldData } from '@/shared/components/form-hook-helper'
 import { DatePicker } from '@/shared/components/ui/datepicker'
+import { determineFieldRequired } from '../utils'
 
 export type DateInputHelperProps<TFieldValues extends FieldValues> = {
   form: UseFormReturn<TFieldValues>
@@ -22,12 +23,7 @@ export const DateInputHelper = <TFieldValues extends FieldValues>({
   fieldData,
   className,
 }: DateInputHelperProps<TFieldValues>): React.ReactNode => {
-  // Check if field is required by checking if it's optional in the schema
-  const isRequired =
-    !fieldData.name.toString().includes('?') &&
-    !fieldData.name.toString().includes('optional') &&
-    typeof fieldData.label === 'string' &&
-    fieldData.label.includes('*')
+  const isRequired = determineFieldRequired(fieldData)
 
   return (
     <FormField
