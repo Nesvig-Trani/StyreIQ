@@ -4,7 +4,7 @@ import { cn } from '@/shared/utils/cn'
 import { Tree } from '@/features/units'
 import { Command, CommandEmpty, CommandInput, CommandList } from '@/shared/components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/shared/components/ui/popover'
-import { FieldDataOption } from '@/shared/components/form-hook-helper'
+import { FieldDataOption } from '@/shared/components/form-hook-helper/types'
 import { ChevronDown } from 'lucide-react'
 
 interface TreeNodeProps {
@@ -118,7 +118,7 @@ export function TreeSelect({
         <button
           disabled={disabled}
           className={cn(
-            'w-[700px] flex justify-between items-center h-9 px-3 py-2 border text-sm rounded-md text-gray-500 bg-background',
+            'w-full flex justify-between items-center h-9 px-3 py-2 border text-sm rounded-md text-gray-500 bg-background',
             disabled && 'opacity-50 cursor-not-allowed',
             errors ? 'border-red-500' : 'border-input',
           )}
@@ -137,7 +137,7 @@ export function TreeSelect({
         </button>
       </PopoverTrigger>
       {!disabled && (
-        <PopoverContent className="w-[700px] p-0">
+        <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
           <Command>
             <CommandInput placeholder="Search…" value={search} onValueChange={setSearch} />
             <CommandList>

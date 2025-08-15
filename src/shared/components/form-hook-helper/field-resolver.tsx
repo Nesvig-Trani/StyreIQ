@@ -158,6 +158,7 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
         form={form}
         fieldData={fieldData}
         multiple={!!fieldData.multiple}
+        className={sizeClassName}
       />
     )
   }
