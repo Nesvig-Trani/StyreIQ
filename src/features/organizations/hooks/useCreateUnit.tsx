@@ -14,7 +14,7 @@ import { industryLevelOptions, unitLevelOptions } from '../constants/unitTypeOpt
 import { UserRolesEnum } from '@/features/users'
 import { useState, useEffect, useMemo } from 'react'
 import { User } from '@/types/payload-types'
-import { fetchFilteredUsers } from '../services/getFilteredUsersFromOrganization'
+import { fetchFilteredUsers } from '../services/getFilteredUsersFromUnit'
 
 function useCreateUnit({ userRole, organizations, defaultParentOrg }: CreateUnitFormProps) {
   const router = useRouter()
