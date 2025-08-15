@@ -61,6 +61,8 @@ export const useFormHelper = <
 ): UseFormHelperReturn<TFieldValues> => {
   const form = useForm<TFieldValues>({
     resolver: zodResolver(props.schema),
+    mode: 'onBlur', // Validate on blur (when user leaves field)
+    reValidateMode: 'onChange', // Re-validate on change after first validation
     ...useFormProps,
   })
 

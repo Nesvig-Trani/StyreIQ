@@ -32,6 +32,12 @@ export const SelectInputHelper = <TFieldValues extends FieldValues>({
   fieldData,
   className,
 }: SelectInputHelperProps<TFieldValues>): React.ReactNode => {
+  // Check if field is required by checking if it's optional in the schema
+  const isRequired =
+    !fieldData.name.toString().includes('?') &&
+    !fieldData.name.toString().includes('optional') &&
+    fieldData.label?.includes('*')
+
   return (
     <FormField
       control={form.control}
@@ -39,7 +45,10 @@ export const SelectInputHelper = <TFieldValues extends FieldValues>({
       key={fieldData.name}
       render={({ field: { onChange, ...field } }): React.ReactElement => (
         <FormItem className={cn('col-span-12', className)}>
-          <FormLabel>{fieldData.label}</FormLabel>
+          <FormLabel>
+            {fieldData.label}
+            {isRequired && <span className="text-red-500 ml-1">*</span>}
+          </FormLabel>
           <Select
             {...field}
             onValueChange={(value): void => {

@@ -72,39 +72,48 @@ export function useCreateSocialMedia({ users, organizations }: CreateSocialMedia
     {
       schema: createSocialMediaFormSchema,
       fields: [
+        // Account Details - Row 1
         {
           label: 'Account Name *',
           name: 'name',
           type: 'text',
-        },
-        {
-          label: 'Profile URL *',
-          name: 'profileUrl',
-          type: 'text',
+          placeholder: 'Enter account name',
+          size: 'half',
         },
         {
           label: 'Platform *',
           name: 'platform',
           type: 'select',
           options: platformOptions,
+          placeholder: 'Select Platform',
+          size: 'half',
         },
+        // Account Details - Row 2
         {
           label: 'Account Handle',
           name: 'accountHandle',
           type: 'text',
+          placeholder: '@username',
+          size: 'half',
         },
         {
-          label: 'Contact Email',
-          name: 'contactEmail',
+          label: 'Profile URL *',
+          name: 'profileUrl',
           type: 'text',
+          placeholder: 'https://platform.com/username',
+          size: 'half',
+        },
+        // Account Details - Row 3
+        {
+          label: 'Creation Date',
+          name: 'creationDate',
+          type: 'date',
+          placeholder: 'dd/mm/yyyy',
+          disabled: true,
+          size: 'half',
         },
         {
-          label: 'Contact Phone',
-          name: 'contactPhone',
-          type: 'phone',
-        },
-        {
-          label: 'Unit *',
+          label: 'Assigned Unit *',
           name: 'organization',
           type: 'tree-select',
           options: organizations?.map((org) => ({
@@ -112,74 +121,70 @@ export function useCreateSocialMedia({ users, organizations }: CreateSocialMedia
             label: org.name,
           })),
           tree: tree,
+          placeholder: 'Select Unit',
+          size: 'half',
         },
+        // Separator 1
+        {
+          name: 'notes',
+          label: '',
+          type: 'separator',
+          size: 'full',
+        },
+        // Ownership & Contact - Row 4
+        {
+          label: 'Primary Unit Admin *',
+          name: 'primaryAdmin',
+          type: 'select',
+          options: administratorOptions,
+          placeholder: 'Select Primary Unit Admin',
+          dependsOn: {
+            field: 'organization',
+            value: selectedOrganizationId || '',
+          },
+          size: 'half',
+        },
+        {
+          label: 'Backup Unit Admin',
+          name: 'backupAdmin',
+          type: 'select',
+          options: backupAdministratorOptions,
+          placeholder: 'Select Backup Unit Admin',
+          dependsOn: {
+            field: 'organization',
+            value: selectedOrganizationId || '',
+          },
+          size: 'half',
+        },
+        // Ownership & Contact - Row 5
         {
           label: 'Social Media Managers *',
           name: 'socialMediaManagers',
           type: 'multiselect',
           options: socialMediaManagerOptions,
+          placeholder: 'Select options',
+          dependsOn: {
+            field: 'organization',
+            value: selectedOrganizationId || '',
+          },
           size: 'full',
-          dependsOn: {
-            field: 'organization',
-            value: selectedOrganizationId || '',
-          },
         },
-        {
-          label: 'Administrator *',
-          name: 'primaryAdmin',
-          type: 'select',
-          options: administratorOptions,
-          dependsOn: {
-            field: 'organization',
-            value: selectedOrganizationId || '',
-          },
-        },
-        {
-          label: 'Backup Administrator',
-          name: 'backupAdmin',
-          type: 'select',
-          options: backupAdministratorOptions,
-          dependsOn: {
-            field: 'organization',
-            value: selectedOrganizationId || '',
-          },
-        },
-        {
-          label: 'Business Id',
-          name: 'businessId',
-          type: 'text',
-        },
-        {
-          label: 'Creation Date',
-          name: 'creationDate',
-          type: 'date',
-          disabled: true,
-        },
-        {
-          label: 'Admin Contact Info *',
-          name: 'adminContactEmails',
-          type: 'multiselect',
-          options: users.map((user) => ({
-            value: user.email,
-            label: user.email,
-          })),
-        },
-        {
-          label: 'Backup Contact Info',
-          name: 'backupContactInfo',
-          type: 'text',
-        },
+        // Third Party Management - Row 6
         {
           name: 'thirdPartyManagement',
-          label: 'Third Party Management *',
+          label: 'Third-Party Management *',
           type: 'select',
           options: thirdPartyManagementOptions,
+          placeholder: 'Select management type',
+          size: 'full',
         },
+        // Third Party Management - Row 7 (conditional)
         {
           name: 'thirdPartyProvider',
           type: 'text',
-          label: 'Third Party Provider *',
-          size: 'full',
+          label: 'Third Party Provider',
+          placeholder: 'Enter vendor name',
+          size: 'half',
           dependsOn: {
             field: 'thirdPartyManagement',
             value: 'yes',
@@ -188,44 +193,80 @@ export function useCreateSocialMedia({ users, organizations }: CreateSocialMedia
         {
           name: 'thirdPartyContact',
           type: 'text',
-          label: 'Third Party Contact *',
-          size: 'full',
+          label: 'Third Party Contact',
+          placeholder: 'Enter contact information',
+          size: 'half',
           dependsOn: {
             field: 'thirdPartyManagement',
             value: 'yes',
           },
         },
+        // Separator 2
+        {
+          name: 'accountHandle',
+          label: '',
+          type: 'separator',
+          size: 'full',
+        },
+        // Platform Governance - Row 8
         {
           name: 'passwordManagementPractice',
           type: 'select',
-          label: 'Password Management Practice *',
-          size: 'full',
+          label: 'Password Management',
+          placeholder: 'Select Management Type',
           options: passwordManagementPracticeOptions,
-        },
-        {
-          name: 'linkedTools',
-          type: 'multiselect',
-          label: 'Linked Tools',
-          size: 'full',
-          options: linkedToolsOptions,
+          size: 'half',
         },
         {
           name: 'verificationStatus',
           type: 'select',
           label: 'Verification Status',
-          size: 'full',
+          placeholder: 'Select Status',
           options: verificationStatusOptions,
+          size: 'half',
+        },
+        // Platform Governance - Row 9
+        {
+          label: 'Business Manager ID',
+          name: 'businessId',
+          type: 'text',
+          placeholder: 'Enter Business Manager ID',
+          size: 'half',
         },
         {
+          label: 'Admin Contact Emails *',
+          name: 'adminContactEmails',
+          type: 'multiselect',
+          options: users.map((user) => ({
+            value: user.email,
+            label: user.email,
+          })),
+          placeholder: 'Select admin emails',
+          size: 'half',
+        },
+        // Platform Governance - Row 10
+        {
           name: 'platformSupportDetails',
-          type: 'text',
-          label: 'Platform Support Details',
+          type: 'textarea',
+          label: 'Platform Support Info',
+          placeholder: 'Enter support information',
           size: 'full',
         },
+        // Linked Tools - Row 11
+        {
+          name: 'linkedTools',
+          type: 'multiselect',
+          label: 'Linked Tools',
+          options: linkedToolsOptions,
+          placeholder: 'Select tools',
+          size: 'full',
+        },
+        // Notes - Row 12
         {
           name: 'notes',
           type: 'textarea',
-          label: 'Notes',
+          label: 'Additional Notes',
+          placeholder: 'Enter any additional notes or comments',
           size: 'full',
         },
       ],
@@ -235,7 +276,7 @@ export function useCreateSocialMedia({ users, organizations }: CreateSocialMedia
           form.reset()
           setSelectedOrganizationId(null)
           toast.success('Social media account created successfully')
-          router.push('/dashboard/social-medias')
+          router.push('/dashboard/social-media-accounts')
         } catch (catchError) {
           if (catchError instanceof EndpointError) {
             toast.error(catchError.message)
@@ -247,51 +288,42 @@ export function useCreateSocialMedia({ users, organizations }: CreateSocialMedia
         }
       },
       onCancel: () => router.push('/dashboard/social-media-accounts/'),
-      cancelContent: 'Cancel',
       showCancel: true,
+      cancelContent: 'Cancel',
     },
     {
       defaultValues: {
-        name: undefined,
-        profileUrl: undefined,
-        platform: undefined,
-        accountHandle: undefined,
-        contactEmail: undefined,
-        contactPhone: undefined,
-        organization: undefined,
+        name: '',
+        profileUrl: '',
+        platform: '',
+        accountHandle: '',
+        organization: '',
         socialMediaManagers: [],
-        primaryAdmin: undefined,
-        backupAdmin: undefined,
-        businessId: undefined,
+        primaryAdmin: '',
+        backupAdmin: '',
+        businessId: '',
         creationDate: new Date().toISOString().split('T')[0],
         adminContactEmails: [],
-        backupContactInfo: undefined,
-        thirdPartyManagement: undefined,
-        thirdPartyProvider: undefined,
-        thirdPartyContact: undefined,
-        passwordManagementPractice: undefined,
+        thirdPartyManagement: '',
+        thirdPartyProvider: '',
+        thirdPartyContact: '',
+        passwordManagementPractice: '',
         linkedTools: [],
         verificationStatus: 'pending',
-        platformSupportDetails: undefined,
-        notes: undefined,
+        platformSupportDetails: '',
+        notes: '',
       },
     },
   )
 
   useEffect(() => {
-    const subscription = form.watch(({ organization }, { name }) => {
-      if (name !== 'organization') return
-      const organizationId = organization ? organization.toString() : null
-      setSelectedOrganizationId(organizationId)
-      if (organizationId !== selectedOrganizationId) {
-        form.setValue('socialMediaManagers', [])
-        form.setValue('primaryAdmin', '')
-        form.setValue('backupAdmin', undefined)
+    const subscription = form.watch((value, { name }) => {
+      if (name === 'organization') {
+        setSelectedOrganizationId(value.organization || null)
       }
     })
-
     return () => subscription.unsubscribe()
-  }, [form, selectedOrganizationId])
+  }, [form])
 
   return {
     formComponent,
