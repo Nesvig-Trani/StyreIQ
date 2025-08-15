@@ -26,7 +26,8 @@ export const DateInputHelper = <TFieldValues extends FieldValues>({
   const isRequired =
     !fieldData.name.toString().includes('?') &&
     !fieldData.name.toString().includes('optional') &&
-    fieldData.label?.includes('*')
+    typeof fieldData.label === 'string' &&
+    fieldData.label.includes('*')
 
   return (
     <FormField
