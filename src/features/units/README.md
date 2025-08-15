@@ -1,34 +1,34 @@
-# Organizations Module
+# Units Module
 
-This module manages organization-related functionality, including hierarchical organization management and access control.
+This module manages **unit-related** functionality, including hierarchical unit management and access control.
+
+> **Note:** This feature was previously named "Organization" and has been refactored to use "Unit" terminology throughout the codebase.  
+> All references to "organization" have been updated to "unit" for consistency.
 
 ## Structure
 
 ```
-organizations/
+units/
 ├── components/                    # UI Components
-│   ├── create-organization-form/  # Form for creating organizations
-│   ├── disable-organization/      # Disable organization dialog
-│   ├── org-form/                  # Organization form components
-│   ├── org-hierarchy/             # Hierarchy display
-│   ├── org-tree/                  # Tree visualization
-│   ├── organization-detail/       # Organization detail view
-│   ├── organization-table/        # Table listing organizations
-│   ├── organizations-cell/        # Cell for displaying orgs in tables
-│   └── update-organization-form/  # Form for updating organizations
+│   ├── create-unit-form/          # Form for creating units
+│   ├── disable-unit/              # Disable unit dialog
+│   ├── unit-cell/                 # Cell for displaying units in tables
+│   ├── unit-detail/               # Unit detail view
+│   ├── unit-table/                # Table listing units
+│   └── update-organization-form/  # (Legacy) Form for updating organization, now for units
 ├── constants/                     # Constants and configuration
-│   ├── organizationTypeLabels.ts
-│   ├── organizationTypeOptions.ts
+│   ├── unitTypeLabels.ts
+│   ├── unitTypeOptions.ts
 │   ├── statusConfig.ts
 │   └── typeConfig.ts
 ├── forms/                         # Form logic and components
-│   ├── create-organization/
-│   └── update-organization/
+│   ├── create-unit/
+│   └── update-unit/
 ├── hooks/                         # Custom React hooks
-│   ├── useCreateOrganization.ts
-│   ├── useOrganizationHierarchy.tsx
-│   ├── useOrganizationTable.tsx
-│   └── useUpdateOrganization.tsx
+│   ├── useCreateUnit.tsx
+│   ├── useUnitHierarchy.tsx
+│   ├── useUnitTable.tsx
+│   └── useUpdateUnit.tsx
 ├── plugins/                       # Payload CMS plugins
 │   ├── access/                    # Access control rules
 │   ├── collections/               # Database collections
@@ -37,13 +37,15 @@ organizations/
 │   └── utils/                     # Plugin utilities
 ├── schemas/                       # Validation schemas
 │   ├── index.ts
-│   ├── organizations.schemas.ts
-│   └── organization-access.schemas.ts
+│   ├── unit.schemas.ts
+│   └── unit-access.schemas.ts
 ├── services/                      # Business logic services
+│   └── getFilteredUsersFromUnit.ts
 ├── types/                         # TypeScript type definitions
 ├── utils/                         # Utility functions
 │   ├── calcPathAndDepth.ts
-│   ├── createOrgTree.ts
+│   ├── createUnitTree.ts
+│   ├── ensureStyreIQUnit.ts
 │   ├── filterTree.ts
 │   └── treePaginationAndFilter.ts
 └── index.ts                       # Module exports
@@ -51,105 +53,99 @@ organizations/
 
 ## Key Features
 
-### Organization Management
+### Unit Management
 
-- Create, update, and disable organizations
-- Hierarchical organization structure (parent/child relationships)
-- Organization type classification
+- Create, update, and disable units
+- Hierarchical unit structure (parent/child relationships)
+- Unit type classification
 - Status management (active, inactive, pending review)
 
-### Organization Access Control
+### Unit Access Control
 
-- User access management to organizations
+- User access management to units
 - Temporary and permanent access types
 - Date-based access control
 - Access validation and verification
 
 ### Main Components
 
-- **OrganizationTable**: Table view of organizations ([components/organization-table](components/organization-table))
-- **OrganizationDetail**: Detailed view of an organization ([components/organization-detail](components/organization-detail))
-- **OrganizationTree**: Hierarchical tree visualization ([components/org-tree](components/org-tree))
-- **CreateOrganizationForm**: Form for creating organizations ([components/create-organization-form](components/create-organization-form))
-- **UpdateOrganizationForm**: Form for updating organizations ([components/update-organization-form](components/update-organization-form))
-- **DisableOrganizationButton**: Dialog for disabling organizations ([components/disable-organization](components/disable-organization))
+- **UnitTable**: Table view of units ([components/unit-table](components/unit-table))
+- **UnitDetail**: Detailed view of a unit ([components/unit-detail](components/unit-detail))
+- **CreateUnitForm**: Form for creating units ([forms/create-unit](forms/create-unit))
+- **UpdateUnitForm**: Form for updating units ([forms/update-unit](forms/update-unit))
+- **DisableUnitButton**: Dialog for disabling units ([components/disable-unit](components/disable-unit))
 
 ### Hooks
 
-- **useCreateOrganization**: Form logic for creating organizations ([hooks/useCreateOrganization.ts](hooks/useCreateOrganization.ts))
-- **useUpdateOrganization**: Form logic for updating organizations ([hooks/useUpdateOrganization.tsx](hooks/useUpdateOrganization.tsx))
-- **useOrganizationHierarchy**: Hierarchy management and filtering ([hooks/useOrganizationHierarchy.tsx](hooks/useOrganizationHierarchy.tsx))
-- **useOrganizationTable**: Table column definitions ([hooks/useOrganizationTable.tsx](hooks/useOrganizationTable.tsx))
+- **useCreateUnit**: Form logic for creating units ([hooks/useCreateUnit.tsx](hooks/useCreateUnit.tsx))
+- **useUpdateUnit**: Form logic for updating units ([hooks/useUpdateUnit.tsx](hooks/useUpdateUnit.tsx))
+- **useUnitHierarchy**: Hierarchy management and filtering ([hooks/useUnitHierarchy.tsx](hooks/useUnitHierarchy.tsx))
+- **useUnitTable**: Table column definitions ([hooks/useUnitTable.tsx](hooks/useUnitTable.tsx))
 
 ### Schemas
 
-- **createOrgFormSchema**: Validation for creating organizations ([schemas/organizations.schemas.ts](schemas/organizations.schemas.ts))
-- **updateOrgFormSchema**: Validation for updating organizations ([schemas/organizations.schemas.ts](schemas/organizations.schemas.ts))
-- **organizationSearchSchema**: Search and filtering validation ([schemas/organizations.schemas.ts](schemas/organizations.schemas.ts))
-- **organizationAccess**: Access record validation ([schemas/organization-access.schemas.ts](schemas/organization-access.schemas.ts))
-- **updateOrgAccessSchema**: Access update validation ([schemas/organization-access.schemas.ts](schemas/organization-access.schemas.ts))
-- **UserAccessTypeEnum**: Access type enumeration ([schemas/organization-access.schemas.ts](schemas/organization-access.schemas.ts))
+- **createUnitFormSchema**: Validation for creating units ([schemas/unit.schemas.ts](schemas/unit.schemas.ts))
+- **updateUnitFormSchema**: Validation for updating units ([schemas/unit.schemas.ts](schemas/unit.schemas.ts))
+- **unitSearchSchema**: Search and filtering validation ([schemas/unit.schemas.ts](schemas/unit.schemas.ts))
+- **unitAccess**: Access record validation ([schemas/unit-access.schemas.ts](schemas/unit-access.schemas.ts))
+- **updateUnitAccessSchema**: Access update validation ([schemas/unit-access.schemas.ts](schemas/unit-access.schemas.ts))
+- **UserAccessTypeEnum**: Access type enumeration ([schemas/unit-access.schemas.ts](schemas/unit-access.schemas.ts))
 
 ### Plugins
 
-- **Collections**: Main organization and access collections ([plugins/collections](plugins/collections))
+- **Collections**: Main unit and access collections ([plugins/collections](plugins/collections))
 - **Endpoints**: API endpoints for create, update, disable ([plugins/endpoints](plugins/endpoints))
-- **Queries**: Database queries for organizations and access ([plugins/queries](plugins/queries))
+- **Queries**: Database queries for units and access ([plugins/queries](plugins/queries))
 - **Access Control**: Permission rules ([plugins/access](plugins/access))
 
 ### Utilities
 
-- **Tree and Hierarchy Utilities**: Tree creation, filtering, and pagination ([utils/createOrgTree.ts](utils/createOrgTree.ts), [utils/filterTree.ts](utils/filterTree.ts), [utils/treePaginationAndFilter.ts](utils/treePaginationAndFilter.ts))
+- **Tree and Hierarchy Utilities**: Tree creation, filtering, and pagination ([utils/createUnitTree.ts](utils/createUnitTree.ts), [utils/filterTree.ts](utils/filterTree.ts), [utils/treePaginationAndFilter.ts](utils/treePaginationAndFilter.ts))
 - **Path and Depth Calculation**: Prevent circular hierarchy ([utils/calcPathAndDepth.ts](utils/calcPathAndDepth.ts))
 
 ## Usage Examples
 
-### Creating an Organization
+### Creating a Unit
 
 ```typescript
-import { createOrgFormSchema } from '@/features/organizations'
+import { createUnitFormSchema } from '@/features/units'
 
 const formData = {
-  name: 'New Organization',
+  name: 'New Unit',
   type: 'department',
   admin: 'user-id',
   status: 'active',
 }
 
-const validatedData = createOrgFormSchema.parse(formData)
+const validatedData = createUnitFormSchema.parse(formData)
 ```
 
-### Managing Organization Access
+### Managing Unit Access
 
 ```typescript
-import { UserAccessTypeEnum, getOrganizationAccessByUserId } from '@/features/organizations'
+import { UserAccessTypeEnum, getUnitAccessByUserId } from '@/features/units'
 
-// Get user's organization access
-const access = await getOrganizationAccessByUserId({ id: userId })
+// Get user's unit access
+const access = await getUnitAccessByUserId({ id: userId })
 
 // Check access type
 const hasPermanentAccess = access.docs.some((acc) => acc.type === UserAccessTypeEnum.Permanent)
 ```
 
-### Using Organization Components
+### Using Unit Components
 
 ```tsx
-import { OrganizationTable, CreateOrganizationForm } from '@/features/organizations'
+import { UnitTable } from '@/features/units'
 
-// Display organization table
-<OrganizationTable data={orgs} pagination={pagination} />
-
-// Create organization form
-<CreateOrganizationForm userRole={userRole} users={users} organizations={orgs} />
+// Display unit table
+;<UnitTable data={units} pagination={pagination} />
 ```
 
 ## Migration Notes
 
-This module consolidates the previously separate `organization-access` feature into the main `organizations` module for better code organization and maintainability. All imports have been updated to use the new structure:
-
-- `@/features/organization-access` → `@/features/organizations`
-- Organization access schemas are now available as `@/features/organizations`
-- Access queries are exported from the main organizations module
+- All previous "organization" references (components, hooks, constants, etc.) have been renamed to "unit".
+- If you are upgrading from a previous version, update your imports and usage accordingly.
+- Organization access schemas and queries are now available as part of the main units module.
 
 ## Dependencies
 
