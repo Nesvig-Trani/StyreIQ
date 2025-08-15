@@ -73,7 +73,11 @@ function FormItem({ className, ...props }: React.ComponentProps<'div'>) {
 
   return (
     <FormItemContext.Provider value={{ id }}>
-      <div data-slot="form-item" className={cn('grid gap-2', className)} {...props} />
+      <div
+        data-slot="form-item"
+        className={cn('grid gap-2 min-h-[4.5rem]', className)}
+        {...props}
+      />
     </FormItemContext.Provider>
   )
 }
@@ -123,18 +127,18 @@ function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
   const { error, formMessageId } = useFormField()
   const body = error ? String(error?.message ?? '') : props.children
 
-  if (!body) {
-    return null
-  }
-
   return (
     <p
       data-slot="form-message"
       id={formMessageId}
-      className={cn('text-destructive text-sm', className)}
+      className={cn(
+        'text-sm min-h-[1.25rem] transition-opacity duration-200',
+        body ? 'text-destructive opacity-100' : 'opacity-0',
+        className,
+      )}
       {...props}
     >
-      {body}
+      {body || '\u00A0'} {/* Use non-breaking space when no content to maintain height */}
     </p>
   )
 }
