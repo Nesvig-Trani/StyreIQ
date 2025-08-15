@@ -1,7 +1,7 @@
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 
-export const ensureStyreIQOrganization = async () => {
+export const ensureStyreIQUnit = async () => {
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
 
