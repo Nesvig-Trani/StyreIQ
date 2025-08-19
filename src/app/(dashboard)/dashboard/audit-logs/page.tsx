@@ -40,9 +40,16 @@ export default async function AuditLogsPage(props: {
                   {auditLogs.totalDocs} Entries
                 </Badge>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Track system activities, user actions, and security events across your platform
-              </p>
+              <div className="space-y-3">
+                <h3 className="text-lg font-semibold">
+                  Stay audit-ready with a built-in record of actions.
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  The Audit Log shows who did what and when — whether at the central level or within
+                  a division or department. Use it to review changes, confirm accountability, and
+                  support compliance reporting.
+                </p>
+              </div>
             </div>
           </div>
         </div>

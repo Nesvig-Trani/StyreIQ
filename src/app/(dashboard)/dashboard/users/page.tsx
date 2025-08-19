@@ -42,9 +42,17 @@ export default async function UsersPage(props: {
                   {users.totalDocs} Total Users
                 </Badge>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Manage user accounts, permissions, and access across your unit
-              </p>
+              <div className="space-y-3">
+                <h3 className="text-lg font-semibold">
+                  Add everyone connected to your social media accounts.
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  This includes admins, back-ups, designers, student workers, or outside partners.
+                  Each user is tied to a unit in your org chart so you can see every point of
+                  access, track accountability, and reduce hidden risks. You can also assign
+                  trainings, policy attestations, and other governance tasks directly to users.
+                </p>
+              </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
               {user?.role === UserRolesEnum.SuperAdmin && (

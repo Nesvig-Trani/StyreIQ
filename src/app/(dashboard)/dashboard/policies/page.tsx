@@ -21,9 +21,14 @@ export default async function PoliciesPage() {
                   Current Version {lastPolicy?.version || 0}
                 </Badge>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Manage and edit your unit&#39;s usage and governance policies
-              </p>
+              <div className="space-y-3">
+                <h3 className="text-lg font-semibold">Keep your rules in one place.</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Upload and share policies, guidelines, and compliance documents so every unit has
+                  the same source of truth. When a new policy is added or updated, users are
+                  prompted to attest they&apos;ve read and acknowledged it.
+                </p>
+              </div>
             </div>
             <div className="w-full sm:w-auto">
               <PolicyHistory policies={policies.docs} />
