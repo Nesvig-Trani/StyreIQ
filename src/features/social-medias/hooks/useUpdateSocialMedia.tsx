@@ -263,7 +263,7 @@ export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocia
         try {
           await updateSocialMedia({ ...submitData, id: data.id })
           toast.success('Social media account updated successfully')
-          router.push('/dashboard/social-medias')
+          router.push('/dashboard/social-media-accounts')
         } catch (catchError) {
           if (catchError instanceof EndpointError) {
             toast.error(catchError.message)

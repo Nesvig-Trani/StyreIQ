@@ -235,7 +235,7 @@ export function useCreateSocialMedia({ users, organizations }: CreateSocialMedia
           form.reset()
           setSelectedOrganizationId(null)
           toast.success('Social media account created successfully')
-          router.push('/dashboard/social-medias')
+          router.push('/dashboard/social-media-accounts')
         } catch (catchError) {
           if (catchError instanceof EndpointError) {
             toast.error(catchError.message)
