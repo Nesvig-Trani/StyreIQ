@@ -42,12 +42,25 @@ export const getSocialMediaAccounts = async ({
       // Let DB handle case-insensitive comparison if your adapter supports it.
       platform: { in: platform },
     }),
-    ...(organization?.length && {
-      'organization.id': { in: organization.map(Number) },
-    }),
     ...(primaryAdmin?.length && {
       'primaryAdmin.id': { in: primaryAdmin.map(Number) },
     }),
+  }
+
+  if (user?.role === 'unit_admin') {
+    const organizationIds = (user.organizations ?? []).map((org) =>
+      typeof org === 'object' && org !== null && 'id' in org ? org.id : (org as number),
+    )
+    if (organization?.length) {
+      const filteredOrgIds = organization.map(Number).filter((id) => organizationIds.includes(id))
+      where['organization.id'] = { in: filteredOrgIds.length > 0 ? filteredOrgIds : [-1] }
+    } else {
+      where['organization.id'] = { in: organizationIds.length > 0 ? organizationIds : [-1] }
+    }
+  } else if (user?.role === 'social_media_manager') {
+    where['socialMediaManagers'] = { in: [user.id] }
+  } else if (organization?.length) {
+    where['organization.id'] = { in: organization.map(Number) }
   }
 
   const socialMedias = await payload.find({

@@ -25,7 +25,12 @@ function getEntityId<T extends { id: number }>(entity: number | T | undefined): 
   return null
 }
 
-export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocialMediaFormProps) {
+export function useUpdateSocialMedia({
+  data,
+  users,
+  organizations,
+  currentUser,
+}: UpdateSocialMediaFormProps) {
   const tree = createUnitTree(organizations as UnitWithDepth[])
   const router = useRouter()
 
@@ -302,8 +307,18 @@ export function useUpdateSocialMedia({ data, users, organizations }: UpdateSocia
       ],
       onSubmit: async (submitData) => {
         try {
-          await updateSocialMedia({ ...submitData, id: data.id })
-          toast.success('Social media account updated successfully')
+          const dataToSubmit = {
+            ...submitData,
+            ...(currentUser?.role === 'unit_admin' && { status: 'pending' }),
+          }
+
+          await updateSocialMedia({ ...dataToSubmit, id: data.id })
+          if (currentUser?.role === 'unit_admin') {
+            toast.success('Social media account updated successfully and is pending approval')
+          } else {
+            toast.success('Social media account updated successfully')
+          }
+
           router.push('/dashboard/social-media-accounts')
         } catch (catchError) {
           if (catchError instanceof EndpointError) {

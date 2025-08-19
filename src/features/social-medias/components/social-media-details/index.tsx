@@ -31,6 +31,7 @@ interface SocialMediaWithLogs extends SocialMedia {
 }
 
 interface SocialMediaDetailsDialogProps {
+  canEdit: boolean
   socialMedia: SocialMediaWithLogs
   trigger: React.ReactNode
   isOpen: boolean
@@ -45,6 +46,7 @@ export enum TabType {
 }
 
 export const SocialMediaDetailsDialog: React.FC<SocialMediaDetailsDialogProps> = ({
+  canEdit,
   socialMedia,
   trigger,
   isOpen,
@@ -84,7 +86,11 @@ export const SocialMediaDetailsDialog: React.FC<SocialMediaDetailsDialogProps> =
 
         <TabContent activeTab={activeTab} socialMedia={socialMedia} />
 
-        <DialogActions socialMedia={socialMedia} onClose={() => onOpenChange(false)} />
+        <DialogActions
+          canEdit={canEdit}
+          socialMedia={socialMedia}
+          onClose={() => onOpenChange(false)}
+        />
       </DialogContent>
     </Dialog>
   )

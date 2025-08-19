@@ -108,15 +108,13 @@ export function useSocialMediasTable({
     },
   ]
 
-  if (user?.role === 'super_admin') {
-    columns.push({
-      accessorKey: 'actions',
-      header: 'Actions',
-      cell: ({ row }) => {
-        return <ActionsRowSocialMedia socialMedia={row.original} user={user} />
-      },
-    })
-  }
+  columns.push({
+    accessorKey: 'actions',
+    header: 'Actions',
+    cell: ({ row }) => {
+      return <ActionsRowSocialMedia socialMedia={row.original} user={user} />
+    },
+  })
 
   return {
     columns,

@@ -66,6 +66,7 @@ export default async function UpdateSocialMediaPage({
                 users={users.docs}
                 organizations={organizations.docs}
                 user={user}
+                currentUser={user}
               />
             </div>
           </CardContent>
