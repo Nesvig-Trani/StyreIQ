@@ -50,9 +50,18 @@ export default async function UnitsPage(props: {
                     {organizations.totalDocs} Units
                   </Badge>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  Manage unit structure, hierarchy, and administrative settings
-                </p>
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold">
+                    Build the foundation of your governance system.
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Units represent parts of your organization and follow a parent → child
+                    hierarchy, just like your org chart. For example: <em>Organization</em> →{' '}
+                    <em>Division</em> →<em>Department</em>. Structuring this way keeps
+                    responsibility clear, prevents confusion, and ensures no account or team falls
+                    through the cracks.
+                  </p>
+                </div>
               </div>
               <div className="w-full sm:w-auto">
                 {user?.role === UserRolesEnum.SuperAdmin && (

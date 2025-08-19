@@ -42,9 +42,14 @@ export default async function FlagsPage(props: {
                   {flags.totalDocs} Total Flags
                 </Badge>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Monitor and manage risk flags detected in your unit
-              </p>
+              <div className="space-y-3">
+                <h3 className="text-lg font-semibold">Spot issues before they become problems.</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Flags help you identify risks like inactive accounts, missing connected users, or
+                  compliance gaps. Assign them to the right people so nothing is overlooked and
+                  everyone knows what needs attention.
+                </p>
+              </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
               <Button size="sm" className="w-full sm:w-auto">

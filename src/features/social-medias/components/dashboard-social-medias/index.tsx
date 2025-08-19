@@ -48,9 +48,17 @@ export const DashboardSocialMedias: React.FC<DashboardSocialMediasProps> = ({
                   {socialMedias.totalDocs} Accounts
                 </Badge>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Monitor and manage social media accounts, content, and engagement metrics
-              </p>
+              <div className="space-y-3">
+                <h3 className="text-lg font-semibold">
+                  See the full ecosystem of accounts tied to your organization.
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Each account is connected to the right unit and users so you know who&apos;s
+                  involved, where it fits, and how it contributes to your overall footprint. This
+                  visibility prevents blind spots and helps you respond quickly when roles change or
+                  risks appear.
+                </p>
+              </div>
             </div>
             <div className="w-full sm:w-auto">
               {user?.role &&
