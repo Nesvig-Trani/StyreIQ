@@ -83,6 +83,7 @@
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
     "ci:checks": "cross-env NODE_OPTIONS=--no-deprecation next lint && tsc --noEmit",
     "db:create": "yarn run payload migrate:create",
+    "db:generate": "yarn run payload generate:db-schema",
     "db:migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
