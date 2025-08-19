@@ -221,13 +221,31 @@ export const getUsers = async ({
   const { user } = await getAuthUser()
   const { payload } = await getPayloadContext()
 
+  // Get the user's organization IDs
+  const userOrgIds =
+    user?.organizations?.map((org) => {
+      if (typeof org === 'object' && org !== null && 'id' in org) {
+        return org.id
+      }
+      return org
+    }) || []
+
+  const where: Where = {
+    'organizations.id': {
+      in: userOrgIds,
+    },
+  }
+
   const users = await payload.find({
     collection: 'users',
     page: pageIndex,
     limit: pageSize,
+    where,
     overrideAccess: false,
     user,
   })
+
+  console.log('getUsers', users)
 
   return users
 }

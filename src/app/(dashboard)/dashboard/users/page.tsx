@@ -1,7 +1,7 @@
 'use server'
 import React from 'react'
 import { Card, CardContent } from '@/shared/components/ui/card'
-import { UserRolesEnum, userSearchSchema, WelcomeEmailSchema } from '@/features/users/schemas'
+import { userSearchSchema, WelcomeEmailSchema } from '@/features/users/schemas'
 import { UserTable } from '@/features/users/components/user-table'
 import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
@@ -69,7 +69,7 @@ export default async function UsersPage(props: {
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-              {user?.role === UserRolesEnum.SuperAdmin && (
+              {access.can('create', 'USERS') && (
                 <>
                   <WelcomeEmailModal email={welcomeEmail as WelcomeEmailSchema} />
                   <Button size="sm" variant="outline" className="w-full sm:w-auto">
