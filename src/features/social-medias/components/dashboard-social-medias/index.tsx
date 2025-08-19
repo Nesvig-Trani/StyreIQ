@@ -13,7 +13,7 @@ import { Badge } from '@/shared/components/ui/badge'
 import type { PaginatedDocs } from 'payload'
 import type { AuditLog, Organization, SocialMedia, User } from '@/types/payload-types'
 
-import { UserRolesEnum } from '@/features/users'
+import { useAccess } from '@/shared/hooks/use-access'
 
 export type SocialMediaWithAuditLogs = SocialMedia & {
   auditLogs?: AuditLog[]
@@ -24,7 +24,7 @@ export type SocialMediasPaginated = Omit<PaginatedDocs<SocialMedia>, 'docs'> & {
 }
 
 export type DashboardSocialMediasProps = {
-  user: User | null
+  user: User
   socialMedias: SocialMediasPaginated
   organizations: Organization[]
   users: User[]
@@ -36,6 +36,8 @@ export const DashboardSocialMedias: React.FC<DashboardSocialMediasProps> = ({
   organizations,
   users,
 }) => {
+  const { can } = useAccess(user)
+
   return (
     <Card>
       <CardContent>
@@ -61,21 +63,18 @@ export const DashboardSocialMedias: React.FC<DashboardSocialMediasProps> = ({
               </div>
             </div>
             <div className="w-full sm:w-auto">
-              {user?.role &&
-                [UserRolesEnum.SuperAdmin, UserRolesEnum.UnitAdmin].includes(
-                  user.role as UserRolesEnum,
-                ) && (
-                  <Button size="sm" className="w-full sm:w-auto">
-                    <Link
-                      title="create social media account"
-                      className="flex items-center justify-center gap-2"
-                      href="/dashboard/social-media-accounts/create"
-                    >
-                      <CirclePlus className="h-4 w-4" />
-                      Create Social Media Account
-                    </Link>
-                  </Button>
-                )}
+              {can('create', 'SOCIAL_MEDIAS') && (
+                <Button size="sm" className="w-full sm:w-auto">
+                  <Link
+                    title="create social media account"
+                    className="flex items-center justify-center gap-2"
+                    href="/dashboard/social-media-accounts/create"
+                  >
+                    <CirclePlus className="h-4 w-4" />
+                    Create Social Media Account
+                  </Link>
+                </Button>
+              )}
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { PlatformEnum } from '@/features/social-medias'
+import { PlatformEnum } from '@/features/social-medias/schemas'
 
 export const platformOptions = [
   { label: 'Facebook', value: PlatformEnum.Facebook },

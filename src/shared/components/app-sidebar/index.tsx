@@ -1,14 +1,6 @@
 'use client'
 import * as React from 'react'
-import {
-  Building2Icon,
-  FlagIcon,
-  HistoryIcon,
-  LogOutIcon,
-  ScrollText,
-  Share2Icon,
-  UsersIcon,
-} from 'lucide-react'
+import { LogOutIcon } from 'lucide-react'
 
 import {
   Sidebar,
@@ -22,49 +14,22 @@ import {
 } from '@/shared/components/ui/sidebar'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { UserRolesEnum } from '@/features/users'
-
-const data = {
-  navMain: [
-    {
-      title: 'Units',
-      url: '/dashboard/units',
-      icon: Building2Icon,
-    },
-    {
-      title: 'Users',
-      url: '/dashboard/users',
-      icon: UsersIcon,
-    },
-    {
-      title: 'Social Media',
-      url: '/dashboard/social-media-accounts',
-      icon: Share2Icon,
-    },
-    {
-      title: 'Policy',
-      url: '/dashboard/policies',
-      icon: ScrollText,
-    },
-    {
-      title: 'Risk Flags',
-      url: '/dashboard/flags',
-      icon: FlagIcon,
-    },
-    {
-      title: 'Audit Log',
-      url: '/dashboard/audit-logs',
-      icon: HistoryIcon,
-    },
-  ],
-}
+import { User } from '@/types/payload-types'
+import { useAccess } from '@/shared/hooks/use-access'
+import { mainNavigation } from './nav-config'
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  userRole?: UserRolesEnum | null
+  user: User
 }
 
-export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
+export function AppSidebar({ user, ...props }: AppSidebarProps) {
   const router = useRouter()
+  const { can } = useAccess(user)
+
+  const allowedNavItems = mainNavigation.filter((item) =>
+    can(item.permission.action, item.permission.resource),
+  )
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -83,30 +48,18 @@ export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            {data.navMain
-              .filter((item) => {
-                if (item.title === 'Policy' && userRole !== UserRolesEnum.SuperAdmin) {
-                  return false
-                }
-                if (item.title === 'Users' && userRole === UserRolesEnum.SocialMediaManager) {
-                  return false
-                }
-                return !(
-                  item.title === 'Audit Log' && userRole === UserRolesEnum.SocialMediaManager
-                )
-              })
-              .map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <Link href={item.url}>
-                    <SidebarMenuButton>
-                      {item.icon && <item.icon />}
-                      <span className="font-medium cursor-pointer text-xs lg:text-sm">
-                        {item.title}
-                      </span>
-                    </SidebarMenuButton>
-                  </Link>
-                </SidebarMenuItem>
-              ))}
+            {allowedNavItems.map((item) => (
+              <SidebarMenuItem key={item.title}>
+                <Link href={item.url}>
+                  <SidebarMenuButton>
+                    {item.icon && <item.icon />}
+                    <span className="font-medium cursor-pointer text-xs lg:text-sm">
+                      {item.title}
+                    </span>
+                  </SidebarMenuButton>
+                </Link>
+              </SidebarMenuItem>
+            ))}
           </SidebarMenu>
         </SidebarGroup>
         <SidebarGroup className="mt-auto">

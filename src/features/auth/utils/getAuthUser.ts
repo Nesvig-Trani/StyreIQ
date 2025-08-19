@@ -11,6 +11,13 @@ export async function getAuthUser() {
   const { payload } = await getPayloadContext()
   const { user } = await payload.auth({ headers })
 
+  if (!user) {
+    return {
+      headers,
+      user: null,
+    }
+  }
+
   return {
     headers,
     user,

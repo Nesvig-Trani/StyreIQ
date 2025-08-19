@@ -13,6 +13,15 @@ import { getSocialMediaAuditLogs } from '@/features/audit-log/plugins/queries'
 
 export default async function SocialMediasPage(props: AppPageProps) {
   const { user } = await getAuthUser()
+  if (!user) {
+    return (
+      <div className="p-4">
+        <p className="text-center text-muted-foreground">
+          You must be logged in to view this page.
+        </p>
+      </div>
+    )
+  }
 
   const searchParams = await props.searchParams
 
