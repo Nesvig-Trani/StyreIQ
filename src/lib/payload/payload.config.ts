@@ -50,6 +50,7 @@ export default buildConfig({
       connectionString: process.env.POSTGRES_URL || '',
     },
     push: false,
+    generateSchemaOutputFile: path.resolve(dirname, '../../types/payload-db-schema.ts'),
   }),
   sharp,
   plugins: [
