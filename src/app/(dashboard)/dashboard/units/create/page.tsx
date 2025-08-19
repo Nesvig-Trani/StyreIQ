@@ -7,9 +7,21 @@ import Link from 'next/link'
 import { getAllUnits } from '@/features/units/plugins/queries'
 import { Button } from '@/shared/components/ui/button'
 import { ensureStyreIQOrganization } from '@/features/units'
+import { AccessControl } from '@/shared/utils/rbac'
 
 export default async function CreateUnit() {
   const { user } = await getAuthUser()
+  if (!user) {
+    return (
+      <div className="p-4">
+        <p className="text-center text-muted-foreground">
+          You must be logged in to view this page.
+        </p>
+      </div>
+    )
+  }
+
+  const access = new AccessControl(user)
 
   // Ensure StyreIQ organization exists
   await ensureStyreIQOrganization()
@@ -35,7 +47,7 @@ export default async function CreateUnit() {
     throw new Error('StyreIQ organization not found')
   }
 
-  if (organizations.docs.length === 0 && user?.role !== UserRolesEnum.SuperAdmin) {
+  if (organizations.docs.length === 0 && access.can('create', 'UNITS')) {
     return (
       <div>
         <h3>

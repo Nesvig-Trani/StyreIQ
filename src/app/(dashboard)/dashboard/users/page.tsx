@@ -12,6 +12,7 @@ import { Badge } from '@/shared/components/ui/badge'
 import WelcomeEmailModal from '@/features/users/components/welcome-email-modal'
 import { getLastWelcomeEmail } from '@/features/welcome-emails/plugins/queries'
 import { getUsers } from '@/features/users/plugins/queries'
+import { AccessControl } from '@/shared/utils/rbac'
 
 export default async function UsersPage(props: {
   searchParams?: Promise<{
@@ -19,6 +20,19 @@ export default async function UsersPage(props: {
   }>
 }) {
   const { user } = await getAuthUser()
+  if (!user) {
+    return (
+      <Card>
+        <CardContent>
+          <p className="text-center text-muted-foreground">
+            You must be logged in to view this page.
+          </p>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  const access = new AccessControl(user)
   const searchParams = await props.searchParams
 
   const parsedParams = parseSearchParamsWithSchema(searchParams, userSearchSchema)
@@ -58,16 +72,18 @@ export default async function UsersPage(props: {
                 </>
               )}
 
-              <Button size="sm" className="w-full sm:w-auto">
-                <Link
-                  className={'flex items-center justify-center gap-2'}
-                  href={'/dashboard/users/create'}
-                  prefetch
-                >
-                  <CirclePlus className="h-4 w-4" />
-                  Create User
-                </Link>
-              </Button>
+              {access.can('create', 'USERS') ? (
+                <Button size="sm" className="w-full sm:w-auto">
+                  <Link
+                    className={'flex items-center justify-center gap-2'}
+                    href={'/dashboard/users/create'}
+                    prefetch
+                  >
+                    <CirclePlus className="h-4 w-4" />
+                    Create User
+                  </Link>
+                </Button>
+              ) : null}
             </div>
           </div>
         </div>

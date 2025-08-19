@@ -5,12 +5,13 @@ import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
 import { parseSearchParamsWithSchema } from '@/shared/utils/parseParamsServer'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
-import { getAllUsers, UserRolesEnum } from '@/features/users'
+import { getAllUsers } from '@/features/users'
 import UnitHierarchy from '@/shared/components/organization-hierarchy'
 import { getUnitsWithFilter } from '@/features/units/plugins/queries'
 import { treePaginationAndFilter } from '@/features/units/utils/treePaginationAndFilter'
 import { CirclePlus } from 'lucide-react'
 import { Badge } from '@/shared/components/ui/badge'
+import { AccessControl } from '@/shared/utils/rbac'
 
 export default async function UnitsPage(props: {
   searchParams?: Promise<{
@@ -19,6 +20,19 @@ export default async function UnitsPage(props: {
 }) {
   const searchParams = await props.searchParams
   const { user } = await getAuthUser()
+  if (!user) {
+    return (
+      <Card>
+        <CardContent>
+          <p className="text-center text-muted-foreground">
+            You must be logged in to view this page.
+          </p>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  const access = new AccessControl(user)
   const parsedParams = parseSearchParamsWithSchema(searchParams, unitSearchSchema)
 
   const organizations = await getUnitsWithFilter({
@@ -55,7 +69,7 @@ export default async function UnitsPage(props: {
                 </p>
               </div>
               <div className="w-full sm:w-auto">
-                {user?.role === UserRolesEnum.SuperAdmin && (
+                {access.can('create', 'UNITS') && (
                   <Button size="sm" className="w-full sm:w-auto">
                     <Link
                       className="flex items-center justify-center gap-2"

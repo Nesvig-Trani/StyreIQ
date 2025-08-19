@@ -36,10 +36,19 @@ export default async function DashboardLayout(props: { children: React.ReactNode
       open = true
     }
   }
+  if (!user) {
+    return (
+      <div className="p-4">
+        <p className="text-center text-muted-foreground">
+          You must be logged in to view this page.
+        </p>
+      </div>
+    )
+  }
 
   return (
     <SidebarProvider>
-      <AppSidebar userRole={user?.role as UserRolesEnum} />
+      <AppSidebar user={user} />
       <SidebarInset>
         <header className="flex h-14 shrink-0 items-center gap-2 border-b bg-background px-3 sm:px-4 lg:hidden">
           <SidebarTrigger />
