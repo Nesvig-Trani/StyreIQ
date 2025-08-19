@@ -182,6 +182,7 @@ export const statusColorMap: Record<SocialMediaStatusEnum, string> = {
 export type CreateSocialMediaFormProps = {
   users: User[]
   organizations: Organization[]
+  currentUser: User | null
 }
 
 export type UpdateSocialMediaFormProps = {

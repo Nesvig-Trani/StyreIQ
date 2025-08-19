@@ -62,7 +62,11 @@ export default async function CreateSocialMediaPage() {
           </CardHeader>
           <CardContent className="p-6">
             <div className="max-w-4xl">
-              <CreateSocialMediaForm users={users.docs} organizations={organizations.docs} />
+              <CreateSocialMediaForm
+                users={users.docs}
+                organizations={organizations.docs}
+                currentUser={user}
+              />
             </div>
           </CardContent>
         </Card>

@@ -50,7 +50,18 @@ export const ActionsRowSocialMedia: React.FC<ActionsRowSocialMediaProps> = ({
 
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false)
 
+  const isSuperAdmin = user?.role === UserRolesEnum.SuperAdmin
+  const isUnitAdmin = user?.role === UserRolesEnum.UnitAdmin
+  const isSocialMediaManager = user?.role === UserRolesEnum.SocialMediaManager
+
+  const canViewDetails = isSuperAdmin || isUnitAdmin || isSocialMediaManager
+  const canEdit = isSuperAdmin || isUnitAdmin
+  const canApproveActivate = isSuperAdmin
+  const canToggleStatus = isSuperAdmin
+
   const renderActionButtons = () => {
+    if (!canApproveActivate) return null
+
     switch (stateSocialMedia.status) {
       case SocialMediaStatusEnum.PendingApproval:
         return (
@@ -71,65 +82,73 @@ export const ActionsRowSocialMedia: React.FC<ActionsRowSocialMediaProps> = ({
 
   return (
     <div className="flex gap-4 items-center">
-      {(stateSocialMedia.status === SocialMediaStatusEnum.Active ||
-        stateSocialMedia.status === SocialMediaStatusEnum.Inactive) && (
-        <Switch
-          checked={stateSocialMedia.status === SocialMediaStatusEnum.Active}
-          onCheckedChange={onChangeStatus}
-          disabled={
-            user?.role !== UserRolesEnum.SuperAdmin &&
-            stateSocialMedia.status === SocialMediaStatusEnum.Inactive
+      {canToggleStatus &&
+        (stateSocialMedia.status === SocialMediaStatusEnum.Active ||
+          stateSocialMedia.status === SocialMediaStatusEnum.Inactive) && (
+          <Switch
+            checked={stateSocialMedia.status === SocialMediaStatusEnum.Active}
+            onCheckedChange={onChangeStatus}
+            disabled={
+              user?.role !== UserRolesEnum.SuperAdmin &&
+              stateSocialMedia.status === SocialMediaStatusEnum.Inactive
+            }
+          />
+        )}
+
+      {canViewDetails && (
+        <SocialMediaDetailsDialog
+          socialMedia={socialMedia}
+          canEdit={canEdit}
+          isOpen={isDetailsDialogOpen}
+          onOpenChange={setIsDetailsDialogOpen}
+          trigger={
+            <Button size="icon" aria-label="View social media details">
+              <EyeIcon className="h-4 w-4" />
+            </Button>
           }
         />
       )}
 
-      <SocialMediaDetailsDialog
-        socialMedia={socialMedia}
-        isOpen={isDetailsDialogOpen}
-        onOpenChange={setIsDetailsDialogOpen}
-        trigger={
-          <Button size="icon" aria-label="View social media details">
-            <EyeIcon className="h-4 w-4" />
-          </Button>
-        }
-      />
-
-      <Button className="!text-white" asChild size="icon" aria-label="Edit social media">
-        <Link href={`/dashboard/social-media-accounts/update/${socialMedia.id}`}>
-          <PencilIcon className="h-4 w-4" />
-        </Link>
-      </Button>
+      {canEdit && (
+        <Button className="!text-white" asChild size="icon" aria-label="Edit social media">
+          <Link href={`/dashboard/social-media-accounts/update/${socialMedia.id}`}>
+            <PencilIcon className="h-4 w-4" />
+          </Link>
+        </Button>
+      )}
 
       {renderActionButtons()}
 
-      <Dialog open={showDeactivateModal} onOpenChange={setShowDeactivateModal}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>You&#39;re about to deactivate this social media account</DialogTitle>
-          </DialogHeader>
-          <DialogDescription>
-            If you deactivate this social media account, only the super admin can reactivate it,
-            please provide a reason for deactivation
-          </DialogDescription>
-          <Textarea
-            value={deactivationReason}
-            onChange={handleReasonChange}
-            placeholder="Please provide a reason..."
-          />
+      {canToggleStatus && (
+        <Dialog open={showDeactivateModal} onOpenChange={setShowDeactivateModal}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>You&#39;re about to deactivate this social media account</DialogTitle>
+            </DialogHeader>
+            <DialogDescription>
+              If you deactivate this social media account, only the super admin can reactivate it,
+              please provide a reason for deactivation
+            </DialogDescription>
+            <Textarea
+              value={deactivationReason}
+              onChange={handleReasonChange}
+              placeholder="Please provide a reason..."
+            />
 
-          <DialogFooter>
-            <Button variant="secondary" onClick={handleDeactivateCancel}>
-              Cancel
-            </Button>
-            <Button
-              onClick={handleDeactivateConfirm}
-              disabled={deactivationReason.trim().length <= 10}
-            >
-              Confirm
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+            <DialogFooter>
+              <Button variant="secondary" onClick={handleDeactivateCancel}>
+                Cancel
+              </Button>
+              <Button
+                onClick={handleDeactivateConfirm}
+                disabled={deactivationReason.trim().length <= 10}
+              >
+                Confirm
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   )
 }

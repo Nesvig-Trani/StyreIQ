@@ -17,7 +17,11 @@ import { useRouter } from 'next/navigation'
 import { platformOptions } from '@/features/social-medias/constants/platformOptions'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-export function useCreateSocialMedia({ users, organizations }: CreateSocialMediaFormProps) {
+export function useCreateSocialMedia({
+  users,
+  organizations,
+  currentUser,
+}: CreateSocialMediaFormProps) {
   const tree = createUnitTree(organizations as UnitWithDepth[])
   const router = useRouter()
 
@@ -272,10 +276,19 @@ export function useCreateSocialMedia({ users, organizations }: CreateSocialMedia
       ],
       onSubmit: async (submitData) => {
         try {
-          await createSocialMedia(submitData)
+          const dataToSubmit = {
+            ...submitData,
+            ...(currentUser?.role === 'unit_admin' && { status: 'pending' }),
+          }
+
+          await createSocialMedia(dataToSubmit)
           form.reset()
           setSelectedOrganizationId(null)
-          toast.success('Social media account created successfully')
+          if (currentUser?.role === 'unit_admin') {
+            toast.success('Social media account created successfully and is pending approval')
+          } else {
+            toast.success('Social media account created successfully')
+          }
           router.push('/dashboard/social-media-accounts')
         } catch (catchError) {
           if (catchError instanceof EndpointError) {

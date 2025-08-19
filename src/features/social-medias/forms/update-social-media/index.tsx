@@ -8,12 +8,14 @@ export const UpdateSocialMediaForm: React.FC<UpdateSocialMediaFormProps> = ({
   users,
   organizations,
   user,
+  currentUser,
 }) => {
   const { formComponent } = useUpdateSocialMedia({
     data,
     users,
     organizations,
     user,
+    currentUser,
   })
 
   return <div>{formComponent}</div>
