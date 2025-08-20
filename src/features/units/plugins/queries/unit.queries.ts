@@ -51,6 +51,22 @@ export const getUnitsWithFilter = async ({ status, type }: { status?: string; ty
     }
   }
 
+  if (user?.role === 'super_admin') {
+    // If the user is a super admin, return all organizations with the specified filters
+    return payload.find({
+      collection: 'organization',
+      depth: 1,
+      overrideAccess: false,
+      user,
+      limit: 0,
+      sort: ['createdAt'],
+      where: {
+        ...(status ? { status: { equals: status } } : {}),
+        ...(type ? { type: { equals: type } } : {}),
+      },
+    })
+  }
+
   // First, get the user's organizations
   const userOrgIds = await payload.db.drizzle.query.organization.findMany({
     where: (orgs, { inArray }) =>
@@ -64,12 +80,19 @@ export const getUnitsWithFilter = async ({ status, type }: { status?: string; ty
 
   // Get all organizations that are either user's orgs or their children
   const organizations = await payload.db.drizzle.query.organization.findMany({
-    where: (orgs, { inArray }) => {
-      return inArray(
-        orgs.id,
-        userOrgIds.map((org) => org.id),
-      )
-    },
+    where: (orgs, { or, inArray }) =>
+      or(
+        inArray(
+          // Get organizations that are directly assigned to the user
+          orgs.id,
+          userOrgIds.map((org) => org.id),
+        ),
+        inArray(
+          // Get organizations that are children of the user's orgs
+          orgs.parentOrg,
+          userOrgIds.map((org) => org.id),
+        ),
+      ),
   })
 
   // Create a where clause that includes all user's orgs and their children

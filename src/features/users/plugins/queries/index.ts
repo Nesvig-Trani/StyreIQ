@@ -221,6 +221,30 @@ export const getUsers = async ({
   const { user } = await getAuthUser()
   const { payload } = await getPayloadContext()
 
+  if (!user) {
+    return {
+      docs: [],
+      hasNextPage: false,
+      hasPrevPage: false,
+      totalDocs: 0,
+      totalPages: 0,
+      limit: 0,
+      pagingCounter: 0,
+    }
+  }
+
+  // If the user is a super admin, return all users
+  if (user.role === 'super_admin') {
+    return payload.find({
+      collection: 'users',
+      page: pageIndex,
+      limit: pageSize,
+      depth: 1,
+      overrideAccess: false,
+      user,
+    })
+  }
+
   // Get the user's organization IDs
   const userOrgIds =
     user?.organizations?.map((org) => {
