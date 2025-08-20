@@ -1,7 +1,14 @@
 import { getUserById, UpdateUserForm } from '@/features/users'
 import { getAllUnits } from '@/features/units/plugins/queries'
+import { checkUserUpdateAccess } from '@/shared'
 
 export default async function UpdateUser({ params }: { params: Promise<{ id: string }> }) {
+  const { user: _user, accessDenied, component } = await checkUserUpdateAccess()
+
+  if (accessDenied) {
+    return component
+  }
+
   const { id } = await params
   if (!id) return <div>404</div>
 

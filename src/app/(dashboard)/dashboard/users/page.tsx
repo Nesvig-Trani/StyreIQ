@@ -6,33 +6,25 @@ import { UserTable } from '@/features/users/components/user-table'
 import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
 import { parseSearchParamsWithSchema } from '@/shared/utils/parseParamsServer'
-import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { CirclePlus } from 'lucide-react'
 import { Badge } from '@/shared/components/ui/badge'
 import WelcomeEmailModal from '@/features/users/components/welcome-email-modal'
 import { getLastWelcomeEmail } from '@/features/welcome-emails/plugins/queries'
 import { getUsers } from '@/features/users/plugins/queries'
 import { AccessControl } from '@/shared/utils/rbac'
+import { checkUserReadAccess } from '@/shared'
 
 export default async function UsersPage(props: {
   searchParams?: Promise<{
     [key: string]: string
   }>
 }) {
-  const { user } = await getAuthUser()
-  if (!user) {
-    return (
-      <Card>
-        <CardContent>
-          <p className="text-center text-muted-foreground">
-            You must be logged in to view this page.
-          </p>
-        </CardContent>
-      </Card>
-    )
+  const { user, accessDenied, component } = await checkUserReadAccess()
+
+  if (accessDenied) {
+    return component
   }
 
-  const access = new AccessControl(user)
   const searchParams = await props.searchParams
 
   const parsedParams = parseSearchParamsWithSchema(searchParams, userSearchSchema)
@@ -43,6 +35,7 @@ export default async function UsersPage(props: {
   })
 
   const welcomeEmail = await getLastWelcomeEmail()
+  const access = new AccessControl(user!)
 
   return (
     <Card>

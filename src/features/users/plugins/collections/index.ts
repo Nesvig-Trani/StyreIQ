@@ -10,6 +10,7 @@ import {
   userResetPassword,
 } from '../endpoints'
 import { canReadUsers } from '../access'
+import { AccessControl } from '@/shared/utils/rbac'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -19,6 +20,21 @@ export const Users: CollectionConfig = {
   auth: true,
   access: {
     read: canReadUsers,
+    create: async ({ req: { user } }) => {
+      if (!user) return false
+      const access = new AccessControl(user)
+      return access.can('create', 'USERS')
+    },
+    update: async ({ req: { user } }) => {
+      if (!user) return false
+      const access = new AccessControl(user)
+      return access.can('update', 'USERS')
+    },
+    delete: async ({ req: { user } }) => {
+      if (!user) return false
+      const access = new AccessControl(user)
+      return access.can('delete', 'USERS')
+    },
   },
   fields: [
     {
