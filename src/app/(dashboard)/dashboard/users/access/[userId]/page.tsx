@@ -3,11 +3,18 @@ import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle, UnitAccessForm } from '@/shared'
 import { getUserById } from '@/features/users'
 import { getUnitAccessByUserId } from '@/features/units'
+import { checkUserUpdateAccess } from '@/shared'
 
 async function UserAccessPage({ params }: { params: Promise<{ userId: string }> }) {
+  const { user: _user, accessDenied, component } = await checkUserUpdateAccess()
+
+  if (accessDenied) {
+    return component
+  }
+
   const { userId } = await params
 
-  const user = await getUserById({ id: Number(userId) })
+  const userData = await getUserById({ id: Number(userId) })
   const userOrgs = await getUnitAccessByUserId({ id: Number(userId) })
 
   return (
@@ -19,10 +26,10 @@ async function UserAccessPage({ params }: { params: Promise<{ userId: string }> 
         <CardContent>
           <p>
             <b>Name: </b>
-            {user.name}
+            {userData.name}
           </p>
           <p>
-            <b>Email: </b> {user.email}
+            <b>Email: </b> {userData.email}
           </p>
           <UnitAccessForm initialAccess={userOrgs.docs} />
         </CardContent>

@@ -1,11 +1,15 @@
 import React from 'react'
 import { CreateUserForm, UserRolesEnum } from '@/features/users'
-import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { Organization } from '@/types/payload-types'
 import { getAllUnits } from '@/features/units/plugins/queries'
+import { checkUserCreateAccess } from '@/shared'
 
 export default async function CreateUserPage() {
-  const { user } = await getAuthUser()
+  const { user, accessDenied, component } = await checkUserCreateAccess()
+
+  if (accessDenied) {
+    return component
+  }
 
   const organizations = await getAllUnits()
 
