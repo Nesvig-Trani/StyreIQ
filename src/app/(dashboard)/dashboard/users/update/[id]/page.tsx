@@ -1,10 +1,6 @@
 import { getUserById, UpdateUserForm } from '@/features/users'
-import { getAllUnits } from '@/features/units/plugins/queries'
 import { checkUserUpdateAccess } from '@/shared'
-import { buildAccessibleUnitFilter } from '@/features/units/plugins/utils'
-import { getPayloadContext } from '@/shared/utils/getPayloadContext'
-import { UserRolesEnum } from '@/features/users'
-import { Organization } from '@/types/payload-types'
+import { getAccessibleOrganizationsForUser } from '@/shared'
 
 export default async function UpdateUser({ params }: { params: Promise<{ id: string }> }) {
   const { user, accessDenied, component } = await checkUserUpdateAccess()
@@ -24,25 +20,7 @@ export default async function UpdateUser({ params }: { params: Promise<{ id: str
       </div>
     )
 
-  let organizations: Organization[] = []
-
-  if (user?.role === UserRolesEnum.SuperAdmin) {
-    const allUnits = await getAllUnits()
-    organizations = allUnits.docs
-  } else {
-    const { payload } = await getPayloadContext()
-    const userOrgs = user?.organizations as Organization[]
-
-    if (userOrgs && userOrgs.length > 0) {
-      const whereOrg = buildAccessibleUnitFilter({ orgs: userOrgs })
-      const accessibleUnits = await payload.find({
-        collection: 'organization',
-        where: whereOrg,
-        limit: 0,
-      })
-      organizations = accessibleUnits.docs
-    }
-  }
+  const organizations = await getAccessibleOrganizationsForUser(user)
 
   return (
     <div>

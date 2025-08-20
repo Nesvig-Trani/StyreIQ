@@ -4,10 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle, UnitAccessForm } from '@/shar
 import { getUserById } from '@/features/users'
 import { getUnitAccessByUserId } from '@/features/units'
 import { checkUserUpdateAccess } from '@/shared'
-import { buildAccessibleUnitFilter } from '@/features/units/plugins/utils'
-import { getPayloadContext } from '@/shared/utils/getPayloadContext'
+import { getAccessibleOrgIdsForUser } from '@/shared'
 import { UserRolesEnum } from '@/features/users'
-import { Organization } from '@/types/payload-types'
 
 async function UserAccessPage({ params }: { params: Promise<{ userId: string }> }) {
   const { user, accessDenied, component } = await checkUserUpdateAccess()
@@ -24,28 +22,16 @@ async function UserAccessPage({ params }: { params: Promise<{ userId: string }> 
   let filteredUserOrgs = userOrgs
 
   if (user?.role === UserRolesEnum.UnitAdmin) {
-    const { payload } = await getPayloadContext()
-    const adminOrgs = user?.organizations as Organization[]
+    const accessibleOrgIds = await getAccessibleOrgIdsForUser(user)
 
-    if (adminOrgs && adminOrgs.length > 0) {
-      const whereOrg = buildAccessibleUnitFilter({ orgs: adminOrgs })
-      const accessibleUnits = await payload.find({
-        collection: 'organization',
-        where: whereOrg,
-        limit: 0,
-      })
-
-      const accessibleOrgIds = accessibleUnits.docs.map((org) => org.id)
-
-      filteredUserOrgs = {
-        ...userOrgs,
-        docs: userOrgs.docs.filter((access) => {
-          if (!access.organization) return false
-          const orgId =
-            typeof access.organization === 'object' ? access.organization.id : access.organization
-          return accessibleOrgIds.includes(orgId)
-        }),
-      }
+    filteredUserOrgs = {
+      ...userOrgs,
+      docs: userOrgs.docs.filter((access) => {
+        if (!access.organization) return false
+        const orgId =
+          typeof access.organization === 'object' ? access.organization.id : access.organization
+        return accessibleOrgIds.includes(orgId)
+      }),
     }
   }
 

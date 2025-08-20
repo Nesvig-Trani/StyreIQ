@@ -11,8 +11,8 @@ import {
 } from '../endpoints'
 import { canReadUsers } from '../access'
 import { AccessControl } from '@/shared/utils/rbac'
-import { buildAccessibleUnitFilter } from '@/features/units/plugins/utils'
 import { Organization } from '@/types/payload-types'
+import { getAccessibleOrgIdsForUser } from '@/shared'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -22,7 +22,7 @@ export const Users: CollectionConfig = {
   auth: true,
   access: {
     read: canReadUsers,
-    create: async ({ req: { user, payload }, data }) => {
+    create: async ({ req: { user, payload: _payload }, data }) => {
       if (!user) return false
       const access = new AccessControl(user)
 
@@ -35,17 +35,8 @@ export const Users: CollectionConfig = {
 
         if (!data || !data.organizations || !Array.isArray(data.organizations)) return false
 
-        const orgs = user.organizations as Organization[]
-        if (!orgs || orgs.length === 0) return false
-
-        const whereOrg = buildAccessibleUnitFilter({ orgs })
-        const accessibleOrganizations = await payload.find({
-          collection: 'organization',
-          where: whereOrg,
-          limit: 0,
-        })
-
-        const accessibleOrgIds = accessibleOrganizations.docs.map((org) => org.id)
+        const accessibleOrgIds = await getAccessibleOrgIdsForUser(user)
+        if (accessibleOrgIds.length === 0) return false
 
         const assignedOrgIds = data.organizations.map((org: string | { id: number }) =>
           typeof org === 'object' ? org.id : org,
@@ -81,17 +72,8 @@ export const Users: CollectionConfig = {
 
           if (!targetUser) return false
 
-          const orgs = user.organizations as Organization[]
-          if (!orgs || orgs.length === 0) return false
-
-          const whereOrg = buildAccessibleUnitFilter({ orgs })
-          const accessibleOrganizations = await payload.find({
-            collection: 'organization',
-            where: whereOrg,
-            limit: 0,
-          })
-
-          const accessibleOrgIds = accessibleOrganizations.docs.map((org) => org.id)
+          const accessibleOrgIds = await getAccessibleOrgIdsForUser(user)
+          if (accessibleOrgIds.length === 0) return false
 
           const targetUserOrgs = targetUser.organizations as Organization[]
           if (!targetUserOrgs || targetUserOrgs.length === 0) return false
