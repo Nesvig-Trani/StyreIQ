@@ -4,8 +4,7 @@ import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { User } from '@/types/payload-types'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { UserRolesEnum, UserStatusEnum } from '@/features/users'
-import { Organization } from '@/types/payload-types'
-import { buildAccessibleUnitFilter } from '@/features/units/plugins/utils'
+import { getAccessibleOrgIdsForUser } from '@/shared'
 
 export const getUsersByOrganizations = async ({
   orgIds,
@@ -201,21 +200,12 @@ export const getUsersInfoForDashboard = async () => {
   let where: Where = {}
 
   if (user.role !== UserRolesEnum.SuperAdmin) {
-    const orgs = user.organizations as Organization[]
-    if (orgs && orgs.length > 0) {
-      const whereOrg = buildAccessibleUnitFilter({ orgs })
+    const accessibleOrgIds = await getAccessibleOrgIdsForUser(user)
 
-      const organizations = await payload.find({
-        collection: 'organization',
-        where: whereOrg,
-        limit: 0,
-      })
-
-      const orgIds = organizations.docs.map((org) => org.id)
-
+    if (accessibleOrgIds.length > 0) {
       where = {
         'organizations.id': {
-          in: orgIds,
+          in: accessibleOrgIds,
         },
       }
     }
@@ -283,8 +273,9 @@ export const getUsers = async ({
     return users
   }
 
-  const orgs = user.organizations as Organization[]
-  if (!orgs || orgs.length === 0) {
+  const accessibleOrgIds = await getAccessibleOrgIdsForUser(user)
+
+  if (accessibleOrgIds.length === 0) {
     return {
       docs: [],
       totalDocs: 0,
@@ -297,19 +288,9 @@ export const getUsers = async ({
     }
   }
 
-  const whereOrg = buildAccessibleUnitFilter({ orgs })
-
-  const organizations = await payload.find({
-    collection: 'organization',
-    where: whereOrg,
-    limit: 0,
-  })
-
-  const orgIds = organizations.docs.map((org) => org.id)
-
   const where: Where = {
     'organizations.id': {
-      in: orgIds,
+      in: accessibleOrgIds,
     },
   }
 
