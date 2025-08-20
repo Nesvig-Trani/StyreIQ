@@ -63,15 +63,21 @@ export async function checkAccessGuard({
 }
 
 // Individual access guard functions for user management
+const userAccessMessages = {
+  read: "As a Social Media Manager, you don't have access to user management features. You can manage social media accounts and flags from your dashboard.",
+  create:
+    "As a Social Media Manager, you don't have permission to create new users. Please contact your Unit Admin or Super Admin if you need to add team members.",
+  update:
+    "As a Social Media Manager, you don't have permission to edit user profiles. Please contact your Unit Admin or Super Admin for user management changes.",
+  delete:
+    "As a Social Media Manager, you don't have permission to delete users. Please contact your Unit Admin or Super Admin for user management changes.",
+} as const
+
 export async function checkUserReadAccess() {
   return checkAccessGuard({
     action: 'read',
     resource: 'USERS',
-    title: 'Access Restricted',
-    message:
-      "As a Social Media Manager, you don't have access to user management features. You can manage social media accounts and flags from your dashboard.",
-    buttonText: 'Back to Dashboard',
-    buttonIcon: 'home',
+    message: userAccessMessages.read,
   })
 }
 
@@ -79,11 +85,7 @@ export async function checkUserCreateAccess() {
   return checkAccessGuard({
     action: 'create',
     resource: 'USERS',
-    title: 'Access Restricted',
-    message:
-      "As a Social Media Manager, you don't have permission to create new users. Please contact your Unit Admin or Super Admin if you need to add team members.",
-    buttonText: 'Back to Dashboard',
-    buttonIcon: 'home',
+    message: userAccessMessages.create,
   })
 }
 
@@ -91,11 +93,7 @@ export async function checkUserUpdateAccess() {
   return checkAccessGuard({
     action: 'update',
     resource: 'USERS',
-    title: 'Access Restricted',
-    message:
-      "As a Social Media Manager, you don't have permission to edit user profiles. Please contact your Unit Admin or Super Admin for user management changes.",
-    buttonText: 'Back to Dashboard',
-    buttonIcon: 'home',
+    message: userAccessMessages.update,
   })
 }
 
@@ -103,10 +101,6 @@ export async function checkUserDeleteAccess() {
   return checkAccessGuard({
     action: 'delete',
     resource: 'USERS',
-    title: 'Access Restricted',
-    message:
-      "As a Social Media Manager, you don't have permission to delete users. Please contact your Unit Admin or Super Admin for user management changes.",
-    buttonText: 'Back to Dashboard',
-    buttonIcon: 'home',
+    message: userAccessMessages.delete,
   })
 }
