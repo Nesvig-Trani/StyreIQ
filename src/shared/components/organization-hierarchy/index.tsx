@@ -46,7 +46,7 @@ export default function UnitHierarchy({
     setIsDisableModalOpen,
   } = useUnitHierarchy({ organizations, originalData, pagination, users })
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[700px]">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div className="flex flex-col border rounded-lg">
         <div className="p-4 border-b">
           <div className="space-y-3">
