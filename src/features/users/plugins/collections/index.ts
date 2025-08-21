@@ -11,6 +11,8 @@ import {
 } from '../endpoints'
 import { canReadUsers } from '../access'
 import { AccessControl } from '@/shared/utils/rbac'
+import { buildAccessibleUnitFilter } from '@/features/units/plugins/utils'
+import { Organization } from '@/types/payload-types'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -20,15 +22,92 @@ export const Users: CollectionConfig = {
   auth: true,
   access: {
     read: canReadUsers,
-    create: async ({ req: { user } }) => {
+    create: async ({ req: { user, payload }, data }) => {
       if (!user) return false
       const access = new AccessControl(user)
-      return access.can('create', 'USERS')
+
+      if (user.role === UserRolesEnum.SuperAdmin) {
+        return access.can('create', 'USERS')
+      }
+
+      if (user.role === UserRolesEnum.UnitAdmin) {
+        if (!access.can('create', 'USERS')) return false
+
+        if (!data || !data.organizations || !Array.isArray(data.organizations)) return false
+
+        const orgs = user.organizations as Organization[]
+        if (!orgs || orgs.length === 0) return false
+
+        const whereOrg = buildAccessibleUnitFilter({ orgs })
+        const accessibleOrganizations = await payload.find({
+          collection: 'organization',
+          where: whereOrg,
+          limit: 0,
+        })
+
+        const accessibleOrgIds = accessibleOrganizations.docs.map((org) => org.id)
+
+        const assignedOrgIds = data.organizations.map((org: string | { id: number }) =>
+          typeof org === 'object' ? org.id : org,
+        )
+
+        const allOrgsAccessible = assignedOrgIds.every((orgId: number) =>
+          accessibleOrgIds.includes(orgId),
+        )
+
+        return allOrgsAccessible
+      }
+
+      return false
     },
-    update: async ({ req: { user } }) => {
+    update: async ({ req: { user, payload }, id }) => {
       if (!user) return false
       const access = new AccessControl(user)
-      return access.can('update', 'USERS')
+
+      if (user.role === UserRolesEnum.SuperAdmin) {
+        return access.can('update', 'USERS')
+      }
+
+      if (user.role === UserRolesEnum.UnitAdmin) {
+        if (!access.can('update', 'USERS')) return false
+
+        if (!id || typeof id !== 'string') return false
+
+        try {
+          const targetUser = await payload.findByID({
+            collection: 'users',
+            id: id as string,
+          })
+
+          if (!targetUser) return false
+
+          const orgs = user.organizations as Organization[]
+          if (!orgs || orgs.length === 0) return false
+
+          const whereOrg = buildAccessibleUnitFilter({ orgs })
+          const accessibleOrganizations = await payload.find({
+            collection: 'organization',
+            where: whereOrg,
+            limit: 0,
+          })
+
+          const accessibleOrgIds = accessibleOrganizations.docs.map((org) => org.id)
+
+          const targetUserOrgs = targetUser.organizations as Organization[]
+          if (!targetUserOrgs || targetUserOrgs.length === 0) return false
+
+          const hasAccess = targetUserOrgs.some((org) =>
+            accessibleOrgIds.includes(typeof org === 'object' ? org.id : org),
+          )
+
+          return hasAccess
+        } catch (error) {
+          console.error('Error checking user update access:', error)
+          return false
+        }
+      }
+
+      return false
     },
     delete: async ({ req: { user } }) => {
       if (!user) return false

@@ -13,6 +13,7 @@ import { getLastWelcomeEmail } from '@/features/welcome-emails/plugins/queries'
 import { getUsers } from '@/features/users/plugins/queries'
 import { AccessControl } from '@/shared/utils/rbac'
 import { checkUserReadAccess } from '@/shared'
+import { UserRolesEnum } from '@/features/users/schemas'
 
 export default async function UsersPage(props: {
   searchParams?: Promise<{
@@ -48,6 +49,11 @@ export default async function UsersPage(props: {
                 <Badge variant="secondary" className="text-xs">
                   {users.totalDocs} Total Users
                 </Badge>
+                {user?.role === UserRolesEnum.UnitAdmin && (
+                  <Badge variant="outline" className="text-xs">
+                    Filtered by your unit hierarchy
+                  </Badge>
+                )}
               </div>
               <div className="space-y-3">
                 <h3 className="text-lg font-semibold">
@@ -58,6 +64,12 @@ export default async function UsersPage(props: {
                   Each user is tied to a unit in your org chart so you can see every point of
                   access, track accountability, and reduce hidden risks. You can also assign
                   trainings, policy attestations, and other governance tasks directly to users.
+                  {user?.role === UserRolesEnum.UnitAdmin && (
+                    <span className="block mt-2 text-blue-600">
+                      As a Unit Admin, you can only view and manage users within your unit
+                      hierarchy.
+                    </span>
+                  )}
                 </p>
               </div>
             </div>
