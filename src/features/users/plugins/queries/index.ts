@@ -4,6 +4,8 @@ import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { User } from '@/types/payload-types'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { UserRolesEnum, UserStatusEnum } from '@/features/users'
+import { Organization } from '@/types/payload-types'
+import { buildAccessibleUnitFilter } from '@/features/units/plugins/utils'
 
 export const getUsersByOrganizations = async ({
   orgIds,
@@ -179,13 +181,49 @@ export const getUsersInfoForDashboard = async () => {
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
 
+  if (!user) {
+    return {
+      totalAccounts: 0,
+      accountsByStatus: {
+        active: 0,
+        inactive: 0,
+        inTransition: 0,
+      },
+      activeUsers: {
+        unitAdmins: 0,
+        socialMediaManagers: 0,
+      },
+      pendingApproval: 0,
+      unassignedAccounts: 0,
+    }
+  }
+
+  let where: Where = {}
+
+  if (user.role !== UserRolesEnum.SuperAdmin) {
+    const orgs = user.organizations as Organization[]
+    if (orgs && orgs.length > 0) {
+      const whereOrg = buildAccessibleUnitFilter({ orgs })
+
+      const organizations = await payload.find({
+        collection: 'organization',
+        where: whereOrg,
+        limit: 0,
+      })
+
+      const orgIds = organizations.docs.map((org) => org.id)
+
+      where = {
+        'organizations.id': {
+          in: orgIds,
+        },
+      }
+    }
+  }
+
   const users = await payload.find({
     collection: 'users',
-    where: {
-      status: {
-        equals: UserStatusEnum.Active,
-      },
-    },
+    where,
     depth: 0,
     overrideAccess: false,
     user,
@@ -224,39 +262,54 @@ export const getUsers = async ({
   if (!user) {
     return {
       docs: [],
-      hasNextPage: false,
-      hasPrevPage: false,
       totalDocs: 0,
       totalPages: 0,
-      limit: 0,
+      page: pageIndex,
+      limit: pageSize,
+      hasNextPage: false,
+      hasPrevPage: false,
       pagingCounter: 0,
     }
   }
 
-  // If the user is a super admin, return all users
-  if (user.role === 'super_admin') {
-    return payload.find({
+  if (user.role === UserRolesEnum.SuperAdmin) {
+    const users = await payload.find({
       collection: 'users',
       page: pageIndex,
       limit: pageSize,
-      depth: 1,
       overrideAccess: false,
       user,
     })
+    return users
   }
 
-  // Get the user's organization IDs
-  const userOrgIds =
-    user?.organizations?.map((org) => {
-      if (typeof org === 'object' && org !== null && 'id' in org) {
-        return org.id
-      }
-      return org
-    }) || []
+  const orgs = user.organizations as Organization[]
+  if (!orgs || orgs.length === 0) {
+    return {
+      docs: [],
+      totalDocs: 0,
+      totalPages: 0,
+      page: pageIndex,
+      limit: pageSize,
+      hasNextPage: false,
+      hasPrevPage: false,
+      pagingCounter: 0,
+    }
+  }
+
+  const whereOrg = buildAccessibleUnitFilter({ orgs })
+
+  const organizations = await payload.find({
+    collection: 'organization',
+    where: whereOrg,
+    limit: 0,
+  })
+
+  const orgIds = organizations.docs.map((org) => org.id)
 
   const where: Where = {
     'organizations.id': {
-      in: userOrgIds,
+      in: orgIds,
     },
   }
 
@@ -268,8 +321,6 @@ export const getUsers = async ({
     overrideAccess: false,
     user,
   })
-
-  console.log('getUsers', users)
 
   return users
 }

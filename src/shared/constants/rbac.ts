@@ -131,5 +131,17 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
         childUnitsIncluded: true,
       },
     },
+    {
+      resource: 'POLICIES',
+      actions: ['read'],
+    },
+    {
+      resource: 'AUDIT_LOGS',
+      actions: ['read'],
+      conditions: {
+        unitOnly: true,
+        childUnitsIncluded: true,
+      },
+    },
   ],
 }
