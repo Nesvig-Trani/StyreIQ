@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from '@/shared/components/ui/form'
 import { FieldData } from '@/shared/components/form-hook-helper'
-import { MultiSelect } from '@/shared/components/multiselect'
+import { MultiSelect, MultiSelectOption } from '@/shared/components/multiselect'
 import { cn } from '@/shared/utils/cn'
 import { useFieldRequired } from '../utils'
 
@@ -38,7 +38,11 @@ export const MultiSelectInputHelper = <TFieldValues extends FieldValues>({
           </FormLabel>
           <FormControl>
             <MultiSelect
-              options={fieldData.options || []}
+              options={
+                (fieldData.options?.filter(
+                  (opt) => typeof opt.value === 'string',
+                ) as MultiSelectOption[]) || []
+              }
               onValueChange={field.onChange}
               value={field.value}
               placeholder={fieldData.placeholder || 'Select options'}

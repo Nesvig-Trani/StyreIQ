@@ -2,7 +2,6 @@
 import React from 'react'
 import useCreateUnit from '@/features/units/hooks/useCreateUnit'
 import { CreateUnitFormProps } from '@/features/units'
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
 
 export const CreateUnitForm = ({
   userRole,
@@ -16,12 +15,5 @@ export const CreateUnitForm = ({
     organizations,
     defaultParentOrg,
   })
-  return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardHeader>
-        <CardTitle>Create unit</CardTitle>
-      </CardHeader>
-      <CardContent>{formComponent}</CardContent>
-    </Card>
-  )
+  return <div>{formComponent}</div>
 }

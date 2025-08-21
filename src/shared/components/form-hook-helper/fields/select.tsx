@@ -35,6 +35,10 @@ export const SelectInputHelper = <TFieldValues extends FieldValues>({
 }: SelectInputHelperProps<TFieldValues>): React.ReactNode => {
   const isRequired = useFieldRequired(form, fieldData.name, fieldData.required)
 
+  if (fieldData.hidden) {
+    return null
+  }
+
   return (
     <FormField
       control={form.control}
@@ -63,7 +67,7 @@ export const SelectInputHelper = <TFieldValues extends FieldValues>({
               </SelectScrollUpButton>
               {fieldData.options && fieldData.options.length > 0 ? (
                 fieldData.options.map(({ label: optionLabel, value: optionValue }) => (
-                  <SelectItem key={optionValue} value={optionValue}>
+                  <SelectItem key={optionValue as string} value={optionValue as string}>
                     {optionLabel}
                   </SelectItem>
                 ))

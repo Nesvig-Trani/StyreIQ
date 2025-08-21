@@ -3,11 +3,14 @@ import React from 'react'
 import { CreateUnitForm } from '@/features/units'
 import { getAllUsers, UserRolesEnum } from '@/features/users'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
-import Link from 'next/link'
+
 import { getAllUnits } from '@/features/units/plugins/queries'
 import { Button } from '@/shared/components/ui/button'
 import { ensureStyreIQOrganization } from '@/features/units'
 import { AccessControl } from '@/shared/utils/rbac'
+import { ChevronRight, Home } from 'lucide-react'
+import { Card, CardContent } from '@/shared'
+import Link from 'next/link'
 
 export default async function CreateUnit() {
   const { user } = await getAuthUser()
@@ -59,13 +62,39 @@ export default async function CreateUnit() {
   }
 
   return (
-    <div>
-      <CreateUnitForm
-        userRole={user?.role as UserRolesEnum}
-        users={users.docs}
-        organizations={organizations.docs}
-        defaultParentOrg={styreIQOrg?.id?.toString()}
-      />
+    <div className="min-h-screen bg-gray-50 py-6">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <nav className="mb-6 flex items-center space-x-2 text-sm text-gray-500">
+          <Link href="/dashboard" className="flex items-center hover:text-gray-700">
+            <Home className="h-4 w-4 mr-1" />
+            Dashboard
+          </Link>
+          <ChevronRight className="h-4 w-4" />
+          <Link href="/dashboard/units" className="hover:text-gray-700">
+            Units
+          </Link>
+          <ChevronRight className="h-4 w-4" />
+          <span className="text-gray-900 font-medium">Create Unit</span>
+        </nav>
+
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Create Unit</h1>
+          <p className="text-lg text-gray-600">Create a new unit in the system</p>
+        </div>
+
+        <Card className="shadow-lg border-0">
+          <CardContent className="p-6">
+            <div className="max-w-4xl">
+              <CreateUnitForm
+                userRole={user?.role as UserRolesEnum}
+                users={users.docs}
+                organizations={organizations.docs}
+                defaultParentOrg={styreIQOrg?.id?.toString()}
+              />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }
