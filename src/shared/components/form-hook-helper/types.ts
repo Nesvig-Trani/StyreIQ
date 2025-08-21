@@ -19,7 +19,7 @@ export type FieldDataType =
   | 'separator'
 export type FieldDataSize = 'half' | 'full'
 export type FieldDataOption = {
-  value: string
+  value: string | boolean
   label: string
 }
 
@@ -68,4 +68,5 @@ export type FieldData<TFieldValues extends FieldValues = FieldValues> = {
   tree?: Tree[]
   disabled?: boolean
   required?: boolean
+  hidden?: boolean
 }

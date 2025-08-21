@@ -32,22 +32,22 @@ export const CheckboxInputListHelper = <TFieldValues extends FieldValues>({
           <legend className="mb-2">{fieldData.label}</legend>
           {fieldData.options?.map((item) => (
             <FormField
-              key={item.value}
+              key={item.value as string}
               control={form.control}
               name={fieldData.name}
               render={({ field }): React.ReactElement => {
                 return (
                   <FormItem
-                    key={item.value}
+                    key={item.value as string}
                     className="mb-2 flex flex-row items-center space-x-3 space-y-0"
                   >
                     <FormControl>
                       <Checkbox
                         name={field.name}
-                        value={item.value}
+                        value={item.value as string}
                         checked={
                           Array.isArray(field.value)
-                            ? (field.value as string[])?.includes(item.value)
+                            ? (field.value as string[])?.includes(item.value as string)
                             : false
                         }
                         onCheckedChange={(checked): void => {

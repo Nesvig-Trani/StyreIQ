@@ -26,11 +26,15 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
           label: 'Email',
           name: 'email',
           type: 'text',
+          placeholder: 'Enter your email',
+          size: 'half',
         },
         {
           label: 'Name',
           name: 'name',
           type: 'text',
+          placeholder: 'Enter your name',
+          size: 'half',
         },
         {
           label: 'Role',
@@ -40,6 +44,7 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
             label: roleLabelMap[role],
             value: role,
           })),
+          size: 'half',
         },
         {
           label: 'Status',
@@ -49,6 +54,8 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
             label: statusLabelMap[status],
             value: status,
           })),
+          placeholder: 'Select status',
+          size: 'half',
         },
         {
           label: 'Organization',
@@ -64,49 +71,80 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
             field: 'role',
             value: [UserRolesEnum.SocialMediaManager, UserRolesEnum.UnitAdmin],
           },
+          size: 'half',
         },
         {
           label: 'Recent Password Update',
           name: 'passwordUpdatedAt',
           type: 'date',
+          size: 'half',
         },
-
+        {
+          name: 'isEnabledTwoFactor',
+          label: '',
+          type: 'separator',
+          size: 'full',
+        },
         {
           label: 'Is enabled two factor authentication?',
           name: 'isEnabledTwoFactor',
-          type: 'checkbox',
-          checkboxMode: 'boolean',
+          type: 'select',
+          options: [
+            { value: true, label: 'Yes' },
+            { value: false, label: 'No' },
+          ],
+          size: 'half',
         },
 
         {
           label: 'Are you using a secure password?',
           name: 'isInUseSecurePassword',
-          type: 'checkbox',
-          checkboxMode: 'boolean',
+          type: 'select',
+          options: [
+            { value: true, label: 'Yes' },
+            { value: false, label: 'No' },
+          ],
+          size: 'half',
         },
         {
           label: 'Have you completed accessibility training?',
           name: 'isCompletedTrainingAccessibility',
-          type: 'checkbox',
-          checkboxMode: 'boolean',
+          type: 'select',
+          options: [
+            { value: true, label: 'Yes' },
+            { value: false, label: 'No' },
+          ],
+          size: 'half',
         },
         {
           label: 'Have you completed risk mitigation training?',
           name: 'isCompletedTrainingRisk',
-          type: 'checkbox',
-          checkboxMode: 'boolean',
+          type: 'select',
+          options: [
+            { value: true, label: 'Yes' },
+            { value: false, label: 'No' },
+          ],
+          size: 'half',
         },
         {
           label: 'Have you completed brand and identity usage training?',
           name: 'isCompletedTrainingBrand',
-          type: 'checkbox',
-          checkboxMode: 'boolean',
+          type: 'select',
+          options: [
+            { value: true, label: 'Yes' },
+            { value: false, label: 'No' },
+          ],
+          size: 'half',
         },
         {
           label: 'Do you have acknowledgment of naming and branding standards?',
           name: 'hasKnowledgeStandards',
-          type: 'checkbox',
-          checkboxMode: 'boolean',
+          type: 'select',
+          options: [
+            { value: true, label: 'Yes' },
+            { value: false, label: 'No' },
+          ],
+          size: 'half',
         },
       ],
       onSubmit: async (submitData) => {

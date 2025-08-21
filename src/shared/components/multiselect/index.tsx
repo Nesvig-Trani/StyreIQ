@@ -18,7 +18,7 @@ import { Button } from '@/shared/components/ui/button'
 const defaultButtonClassname =
   'm-1 h-auto w-auto cursor-pointer border-0 px-2.5 py-0.5 text-xs transition delay-150 duration-300 ease-in-out'
 
-type MultiSelectOption = {
+export type MultiSelectOption = {
   /** The text to display for the option. */
   label: string
   /** The unique value associated with the option. */
