@@ -3,6 +3,8 @@ import {
   Building2Icon,
   FlagIcon,
   HistoryIcon,
+  LayoutDashboardIcon,
+  LucideIcon,
   ScrollText,
   Share2Icon,
   UsersIcon,
@@ -11,7 +13,7 @@ import {
 export interface NavItem {
   title: string
   url: string
-  icon?: React.ComponentType
+  icon: LucideIcon
   permission: {
     resource: Resource
     action: ResourceAction
@@ -19,6 +21,15 @@ export interface NavItem {
 }
 
 export const mainNavigation: NavItem[] = [
+  {
+    title: 'Dashboard',
+    url: '/dashboard',
+    icon: LayoutDashboardIcon,
+    permission: {
+      resource: 'DASHBOARD',
+      action: 'read',
+    },
+  },
   {
     title: 'Units',
     url: '/dashboard/units',

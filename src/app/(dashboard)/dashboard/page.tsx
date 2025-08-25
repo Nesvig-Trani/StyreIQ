@@ -1,21 +1,20 @@
-import { MetricCard } from '@/features/dashboard/components/metric-card'
 import { getUsersInfoForDashboard } from '@/features/users/plugins/queries'
+import { getFlagInfoForDashboard } from '@/features/flags/plugins/queries'
 import {
   Users,
   UserCheck,
-  Clock,
   AlertTriangle,
-  Shield,
-  Activity,
-  Pause,
-  ArrowUpDown,
-  ClipboardList,
-  FileWarning,
-  ActivityIcon,
   ShieldAlert,
-  ScaleIcon,
+  XCircle,
+  CheckCircle,
+  ActivityIcon,
 } from 'lucide-react'
-import { getFlagInfoForDashboard } from '@/features/flags/plugins/queries'
+import { Button } from '@/shared'
+import Link from 'next/link'
+import { HeaderMetricCard } from '@/features/dashboard/components/header-metric-card'
+
+import { StatusCard } from '@/features/dashboard/components/status-card'
+import { DashboardRiskSection } from '../../../features/dashboard/components/dashboard-client-wrapper'
 
 const getRiskLevel = (value: number, thresholds: { low: number; medium: number }) => {
   if (value >= thresholds.medium) return 'high'
@@ -29,9 +28,6 @@ export default async function DashboardPage() {
   if (!data) {
     return <div className="text-center text-red-500">Failed to load dashboard data</div>
   }
-  const pendingRisk = getRiskLevel(data.pendingApproval, { low: 5, medium: 10 })
-  const unassignedRisk = getRiskLevel(data.unassignedAccounts, { low: 3, medium: 6 })
-  const inactiveRisk = getRiskLevel(data.accountsByStatus.inactive, { low: 10, medium: 20 })
 
   const securityRisk = getRiskLevel(flags.security, { low: 0, medium: 2 })
   const legalRisk = getRiskLevel(flags.legal, { low: 0, medium: 2 })
@@ -41,139 +37,109 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 hidden lg:block">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
-          <div className="flex justify-between items-center py-3 sm:py-4">
-            <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
-                Social Media Dashboard
-              </h1>
-            </div>
+      <div className="mb-8">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+          <div className="flex flex-col">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 !m-0">Dashboard</h1>
+            <p className="text-sm text-gray-600 !mt-2 !ml-1">
+              Monitor social media governance and risk across your organization
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-2 sm:space-x-2">
+            <Button variant="outline">
+              <Link href={`/dashboard/social-media-accounts`}>View All Accounts</Link>
+            </Button>
+            <Button variant="default">
+              <Link href={`/dashboard/social-media-accounts/create`}>Create Account</Link>
+            </Button>
           </div>
         </div>
-      </header>
+      </div>
 
-      <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
-        {/* Mobile Title */}
-        <div className="lg:hidden mb-6">
-          <h1 className="text-xl font-bold text-gray-900">Social Media Dashboard</h1>
-        </div>
-
-        {/* Key Metrics Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          {/* Total Accounts */}
-          <MetricCard
+      <main className="mx-auto px-0 py-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
+          <HeaderMetricCard
             title="Total Accounts"
             value={data.totalAccounts}
-            icon={Users}
             subtitle="All social media accounts"
+            icon={Users}
           />
 
-          {/* Pending Approval */}
-          <MetricCard
-            title="Pending Approval"
-            value={data.pendingApproval}
-            icon={Clock}
-            riskLevel={pendingRisk}
-            subtitle="Awaiting review"
-          />
-
-          {/* Unassigned Accounts */}
-          <MetricCard
-            title="Unassigned Accounts"
-            value={data.unassignedAccounts}
+          <HeaderMetricCard
+            title="Active Issues"
+            value={
+              flags.security + flags.legal + flags.compliance + flags.incident + flags.activity
+            }
+            subtitle="Requiring attention"
             icon={AlertTriangle}
-            riskLevel={unassignedRisk}
-            subtitle="No administrator assigned"
+            color="yellow"
           />
 
-          {/* Total Active Users */}
-          <MetricCard
+          <HeaderMetricCard
+            title="High Risk Issues"
+            value={
+              (securityRisk === 'high' ? 1 : 0) +
+              (legalRisk === 'high' ? 1 : 0) +
+              (complianceRisk === 'high' ? 1 : 0) +
+              (incidentRisk === 'high' ? 1 : 0) +
+              (activityRisk === 'high' ? 1 : 0)
+            }
+            subtitle="Require immediate attention"
+            icon={ShieldAlert}
+            color="red"
+          />
+
+          <HeaderMetricCard
             title="Active Users"
             value={data.activeUsers.unitAdmins + data.activeUsers.socialMediaManagers}
+            subtitle="Unit admins and managers"
             icon={UserCheck}
-            subtitle={`${data.activeUsers.unitAdmins} admins, ${data.activeUsers.socialMediaManagers} managers`}
+            color="green"
           />
         </div>
 
-        {/* Account Status Breakdown */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          <MetricCard
-            title="Active Accounts"
-            value={data.accountsByStatus.active}
-            icon={Activity}
-            subtitle="Currently operational"
-          />
+        <div className="mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+            <h2 className="text-lg font-semibold text-gray-900">Risk Categories</h2>
+            <div className="flex flex-wrap gap-2">
+              <Button variant="outline">
+                <Link href={`/dashboard/audit-logs`}>View Audit Trail</Link>
+              </Button>
+              <Button variant="outline">Export Risk Report</Button>
+            </div>
+          </div>
 
-          <MetricCard
-            title="Inactive Accounts"
-            value={data.accountsByStatus.inactive}
-            icon={Pause}
-            riskLevel={inactiveRisk}
-            subtitle="Not currently active"
-          />
-
-          <MetricCard
-            title="In Transition"
-            value={data.accountsByStatus.inTransition}
-            icon={ArrowUpDown}
-            subtitle="Status being updated"
-          />
+          <DashboardRiskSection flags={flags} />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <MetricCard
-            title="Security Risks"
-            value={flags.security}
-            icon={ShieldAlert}
-            subtitle="Missing 2FA, outdated password"
-            riskLevel={securityRisk}
-          />
-          <MetricCard
-            title="Legal Risks"
-            value={flags.legal}
-            icon={ScaleIcon}
-            riskLevel={legalRisk}
-            subtitle="FOIA/HIPAA/FERPA not confirmed or incomplete"
-          />
-          <MetricCard
-            title="Activity Risks"
-            value={flags.activity}
-            icon={ActivityIcon}
-            riskLevel={activityRisk}
-            subtitle="Inactive accounts, no assigned owner"
-          />
-          <MetricCard
-            title="Incident Reports"
-            value={flags.incident}
-            icon={FileWarning}
-            riskLevel={incidentRisk}
-            subtitle="Open incident reports"
-          />
-          <MetricCard
-            title="Compliance Risks"
-            value={flags.compliance}
-            icon={ClipboardList}
-            riskLevel={complianceRisk}
-            subtitle="Incomplete training, unacknowledged policies"
-          />
-        </div>
+        <div className="mb-8">
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">Account Status Overview</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+            <StatusCard
+              title="Active Accounts"
+              value={data.accountsByStatus.active}
+              subtitle="Currently operational"
+              color="green"
+              icon={CheckCircle}
+            />
 
-        {/* User Role Breakdown */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-          <MetricCard
-            title="Unit Administrators"
-            value={data.activeUsers.unitAdmins}
-            icon={Shield}
-            subtitle="Administrative users"
-          />
+            <StatusCard
+              title="Accounts Needing Review"
+              value={data.pendingApproval}
+              subtitle="Require attention"
+              color="red"
+              icon={XCircle}
+            />
 
-          <MetricCard
-            title="Social Media Managers"
-            value={data.activeUsers.socialMediaManagers}
-            icon={Users}
-            subtitle="Content management users"
-          />
+            <StatusCard
+              title="In Transition"
+              value={data.accountsByStatus.inTransition}
+              subtitle="Status being updated"
+              color="blue"
+              icon={ActivityIcon}
+            />
+          </div>
         </div>
       </main>
     </div>

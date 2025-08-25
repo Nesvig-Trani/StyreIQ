@@ -55,7 +55,7 @@ export default async function DashboardLayout(props: { children: React.ReactNode
           <Separator orientation="vertical" className="h-6" />
           <span className="text-base lg:text-lg font-semibold">StyreIQ</span>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-3 sm:p-4">{children}</div>
+        <div className="flex flex-1 flex-col gap-4 p-3 sm:p-4 bg-gray-50">{children}</div>
         {lastVersion && lastVersion.text && (
           <LexicalContentModal
             title="Usage and Governance Policies"

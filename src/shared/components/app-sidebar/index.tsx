@@ -1,10 +1,11 @@
 'use client'
 import * as React from 'react'
-import { LogOutIcon } from 'lucide-react'
+import { LogOut } from 'lucide-react'
 
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarHeader,
   SidebarMenu,
@@ -13,10 +14,11 @@ import {
   SidebarRail,
 } from '@/shared/components/ui/sidebar'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { User } from '@/types/payload-types'
 import { useAccess } from '@/shared/hooks/use-access'
 import { mainNavigation } from './nav-config'
+import { roleLabelMap, UserRolesEnum } from '@/features/users'
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user: User
@@ -24,57 +26,92 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 
 export function AppSidebar({ user, ...props }: AppSidebarProps) {
   const router = useRouter()
+  const pathname = usePathname()
   const { can } = useAccess(user)
 
   const allowedNavItems = mainNavigation.filter((item) =>
     can(item.permission.action, item.permission.resource),
   )
 
+  const isActivePath = (url: string) => {
+    if (url === '/dashboard') {
+      return pathname === '/dashboard'
+    }
+    return pathname === url || pathname.startsWith(url + '/')
+  }
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <Link href="/dashboard">
-                <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-medium">StyreIQ</span>
-                </div>
-              </Link>
-            </SidebarMenuButton>
+            <Link href="/dashboard" className="flex items-center space-x-3 px-2 py-2">
+              <span className="text-xl font-bold text-gray-900">StyreIQ</span>
+            </Link>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+
+      <div className="flex justify-center pb-2">
+        <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg w-40 h-13">
+          <div>
+            <div className="text-xs font-medium text-gray-900">
+              {roleLabelMap[user.role as UserRolesEnum]}
+            </div>
+            <div className="text-xs text-gray-500">{user.email}</div>
+          </div>
+        </div>
+      </div>
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            {allowedNavItems.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <Link href={item.url}>
-                  <SidebarMenuButton>
-                    {item.icon && <item.icon />}
-                    <span className="font-medium cursor-pointer text-xs lg:text-sm">
-                      {item.title}
-                    </span>
+            {allowedNavItems.map((item) => {
+              const isActive = isActivePath(item.url)
+              return (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={isActive}
+                    className={`${
+                      isActive
+                        ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700'
+                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    }`}
+                  >
+                    <Link href={item.url} className="flex items-center space-x-3">
+                      <item.icon
+                        className={`h-5 w-5 ${isActive ? 'text-blue-700' : 'text-gray-600'}`}
+                      />
+                      <span className="font-medium text-xs lg:text-sm text-gray-600">
+                        {item.title}
+                      </span>
+                    </Link>
                   </SidebarMenuButton>
-                </Link>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
-        <SidebarGroup className="mt-auto">
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <button onClick={() => router.push('/api/logout')}>
-                  <LogOutIcon />
-                  <span className="font-medium text-xs lg:text-sm">Logout</span>
-                </button>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+                </SidebarMenuItem>
+              )
+            })}
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter className="border-t border-gray-200">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              className="text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+            >
+              <button
+                onClick={() => router.push('/api/logout')}
+                className="flex w-full items-center space-x-3"
+              >
+                <LogOut className="h-5 w-5 text-gray-400" />
+                <span className="font-medium text-xs lg:text-sm text-gray-600">Sign Out</span>
+              </button>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   )

@@ -8,6 +8,7 @@ export type Resource =
   | 'POLICIES'
   | 'REVIEW_REQUESTS'
   | 'AUDIT_LOGS'
+  | 'DASHBOARD'
 
 export type ResourceAction = 'create' | 'read' | 'update' | 'delete'
 
@@ -23,6 +24,13 @@ export type Permission = {
 
 export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
   [UserRolesEnum.SuperAdmin]: [
+    {
+      resource: 'DASHBOARD',
+      actions: ['create', 'read', 'update', 'delete'],
+      conditions: {
+        childUnitsIncluded: true,
+      },
+    },
     {
       resource: 'UNITS',
       actions: ['create', 'read', 'update', 'delete'],
@@ -66,6 +74,13 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
   ],
   [UserRolesEnum.UnitAdmin]: [
     {
+      resource: 'DASHBOARD',
+      actions: ['create', 'read', 'update', 'delete'],
+      conditions: {
+        childUnitsIncluded: true,
+      },
+    },
+    {
       resource: 'UNITS',
       actions: ['read', 'update'],
       conditions: {
@@ -107,6 +122,13 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
     },
   ],
   [UserRolesEnum.SocialMediaManager]: [
+    {
+      resource: 'DASHBOARD',
+      actions: ['create', 'read', 'update', 'delete'],
+      conditions: {
+        childUnitsIncluded: true,
+      },
+    },
     {
       resource: 'UNITS',
       actions: ['read'],
