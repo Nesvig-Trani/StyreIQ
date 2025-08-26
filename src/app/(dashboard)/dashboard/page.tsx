@@ -29,11 +29,11 @@ export default async function DashboardPage() {
     return <div className="text-center text-red-500">Failed to load dashboard data</div>
   }
 
-  const securityRisk = getRiskLevel(flags.security, { low: 0, medium: 2 })
-  const legalRisk = getRiskLevel(flags.legal, { low: 0, medium: 2 })
-  const complianceRisk = getRiskLevel(flags.compliance, { low: 0, medium: 2 })
-  const incidentRisk = getRiskLevel(flags.incident, { low: 0, medium: 2 })
-  const activityRisk = getRiskLevel(flags.activity, { low: 0, medium: 2 })
+  const securityRisk = getRiskLevel(flags.security.count, { low: 0, medium: 2 })
+  const legalRisk = getRiskLevel(flags.legal.count, { low: 0, medium: 2 })
+  const complianceRisk = getRiskLevel(flags.compliance.count, { low: 0, medium: 2 })
+  const incidentRisk = getRiskLevel(flags.incident.count, { low: 0, medium: 2 })
+  const activityRisk = getRiskLevel(flags.activity.count, { low: 0, medium: 2 })
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -69,7 +69,11 @@ export default async function DashboardPage() {
           <HeaderMetricCard
             title="Active Issues"
             value={
-              flags.security + flags.legal + flags.compliance + flags.incident + flags.activity
+              flags.security.count +
+              flags.legal.count +
+              flags.compliance.count +
+              flags.incident.count +
+              flags.activity.count
             }
             subtitle="Requiring attention"
             icon={AlertTriangle}
@@ -106,7 +110,6 @@ export default async function DashboardPage() {
               <Button variant="outline">
                 <Link href={`/dashboard/audit-logs`}>View Audit Trail</Link>
               </Button>
-              <Button variant="outline">Export Risk Report</Button>
             </div>
           </div>
 

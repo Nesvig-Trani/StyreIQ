@@ -4,6 +4,7 @@ import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { FlagStatusEnum, FlagTypeEnum } from '@/features/flags/schemas'
 import { endOfDay, startOfDay } from 'date-fns'
 import { Where } from 'payload'
+import { Flag } from '@/types/payload-types'
 
 export const getFlags = async ({
   flagType,
@@ -67,12 +68,17 @@ export const getFlags = async ({
   return flags
 }
 
+interface CategoryData {
+  count: number
+  data: Flag[]
+}
+
 interface FlagsData {
-  security: number
-  compliance: number
-  activity: number
-  legal: number
-  incident: number
+  security: CategoryData
+  compliance: CategoryData
+  activity: CategoryData
+  legal: CategoryData
+  incident: CategoryData
 }
 
 export const getFlagInfoForDashboard = async (): Promise<FlagsData> => {
@@ -85,24 +91,51 @@ export const getFlagInfoForDashboard = async (): Promise<FlagsData> => {
     overrideAccess: false,
     user,
   })
+
+  console.log('flags', flags)
+
+  const securityFlags = flags.docs.filter(
+    (f) =>
+      f.flagType === FlagTypeEnum.SECURITY_RISK ||
+      f.flagType === FlagTypeEnum.MISSING_2FA ||
+      f.flagType === FlagTypeEnum.OUTDATED_PASSWORD,
+  )
+
+  const complianceFlags = flags.docs.filter(
+    (f) =>
+      f.flagType === FlagTypeEnum.INCOMPLETE_TRAINING ||
+      f.flagType === FlagTypeEnum.UNACKNOWLEDGED_POLICIES,
+  )
+
+  const activityFlags = flags.docs.filter(
+    (f) =>
+      f.flagType === FlagTypeEnum.INACTIVE_ACCOUNT || f.flagType === FlagTypeEnum.NO_ASSIGNED_OWNER,
+  )
+
+  const legalFlags = flags.docs.filter((f) => f.flagType === FlagTypeEnum.LEGAL_NOT_CONFIRMED)
+
+  const incidentFlags = flags.docs.filter((f) => f.flagType === FlagTypeEnum.INCIDENT_OPEN)
+
   return {
-    security: flags.docs.filter(
-      (f) =>
-        f.flagType === FlagTypeEnum.SECURITY_RISK ||
-        f.flagType === FlagTypeEnum.MISSING_2FA ||
-        f.flagType === FlagTypeEnum.OUTDATED_PASSWORD,
-    ).length,
-    compliance: flags.docs.filter(
-      (f) =>
-        f.flagType === FlagTypeEnum.INCOMPLETE_TRAINING ||
-        f.flagType === FlagTypeEnum.UNACKNOWLEDGED_POLICIES,
-    ).length,
-    activity: flags.docs.filter(
-      (f) =>
-        f.flagType === FlagTypeEnum.INACTIVE_ACCOUNT ||
-        f.flagType === FlagTypeEnum.NO_ASSIGNED_OWNER,
-    ).length,
-    legal: flags.docs.filter((f) => f.flagType === FlagTypeEnum.LEGAL_NOT_CONFIRMED).length,
-    incident: flags.docs.filter((f) => f.flagType === FlagTypeEnum.INCIDENT_OPEN).length,
+    security: {
+      count: securityFlags.length,
+      data: securityFlags,
+    },
+    compliance: {
+      count: complianceFlags.length,
+      data: complianceFlags,
+    },
+    activity: {
+      count: activityFlags.length,
+      data: activityFlags,
+    },
+    legal: {
+      count: legalFlags.length,
+      data: legalFlags,
+    },
+    incident: {
+      count: incidentFlags.length,
+      data: incidentFlags,
+    },
   }
 }

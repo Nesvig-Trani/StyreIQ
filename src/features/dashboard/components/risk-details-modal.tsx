@@ -1,13 +1,12 @@
 import React from 'react'
 
-import { AlertTriangle, Calendar, LucideIcon, User } from 'lucide-react'
+import { Calendar, LucideIcon } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
 } from '@/shared/components/ui/dialog'
-import { Button } from '@/shared'
 
 interface Issue {
   id: string
@@ -25,7 +24,6 @@ interface RiskDetailsModalProps {
   title: string
   subtitle: string
   issues: Issue[]
-  totalIssues: number
   icon: LucideIcon
   color: 'red' | 'yellow' | 'orange' | 'gray'
 }
@@ -36,7 +34,6 @@ export const RiskDetailsModal: React.FC<RiskDetailsModalProps> = ({
   title,
   subtitle,
   issues,
-  totalIssues,
   icon: Icon,
   color,
 }) => {
@@ -91,16 +88,6 @@ export const RiskDetailsModal: React.FC<RiskDetailsModalProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center justify-between mb-6 mt-6">
-            <span className="text-base font-semibold text-gray-900">
-              {totalIssues} Issues Found
-            </span>
-            <div className="flex space-x-2">
-              <Button variant="outline">Export Report</Button>
-              <Button variant="default">Bulk Actions</Button>
-            </div>
-          </div>
-
           <div className="space-y-4">
             {issues.map((issue) => (
               <div
@@ -118,39 +105,6 @@ export const RiskDetailsModal: React.FC<RiskDetailsModalProps> = ({
                 </div>
 
                 <p className="text-sm text-gray-600 mb-4 leading-relaxed">{issue.description}</p>
-
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center space-x-1 text-sm text-gray-600">
-                    <Calendar size={12} />
-                    <span>Due Date:</span>
-                    <span>• {formatDate(issue.dueDate)}</span>
-                  </div>
-
-                  {issue.assignedTo && (
-                    <div className="flex items-center space-x-1 text-sm text-gray-600">
-                      <User size={12} />
-                      <span>Assigned To:</span>
-                      <span>• {issue.assignedTo}</span>
-                    </div>
-                  )}
-
-                  {issue.affectedAccount && (
-                    <div className="flex items-center space-x-1 text-sm text-gray-600">
-                      <div className="w-3 h-3 bg-gray-400 rounded-sm flex-shrink-0"></div>
-                      <span>Affected Account:</span>
-                      <span>• {issue.affectedAccount}</span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex space-x-2">
-                  <Button variant="outline">Assign</Button>
-                  <Button variant="outline">
-                    <AlertTriangle size={12} />
-                    <span>Escalate</span>
-                  </Button>
-                  <Button variant="outline">Mark Resolved</Button>
-                </div>
               </div>
             ))}
           </div>
