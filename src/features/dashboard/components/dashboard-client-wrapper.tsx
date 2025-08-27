@@ -7,6 +7,13 @@ import { Shield, ShieldAlert, ClipboardList, Eye, AlertCircle, LucideIcon } from
 import { flagTypeLabels } from '@/features/flags/constants/flagTypeLabels'
 import { Flag } from '@/types/payload-types'
 import { FlagTypeEnum } from '@/features/flags/schemas'
+import { getUsersByIds } from '@/features/users'
+
+interface IssueUser {
+  id: number
+  name: string
+  email: string
+}
 
 interface Issue {
   id: string
@@ -16,6 +23,7 @@ interface Issue {
   dueDate: string
   assignedTo?: string
   affectedAccount?: string
+  user?: IssueUser
 }
 
 interface DashboardRiskSectionProps {
@@ -42,7 +50,6 @@ interface DashboardRiskSectionProps {
     }
   }
 }
-
 export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flags }) => {
   const [modalState, setModalState] = useState({
     isOpen: false,
@@ -54,14 +61,48 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
     color: 'red' as 'red' | 'yellow' | 'orange' | 'gray',
   })
 
-  const convertFlagsToIssues = (flagsData: Flag[]): Issue[] => {
-    return flagsData.map((flag) => ({
-      id: flag.id.toString(),
-      title: flagTypeLabels[flag.flagType as FlagTypeEnum],
-      description: flag.description ?? '',
-      severity: getFlagSeverity(flag.flagType as string),
-      dueDate: flag.createdAt,
-    }))
+  const convertFlagsToIssues = async (flagsData: Flag[]): Promise<Issue[]> => {
+    const userIds = flagsData
+      .map((flag) =>
+        flag.affectedEntity?.relationTo === 'users' && flag.affectedEntity.value
+          ? Number(flag.affectedEntity.value)
+          : null,
+      )
+      .filter((id): id is number => id !== null)
+
+    const uniqueUserIds = [...new Set(userIds)]
+
+    const usersMap = new Map<number, { id: number; name?: string; email?: string }>()
+
+    if (uniqueUserIds.length > 0) {
+      const users = await getUsersByIds({ ids: uniqueUserIds })
+      users.forEach((user) => usersMap.set(user.id, user))
+    }
+
+    return flagsData.map((flag) => {
+      const { affectedEntity, id, flagType, description, createdAt } = flag
+      let user: Issue['user'] = undefined
+
+      if (affectedEntity?.relationTo === 'users' && affectedEntity.value) {
+        const userData = usersMap.get(Number(affectedEntity.value))
+        if (userData) {
+          user = {
+            id: userData.id,
+            name: userData.name || 'Usuario sin nombre',
+            email: userData.email || 'Email no disponible',
+          }
+        }
+      }
+
+      return {
+        id: id.toString(),
+        title: flagTypeLabels[flagType as FlagTypeEnum],
+        description: description ?? '',
+        severity: getFlagSeverity(flagType as string),
+        dueDate: createdAt,
+        user,
+      }
+    })
   }
 
   const getFlagSeverity = (flagType: string): 'high' | 'medium' | 'low' => {
@@ -95,14 +136,14 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
     }
   }
 
-  const openModal = (
+  const openModal = async (
     title: string,
     subtitle: string,
     icon: LucideIcon,
     color: 'red' | 'yellow' | 'orange' | 'gray',
   ) => {
     const realData = getCategoryData(title)
-    const issues = convertFlagsToIssues(realData)
+    const issues = await convertFlagsToIssues(realData)
 
     setModalState({
       isOpen: true,
