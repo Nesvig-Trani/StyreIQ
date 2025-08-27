@@ -52,6 +52,23 @@ export const getUserById = async ({ id }: { id: number }) => {
   return user
 }
 
+export const getUsersByIds = async ({ ids }: { ids: number[] }) => {
+  if (ids.length === 0) return []
+
+  const { payload } = await getPayloadContext()
+  const users = await payload.find({
+    collection: 'users',
+    where: {
+      id: {
+        in: ids,
+      },
+    },
+    depth: 0,
+    limit: ids.length,
+  })
+  return users.docs
+}
+
 export const getPendingActivationUsers = async ({
   limit,
   page,

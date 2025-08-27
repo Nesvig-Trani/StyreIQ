@@ -1,12 +1,18 @@
 import React from 'react'
 
-import { Calendar, LucideIcon } from 'lucide-react'
+import { Calendar, LucideIcon, Mail, User } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
 } from '@/shared/components/ui/dialog'
+
+interface User {
+  id: number
+  name: string
+  email: string
+}
 
 interface Issue {
   id: string
@@ -16,6 +22,7 @@ interface Issue {
   dueDate: string
   assignedTo?: string
   affectedAccount?: string
+  user?: User
 }
 
 interface RiskDetailsModalProps {
@@ -105,6 +112,19 @@ export const RiskDetailsModal: React.FC<RiskDetailsModalProps> = ({
                 </div>
 
                 <p className="text-sm text-gray-600 mb-4 leading-relaxed">{issue.description}</p>
+
+                {issue.user && (
+                  <div className="mb-3 p-2 bg-gray-50 rounded-md">
+                    <div className="flex items-center space-x-2 text-sm">
+                      <User size={14} className="text-gray-500" />
+                      <span className="font-medium text-gray-700">{issue.user.name}</span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-sm mt-1">
+                      <Mail size={14} className="text-gray-500" />
+                      <span className="text-gray-600">{issue.user.email}</span>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>
