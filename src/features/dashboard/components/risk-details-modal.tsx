@@ -85,7 +85,7 @@ export const RiskDetailsModal: React.FC<RiskDetailsModalProps> = ({
             <div className={`p-2 rounded-lg ${getIconWrapper(color)}`}>
               <Icon size={20} />
             </div>
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <DialogTitle className="text-base font-semibold text-gray-900 truncate">
                 {title}
               </DialogTitle>
@@ -115,13 +115,15 @@ export const RiskDetailsModal: React.FC<RiskDetailsModalProps> = ({
 
                 {issue.user && (
                   <div className="mb-3 p-2 bg-gray-50 rounded-md">
-                    <div className="flex items-center space-x-2 text-sm">
-                      <User size={14} className="text-gray-500" />
-                      <span className="font-medium text-gray-700">{issue.user.name}</span>
+                    <div className="flex items-center space-x-2 text-sm min-w-0">
+                      <User size={14} className="text-gray-500 flex-shrink-0" />
+                      <span className="font-medium text-gray-700 truncate">{issue.user.name}</span>
                     </div>
-                    <div className="flex items-center space-x-2 text-sm mt-1">
-                      <Mail size={14} className="text-gray-500" />
-                      <span className="text-gray-600">{issue.user.email}</span>
+                    <div className="flex items-center space-x-2 text-sm mt-1 min-w-0">
+                      <Mail size={14} className="text-gray-500 flex-shrink-0" />
+                      <span className="text-gray-600 truncate" title={issue.user.email}>
+                        {issue.user.email}
+                      </span>
                     </div>
                   </div>
                 )}

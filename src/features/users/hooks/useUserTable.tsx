@@ -16,6 +16,14 @@ function useUserTable({ user }: { user: User | null }) {
     {
       accessorKey: 'email',
       header: 'Email',
+      cell: ({ row }) => {
+        const email = row.getValue('email') as string
+        return (
+          <span className="block truncate max-w-[200px]" title={email}>
+            {email}
+          </span>
+        )
+      },
     },
     {
       accessorKey: 'role',
