@@ -5,6 +5,9 @@ import { FlagStatusEnum, FlagTypeEnum } from '@/features/flags/schemas'
 import { endOfDay, startOfDay } from 'date-fns'
 import { Where } from 'payload'
 import { Flag } from '@/types/payload-types'
+import { UserRolesEnum } from '@/features/users'
+import { getAccessibleOrgIdsForUser } from '@/shared'
+import { SocialMediasCollectionSlug } from '@/features/social-medias'
 
 export const getFlags = async ({
   flagType,
@@ -84,15 +87,61 @@ interface FlagsData {
 export const getFlagInfoForDashboard = async (): Promise<FlagsData> => {
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
+
+  if (!user) {
+    return {
+      security: { count: 0, data: [] },
+      compliance: { count: 0, data: [] },
+      activity: { count: 0, data: [] },
+      legal: { count: 0, data: [] },
+      incident: { count: 0, data: [] },
+    }
+  }
+
+  let where: Where = {}
+
+  if (user.role === UserRolesEnum.SocialMediaManager) {
+    const socialMedias = await payload.find({
+      collection: SocialMediasCollectionSlug,
+      where: {
+        socialMediaManagers: { in: [user.id] },
+      },
+      limit: 0,
+    })
+
+    const socialMediaIds = socialMedias.docs.map((sm) => sm.id)
+
+    where = {
+      or: [
+        {
+          'affectedEntity.relationTo': { equals: 'social-medias' },
+          'affectedEntity.value': { in: socialMediaIds },
+        },
+        {
+          'affectedEntity.relationTo': { equals: 'users' },
+          'affectedEntity.value': { equals: user.id },
+        },
+      ],
+    }
+  } else if (user.role === UserRolesEnum.UnitAdmin) {
+    const accessibleOrgIds = await getAccessibleOrgIdsForUser(user)
+    where = {
+      'organizations.id': {
+        in: accessibleOrgIds,
+      },
+    }
+  } else if (user.role === UserRolesEnum.SuperAdmin) {
+    where = {}
+  }
+
   const flags = await payload.find({
     collection: FlagsCollectionSlug,
-    where: {},
+    where,
     depth: 0,
-    overrideAccess: false,
+    overrideAccess: true,
     user,
+    limit: 0,
   })
-
-  console.log('flags', flags)
 
   const securityFlags = flags.docs.filter(
     (f) =>

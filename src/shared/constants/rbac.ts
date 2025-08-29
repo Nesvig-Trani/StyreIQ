@@ -138,6 +138,13 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
       },
     },
     {
+      resource: 'USERS',
+      actions: ['read', 'update'],
+      conditions: {
+        childUnitsIncluded: true,
+      },
+    },
+    {
       resource: 'SOCIAL_MEDIAS',
       actions: ['read'],
       conditions: {

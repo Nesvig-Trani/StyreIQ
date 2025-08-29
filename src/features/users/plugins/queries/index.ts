@@ -279,6 +279,21 @@ export const getUsers = async ({
     }
   }
 
+  if (user.role === UserRolesEnum.SocialMediaManager) {
+    const me = await payload.find({
+      collection: 'users',
+      where: {
+        id: { equals: user.id },
+      },
+      page: 1,
+      limit: 1,
+      overrideAccess: false,
+      user,
+    })
+
+    return me
+  }
+
   if (user.role === UserRolesEnum.SuperAdmin) {
     const users = await payload.find({
       collection: 'users',
