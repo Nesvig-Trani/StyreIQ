@@ -104,7 +104,8 @@ export const getFlagInfoForDashboard = async (): Promise<FlagsData> => {
   const complianceFlags = flags.docs.filter(
     (f) =>
       f.flagType === FlagTypeEnum.INCOMPLETE_TRAINING ||
-      f.flagType === FlagTypeEnum.UNACKNOWLEDGED_POLICIES,
+      f.flagType === FlagTypeEnum.UNACKNOWLEDGED_POLICIES ||
+      f.flagType === FlagTypeEnum.INCOMPLETE_OFFBOARDING,
   )
 
   const activityFlags = flags.docs.filter(

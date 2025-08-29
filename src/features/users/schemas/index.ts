@@ -54,6 +54,7 @@ export const userBaseSchema = z.object({
   isCompletedTrainingRisk: z.boolean().optional(),
   isCompletedTrainingBrand: z.boolean().optional(),
   hasKnowledgeStandards: z.boolean().optional(),
+  offboardingCompleted: z.boolean().optional(),
 })
 
 export const createUserFormSchema = userBaseSchema.superRefine((data, ctx) => {

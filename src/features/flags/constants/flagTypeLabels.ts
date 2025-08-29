@@ -10,4 +10,5 @@ export const flagTypeLabels: Record<FlagTypeEnum, string> = {
   [FlagTypeEnum.LEGAL_NOT_CONFIRMED]: 'Legal Requirements Not Confirmed',
   [FlagTypeEnum.INCIDENT_OPEN]: 'Incident or Open Alert',
   [FlagTypeEnum.SECURITY_RISK]: 'Security Risk',
+  [FlagTypeEnum.INCOMPLETE_OFFBOARDING]: 'Incomplete off boarding',
 }

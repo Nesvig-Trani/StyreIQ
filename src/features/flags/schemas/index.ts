@@ -22,6 +22,7 @@ export enum FlagTypeEnum {
   LEGAL_NOT_CONFIRMED = 'legal_not_confirmed',
   INCIDENT_OPEN = 'incident_open',
   SECURITY_RISK = 'security_risk',
+  INCOMPLETE_OFFBOARDING = 'incomplete_offboarding',
 }
 
 export enum FlagSourceEnum {

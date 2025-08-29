@@ -14,6 +14,7 @@ export async function FindRisksAndCreateFlag() {
     isCompletedTrainingRisk: FlagTypeEnum.INCOMPLETE_TRAINING,
     isCompletedTrainingBrand: FlagTypeEnum.INCOMPLETE_TRAINING,
     hasKnowledgeStandards: FlagTypeEnum.INCOMPLETE_TRAINING,
+    offboardingCompleted: FlagTypeEnum.INCOMPLETE_OFFBOARDING,
   }
 
   const fieldsToCheck = Object.keys(CHECK_TO_FLAG_MAP)
