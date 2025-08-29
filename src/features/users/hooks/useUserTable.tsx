@@ -66,24 +66,28 @@ function useUserTable({ user }: { user: User | null }) {
       cell: ({ row }) => {
         const id = row.original.id
         const role = row.original.role
+        const isOwnRecord = user?.id === id
         return (
           <div className="flex gap-2">
-            <Button>
-              <Link href={`/dashboard/users/access/${id}`}>
-                <FileLock2 />
-              </Link>
-            </Button>
-            <div>
-              {(user?.role === UserRolesEnum.UnitAdmin &&
+            {(user?.role === UserRolesEnum.UnitAdmin ||
+              user?.role === UserRolesEnum.SuperAdmin) && (
+              <Button>
+                <Link href={`/dashboard/users/access/${id}`}>
+                  <FileLock2 />
+                </Link>
+              </Button>
+            )}
+
+            {(user?.role === UserRolesEnum.SuperAdmin ||
+              (user?.role === UserRolesEnum.UnitAdmin &&
                 role === UserRolesEnum.SocialMediaManager) ||
-              user?.role === UserRolesEnum.SuperAdmin ? (
-                <Button>
-                  <Link href={`/dashboard/users/update/${id}`}>
-                    <PencilIcon />
-                  </Link>
-                </Button>
-              ) : null}
-            </div>
+              (user?.role === UserRolesEnum.SocialMediaManager && isOwnRecord)) && (
+              <Button>
+                <Link href={`/dashboard/users/update/${id}`}>
+                  <PencilIcon />
+                </Link>
+              </Button>
+            )}
           </div>
         )
       },
