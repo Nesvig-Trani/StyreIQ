@@ -106,17 +106,30 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
   }
 
   const getFlagSeverity = (flagType: string): 'high' | 'medium' | 'low' => {
-    const highSeverity = ['security_risk', 'missing_2fa', 'incident_open', 'legal_not_confirmed']
-    const mediumSeverity = [
-      'outdated_password',
+    const highSeverity = [
+      'missing_2fa',
+      'no_assigned_owner',
+      'inactive_account',
       'incomplete_training',
       'unacknowledged_policies',
-      'inactive_account',
+      'incomplete_offboarding',
+      'incident_open',
+      'security_risk',
+      'legal_not_confirmed',
     ]
+
+    const mediumSeverity = ['outdated_password']
 
     if (highSeverity.includes(flagType)) return 'high'
     if (mediumSeverity.includes(flagType)) return 'medium'
     return 'low'
+  }
+
+  const createRiskItems = (flagTypes: string[], labels: string[]) => {
+    return flagTypes.map((flagType, index) => ({
+      label: labels[index],
+      severity: getFlagSeverity(flagType),
+    }))
   }
 
   const getCategoryData = (categoryName: string) => {
@@ -169,11 +182,7 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
           issues={flags.incident.count}
           color="red"
           icon={Shield}
-          items={[
-            'No Backup Admin Assigned',
-            'Delegated Permissions Mismatch',
-            'No Backup Admin Assigned',
-          ]}
+          items={createRiskItems(['incident_open'], ['Incident Open'])}
           onClick={() =>
             openModal(
               'Access Management',
@@ -190,7 +199,10 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
           issues={flags.security.count}
           color="red"
           icon={ShieldAlert}
-          items={['2FA Not Enabled', 'Password Not Updated', 'Account Password Outdated']}
+          items={createRiskItems(
+            ['security_risk', 'missing_2fa', 'outdated_password'],
+            ['Security Risk', 'Missing 2FA', 'Outdated Password'],
+          )}
           onClick={() =>
             openModal(
               'Credential Security',
@@ -207,7 +219,10 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
           issues={flags.compliance.count}
           color="yellow"
           icon={ClipboardList}
-          items={['Policy Acknowledgment Missing']}
+          items={createRiskItems(
+            ['incomplete_training', 'unacknowledged_policies', 'incomplete_offboarding'],
+            ['Incomplete Training', 'Unacknowledged Policies', 'Incomplete Offboarding'],
+          )}
           onClick={() =>
             openModal(
               'Compliance Oversight',
@@ -224,7 +239,10 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
           issues={flags.activity.count}
           color="yellow"
           icon={Eye}
-          items={['Dormant Account Detected', 'Unit with No Active Admins']}
+          items={createRiskItems(
+            ['inactive_account', 'no_assigned_owner'],
+            ['Inactive Account', 'No Assigned Owner'],
+          )}
           onClick={() =>
             openModal(
               'Organizational Visibility',
@@ -241,7 +259,7 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
           issues={flags.legal.count}
           color="yellow"
           icon={AlertCircle}
-          items={['Third-Party Tool Connection Unclear', 'Suspicious Third-Party Tools Detected']}
+          items={createRiskItems(['legal_not_confirmed'], ['Legal Not Confirmed'])}
           onClick={() =>
             openModal(
               'Governance Gaps',

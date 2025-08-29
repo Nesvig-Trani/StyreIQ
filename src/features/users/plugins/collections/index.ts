@@ -180,6 +180,10 @@ export const Users: CollectionConfig = {
       name: 'passwordUpdatedAt',
       type: 'date',
     },
+    {
+      name: 'offboardingCompleted',
+      type: 'checkbox',
+    },
   ],
   endpoints: [
     createUser,

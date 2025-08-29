@@ -88,6 +88,7 @@ export const createUser: Endpoint = {
           isInUseSecurePassword: dataParsed.isInUseSecurePassword,
           isCompletedTrainingBrand: dataParsed.isCompletedTrainingBrand,
           passwordUpdatedAt: dataParsed.passwordUpdatedAt?.toISOString(),
+          offboardingCompleted: dataParsed.offboardingCompleted,
         },
         req,
       })

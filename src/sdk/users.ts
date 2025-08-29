@@ -62,6 +62,7 @@ export const createUser = async (data: z.infer<typeof createUserFormSchema>) => 
       isInUseSecurePassword: data.isInUseSecurePassword,
       isCompletedTrainingBrand: data.isCompletedTrainingBrand,
       passwordUpdatedAt: data.passwordUpdatedAt,
+      offboardingCompleted: data.offboardingCompleted,
     }),
   })
 

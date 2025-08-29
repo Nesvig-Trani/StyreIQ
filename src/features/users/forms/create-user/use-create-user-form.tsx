@@ -174,6 +174,16 @@ export function useCreateUserForm({ authUserRole, initialOrganizations }: UserFo
           ],
           size: 'half',
         },
+        {
+          name: 'offboardingCompleted',
+          label: 'Offboarding Completed',
+          type: 'select',
+          options: [
+            { value: true, label: 'Yes' },
+            { value: false, label: 'No' },
+          ],
+          size: 'half',
+        },
       ],
       onSubmit: async (submitData) => {
         const fixed = {
@@ -221,6 +231,7 @@ export function useCreateUserForm({ authUserRole, initialOrganizations }: UserFo
         isCompletedTrainingBrand: false,
         hasKnowledgeStandards: false,
         passwordUpdatedAt: undefined,
+        offboardingCompleted: false,
       },
     },
   )

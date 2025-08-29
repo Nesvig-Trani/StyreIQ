@@ -209,6 +209,7 @@ export interface User {
   isCompletedTrainingBrand?: boolean | null
   hasKnowledgeStandards?: boolean | null
   passwordUpdatedAt?: string | null
+  offboardingCompleted?: boolean | null
   updatedAt: string
   createdAt: string
   email: string
@@ -733,6 +734,7 @@ export interface UsersSelect<T extends boolean = true> {
   isCompletedTrainingBrand?: T
   hasKnowledgeStandards?: T
   passwordUpdatedAt?: T
+  offboardingCompleted?: T
   updatedAt?: T
   createdAt?: T
   email?: T

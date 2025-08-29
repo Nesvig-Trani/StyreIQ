@@ -1,13 +1,8 @@
 import { LucideIcon } from 'lucide-react'
 
-interface RiskCategoryCardProps {
-  title: string
-  subtitle: string
-  issues: number
-  color: 'red' | 'orange' | 'yellow' | 'gray'
-  icon: LucideIcon
-  items?: string[]
-  onClick?: () => void
+interface RiskItem {
+  label: string
+  severity: 'high' | 'medium' | 'low'
 }
 
 interface RiskCategoryCardProps {
@@ -16,7 +11,7 @@ interface RiskCategoryCardProps {
   issues: number
   color: 'red' | 'orange' | 'yellow' | 'gray'
   icon: LucideIcon
-  items?: string[]
+  items?: RiskItem[]
   onClick?: () => void
 }
 
@@ -29,13 +24,13 @@ export const RiskCategoryCard: React.FC<RiskCategoryCardProps> = ({
   items = [],
   onClick,
 }) => {
-  const getDotColor = (color: string) => {
-    switch (color) {
-      case 'red':
+  const getSeverityColor = (severity: 'high' | 'medium' | 'low') => {
+    switch (severity) {
+      case 'high':
         return 'bg-red-500'
-      case 'orange':
+      case 'medium':
         return 'bg-orange-500'
-      case 'yellow':
+      case 'low':
         return 'bg-yellow-500'
       default:
         return 'bg-gray-400'
@@ -79,8 +74,10 @@ export const RiskCategoryCard: React.FC<RiskCategoryCardProps> = ({
         <div className="space-y-1">
           {items.map((item, index) => (
             <div key={index} className="flex items-center space-x-2">
-              <div className={`w-2 h-2 rounded-full flex-shrink-0 ${getDotColor(color)}`}></div>
-              <span className="text-sm text-gray-700 truncate">{item}</span>
+              <div
+                className={`w-2 h-2 rounded-full flex-shrink-0 ${getSeverityColor(item.severity)}`}
+              ></div>
+              <span className="text-sm text-gray-700 truncate">{item.label}</span>
             </div>
           ))}
         </div>
