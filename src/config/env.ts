@@ -12,6 +12,7 @@ export const env = createEnv({
     PAYLOAD_SECRET: z.string(),
     RESEND_API_KEY: z.string(),
     LOCAL_EMAIL_TO_ADDRESS: z.string(),
+    BASE_SOCIAL_MEDIA_API_URL: z.string().min(1).url(),
   },
 
   runtimeEnv: {
@@ -22,5 +23,6 @@ export const env = createEnv({
     PAYLOAD_SECRET: process.env.PAYLOAD_SECRET,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     LOCAL_EMAIL_TO_ADDRESS: process.env.LOCAL_EMAIL_TO_ADDRESS,
+    BASE_SOCIAL_MEDIA_API_URL: process.env.BASE_SOCIAL_MEDIA_API_URL,
   },
 })
