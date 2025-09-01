@@ -10,6 +10,7 @@ import { platformOptions } from '@/features/social-medias/constants/platformOpti
 import { thirdPartyManagementOptions } from '@/features/social-medias/constants/thirdPartyManagementOptions'
 import { passwordManagementPracticeOptions } from '@/features/social-medias/constants/passwordManagementPracticeOptions'
 import { verificationStatusOptions } from '@/features/social-medias/constants/verificationStatusOptions'
+import { scrapLatestPost } from '../endpoints/get-and-store-latest-post'
 
 export const SocialMediasCollectionSlug = 'social-medias'
 
@@ -174,5 +175,5 @@ export const SocialMedias: CollectionConfig = {
     },
   ],
   timestamps: true,
-  endpoints: [createSocialMedia, patchSocialMedia, updateSocialMediaStatus],
+  endpoints: [createSocialMedia, scrapLatestPost, patchSocialMedia, updateSocialMediaStatus],
 }

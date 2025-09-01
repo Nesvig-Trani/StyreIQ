@@ -4,6 +4,7 @@ import { Badge } from '@/shared'
 import type { SocialMedia } from '@/types/payload-types'
 import { InfoField } from '@/shared/components/ui/info-field'
 import { InfoCard } from '@/shared/components/ui/info-card'
+import { LatestPost } from './overview-tab/latest-post'
 
 interface OverviewTabProps {
   socialMedia: SocialMedia
@@ -88,6 +89,10 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ socialMedia }) => {
           </div>
         </InfoCard>
       </div>
+
+      {socialMedia.platform && socialMedia.accountHandle && (
+        <LatestPost platform={socialMedia.platform} channelId={socialMedia.accountHandle} />
+      )}
 
       <InfoCard
         icon={<SettingsIcon className="h-4 w-4 text-black" />}
