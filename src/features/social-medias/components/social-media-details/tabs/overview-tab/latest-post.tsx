@@ -27,6 +27,8 @@ const getPlatformIcon = (platform: string) => {
   return icons[platform as keyof typeof icons] || '⚪'
 }
 
+const allowedPlatforms = ['youtube', 'twitter']
+
 export const LatestPost = ({ platform, channelId }: { platform: string; channelId: string }) => {
   const { loading, latestPost, error } = useLatestPost(platform, channelId)
   const platformIcon = getPlatformIcon(platform)
@@ -37,7 +39,7 @@ export const LatestPost = ({ platform, channelId }: { platform: string; channelI
   }
 
   // TODO handle other platforms
-  if (platform !== 'youtube' && platform !== 'twitter') {
+  if (!allowedPlatforms.includes(platform)) {
     return (
       <div>
         <InfoCard
