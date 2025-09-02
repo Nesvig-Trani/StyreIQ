@@ -20,7 +20,7 @@ function useAuditLogsTable({ users }: { users: User[] }) {
       options: [
         { value: 'users', label: 'Users' },
         {
-          value: 'units',
+          value: 'organization',
           label: 'Units',
         },
         {
@@ -42,7 +42,7 @@ function useAuditLogsTable({ users }: { users: User[] }) {
     },
     {
       id: 'user',
-      title: 'User',
+      title: 'Modify by',
       type: 'select',
       allowMultiple: false,
       options: users.map((user) => ({
@@ -60,7 +60,7 @@ function useAuditLogsTable({ users }: { users: User[] }) {
   const columns: ColumnDef<AuditLog>[] = [
     {
       accessorKey: 'user',
-      header: 'User',
+      header: 'Modify by',
       enableColumnFilter: true,
       cell: ({ row }) => {
         const user = row.getValue('user') as User
@@ -99,7 +99,7 @@ function useAuditLogsTable({ users }: { users: User[] }) {
     },
     {
       accessorKey: 'document',
-      header: 'Document',
+      header: 'Affected Record',
       cell: ({ row }) => {
         const document = row.getValue('document') as { value: { name: string; flagType: string } }
         return <span>{document?.value?.name || document?.value?.flagType}</span>

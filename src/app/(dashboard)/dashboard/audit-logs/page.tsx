@@ -22,6 +22,13 @@ export default async function AuditLogsPage(props: {
     action: parsedParams.action,
     from: parsedParams.createdAt.from,
     to: parsedParams.createdAt.to,
+    userDocumentId: parsedParams.userDocumentId ? Number(parsedParams.userDocumentId) : undefined,
+    organizationDocumentId: parsedParams.organizationDocumentId
+      ? Number(parsedParams.organizationDocumentId)
+      : undefined,
+    socialMediaDocumentId: parsedParams.socialMediaDocumentId
+      ? Number(parsedParams.socialMediaDocumentId)
+      : undefined,
     pageSize: parsedParams.pagination.pageSize,
     pageIndex: parsedParams.pagination.pageIndex,
   })
