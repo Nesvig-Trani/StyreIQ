@@ -108,7 +108,7 @@ export default async function DashboardPage() {
             <h2 className="text-lg font-semibold text-gray-900">Risk Categories</h2>
             <div className="flex flex-wrap gap-2">
               <Button variant="outline">
-                <Link href={`/dashboard/audit-logs`}>View Audit Trail</Link>
+                <Link href={`/dashboard/audit-logs`}>View Audit Log</Link>
               </Button>
             </div>
           </div>

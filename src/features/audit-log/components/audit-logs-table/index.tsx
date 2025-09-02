@@ -3,6 +3,7 @@
 import { AuditLog, User } from '@/types/payload-types'
 import { DataTable } from '@/shared'
 import useAuditLogsTable from '../../hooks/useAuditLogsTable'
+import { CustomFilters } from './customFilters'
 
 export const AuditLogsTable = ({
   data,
@@ -21,6 +22,8 @@ export const AuditLogsTable = ({
   const { columns, columnFiltersDefs, searchParams } = useAuditLogsTable({ users })
   return (
     <div>
+      <CustomFilters audilogs={data} searchParams={searchParams} />
+
       <DataTable
         columns={columns}
         data={data}
