@@ -41,9 +41,7 @@ export const FeatureSection: React.FC<FeatureSectionProps> = ({
           {features.map((feature, index) => (
             <Card key={index}>
               <CardContent className="pt-6">
-                <div className="w-16 h-16 bg-gray-900 rounded-lg flex items-center justify-center mb-6">
-                  <feature.icon className="w-8 h-8 text-white" />
-                </div>
+                <feature.icon className="w-8 h-8 text-orange-400 mb-6" />
                 <CardTitle className="mb-4">{feature.title}</CardTitle>
                 <CardDescription>{feature.description}</CardDescription>
               </CardContent>

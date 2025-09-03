@@ -21,7 +21,7 @@ export const Navbar: React.FC<NavbarProps> = ({ showGetStarted }) => {
   const navItems = [
     { href: '#benefits', label: 'Benefits' },
     { href: '#how-it-works', label: 'How It Works' },
-    { href: '#who-its-for', label: "Who It's For" },
+    { href: '#faq', label: 'FAQ' },
   ]
 
   return (
@@ -53,7 +53,7 @@ export const Navbar: React.FC<NavbarProps> = ({ showGetStarted }) => {
               <Link href={'/login'}>Log In</Link>
             </Button>
             {showGetStarted && (
-              <Button variant="outline" asChild>
+              <Button variant="orange" size="lg" asChild>
                 <Link href={'/login/create-first-user'}>Get Started</Link>
               </Button>
             )}

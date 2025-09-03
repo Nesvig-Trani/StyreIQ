@@ -21,6 +21,7 @@ import { resetPasswordEmailBody } from '@/features/users/constants/resetPassword
 import { welcomeEmailBody } from '@/features/users/constants/welcomeEmailBody'
 import { WelcomeEmailCollectionSlug } from '@/features/welcome-emails/plugins/types'
 import { AuditLogActionEnum } from '@/features/audit-log/plugins/types'
+import { requestDemoEmailBody } from '../../constants/requestDemoEmailBody'
 
 export const createUser: Endpoint = {
   path: '/',
@@ -664,6 +665,56 @@ export const userResetPassword: Endpoint = {
         status: 400,
         headers: JSON_HEADERS,
       })
+    }
+  },
+}
+
+export const requestDemo: Endpoint = {
+  path: '/request-demo',
+  method: 'post',
+  handler: async (req) => {
+    try {
+      if (!req.json)
+        return new Response(JSON.stringify({ error: 'Missing JSON body' }), {
+          status: 400,
+          headers: JSON_HEADERS,
+        })
+
+      const data = await req.json()
+
+      const sendEmailResponse = await req.payload.sendEmail({
+        to:
+          env.NEXT_PUBLIC_NODE_ENV === 'production'
+            ? 'tntrani@nesvigtrani.com'
+            : env.LOCAL_EMAIL_TO_ADDRESS,
+        subject: 'New Demo Request',
+        html: requestDemoEmailBody({
+          name: data.name,
+          email: data.email,
+          company: data.company || '',
+        }),
+      })
+
+      if (
+        !sendEmailResponse ||
+        typeof sendEmailResponse !== 'object' ||
+        !('id' in sendEmailResponse)
+      ) {
+        throw new Error('Email service did not return a valid id')
+      }
+
+      return new Response(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: JSON_HEADERS,
+      })
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: 'Unexpected error in requestDemo', details: error }),
+        {
+          status: 500,
+          headers: JSON_HEADERS,
+        },
+      )
     }
   },
 }
