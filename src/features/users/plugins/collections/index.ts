@@ -8,6 +8,7 @@ import {
   setUserApprovalStatus,
   userForgotPassword,
   userResetPassword,
+  requestDemo,
 } from '../endpoints'
 import { canReadUsers } from '../access'
 import { AccessControl } from '@/shared/utils/rbac'
@@ -193,5 +194,6 @@ export const Users: CollectionConfig = {
     setUserApprovalStatus,
     userForgotPassword,
     userResetPassword,
+    requestDemo,
   ],
 }

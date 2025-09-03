@@ -132,7 +132,7 @@ function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
       data-slot="form-message"
       id={formMessageId}
       className={cn(
-        'text-sm min-h-[1.25rem] transition-opacity duration-200',
+        'text-sm min-h-[1.25rem] transition-opacity duration-200 !m-0',
         body ? 'text-destructive opacity-100' : 'opacity-0',
         className,
       )}

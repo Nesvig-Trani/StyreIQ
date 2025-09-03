@@ -27,18 +27,20 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {steps.map((step, index) => (
-            <div key={index} className="text-center">
-              <div className="w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-white font-bold text-lg">{step.number}</span>
+          {steps.map((step, index) => {
+            const isLastOdd = index === steps.length - 1 && steps.length % 3 === 1
+            return (
+              <div key={index} className={`text-center ${isLastOdd ? 'md:col-start-2' : ''}`}>
+                <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <step.icon className="w-6 h-6 text-orange-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800 tracking-tight mb-3">
+                  {step.title}
+                </h3>
+                <p className="text-gray-600">{step.description}</p>
               </div>
-              <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <step.icon className="w-6 h-6 text-gray-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">{step.title}</h3>
-              <p className="text-gray-600">{step.description}</p>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>
