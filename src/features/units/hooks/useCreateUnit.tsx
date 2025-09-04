@@ -112,11 +112,8 @@ function useCreateUnit({ userRole, organizations, defaultParentOrg }: CreateUnit
       {
         label: 'Delegated Permissions',
         name: 'delegatedPermissions' as const,
-        type: 'select' as const,
-        options: [
-          { value: true, label: 'Yes' },
-          { value: false, label: 'No' },
-        ],
+        type: 'checkbox' as const,
+        checkboxMode: 'boolean' as const,
         size: 'half' as const,
       },
     ],
