@@ -8,7 +8,7 @@ export const FAQSection = ({ id = 'faq' }) => {
 
   const faqs = [
     {
-      question: 'How do I know if StyreIQ is for our organization?',
+      question: 'Is StyreIQ right for our organization?',
       answer:
         'StyreIQ is helpful for many organizations, but it’s purpose-built for large, multi-unit systems — like state and local governments, universities, healthcare networks, and media companies. These institutions are often left out of the social media tool arena when it comes to org-wide governance and compliance. StyreIQ closes that gap by giving leadership the visibility, accountability, and proof points auditors demand, while still letting departments maintain ownership of their own accounts.',
     },
@@ -42,7 +42,7 @@ export const FAQSection = ({ id = 'faq' }) => {
         "You won't be babysitting the system. StyreIQ does the work automatically and only alerts you when something needs attention — like an unmonitored account, outdated access, or an unacknowledged policy. It's not another chore on your to-do list; it's the tool that removes the endless back-and-forth emails about avoidable problems.",
     },
     {
-      question: 'How does StyreIQ save time and resources?',
+      question: 'How does StyreIQ save time & money?',
       answer:
         'Because everything is in one place, central teams spend less time chasing down account ownership, wrangling access lists, or prepping for audits. Distributed onboarding means units handle their own updates, and automated alerts surface problems before they become emergencies. The result: less firefighting, fewer late-night emails, and more time for actual strategy.',
     },
