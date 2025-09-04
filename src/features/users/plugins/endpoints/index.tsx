@@ -685,7 +685,9 @@ export const requestDemo: Endpoint = {
       const sendEmailResponse = await req.payload.sendEmail({
         to:
           env.NEXT_PUBLIC_NODE_ENV === 'production'
-            ? 'tntrani@nesvigtrani.com'
+            ? // TODO: Uncomment this when the tests are done.
+              // ? 'tntrani@nesvigtrani.com'
+              'hilary@meltstudio.co'
             : env.LOCAL_EMAIL_TO_ADDRESS,
         subject: 'New Demo Request',
         html: requestDemoEmailBody({
