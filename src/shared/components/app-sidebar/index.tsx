@@ -54,11 +54,11 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
 
       <div className="flex justify-center pb-2">
         <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg w-40 h-13">
-          <div>
-            <div className="text-xs font-medium text-gray-900">
+          <div className="min-w-0">
+            <div className="text-xs font-medium text-gray-900 truncate">
               {roleLabelMap[user.role as UserRolesEnum]}
             </div>
-            <div className="text-xs text-gray-500">{user.email}</div>
+            <div className="text-xs text-gray-500 truncate">{user.email}</div>
           </div>
         </div>
       </div>
