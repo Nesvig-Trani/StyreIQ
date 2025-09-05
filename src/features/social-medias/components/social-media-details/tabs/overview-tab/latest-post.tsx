@@ -41,11 +41,6 @@ export const LatestPost = ({ platform, channelId, socialMediaId }: Props) => {
   const platformIcon = getPlatformIcon(platform)
   const platformLabel = platformLabelMap[platform as PlatformEnum] || platform
 
-  console.log('Error', error)
-  if (error === 'Failed to fetch the saved latest post') {
-    console.log('Error ifff')
-  }
-
   if (
     !loading &&
     latestPost === null &&

@@ -66,8 +66,6 @@ export const getSavedLatestPost: Endpoint = {
         },
       )
     } catch (err) {
-      console.error('Error fetching saved latest post:', err)
-
       if (err instanceof z.ZodError) {
         return new Response(
           JSON.stringify({
