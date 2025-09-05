@@ -96,12 +96,7 @@ export const storeSocialMediaPost = async (
         isLatest: true,
       },
     })
-
-    console.log(
-      `Successfully stored latest post for ${postData.platform} account: ${socialMediaId}`,
-    )
   } catch (error) {
-    console.error('Error storing social media post:', error)
     throw error
   }
 }
