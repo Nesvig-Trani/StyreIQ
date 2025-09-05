@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useLatestPost } from '@/features/social-medias/hooks/useLatestPost'
 import { PlatformEnum, platformLabelMap } from '@/features/social-medias/schemas'
-import { Badge, Button } from '@/shared'
+import { Badge, Button, cn } from '@/shared'
 import { InfoCard } from '@/shared/components/ui/info-card'
 import { formatDistanceToNow } from 'date-fns'
 import {
@@ -122,7 +122,7 @@ export const LatestPost = ({ platform, channelId, socialMediaId }: Props) => {
               )}
             </div>
             <a
-              href={latestPost?.media_urls[0] || '#'}
+              href={latestPost?.url || '#'}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-blue-600 hover:text-blue-800 cursor-pointer flex items-center gap-1"
@@ -142,7 +142,12 @@ export const LatestPost = ({ platform, channelId, socialMediaId }: Props) => {
           {/* Post Content and Media */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {/* Content */}
-            <div className="lg:col-span-2">
+            <div
+              className={cn({
+                'lg:col-span-3': !!!latestPost?.media_urls[0],
+                'lg:col-span-2': !!latestPost?.media_urls[0],
+              })}
+            >
               <div className="bg-white p-4 rounded-lg border">
                 <p className="text-sm text-gray-700 leading-relaxed mb-3">{latestPost?.content}</p>
 
@@ -165,31 +170,34 @@ export const LatestPost = ({ platform, channelId, socialMediaId }: Props) => {
             </div>
 
             {/* Media Thumbnail */}
-            <div className="lg:col-span-1">
-              <div className="relative group cursor-pointer">
-                <img
-                  src={
-                    latestPost?.media_urls[0] ||
-                    'https://static.vecteezy.com/system/resources/thumbnails/004/141/669/small_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg'
-                  }
-                  alt={latestPost?.id || 'Latest Post Media'}
-                  className="w-full h-48 object-cover rounded-lg border"
-                />
-                {latestPost?.platform === 'youtube' && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="bg-black bg-opacity-50 rounded-full p-3">
-                      <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path
-                          fillRule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
+            {latestPost?.media_urls[0] && (
+              <div className="lg:col-span-1">
+                <div className="relative group cursor-pointer">
+                  <img
+                    src={
+                      latestPost?.media_urls[0] ||
+                      'https://static.vecteezy.com/system/resources/thumbnails/004/141/669/small_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg'
+                    }
+                    alt={latestPost?.id || 'Latest Post Media'}
+                    className="w-full h-48 object-cover rounded-lg border"
+                  />
+
+                  {latestPost?.platform === 'youtube' && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="bg-black bg-opacity-50 rounded-full p-3">
+                        <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <path
+                            fillRule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       )}
