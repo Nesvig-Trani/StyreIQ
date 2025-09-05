@@ -12,6 +12,7 @@ import * as migration_20250801_211652 from './20250801_211652'
 import * as migration_20250805_162244_add_the_social_media_managers_field_to_social_media from './20250805_162244_add_the_social_media_managers_field_to_social_media'
 import * as migration_20250811_181449 from './20250811_181449'
 import * as migration_20250829_131117_add_offboarding_completed_field_to_users from './20250829_131117_add_offboarding_completed_field_to_users'
+import * as migration_20250903_163942 from './20250903_163942'
 
 export const migrations = [
   {
@@ -83,5 +84,10 @@ export const migrations = [
     up: migration_20250829_131117_add_offboarding_completed_field_to_users.up,
     down: migration_20250829_131117_add_offboarding_completed_field_to_users.down,
     name: '20250829_131117_add_offboarding_completed_field_to_users',
+  },
+  {
+    up: migration_20250903_163942.up,
+    down: migration_20250903_163942.down,
+    name: '20250903_163942',
   },
 ]

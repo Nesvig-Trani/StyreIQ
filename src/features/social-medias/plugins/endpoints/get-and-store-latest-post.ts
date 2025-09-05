@@ -3,14 +3,23 @@ import { EndpointError } from '@/shared'
 import { Endpoint } from 'payload'
 import { JSON_HEADERS } from '@/shared/constants'
 import {
+  TwitterLatestPost,
   TwitterLatestPostResponseSchema,
+  YoutubeLatestPost,
   YoutubeLatestPostResponseSchema,
 } from '../../schemas/latest-posts.schema'
 import { PlatformEnum } from '../../schemas'
 import { env } from '@/config/env'
+import {
+  storeSocialMediaPost,
+  transformTwitterPost,
+  transformYoutubePost,
+} from '../../utils/post-storage'
+import { SocialMediaPost } from '@/types/payload-types'
 
 const QuerySchema = z.object({
   channel: z.string().min(1),
+  socialMediaId: z.coerce.number(),
   platform: z.enum([PlatformEnum.YouTube, PlatformEnum.Twitter]),
 })
 
@@ -24,7 +33,7 @@ export const scrapLatestPost: Endpoint = {
   method: 'get',
   handler: async (req) => {
     try {
-      const { channel, platform } = QuerySchema.parse(req.query)
+      const { channel, platform, socialMediaId } = QuerySchema.parse(req.query)
 
       const url = new URL(
         `/api/v1/posts/${platform}/${channel}/latest`,
@@ -45,7 +54,18 @@ export const scrapLatestPost: Endpoint = {
       const schema = platformSchemas[platform]
       const latestPost = schema.parse(json)
 
-      // TODO: store the latest post in the db
+      // Store the latest post in the social-media-posts collection
+      let post: Omit<SocialMediaPost, 'socialMedia' | 'id'> | null = null
+      if (platform === PlatformEnum.Twitter) {
+        post = transformTwitterPost(latestPost.data as TwitterLatestPost)
+      }
+      if (platform === PlatformEnum.YouTube) {
+        post = transformYoutubePost(latestPost.data as YoutubeLatestPost)
+      }
+
+      if (post) {
+        storeSocialMediaPost(req.payload, post, socialMediaId)
+      }
 
       return new Response(JSON.stringify(latestPost), {
         status: 200,

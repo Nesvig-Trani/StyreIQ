@@ -48,7 +48,7 @@ export const TwitterLatestPost = z.object({
   media_urls: z.array(z.any()),
   engagement: TwitterEngagementSchema,
 })
-export type Data = z.infer<typeof TwitterLatestPost>
+export type TwitterLatestPost = z.infer<typeof TwitterLatestPost>
 
 export const TwitterLatestPostResponseSchema = z.object({
   success: z.boolean(),

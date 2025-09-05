@@ -1,5 +1,5 @@
 import type { Config } from 'payload'
-import { SocialMedias } from './collections'
+import { SocialMedias, SocialMediaPosts } from './collections'
 
 type SocialMediasPluginConfig = {
   disabled?: boolean
@@ -8,7 +8,7 @@ type SocialMediasPluginConfig = {
 export const SocialMediasPlugin =
   (pluginOptions: SocialMediasPluginConfig) =>
   (config: Config): Config => {
-    config.collections = [...(config.collections || []), SocialMedias]
+    config.collections = [...(config.collections || []), SocialMedias, SocialMediaPosts]
 
     /**
      * If the plugin is disabled, we still want to keep added collections/fields so the database schema is consistent which is important for migrations.

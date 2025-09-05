@@ -4,12 +4,14 @@ import { JSON_HEADERS } from '@/shared/constants'
 interface GetLatestPostParams {
   channel: string
   platform: string
+  socialMediaId: number
 }
 
-export const getLatestPost = async ({ channel, platform }: GetLatestPostParams) => {
+export const getLatestPost = async ({ channel, platform, socialMediaId }: GetLatestPostParams) => {
   const url = new URL('/api/social-medias/latest-post', env.NEXT_PUBLIC_BASE_URL)
   url.searchParams.set('channel', channel)
   url.searchParams.set('platform', platform)
+  url.searchParams.set('socialMediaId', socialMediaId.toString())
 
   const response = await fetch(url.toString(), {
     method: 'GET',
