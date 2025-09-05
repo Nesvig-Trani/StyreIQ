@@ -15,6 +15,11 @@ export function UnitDetail({ organization }: { organization: UnitWithDepth }) {
     pending_review: 'bg-yellow-500',
   }
 
+  const getInitials = (name: string | undefined | null): string => {
+    if (!name || typeof name !== 'string') return '?'
+    return name.charAt(0).toUpperCase()
+  }
+
   return (
     <div className="container mx-auto py-6 space-y-6 max-w-4xl">
       <div className="flex justify-between items-center">
@@ -72,7 +77,7 @@ export function UnitDetail({ organization }: { organization: UnitWithDepth }) {
 
                   <div className="flex items-center">
                     <Building className="h-4 w-4 mr-2 text-muted-foreground" />
-                    <span>{parentOrg.name}</span>
+                    <span>{parentOrg?.name || 'Unknown'}</span>
                   </div>
                 </div>
               )}
@@ -102,44 +107,55 @@ export function UnitDetail({ organization }: { organization: UnitWithDepth }) {
         </Card>
 
         <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Administration</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <h3 className="text-sm font-medium text-muted-foreground mb-2">Primary Admin</h3>
-                <div className="flex items-center gap-3 p-2 border rounded-md">
-                  <Avatar>
-                    <AvatarFallback>{admin.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <div className="font-medium">{admin.name}</div>
-                    <div className="text-sm text-muted-foreground">{admin.email}</div>
-                  </div>
-                </div>
-              </div>
-
-              {organization.backupAdmins && organization.backupAdmins.length > 0 && (
+          {admin && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Administration</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
                 <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-2">Backup Admins</h3>
-                  <div className="space-y-2">
-                    {backupAdmins.map((admin) => (
-                      <div key={admin.id} className="flex items-center gap-3 p-2 border rounded-md">
-                        <Avatar>
-                          <AvatarFallback>{admin.name.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="font-medium">{admin.name}</div>
-                          <div className="text-sm text-muted-foreground">{admin.email}</div>
-                        </div>
+                  <h3 className="text-sm font-medium text-muted-foreground mb-2">Primary Admin</h3>
+                  <div className="flex items-center gap-3 p-2 border rounded-md">
+                    <Avatar>
+                      <AvatarFallback>{getInitials(admin.name)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <div className="font-medium">{admin.name || 'Unknown'}</div>
+                      <div className="text-sm text-muted-foreground">
+                        {admin.email || 'No email'}
                       </div>
-                    ))}
+                    </div>
                   </div>
                 </div>
-              )}
-            </CardContent>
-          </Card>
+
+                {organization.backupAdmins && organization.backupAdmins.length > 0 && (
+                  <div>
+                    <h3 className="text-sm font-medium text-muted-foreground mb-2">
+                      Backup Admins
+                    </h3>
+                    <div className="space-y-2">
+                      {backupAdmins?.map((backupAdmin) => (
+                        <div
+                          key={backupAdmin.id}
+                          className="flex items-center gap-3 p-2 border rounded-md"
+                        >
+                          <Avatar>
+                            <AvatarFallback>{getInitials(backupAdmin.name)}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <div className="font-medium">{backupAdmin.name || 'Unknown'}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {backupAdmin.email || 'No email'}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
 
           <Card>
             <CardHeader>
