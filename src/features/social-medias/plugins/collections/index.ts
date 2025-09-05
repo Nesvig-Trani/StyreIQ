@@ -11,8 +11,12 @@ import { thirdPartyManagementOptions } from '@/features/social-medias/constants/
 import { passwordManagementPracticeOptions } from '@/features/social-medias/constants/passwordManagementPracticeOptions'
 import { verificationStatusOptions } from '@/features/social-medias/constants/verificationStatusOptions'
 import { scrapLatestPost } from '../endpoints/get-and-store-latest-post'
+import { SocialMediaPosts, SocialMediaPostsCollectionSlug } from './posts'
+import { getSavedLatestPost } from '../endpoints/get-saved-latest-post'
 
 export const SocialMediasCollectionSlug = 'social-medias'
+
+export { SocialMediaPosts, SocialMediaPostsCollectionSlug }
 
 export const SocialMedias: CollectionConfig = {
   slug: SocialMediasCollectionSlug,
@@ -175,5 +179,11 @@ export const SocialMedias: CollectionConfig = {
     },
   ],
   timestamps: true,
-  endpoints: [createSocialMedia, scrapLatestPost, patchSocialMedia, updateSocialMediaStatus],
+  endpoints: [
+    createSocialMedia,
+    scrapLatestPost,
+    patchSocialMedia,
+    updateSocialMediaStatus,
+    getSavedLatestPost,
+  ],
 }

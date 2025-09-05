@@ -91,7 +91,11 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ socialMedia }) => {
       </div>
 
       {socialMedia.platform && socialMedia.accountHandle && (
-        <LatestPost platform={socialMedia.platform} channelId={socialMedia.accountHandle} />
+        <LatestPost
+          platform={socialMedia.platform}
+          channelId={socialMedia.accountHandle}
+          socialMediaId={socialMedia.id}
+        />
       )}
 
       <InfoCard

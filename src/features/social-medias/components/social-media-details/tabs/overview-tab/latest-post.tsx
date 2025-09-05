@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useLatestPost } from '@/features/social-medias/hooks/useLatestPost'
 import { PlatformEnum, platformLabelMap } from '@/features/social-medias/schemas'
-import { Badge } from '@/shared'
+import { Badge, Button } from '@/shared'
 import { InfoCard } from '@/shared/components/ui/info-card'
 import { formatDistanceToNow } from 'date-fns'
 import {
@@ -29,12 +29,29 @@ const getPlatformIcon = (platform: string) => {
 
 const allowedPlatforms = ['youtube', 'twitter']
 
-export const LatestPost = ({ platform, channelId }: { platform: string; channelId: string }) => {
-  const { loading, latestPost, error } = useLatestPost(platform, channelId)
+interface Props {
+  platform: string
+  channelId: string
+  socialMediaId: number
+}
+
+export const LatestPost = ({ platform, channelId, socialMediaId }: Props) => {
+  const { loading, latestPost, error, success, getAndSaveLatesPost, getSavedLatestPostData } =
+    useLatestPost(platform, channelId, socialMediaId)
   const platformIcon = getPlatformIcon(platform)
   const platformLabel = platformLabelMap[platform as PlatformEnum] || platform
 
-  if (!loading && error) {
+  console.log('Error', error)
+  if (error === 'Failed to fetch the saved latest post') {
+    console.log('Error ifff')
+  }
+
+  if (
+    !loading &&
+    latestPost === null &&
+    error !== 'No saved latest post found' &&
+    success === false
+  ) {
     return <div className="text-red-600 text-sm mt-2">Error loading latest post</div>
   }
 
@@ -61,12 +78,39 @@ export const LatestPost = ({ platform, channelId }: { platform: string; channelI
       icon={<MessageSquare className="h-4 w-4 text-black" />}
       title="Latest Post"
       className="w-full"
+      action={
+        <div className="flex gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              getSavedLatestPostData()
+            }}
+          >
+            Load saved post
+          </Button>
+          <Button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              getAndSaveLatesPost()
+            }}
+          >
+            Get latest post
+          </Button>
+        </div>
+      }
     >
-      {loading ? (
+      {loading && (
         <div>
           <p>Loading latest post...</p>
         </div>
-      ) : (
+      )}
+
+      {!loading && latestPost && (
         <div className="space-y-4">
           {/* Header with Platform and User Info */}
           <div className="flex items-center justify-between">
@@ -152,6 +196,12 @@ export const LatestPost = ({ platform, channelId }: { platform: string; channelI
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {!loading && error === 'Failed to fetch the saved latest post' && (
+        <div className="text-sm text-red-600">
+          No saved latest post found, please get the latest post
         </div>
       )}
     </InfoCard>

@@ -72,6 +72,7 @@ export interface Config {
     'welcome-emails': WelcomeEmail
     users: User
     'social-medias': SocialMedia
+    'social-media-posts': SocialMediaPost
     policies: Policy
     acknowledgments: Acknowledgment
     flags: Flag
@@ -97,6 +98,7 @@ export interface Config {
     'welcome-emails': WelcomeEmailsSelect<false> | WelcomeEmailsSelect<true>
     users: UsersSelect<false> | UsersSelect<true>
     'social-medias': SocialMediasSelect<false> | SocialMediasSelect<true>
+    'social-media-posts': SocialMediaPostsSelect<false> | SocialMediaPostsSelect<true>
     policies: PoliciesSelect<false> | PoliciesSelect<true>
     acknowledgments: AcknowledgmentsSelect<false> | AcknowledgmentsSelect<true>
     flags: FlagsSelect<false> | FlagsSelect<true>
@@ -297,6 +299,82 @@ export interface SocialMedia {
    * Automatically set if the account has no public activity for 30+ days and is Active or In Transition.
    */
   inactiveFlag?: boolean | null
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "social-media-posts".
+ */
+export interface SocialMediaPost {
+  id: number
+  platform: 'youtube' | 'twitter' | 'facebook' | 'instagram' | 'linkedin' | 'tiktok' | 'other'
+  socialMedia: number | SocialMedia
+  /**
+   * Unique identifier from the platform (e.g., tweet ID, video ID)
+   */
+  externalId: string
+  /**
+   * Author/creator of the post
+   */
+  author: string
+  /**
+   * Author ID from the platform
+   */
+  authorId?: string | null
+  /**
+   * Text content of the post
+   */
+  content: string
+  /**
+   * Direct link to the post
+   */
+  url: string
+  /**
+   * Media attachments (images, videos, etc.)
+   */
+  mediaUrls?:
+    | {
+        url?: string | null
+        type?: ('image' | 'video' | 'audio' | 'document' | 'other') | null
+        id?: string | null
+      }[]
+    | null
+  /**
+   * Engagement metrics from the platform
+   */
+  engagement?: {
+    views?: number | null
+    likes?: number | null
+    comments?: number | null
+    shares?: number | null
+    retweets?: number | null
+    quotes?: number | null
+  }
+  /**
+   * When the post was published on the platform
+   */
+  publishedAt: string
+  /**
+   * When this post was scraped and stored
+   */
+  scrapedAt: string
+  /**
+   * Indicates if this is the most recent post from the account
+   */
+  isLatest?: boolean | null
+  /**
+   * Additional platform-specific metadata
+   */
+  metadata?:
+    | {
+        [k: string]: unknown
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null
   updatedAt: string
   createdAt: string
 }
@@ -588,6 +666,10 @@ export interface PayloadLockedDocument {
         value: number | SocialMedia
       } | null)
     | ({
+        relationTo: 'social-media-posts'
+        value: number | SocialMediaPost
+      } | null)
+    | ({
         relationTo: 'policies'
         value: number | Policy
       } | null)
@@ -780,6 +862,42 @@ export interface SocialMediasSelect<T extends boolean = true> {
   status?: T
   deactivationReason?: T
   inactiveFlag?: T
+  updatedAt?: T
+  createdAt?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "social-media-posts_select".
+ */
+export interface SocialMediaPostsSelect<T extends boolean = true> {
+  platform?: T
+  socialMedia?: T
+  externalId?: T
+  author?: T
+  authorId?: T
+  content?: T
+  url?: T
+  mediaUrls?:
+    | T
+    | {
+        url?: T
+        type?: T
+        id?: T
+      }
+  engagement?:
+    | T
+    | {
+        views?: T
+        likes?: T
+        comments?: T
+        shares?: T
+        retweets?: T
+        quotes?: T
+      }
+  publishedAt?: T
+  scrapedAt?: T
+  isLatest?: T
+  metadata?: T
   updatedAt?: T
   createdAt?: T
 }
