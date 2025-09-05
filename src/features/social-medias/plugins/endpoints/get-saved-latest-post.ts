@@ -50,7 +50,7 @@ export const getSavedLatestPost: Endpoint = {
         content: post.content,
         created_at: post.publishedAt,
         url: post.url,
-        media_urls: post.mediaUrls || [],
+        media_urls: post.mediaUrls?.map((medias) => medias.url) || [],
         engagement: post.engagement || {},
       }
 
