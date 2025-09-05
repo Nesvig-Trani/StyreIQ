@@ -13,9 +13,9 @@ export const HeroSection: React.FC = () => {
           </h1>
 
           <div className="text-lg text-gray-700 mb-12 max-w-3xl mx-auto">
-            StyreIQ gives large, multi-unit organizations a central system to track social media
-            accounts, see who’s connected to each one, and prevent compliance failures that lead to
-            reputational, legal, or operational consequences.
+            StyreIQ is a software platform that gives large, multi-unit organizations a central
+            system to track social media accounts, see who’s connected to each one, and prevent
+            compliance failures that lead to reputational, legal, or operational consequences.
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
