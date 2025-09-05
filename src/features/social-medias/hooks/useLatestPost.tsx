@@ -16,16 +16,13 @@ export const useLatestPost = (
 
   const getAndSaveLatesPost = useCallback(() => {
     setLoading(true)
-    console.log('Fetching latest post for', platform, channelIdentifier)
     getLatestPost({ channel: channelIdentifier, platform, socialMediaId })
       .then((response) => {
-        console.log('Latest post response:', response)
         setLatestPost(response.data)
         setSuccess(true)
         setError(null)
       })
       .catch((err) => {
-        console.error('Error fetching latest post:', err)
         setError(err.message)
         setSuccess(false)
       })
@@ -36,10 +33,8 @@ export const useLatestPost = (
 
   const getSavedLatestPostData = useCallback(() => {
     setLoading(true)
-    console.log('Fetching saved latest post for social media ID:', socialMediaId)
     getSavedLatestPost({ socialMediaId })
       .then((response) => {
-        console.log('Saved latest post response:', response)
         if (response.success && response.data) {
           setLatestPost(response.data)
           setSuccess(true)
@@ -50,7 +45,6 @@ export const useLatestPost = (
         }
       })
       .catch((err) => {
-        console.error('Error fetching saved latest post:', err)
         setError(err.message)
       })
       .finally(() => {
