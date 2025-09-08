@@ -17,6 +17,9 @@ export const getAllUnits = async () => {
         depth: true,
         path: true,
       },
+      where: {
+        disabled: { equals: false },
+      },
       limit: 0,
       overrideAccess: false,
       user,
@@ -61,6 +64,7 @@ export const getUnitsWithFilter = async ({ status, type }: { status?: string; ty
       limit: 0,
       sort: ['createdAt'],
       where: {
+        disabled: { equals: null },
         ...(status ? { status: { equals: status } } : {}),
         ...(type ? { type: { equals: type } } : {}),
       },
@@ -102,6 +106,9 @@ export const getUnitsWithFilter = async ({ status, type }: { status?: string; ty
         id: {
           in: organizations.map((org) => org.id),
         },
+      },
+      {
+        disabled: { equals: false },
       },
       ...(status ? [{ status: { equals: status } }] : []),
       ...(type ? [{ type: { equals: type } }] : []),
