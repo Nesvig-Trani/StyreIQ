@@ -3,11 +3,22 @@ import { Organization, User } from '@/types/payload-types'
 import { roleLabelMap, statusLabelMap, UserRolesEnum, UserStatusEnum } from '@/features/users'
 import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
-import { FileLock2, PencilIcon } from 'lucide-react'
+import { EyeIcon, FileLock2, PencilIcon } from 'lucide-react'
 import { UnitCell } from '@/features/units/components/unit-cell'
 import { Badge } from '@/shared'
+import { UserDetailsDialog } from '../components/details'
 
-function useUserTable({ user }: { user: User | null }) {
+function useUserTable({
+  user,
+  selectedUserId,
+  onOpenDetails,
+  onCloseDetails,
+}: {
+  user: User | null
+  selectedUserId: string | null
+  onOpenDetails: (userId: string) => void
+  onCloseDetails: () => void
+}) {
   const columns: ColumnDef<User>[] = [
     {
       accessorKey: 'name',
@@ -67,24 +78,54 @@ function useUserTable({ user }: { user: User | null }) {
         const id = row.original.id
         const role = row.original.role
         const isOwnRecord = user?.id === id
+        const isDialogOpen = selectedUserId === id.toString()
+
+        const canViewDetails =
+          user?.role === UserRolesEnum.SuperAdmin ||
+          user?.role === UserRolesEnum.UnitAdmin ||
+          user?.role === UserRolesEnum.SocialMediaManager
+
+        const canEdit =
+          user?.role === UserRolesEnum.SuperAdmin ||
+          (user?.role === UserRolesEnum.UnitAdmin && role === UserRolesEnum.SocialMediaManager) ||
+          (user?.role === UserRolesEnum.SocialMediaManager && isOwnRecord)
+
+        const canManageAccess =
+          user?.role === UserRolesEnum.UnitAdmin || user?.role === UserRolesEnum.SuperAdmin
+
         return (
           <div className="flex gap-2">
-            {(user?.role === UserRolesEnum.UnitAdmin ||
-              user?.role === UserRolesEnum.SuperAdmin) && (
-              <Button>
+            {canViewDetails && (
+              <UserDetailsDialog
+                user={row.original}
+                isOpen={isDialogOpen}
+                onOpenChange={(open) => {
+                  if (open) {
+                    onOpenDetails(id.toString())
+                  } else {
+                    onCloseDetails()
+                  }
+                }}
+                trigger={
+                  <Button size="icon" variant="outline" aria-label="View user details">
+                    <EyeIcon className="h-4 w-4" />
+                  </Button>
+                }
+              />
+            )}
+
+            {canManageAccess && (
+              <Button size="icon" variant="outline">
                 <Link href={`/dashboard/users/access/${id}`}>
-                  <FileLock2 />
+                  <FileLock2 className="h-4 w-4" />
                 </Link>
               </Button>
             )}
 
-            {(user?.role === UserRolesEnum.SuperAdmin ||
-              (user?.role === UserRolesEnum.UnitAdmin &&
-                role === UserRolesEnum.SocialMediaManager) ||
-              (user?.role === UserRolesEnum.SocialMediaManager && isOwnRecord)) && (
-              <Button>
+            {canEdit && (
+              <Button size="icon">
                 <Link href={`/dashboard/users/update/${id}`}>
-                  <PencilIcon />
+                  <PencilIcon className="h-4 w-4" />
                 </Link>
               </Button>
             )}
