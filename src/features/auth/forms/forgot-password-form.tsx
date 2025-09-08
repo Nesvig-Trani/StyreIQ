@@ -26,6 +26,7 @@ export function ForgotPasswordForm() {
     isLoading,
     isSubmitted,
     errors,
+    submitError,
   } = useForgotPasswordForm()
 
   return (
@@ -87,7 +88,17 @@ export function ForgotPasswordForm() {
               </Button>
             </CardFooter>
           </form>
-        ) : (
+        ) : null}
+
+        {submitError && (
+          <CardContent className="space-y-4">
+            <div className="text-center py-6">
+              <p className="text-sm text-red-600">{submitError}</p>
+            </div>
+          </CardContent>
+        )}
+
+        {isSubmitted && !isLoading && (
           <CardContent className="space-y-4">
             <div className="text-center py-6">
               <div className="mx-auto w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">

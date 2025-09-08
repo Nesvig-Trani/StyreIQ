@@ -499,10 +499,16 @@ export const userForgotPassword: Endpoint = {
       })
 
       if (user.totalDocs === 0) {
-        return new Response(JSON.stringify({ success: true }), {
-          status: 200,
-          headers: JSON_HEADERS,
-        })
+        return new Response(
+          JSON.stringify({
+            error:
+              'If that email address is in our database, we will send you an email to reset your password.',
+          }),
+          {
+            status: 404,
+            headers: JSON_HEADERS,
+          },
+        )
       }
 
       const token = await req.payload.forgotPassword({
