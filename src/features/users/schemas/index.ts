@@ -28,6 +28,19 @@ export const statusLabelMap: Record<UserStatusEnum, string> = {
   [UserStatusEnum.Rejected]: 'Rejected',
 }
 
+export const statusColorMap: Record<UserStatusEnum, string> = {
+  [UserStatusEnum.Active]: 'green',
+  [UserStatusEnum.Inactive]: 'red',
+  [UserStatusEnum.PendingActivation]: 'yellow',
+  [UserStatusEnum.Rejected]: 'red',
+}
+
+export const statusClassMap: Record<string, string> = {
+  green: 'bg-green-100 text-green-800 border-green-200',
+  red: 'bg-red-100 text-red-800 border-red-200',
+  yellow: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+}
+
 const RoleEnum = z.nativeEnum(UserRolesEnum)
 const StatusEnum = z.nativeEnum(UserStatusEnum)
 
