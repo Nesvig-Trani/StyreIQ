@@ -1,107 +1,118 @@
-import { Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared'
-import { AffectedEntityTypeEnum, CreateFlagFormSchema, createFlagSchema } from '../schemas'
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { createFlagSchema } from '../schemas'
 import { createFlag } from '@/sdk/flags'
 import { toast } from 'sonner'
 import { SocialMedia, User } from '@/types/payload-types'
+import { useFormHelper } from '@/shared'
+import { flagTypeOptions } from '../constants/flagTypeOptions'
+import { affectedEntityOptions } from '../constants/affectedEntityOptions'
 
-export const useCreateFlag = ({
-  users,
-  socialMedias,
-}: {
+interface CreateFlagFormProps {
   users: User[]
   socialMedias: SocialMedia[]
-}) => {
+}
+
+export function useCreateFlag({ users, socialMedias }: CreateFlagFormProps) {
   const router = useRouter()
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors, isSubmitting },
-  } = useForm<CreateFlagFormSchema>({
-    resolver: zodResolver(createFlagSchema),
-    defaultValues: {},
-  })
-  const onSubmit = async (submitData: CreateFlagFormSchema) => {
-    try {
-      await createFlag(submitData)
-      toast.success('Risk flag created successfully')
-      router.push('/dashboard/flags')
-    } catch {
-      toast.error('something went wrong')
-    }
-  }
 
-  const affectedEntityType = watch('affectedEntityType')
+  const { formComponent, form } = useFormHelper(
+    {
+      schema: createFlagSchema,
+      fields: [
+        {
+          label: 'Flag Type',
+          name: 'flagType',
+          type: 'select',
+          options: flagTypeOptions,
+          placeholder: 'Risk flag type',
+          size: 'half',
+        },
+        {
+          label: 'Affected Entity Type',
+          name: 'affectedEntityType',
+          type: 'select',
+          options: affectedEntityOptions,
+          placeholder: 'Select unit type',
+          size: 'half',
+        },
+        {
+          label: 'Affected User',
+          name: 'affectedEntity',
+          type: 'select',
+          options: users.map((user) => ({
+            value: user.id.toString(),
+            label: user.name || user.email,
+          })),
+          placeholder: 'Select affected user',
+          size: 'half',
+          dependsOn: {
+            field: 'affectedEntityType',
+            value: 'users',
+          },
+        },
+        {
+          label: 'Affected Social Media Account',
+          name: 'affectedEntity',
+          type: 'select',
+          options: socialMedias.map((socialMedia) => ({
+            value: socialMedia.id.toString(),
+            label: socialMedia.name,
+          })),
+          placeholder: 'Select affected social media account',
+          size: 'half',
+          dependsOn: {
+            field: 'affectedEntityType',
+            value: 'social-medias',
+          },
+        },
+        {
+          label: 'Risk Description',
+          name: 'description',
+          type: 'textarea',
+          placeholder: 'Describe the risk or issue',
+          size: 'half',
+        },
+        {
+          label: 'Suggested Action',
+          name: 'suggestedAction',
+          type: 'textarea',
+          placeholder: 'What action should be taken?',
+          size: 'half',
+        },
+      ],
+      onSubmit: async (submitData) => {
+        await createFlag(submitData)
+        form.reset()
+        toast.success('Risk flag created successfully')
+        router.push('/dashboard/flags')
+      },
+      onCancel: () => router.push('/dashboard/flags'),
+      showCancel: true,
+      cancelContent: 'Cancel',
+    },
+    {
+      defaultValues: {
+        flagType: undefined,
+        affectedEntityType: undefined,
+        affectedEntity: '',
+        description: '',
+        suggestedAction: '',
+      },
+    },
+  )
 
-  const renderEntity = () => {
-    switch (affectedEntityType) {
-      case AffectedEntityTypeEnum.USER:
-        return (
-          <div className="space-y-2">
-            <Label htmlFor="name">Users</Label>
-            <Select
-              name="affectedEntity"
-              onValueChange={(value: string) => setValue('affectedEntity', value)}
-              value={watch('affectedEntity')}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select affected user" />
-              </SelectTrigger>
-              <SelectContent>
-                {users.map((user) => (
-                  <SelectItem key={user.id} value={user.id.toString()}>
-                    {user.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.affectedEntity && (
-              <p className="text-sm text-red-500">{errors.affectedEntity.message}</p>
-            )}
-          </div>
-        )
-      case AffectedEntityTypeEnum.SOCIAL_MEDIA:
-        return (
-          <div className="space-y-2">
-            <Label htmlFor="name">Social Media Accounts</Label>
-            <Select
-              name="affectedEntitySocial"
-              onValueChange={(value: string) => setValue('affectedEntity', value)}
-              value={watch('affectedEntity')}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select affected social media account" />
-              </SelectTrigger>
-              <SelectContent>
-                {socialMedias.map((socialMedia) => (
-                  <SelectItem key={socialMedia.id} value={socialMedia.id.toString()}>
-                    {socialMedia.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.affectedEntity && (
-              <p className="text-sm text-red-500">{errors.affectedEntity.message}</p>
-            )}
-          </div>
-        )
-      default:
-        return null
-    }
-  }
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name === 'affectedEntityType') {
+        form.setValue('affectedEntity', '')
+      }
+    })
+    return () => subscription.unsubscribe()
+  }, [form])
 
   return {
-    register,
-    handleSubmit,
-    onSubmit,
-    isSubmitting,
-    renderEntity,
-    watch,
-    setValue,
-    errors,
+    formComponent,
+    form,
   }
 }
