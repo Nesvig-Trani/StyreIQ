@@ -20,6 +20,7 @@ export function useForgotPasswordForm() {
   })
   const { isLoading, startLoading, stopLoading } = useLoading()
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const email = watch('email')
 
@@ -28,7 +29,9 @@ export function useForgotPasswordForm() {
     try {
       await sendForgotPasswordRequest(data)
       setIsSubmitted(true)
+      setSubmitError(null)
     } catch (error) {
+      setSubmitError('Something went wrong. Please try again.')
       console.error(error)
     } finally {
       stopLoading()
@@ -48,5 +51,6 @@ export function useForgotPasswordForm() {
     isLoading,
     isSubmitted,
     errors,
+    submitError,
   }
 }
