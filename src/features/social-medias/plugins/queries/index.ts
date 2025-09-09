@@ -18,6 +18,41 @@ export const getAllSocialMediaAccounts = async () => {
   return socialMedias
 }
 
+export const getSocialMediaAccountsCount = async (): Promise<number> => {
+  const { payload } = await getPayloadContext()
+  const { user } = await getAuthUser()
+
+  if (!user) {
+    return 0
+  }
+
+  const where: Where = {}
+
+  if (user.role === 'unit_admin') {
+    const organizationIds = (user.organizations ?? []).map((org) =>
+      typeof org === 'object' && org !== null && 'id' in org ? org.id : (org as number),
+    )
+
+    if (organizationIds.length > 0) {
+      where['organization.id'] = { in: organizationIds }
+    } else {
+      where['organization.id'] = { in: [-1] }
+    }
+  } else if (user.role === 'social_media_manager') {
+    where['socialMediaManagers'] = { in: [user.id] }
+  }
+
+  const socialMediaAccounts = await payload.find({
+    collection: SocialMediasCollectionSlug,
+    where,
+    limit: 0,
+    user,
+    overrideAccess: false,
+  })
+
+  return socialMediaAccounts.totalDocs
+}
+
 export const getSocialMediaAccounts = async ({
   pageSize,
   pageIndex,

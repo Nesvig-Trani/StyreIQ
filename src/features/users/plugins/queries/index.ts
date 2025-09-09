@@ -186,6 +186,7 @@ interface DashboardData {
     inTransition: number
   }
   activeUsers: {
+    superAdmin: number
     unitAdmins: number
     socialMediaManagers: number
   }
@@ -206,6 +207,7 @@ export const getUsersInfoForDashboard = async () => {
         inTransition: 0,
       },
       activeUsers: {
+        superAdmin: 0,
         unitAdmins: 0,
         socialMediaManagers: 0,
       },
@@ -215,42 +217,86 @@ export const getUsersInfoForDashboard = async () => {
   }
 
   let where: Where = {}
+  let users: PaginatedDocs<User>
 
-  if (user.role !== UserRolesEnum.SuperAdmin) {
+  if (user.role === UserRolesEnum.SocialMediaManager) {
+    users = (await payload.find({
+      collection: 'users',
+      where: {
+        id: { equals: user.id },
+      },
+      limit: 0,
+      overrideAccess: false,
+      user,
+    })) as PaginatedDocs<User>
+  } else if (user.role === UserRolesEnum.SuperAdmin) {
+    users = (await payload.find({
+      collection: 'users',
+      limit: 0,
+      overrideAccess: false,
+      user,
+    })) as PaginatedDocs<User>
+  } else {
     const accessibleOrgIds = await getAccessibleOrgIdsForUser(user)
 
-    if (accessibleOrgIds.length > 0) {
-      where = {
-        'organizations.id': {
-          in: accessibleOrgIds,
+    if (accessibleOrgIds.length === 0) {
+      return {
+        totalAccounts: 0,
+        accountsByStatus: {
+          active: 0,
+          inactive: 0,
+          inTransition: 0,
         },
+        activeUsers: {
+          superAdmin: 0,
+          unitAdmins: 0,
+          socialMediaManagers: 0,
+        },
+        pendingApproval: 0,
+        unassignedAccounts: 0,
       }
     }
-  }
 
-  const users = await payload.find({
-    collection: 'users',
-    where,
-    depth: 0,
-    overrideAccess: false,
-    user,
-  })
+    where = {
+      'organizations.id': {
+        in: accessibleOrgIds,
+      },
+    }
+
+    users = (await payload.find({
+      collection: 'users',
+      where,
+      limit: 0,
+      overrideAccess: false,
+      user,
+    })) as PaginatedDocs<User>
+  }
 
   const dashboardData: DashboardData = {
     totalAccounts: users.totalDocs,
     accountsByStatus: {
-      active: users.docs.filter((u) => u.status === UserStatusEnum.Active).length,
-      inactive: users.docs.filter((u) => u.status === UserStatusEnum.Inactive).length,
-      inTransition: users.docs.filter((u) => u.status === UserStatusEnum.PendingActivation).length,
-    },
-    activeUsers: {
-      unitAdmins: users.docs.filter((u) => u.role === UserRolesEnum.UnitAdmin).length,
-      socialMediaManagers: users.docs.filter((u) => u.role === UserRolesEnum.SocialMediaManager)
+      active: users.docs.filter((u: User) => u.status === UserStatusEnum.Active).length,
+      inactive: users.docs.filter((u: User) => u.status === UserStatusEnum.Inactive).length,
+      inTransition: users.docs.filter((u: User) => u.status === UserStatusEnum.PendingActivation)
         .length,
     },
-    pendingApproval: users.docs.filter((u) => u.status === UserStatusEnum.PendingActivation).length,
-    unassignedAccounts: users.docs.filter((u) => !u.organizations || u.organizations.length === 0)
+    activeUsers: {
+      superAdmin: users.docs.filter(
+        (u: User) => u.role === UserRolesEnum.SuperAdmin && u.status === UserStatusEnum.Active,
+      ).length,
+      unitAdmins: users.docs.filter(
+        (u: User) => u.role === UserRolesEnum.UnitAdmin && u.status === UserStatusEnum.Active,
+      ).length,
+      socialMediaManagers: users.docs.filter(
+        (u: User) =>
+          u.role === UserRolesEnum.SocialMediaManager && u.status === UserStatusEnum.Active,
+      ).length,
+    },
+    pendingApproval: users.docs.filter((u: User) => u.status === UserStatusEnum.PendingActivation)
       .length,
+    unassignedAccounts: users.docs.filter(
+      (u: User) => !u.organizations || u.organizations.length === 0,
+    ).length,
   }
 
   return dashboardData

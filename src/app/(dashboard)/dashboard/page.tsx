@@ -15,6 +15,7 @@ import { HeaderMetricCard } from '@/features/dashboard/components/header-metric-
 
 import { StatusCard } from '@/features/dashboard/components/status-card'
 import { DashboardRiskSection } from '../../../features/dashboard/components/dashboard-client-wrapper'
+import { getSocialMediaAccountsCount } from '@/features/social-medias/plugins/queries'
 
 const getRiskLevel = (value: number, thresholds: { low: number; medium: number }) => {
   if (value >= thresholds.medium) return 'high'
@@ -25,6 +26,8 @@ const getRiskLevel = (value: number, thresholds: { low: number; medium: number }
 export default async function DashboardPage() {
   const data = await getUsersInfoForDashboard()
   const flags = await getFlagInfoForDashboard()
+  const socialMediaAccounts = await getSocialMediaAccountsCount()
+
   if (!data) {
     return <div className="text-center text-red-500">Failed to load dashboard data</div>
   }
@@ -61,7 +64,7 @@ export default async function DashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
           <HeaderMetricCard
             title="Total Accounts"
-            value={data.totalAccounts}
+            value={socialMediaAccounts}
             subtitle="All social media accounts"
             icon={Users}
           />
@@ -96,8 +99,12 @@ export default async function DashboardPage() {
 
           <HeaderMetricCard
             title="Active Users"
-            value={data.activeUsers.unitAdmins + data.activeUsers.socialMediaManagers}
-            subtitle="Unit admins and managers"
+            value={
+              data.activeUsers.superAdmin +
+              data.activeUsers.unitAdmins +
+              data.activeUsers.socialMediaManagers
+            }
+            subtitle="Admins and managers"
             icon={UserCheck}
             color="green"
           />
