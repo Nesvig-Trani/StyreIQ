@@ -156,8 +156,8 @@ export function UnitDetail({ organization }: { organization: UnitWithDepth }) {
               </CardContent>
             </Card>
           )}
-
-          <Card>
+          {/* Delegate Permissions button hidden - it has no functionality */}
+          {/* <Card>
             <CardHeader>
               <CardTitle>Permissions</CardTitle>
             </CardHeader>
@@ -174,7 +174,7 @@ export function UnitDetail({ organization }: { organization: UnitWithDepth }) {
                 ></div>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
 
           <Card>
             <CardHeader>

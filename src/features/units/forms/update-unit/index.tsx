@@ -203,7 +203,8 @@ export const UpdateUnitForm = ({ users, organizations, data, user }: UpdateUnitF
             <p className="text-sm text-red-500">{errors.description.message}</p>
           )}
         </div>
-        <div className="flex items-center space-x-2">
+        {/* Delegate Permissions button hidden - it has no functionality */}
+        {/* <div className="flex items-center space-x-2">
           <Input
             id="delegatedPermissions"
             type="checkbox"
@@ -211,7 +212,7 @@ export const UpdateUnitForm = ({ users, organizations, data, user }: UpdateUnitF
             className="w-4 h-4"
           />
           <Label htmlFor="delegatedPermissions">Delegated Permissions</Label>
-        </div>
+        </div> */}
 
         <div className="flex flex-col sm:flex-row sm:justify-end gap-3 pt-6">
           <Button

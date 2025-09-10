@@ -103,19 +103,14 @@ function useCreateUnit({ userRole, organizations, defaultParentOrg }: CreateUnit
         type: 'textarea' as const,
         placeholder: 'Enter the description',
       },
-      {
-        name: 'delegatedPermissions' as const,
-        label: '',
-        type: 'separator' as const,
-        size: 'full' as const,
-      },
-      {
-        label: 'Delegated Permissions',
-        name: 'delegatedPermissions' as const,
-        type: 'checkbox' as const,
-        checkboxMode: 'boolean' as const,
-        size: 'half' as const,
-      },
+      // Delegate Permissions button hidden - it has no functionality
+      // {
+      //   label: 'Delegated Permissions',
+      //   name: 'delegatedPermissions' as const,
+      //   type: 'checkbox' as const,
+      //   checkboxMode: 'boolean' as const,
+      //   size: 'half' as const,
+      // },
     ],
     [filteredUsers, organizations, tree, typeOptions],
   )
