@@ -18,7 +18,18 @@ export const getAllUnits = async () => {
         path: true,
       },
       where: {
-        disabled: { equals: false },
+        or: [
+          {
+            disabled: {
+              equals: false,
+            },
+          },
+          {
+            disabled: {
+              equals: null,
+            },
+          },
+        ],
       },
       limit: 0,
       overrideAccess: false,
@@ -42,6 +53,10 @@ export const getUnitsWithFilter = async ({ status, type }: { status?: string; ty
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
 
+  const disabledFilter = {
+    or: [{ disabled: { equals: false } }, { disabled: { equals: null } }],
+  }
+
   if (!user) {
     return {
       docs: [],
@@ -64,7 +79,7 @@ export const getUnitsWithFilter = async ({ status, type }: { status?: string; ty
       limit: 0,
       sort: ['createdAt'],
       where: {
-        disabled: { equals: null },
+        ...disabledFilter,
         ...(status ? { status: { equals: status } } : {}),
         ...(type ? { type: { equals: type } } : {}),
       },
@@ -108,7 +123,7 @@ export const getUnitsWithFilter = async ({ status, type }: { status?: string; ty
         },
       },
       {
-        disabled: { equals: false },
+        ...disabledFilter,
       },
       ...(status ? [{ status: { equals: status } }] : []),
       ...(type ? [{ type: { equals: type } }] : []),
