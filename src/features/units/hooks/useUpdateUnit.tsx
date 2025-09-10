@@ -75,12 +75,13 @@ function useUpdateUnit({ users, data, organizations }: UpdateUnitFormProps) {
           name: 'description',
           type: 'textarea',
         },
-        {
-          label: 'Delegated Permissions',
-          name: 'delegatedPermissions',
-          type: 'checkbox',
-          checkboxMode: 'boolean',
-        },
+        // Delegate Permissions button hidden - it has no functionality
+        // {
+        //   label: 'Delegated Permissions',
+        //   name: 'delegatedPermissions',
+        //   type: 'checkbox',
+        //   checkboxMode: 'boolean',
+        // },
       ],
       onSubmit: async (submitData) => {
         try {
