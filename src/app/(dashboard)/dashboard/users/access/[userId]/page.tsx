@@ -49,7 +49,9 @@ async function UserAccessPage({ params }: { params: Promise<{ userId: string }> 
           <p>
             <b>Email: </b> {userData.email}
           </p>
-          <UnitAccessForm initialAccess={filteredUserOrgs.docs} />
+          {userData?.role !== UserRolesEnum.SuperAdmin && (
+            <UnitAccessForm initialAccess={filteredUserOrgs.docs} />
+          )}
         </CardContent>
       </Card>
     </div>

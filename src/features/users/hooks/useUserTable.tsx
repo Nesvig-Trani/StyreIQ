@@ -114,7 +114,7 @@ function useUserTable({
               />
             )}
 
-            {canManageAccess && (
+            {canManageAccess && role !== UserRolesEnum.SuperAdmin && (
               <Button size="icon" variant="outline">
                 <Link href={`/dashboard/users/access/${id}`}>
                   <FileLock2 className="h-4 w-4" />
