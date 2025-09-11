@@ -12,6 +12,7 @@ import { HeadingNode } from '@lexical/rich-text'
 import { ListNode, ListItemNode } from '@lexical/list'
 import { LinkNode } from '@lexical/link'
 import { TableNode, TableCellNode, TableRowNode } from '@lexical/table'
+import { LockKeyholeIcon } from 'lucide-react'
 
 const theme = {
   heading: {
@@ -32,36 +33,69 @@ function onError(error: Error) {
   console.error(error)
 }
 
-export default function LexicalTextEditor({
-  onChange,
-  initialState,
-}: {
-  onChange: (editorState: EditorState, editor: LexicalEditor, tags: Set<string>) => void
+interface LexicalTextEditorProps {
   initialState: string
-}) {
+  onChange: (editorState: EditorState, editor: LexicalEditor, tags: Set<string>) => void
+  readOnly?: boolean
+}
+
+export default function LexicalTextEditor({
+  initialState,
+  onChange,
+  readOnly = false,
+}: LexicalTextEditorProps) {
   const initialConfig = {
     editorState: initialState,
     namespace: 'MyEditor',
     theme,
     onError,
     nodes: [HeadingNode, ListNode, ListItemNode, LinkNode, TableNode, TableCellNode, TableRowNode],
+    editable: !readOnly,
   }
+
+  const placeholder = readOnly ? 'Read-only content...' : 'Write your policy here...'
+
   return (
-    <div>
-      <LexicalComposer initialConfig={initialConfig}>
-        <div className="border border-gray-300 rounded-lg overflow-hidden">
+    <LexicalComposer initialConfig={initialConfig}>
+      <div className="border border-gray-300 rounded-lg overflow-hidden">
+        <div className={`relative ${readOnly ? 'opacity-75' : ''}`}>
           <Toolbar />
-          <div className="relative">
-            <RichTextPlugin
-              contentEditable={<ContentEditable className="min-h-[200px] p-4 focus:outline-none" />}
-              ErrorBoundary={LexicalErrorBoundary}
-            />
-            <HistoryPlugin />
-            <ListPlugin />
-            <OnChangePlugin onChange={onChange} />
-          </div>
+          {readOnly && (
+            <div className="absolute inset-0 bg-gray-50/50 z-10 pointer-events-none rounded-md" />
+          )}
+
+          <RichTextPlugin
+            contentEditable={
+              <ContentEditable
+                className={`min-h-[200px] p-4 focus:outline-none ${
+                  readOnly ? 'bg-gray-50 cursor-not-allowed' : ''
+                }`}
+              />
+            }
+            placeholder={
+              <div className="absolute top-4 left-4 text-gray-400 pointer-events-none">
+                {placeholder}
+              </div>
+            }
+            ErrorBoundary={LexicalErrorBoundary}
+          />
+
+          {!readOnly && (
+            <>
+              <HistoryPlugin />
+              <ListPlugin />
+              <OnChangePlugin onChange={onChange} />
+            </>
+          )}
         </div>
-      </LexicalComposer>
-    </div>
+      </div>
+
+      {readOnly && (
+        <p className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
+          <LockKeyholeIcon />
+          Read-only mode - Only the Super Admin can edit
+        </p>
+      )}
+    </LexicalComposer>
   )
 }

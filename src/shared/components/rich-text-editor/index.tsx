@@ -9,7 +9,15 @@ import { useLoading } from '@/shared/hooks'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
-export default function RichTextEditor({ initialState }: { initialState: string }) {
+interface RichTextEditorProps {
+  initialState: string
+  isSuperAdmin?: boolean
+}
+
+export default function RichTextEditor({
+  initialState,
+  isSuperAdmin = false,
+}: RichTextEditorProps) {
   const [editorState, setEditorState] = useState<EditorState>()
   const { isLoading, startLoading, stopLoading } = useLoading()
   const router = useRouter()
@@ -20,6 +28,11 @@ export default function RichTextEditor({ initialState }: { initialState: string 
   const onSubmit = async () => {
     try {
       if (!editorState) return
+      if (!isSuperAdmin) {
+        toast.error('You do not have permission to save policies')
+        return
+      }
+
       startLoading()
       await savePolicy({ data: editorState?.toJSON() })
       toast.success('Policy saved successfully')
@@ -33,17 +46,27 @@ export default function RichTextEditor({ initialState }: { initialState: string 
 
   return (
     <div>
-      <LexicalTextEditor initialState={initialState} onChange={onChange} />
+      <LexicalTextEditor initialState={initialState} onChange={onChange} readOnly={!isSuperAdmin} />
       <div className="mt-4 flex justify-end gap-2">
         <LexicalContentModal triggerButton lexicalData={editorState?.toJSON()} />
-        <Button
-          onClick={onSubmit}
-          disabled={!editorState || isLoading}
-          loading={isLoading}
-          loadingText="Saving..."
-        >
-          Save
-        </Button>
+        {isSuperAdmin ? (
+          <Button
+            onClick={onSubmit}
+            disabled={!editorState || isLoading}
+            loading={isLoading}
+            loadingText="Saving..."
+          >
+            Save
+          </Button>
+        ) : (
+          <Button
+            disabled
+            className="opacity-50 cursor-not-allowed"
+            title="Only the Super Admin can save policies"
+          >
+            Save
+          </Button>
+        )}
       </div>
     </div>
   )
