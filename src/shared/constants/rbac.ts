@@ -113,6 +113,10 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
       },
     },
     {
+      resource: 'POLICIES',
+      actions: ['read'],
+    },
+    {
       resource: 'AUDIT_LOGS',
       actions: ['read'],
       conditions: {
@@ -159,6 +163,10 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
         unitOnly: true,
         childUnitsIncluded: true,
       },
+    },
+    {
+      resource: 'POLICIES',
+      actions: ['read'],
     },
   ],
 }
