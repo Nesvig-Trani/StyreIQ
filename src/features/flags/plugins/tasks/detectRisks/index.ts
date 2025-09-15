@@ -12,9 +12,10 @@ export async function FindRisksAndCreateFlag() {
     admin_policy_agreement: FlagTypeEnum.UNACKNOWLEDGED_POLICIES,
     isCompletedTrainingAccessibility: FlagTypeEnum.INCOMPLETE_TRAINING,
     isCompletedTrainingRisk: FlagTypeEnum.INCOMPLETE_TRAINING,
-    isCompletedTrainingBrand: FlagTypeEnum.INCOMPLETE_TRAINING,
-    hasKnowledgeStandards: FlagTypeEnum.INCOMPLETE_TRAINING,
-    offboardingCompleted: FlagTypeEnum.INCOMPLETE_OFFBOARDING,
+    // TODO: disable some user questions
+    // isCompletedTrainingBrand: FlagTypeEnum.INCOMPLETE_TRAINING,
+    // hasKnowledgeStandards: FlagTypeEnum.INCOMPLETE_TRAINING,
+    // offboardingCompleted: FlagTypeEnum.INCOMPLETE_OFFBOARDING,
   }
 
   const fieldsToCheck = Object.keys(CHECK_TO_FLAG_MAP)

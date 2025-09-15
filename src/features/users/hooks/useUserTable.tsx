@@ -60,7 +60,7 @@ function useUserTable({
         if (row.original.role === UserRolesEnum.SuperAdmin) {
           return (
             <Badge variant="secondary" className="text-xs">
-              StyreIq
+              StyreIQ
             </Badge>
           )
         }

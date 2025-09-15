@@ -122,7 +122,7 @@ export const createUser: Endpoint = {
             env.NEXT_PUBLIC_NODE_ENV === 'production'
               ? createUser.email
               : env.LOCAL_EMAIL_TO_ADDRESS,
-          subject: 'Welcome to StyreIq',
+          subject: 'Welcome to StyreIQ',
           html: welcomeEmailBody({
             name: createUser.name,
             instructions: emailData.instructions || '',
