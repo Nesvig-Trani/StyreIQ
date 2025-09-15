@@ -153,19 +153,11 @@ export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-4">
                 <InfoField
-                  label="Knowledge Standards"
-                  value={<TrainingStatus value={user.hasKnowledgeStandards} />}
-                />
-                <InfoField
                   label="Accessibility Training"
                   value={<TrainingStatus value={user.isCompletedTrainingAccessibility} />}
                 />
               </div>
               <div className="space-y-4">
-                <InfoField
-                  label="Brand Training"
-                  value={<TrainingStatus value={user.isCompletedTrainingBrand} />}
-                />
                 <InfoField
                   label="Risk Training"
                   value={<TrainingStatus value={user.isCompletedTrainingRisk} />}

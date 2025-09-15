@@ -86,7 +86,7 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
           size: 'full',
         },
         {
-          label: 'Is enabled two factor authentication?',
+          label: 'Is two-factor authentication enabled on your accounts where available?',
           name: 'isEnabledTwoFactor',
           type: 'checkbox',
           checkboxMode: 'boolean',
@@ -94,7 +94,8 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
         },
 
         {
-          label: 'Are you using a secure password?',
+          label:
+            'Are you using secure passwords for both your social media accounts and the profiles you use to access them?',
           name: 'isInUseSecurePassword',
           type: 'checkbox',
           checkboxMode: 'boolean',
@@ -114,27 +115,29 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
           checkboxMode: 'boolean',
           size: 'half',
         },
-        {
-          label: 'Have you completed brand and identity usage training?',
-          name: 'isCompletedTrainingBrand',
-          type: 'checkbox',
-          checkboxMode: 'boolean',
-          size: 'half',
-        },
-        {
-          label: 'Do you have acknowledgment of naming and branding standards?',
-          name: 'hasKnowledgeStandards',
-          type: 'checkbox',
-          checkboxMode: 'boolean',
-          size: 'half',
-        },
-        {
-          name: 'offboardingCompleted',
-          label: 'Offboarding completed?',
-          type: 'checkbox',
-          checkboxMode: 'boolean',
-          size: 'half',
-        },
+        // TODO: disable some user questions
+        // {
+        //   label:
+        //     'Have you reviewed and acknowledged the organization’s brand and identity guidelines?',
+        //   name: 'isCompletedTrainingBrand',
+        //   type: 'checkbox',
+        //   checkboxMode: 'boolean',
+        //   size: 'half',
+        // },
+        // {
+        //   label: 'Do you have acknowledgment of naming and branding standards?',
+        //   name: 'hasKnowledgeStandards',
+        //   type: 'checkbox',
+        //   checkboxMode: 'boolean',
+        //   size: 'half',
+        // },
+        // {
+        //   name: 'offboardingCompleted',
+        //   label: 'Offboarding completed?',
+        //   type: 'checkbox',
+        //   checkboxMode: 'boolean',
+        //   size: 'half',
+        // },
       ],
       onSubmit: async (submitData) => {
         try {

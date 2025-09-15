@@ -116,14 +116,15 @@ export function useCreateUserForm({ authUserRole, initialOrganizations }: UserFo
         },
         {
           name: 'isEnabledTwoFactor',
-          label: 'Is enabled two factor authentication?',
+          label: 'Is two-factor authentication enabled on your accounts where available?',
           type: 'checkbox',
           checkboxMode: 'boolean',
           size: 'half',
         },
         {
           name: 'isInUseSecurePassword',
-          label: 'Are you using a secure password?',
+          label:
+            'Are you using secure passwords for both your social media accounts and the profiles you use to access them?',
           type: 'checkbox',
           checkboxMode: 'boolean',
           size: 'half',
@@ -142,27 +143,28 @@ export function useCreateUserForm({ authUserRole, initialOrganizations }: UserFo
           checkboxMode: 'boolean',
           size: 'half',
         },
-        {
-          name: 'isCompletedTrainingBrand',
-          label: 'Have you completed brand and identity usage training?',
-          type: 'checkbox',
-          checkboxMode: 'boolean',
-          size: 'half',
-        },
-        {
-          name: 'hasKnowledgeStandards',
-          label: 'Do you have acknowledgment of naming and branding standards?',
-          type: 'checkbox',
-          checkboxMode: 'boolean',
-          size: 'half',
-        },
-        {
-          name: 'offboardingCompleted',
-          label: 'Offboarding completed?',
-          type: 'checkbox',
-          checkboxMode: 'boolean',
-          size: 'half',
-        },
+        // TODO: disable some user questions
+        // {
+        //   name: 'isCompletedTrainingBrand',
+        //   label: 'Have you completed brand and identity usage training?',
+        //   type: 'checkbox',
+        //   checkboxMode: 'boolean',
+        //   size: 'half',
+        // },
+        // {
+        //   name: 'hasKnowledgeStandards',
+        //   label: 'Do you have acknowledgment of naming and branding standards?',
+        //   type: 'checkbox',
+        //   checkboxMode: 'boolean',
+        //   size: 'half',
+        // },
+        // {
+        //   name: 'offboardingCompleted',
+        //   label: 'Offboarding completed?',
+        //   type: 'checkbox',
+        //   checkboxMode: 'boolean',
+        //   size: 'half',
+        // },
       ],
       onSubmit: async (submitData) => {
         const fixed = {

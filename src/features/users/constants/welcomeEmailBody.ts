@@ -16,7 +16,7 @@ export const welcomeEmailBody = ({
   const loginLink = `${env.NEXT_PUBLIC_BASE_URL}/login`
   return `
     <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; background-color: #fafafa;">
-      <h1 style="color: #222; font-size: 24px;">Hello ${name || 'User'}!, welcome to StyreIq</h1>
+      <h1 style="color: #222; font-size: 24px;">Hello ${name || 'User'}!, welcome to StyreIQ</h1>
 
      <p style="text-align: center; margin: 20px 0;">
         <a href="${loginLink}" style="

@@ -157,7 +157,7 @@ export default function WelcomeEmailModal({ email }: { email: WelcomeEmailSchema
                   <div>
                     <p className="font-medium !mt-0">Welcome User</p>
                     <p className="text-muted-foreground">
-                      Hello {'{{Username}}'}, welcome to StyreIq!
+                      Hello {'{{Username}}'}, welcome to StyreIQ!
                     </p>
                   </div>
                 </div>

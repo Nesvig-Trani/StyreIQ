@@ -111,7 +111,32 @@ export function TreeSelect({
     }
   }
 
+  const renderMultipleSelection = () => {
+    if (!value || !Array.isArray(value) || value.length === 0) {
+      return 'Select units'
+    }
+
+    const selectedLabels = value
+      .map((val) => options.find((opt) => opt.value.toString() === val)?.label)
+      .filter(Boolean)
+
+    if (selectedLabels.length === 0) {
+      return 'Select units'
+    }
+
+    if (selectedLabels.length === 1) {
+      return selectedLabels[0]
+    }
+
+    if (selectedLabels.length <= 2) {
+      return selectedLabels.join(', ')
+    }
+
+    return `${selectedLabels[0]} +${selectedLabels.length - 1} more`
+  }
+
   const filteredTree = useMemo(() => filterTree(tree, search), [tree, search])
+
   return (
     <Popover open={disabled ? false : open} onOpenChange={(val) => !disabled && setOpen(val)}>
       <PopoverTrigger asChild>
@@ -119,21 +144,19 @@ export function TreeSelect({
           disabled={disabled}
           className={cn(
             'w-full flex justify-between items-center h-9 px-3 py-2 border text-sm rounded-md text-gray-500 bg-background',
+            'min-w-0',
             disabled && 'opacity-50 cursor-not-allowed',
             errors ? 'border-red-500' : 'border-input',
           )}
         >
-          <span className="truncate">
-            {value && multiple
-              ? (value as string[])
-                  .map((val) => options.find((opt) => opt.value.toString() === val)?.label)
-                  .filter(Boolean)
-                  .join(', ') || 'Select units'
+          <span className="truncate text-left flex-1 min-w-0">
+            {multiple
+              ? renderMultipleSelection()
               : value
                 ? options.find((opt) => opt.value.toString() === value)?.label
                 : 'Select unit'}
           </span>
-          <ChevronDown className="h-4 cursor-pointer text-gray-300" />
+          <ChevronDown className="h-4 cursor-pointer text-gray-300 ml-2 flex-shrink-0" />
         </button>
       </PopoverTrigger>
       {!disabled && (

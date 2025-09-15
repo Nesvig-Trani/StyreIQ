@@ -37,7 +37,7 @@ export const forgotPasswordEmailBody = ({ name, token }: ForgotPasswordEmailProp
       <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
 
       <p style="font-size: 12px; color: #bbb; text-align: center;">
-        &copy; ${new Date().getFullYear()} StyreIq. All rights reserved.
+        &copy; ${new Date().getFullYear()} StyreIQ. All rights reserved.
       </p>
     </div>
   `
