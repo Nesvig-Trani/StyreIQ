@@ -191,7 +191,7 @@ export const FAQSection = ({ id = 'faq' }) => {
           </div>
 
           <div className="mt-6 text-sm text-gray-500 space-x-4">
-            <a className="hover:text-gray-700 transition-colors">Privacy Statement</a>
+            <a href="https://www.iubenda.com/privacy-policy/68492162" class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe " title="Privacy Policy ">Privacy Policy</a><script type="text/javascript">(function (w,d) {var loader = function () {var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src="https://cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener("load", loader, false);}else if(w.attachEvent){w.attachEvent("onload", loader);}else{w.onload = loader;}})(window, document);</script>
             <span>•</span>
             <a
               href="https://www.linkedin.com/company/nesvig-trani-llc/?viewAsMember=true"
