@@ -203,7 +203,7 @@ export const FAQSection = ({ id = 'faq' }) => {
           <div className="mt-6 text-sm text-gray-500 space-x-4">
             <a
               href="https://www.iubenda.com/privacy-policy/68492162"
-              className="hover:text-gray-700 transition-colors"
+              className="iubenda-nostyle no-brand iubenda-embed"
               title="Privacy Policy"
             >
               Privacy Policy
