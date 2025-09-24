@@ -11,6 +11,28 @@ interface OverviewTabProps {
 }
 
 export const OverviewTab: React.FC<OverviewTabProps> = ({ socialMedia }) => {
+  const renderValue = (value?: string | null) => {
+    if (!value) return 'Not specified'
+
+    const urlRegex = /(https?:\/\/[^\s]+|[^\s]+\.(com|net|org|io|co|dev|app))/i
+
+    if (urlRegex.test(value)) {
+      const href = value.startsWith('http') ? value : `https://${value}`
+      return (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline hover:text-blue-800"
+        >
+          {value}
+        </a>
+      )
+    }
+
+    return value
+  }
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -22,10 +44,10 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ socialMedia }) => {
             <div className="space-y-4">
               <InfoField label="Platform" value={socialMedia.platform} />
               <InfoField label="Business ID" value={socialMedia.businessId} />
-              <InfoField label="Profile URL" value={socialMedia.profileUrl} />
+              <InfoField label="Profile URL" value={renderValue(socialMedia.profileUrl)} />
             </div>
             <div className="space-y-4">
-              <InfoField label="Handle" value={socialMedia.accountHandle} />
+              <InfoField label="Handle" value={renderValue(socialMedia.accountHandle)} />
               <InfoField label="Verification" value={socialMedia.verificationStatus} />
               <InfoField
                 label="Creation Date"
@@ -77,9 +99,9 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ socialMedia }) => {
                   <>
                     Yes
                     <br />
-                    {socialMedia.thirdPartyProvider || 'Not specified'}
+                    {renderValue(socialMedia.thirdPartyProvider) || 'Not specified'}
                     <br />
-                    {socialMedia.thirdPartyContact || 'Not specified'}
+                    {renderValue(socialMedia.thirdPartyContact) || 'Not specified'}
                   </>
                 ) : (
                   socialMedia.thirdPartyManagement
