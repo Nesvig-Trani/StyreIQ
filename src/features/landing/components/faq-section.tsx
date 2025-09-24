@@ -1,10 +1,20 @@
-import React, { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'lucide-react'
 import { Button } from '@/shared'
+import { ChevronDown, ChevronUp } from 'lucide-react'
+import { useState, useEffect } from 'react'
 import { RequestDemoModal } from './request-demo-modal'
 
 export const FAQSection = ({ id = 'faq' }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (!document.querySelector('script[src="https://cdn.iubenda.com/iubenda.js"]')) {
+      const script = document.createElement('script')
+      script.type = 'text/javascript'
+      script.src = 'https://cdn.iubenda.com/iubenda.js'
+      script.async = true
+      document.head.appendChild(script)
+    }
+  }, [])
 
   const faqs = [
     {
@@ -191,11 +201,13 @@ export const FAQSection = ({ id = 'faq' }) => {
           </div>
 
           <div className="mt-6 text-sm text-gray-500 space-x-4">
-            <a 
-              href="https://www.iubenda.com/privacy-policy/68492162" 
-              class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe " 
-              title="Privacy Policy ">Privacy Policy</a><script 
-              type="text/javascript">(function (w,d) {var loader = function () {var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src="https://cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener("load", loader, false);}else if(w.attachEvent){w.attachEvent("onload", loader);}else{w.onload = loader;}})(window, document);</script>
+            <a
+              href="https://www.iubenda.com/privacy-policy/68492162"
+              className="hover:text-gray-700 transition-colors"
+              title="Privacy Policy"
+            >
+              Privacy Policy
+            </a>
             <span>•</span>
             <a
               href="https://www.linkedin.com/company/nesvig-trani-llc/?viewAsMember=true"
