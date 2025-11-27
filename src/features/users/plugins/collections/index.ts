@@ -185,6 +185,28 @@ export const Users: CollectionConfig = {
       name: 'offboardingCompleted',
       type: 'checkbox',
     },
+    {
+      name: 'tenant',
+      type: 'relationship',
+      relationTo: 'tenants',
+      required: false,
+      hasMany: false,
+      index: true,
+      admin: {
+        position: 'sidebar',
+      },
+      hooks: {
+        beforeChange: [
+          async ({ req, data }) => {
+            if (data == null) return data
+            if (!data.tenant && req.user?.tenant) {
+              data.tenant = req.user.tenant
+            }
+            return data
+          },
+        ],
+      },
+    },
   ],
   endpoints: [
     createUser,

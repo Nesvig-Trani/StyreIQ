@@ -15,9 +15,9 @@ import { SocialMediasPlugin } from '@/features/social-medias/plugins'
 import { PoliciesPlugin } from '@/features/policies/plugins'
 import { FlagsPlugin } from '@/features/flags/plugins'
 import { WelcomeEmailsPlugin } from '@/features/welcome-emails/plugins'
-
 import { flagInactiveAccountsTask } from '../../features/social-medias/plugins/tasks/flagInactiveAccounts/def'
 import { detectRisksTask } from '../../features/flags/plugins/tasks/detectRisks/def'
+import { TenantPlugin } from '@/features/tenants/plugins'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -75,6 +75,9 @@ export default buildConfig({
     }),
     AuditLogPlugin({
       collections: auditLogCollections,
+    }),
+    TenantPlugin({
+      disabled: false,
     }),
   ],
   cors: ['http://localhost:3000'],

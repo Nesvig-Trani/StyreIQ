@@ -65,6 +65,29 @@ export const Flags: CollectionConfig = {
       name: 'suggestedAction',
       type: 'textarea',
     },
+    {
+      name: 'tenant',
+      type: 'relationship',
+      relationTo: 'tenants',
+      required: false,
+      hasMany: false,
+      index: true,
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+      },
+      hooks: {
+        beforeChange: [
+          async ({ req, data }) => {
+            if (data == null) return data
+            if (!data.tenant && req.user?.tenant) {
+              data.tenant = req.user.tenant
+            }
+            return data
+          },
+        ],
+      },
+    },
   ],
   endpoints: [createFlag, markAsResolved],
 }
@@ -85,6 +108,29 @@ export const FlagComments: CollectionConfig = {
     {
       name: 'comment',
       type: 'textarea',
+    },
+    {
+      name: 'tenant',
+      type: 'relationship',
+      relationTo: 'tenants',
+      required: false,
+      hasMany: false,
+      index: true,
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+      },
+      hooks: {
+        beforeChange: [
+          async ({ req, data }) => {
+            if (data == null) return data
+            if (!data.tenant && req.user?.tenant) {
+              data.tenant = req.user.tenant
+            }
+            return data
+          },
+        ],
+      },
     },
   ],
   endpoints: [createComment],
@@ -121,6 +167,29 @@ export const FlagHistory: CollectionConfig = {
       name: 'newStatus',
       type: 'select',
       options: flagStatusOptions,
+    },
+    {
+      name: 'tenant',
+      type: 'relationship',
+      relationTo: 'tenants',
+      required: false,
+      hasMany: false,
+      index: true,
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+      },
+      hooks: {
+        beforeChange: [
+          async ({ req, data }) => {
+            if (data == null) return data
+            if (!data.tenant && req.user?.tenant) {
+              data.tenant = req.user.tenant
+            }
+            return data
+          },
+        ],
+      },
     },
   ],
 }
