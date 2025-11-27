@@ -49,5 +49,28 @@ export const WelcomeEmails: CollectionConfig = {
         },
       ],
     },
+    {
+      name: 'tenant',
+      type: 'relationship',
+      relationTo: 'tenants',
+      required: false,
+      hasMany: false,
+      index: true,
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+      },
+      hooks: {
+        beforeChange: [
+          async ({ req, data }) => {
+            if (data == null) return data
+            if (!data.tenant && req.user?.tenant) {
+              data.tenant = req.user.tenant
+            }
+            return data
+          },
+        ],
+      },
+    },
   ],
 }

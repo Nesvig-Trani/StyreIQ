@@ -79,6 +79,7 @@ export interface Config {
     flagHistory: FlagHistory
     flagComments: FlagComment
     audit_log: AuditLog
+    tenants: Tenant
     'payload-jobs': PayloadJob
     'payload-locked-documents': PayloadLockedDocument
     'payload-preferences': PayloadPreference
@@ -105,6 +106,7 @@ export interface Config {
     flagHistory: FlagHistorySelect<false> | FlagHistorySelect<true>
     flagComments: FlagCommentsSelect<false> | FlagCommentsSelect<true>
     audit_log: AuditLogSelect<false> | AuditLogSelect<true>
+    tenants: TenantsSelect<false> | TenantsSelect<true>
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>
     'payload-locked-documents':
       | PayloadLockedDocumentsSelect<false>
@@ -172,7 +174,7 @@ export interface Organization {
     | 'initiative'
     | 'other'
   parentOrg?: (number | null) | Organization
-  admin: number | User
+  admin?: (number | null) | User
   backupAdmins?: (number | User)[] | null
   email?: string | null
   phone?: string | null
@@ -187,6 +189,8 @@ export interface Organization {
     totalDocs?: number
   }
   disabled?: boolean | null
+  tenant?: (number | null) | Tenant
+  isPrimaryUnit?: boolean | null
   updatedAt: string
   createdAt: string
 }
@@ -212,6 +216,7 @@ export interface User {
   hasKnowledgeStandards?: boolean | null
   passwordUpdatedAt?: string | null
   offboardingCompleted?: boolean | null
+  tenant?: (number | null) | Tenant
   updatedAt: string
   createdAt: string
   email: string
@@ -222,6 +227,68 @@ export interface User {
   loginAttempts?: number | null
   lockUntil?: string | null
   password?: string | null
+}
+/**
+ * Organizations using the platform (universities, government, etc.)
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants".
+ */
+export interface Tenant {
+  id: number
+  /**
+   * e.g., University of North Carolina, Virginia Commonwealth University
+   */
+  name: string
+  /**
+   * e.g., unc.edu, vcu.edu
+   */
+  domain: string
+  /**
+   * Primary contact for this organization
+   */
+  adminContact: string
+  /**
+   * Main unit created automatically for this tenant
+   */
+  primaryUnit?: (number | null) | Organization
+  governanceSettings?: {
+    /**
+     * Days after policy assignment to send reminders
+     */
+    policyReminderDays?:
+      | {
+          day: number
+          id?: string | null
+        }[]
+      | null
+    /**
+     * Days after training assignment to escalate
+     */
+    trainingEscalationDays?:
+      | {
+          day: number
+          id?: string | null
+        }[]
+      | null
+    rollCallFrequency?: ('monthly' | 'quarterly' | 'semiannual' | 'annual') | null
+    /**
+     * Force password change every N days
+     */
+    passwordRotationDays?: number | null
+  }
+  status: 'active' | 'suspended' | 'archived'
+  metadata?: {
+    timezone?:
+      | ('America/New_York' | 'America/Chicago' | 'America/Denver' | 'America/Los_Angeles')
+      | null
+    /**
+     * Admin-only notes about this tenant
+     */
+    notes?: string | null
+  }
+  updatedAt: string
+  createdAt: string
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -257,6 +324,7 @@ export interface WelcomeEmail {
         url: string
       }[]
     | null
+  tenant?: (number | null) | Tenant
   updatedAt: string
   createdAt: string
 }
@@ -299,6 +367,7 @@ export interface SocialMedia {
    * Automatically set if the account has no public activity for 30+ days and is Active or In Transition.
    */
   inactiveFlag?: boolean | null
+  tenant?: (number | null) | Tenant
   updatedAt: string
   createdAt: string
 }
@@ -401,6 +470,7 @@ export interface Policy {
     [k: string]: unknown
   } | null
   author?: (number | null) | User
+  tenant?: (number | null) | Tenant
   updatedAt: string
   createdAt: string
 }
@@ -412,6 +482,7 @@ export interface Acknowledgment {
   id: number
   policy?: (number | null) | Policy
   user?: (number | null) | User
+  tenant?: (number | null) | Tenant
   updatedAt: string
   createdAt: string
 }
@@ -443,6 +514,7 @@ export interface Flag {
   }
   description?: string | null
   suggestedAction?: string | null
+  tenant?: (number | null) | Tenant
   updatedAt: string
   createdAt: string
 }
@@ -457,6 +529,7 @@ export interface FlagHistory {
   action?: ('created' | 'status_changed' | 'comment') | null
   prevStatus?: ('resolved' | 'pending' | 'not_applicable') | null
   newStatus?: ('resolved' | 'pending' | 'not_applicable') | null
+  tenant?: (number | null) | Tenant
   updatedAt: string
   createdAt: string
 }
@@ -469,6 +542,7 @@ export interface FlagComment {
   flag?: (number | null) | Flag
   user?: (number | null) | User
   comment?: string | null
+  tenant?: (number | null) | Tenant
   updatedAt: string
   createdAt: string
 }
@@ -518,6 +592,7 @@ export interface AuditLog {
     | number
     | boolean
     | null
+  tenant?: (number | null) | Tenant
   document?:
     | ({
         relationTo: 'users'
@@ -694,6 +769,10 @@ export interface PayloadLockedDocument {
         value: number | AuditLog
       } | null)
     | ({
+        relationTo: 'tenants'
+        value: number | Tenant
+      } | null)
+    | ({
         relationTo: 'payload-jobs'
         value: number | PayloadJob
       } | null)
@@ -758,6 +837,8 @@ export interface OrganizationSelect<T extends boolean = true> {
   depth?: T
   children?: T
   disabled?: T
+  tenant?: T
+  isPrimaryUnit?: T
   updatedAt?: T
   createdAt?: T
 }
@@ -793,6 +874,7 @@ export interface WelcomeEmailsSelect<T extends boolean = true> {
         title?: T
         url?: T
       }
+  tenant?: T
   updatedAt?: T
   createdAt?: T
 }
@@ -817,6 +899,7 @@ export interface UsersSelect<T extends boolean = true> {
   hasKnowledgeStandards?: T
   passwordUpdatedAt?: T
   offboardingCompleted?: T
+  tenant?: T
   updatedAt?: T
   createdAt?: T
   email?: T
@@ -862,6 +945,7 @@ export interface SocialMediasSelect<T extends boolean = true> {
   status?: T
   deactivationReason?: T
   inactiveFlag?: T
+  tenant?: T
   updatedAt?: T
   createdAt?: T
 }
@@ -909,6 +993,7 @@ export interface PoliciesSelect<T extends boolean = true> {
   version?: T
   text?: T
   author?: T
+  tenant?: T
   updatedAt?: T
   createdAt?: T
 }
@@ -919,6 +1004,7 @@ export interface PoliciesSelect<T extends boolean = true> {
 export interface AcknowledgmentsSelect<T extends boolean = true> {
   policy?: T
   user?: T
+  tenant?: T
   updatedAt?: T
   createdAt?: T
 }
@@ -937,6 +1023,7 @@ export interface FlagsSelect<T extends boolean = true> {
   history?: T
   description?: T
   suggestedAction?: T
+  tenant?: T
   updatedAt?: T
   createdAt?: T
 }
@@ -950,6 +1037,7 @@ export interface FlagHistorySelect<T extends boolean = true> {
   action?: T
   prevStatus?: T
   newStatus?: T
+  tenant?: T
   updatedAt?: T
   createdAt?: T
 }
@@ -961,6 +1049,7 @@ export interface FlagCommentsSelect<T extends boolean = true> {
   flag?: T
   user?: T
   comment?: T
+  tenant?: T
   updatedAt?: T
   createdAt?: T
 }
@@ -976,7 +1065,45 @@ export interface AuditLogSelect<T extends boolean = true> {
   current?: T
   organizations?: T
   metadata?: T
+  tenant?: T
   document?: T
+  updatedAt?: T
+  createdAt?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants_select".
+ */
+export interface TenantsSelect<T extends boolean = true> {
+  name?: T
+  domain?: T
+  adminContact?: T
+  primaryUnit?: T
+  governanceSettings?:
+    | T
+    | {
+        policyReminderDays?:
+          | T
+          | {
+              day?: T
+              id?: T
+            }
+        trainingEscalationDays?:
+          | T
+          | {
+              day?: T
+              id?: T
+            }
+        rollCallFrequency?: T
+        passwordRotationDays?: T
+      }
+  status?: T
+  metadata?:
+    | T
+    | {
+        timezone?: T
+        notes?: T
+      }
   updatedAt?: T
   createdAt?: T
 }
