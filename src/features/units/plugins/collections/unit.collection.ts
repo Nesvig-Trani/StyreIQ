@@ -35,7 +35,7 @@ export const Unit: CollectionConfig = {
       name: 'admin',
       type: 'relationship',
       relationTo: 'users',
-      required: true,
+      required: false,
     },
     {
       name: 'backupAdmins',
@@ -86,6 +86,34 @@ export const Unit: CollectionConfig = {
     {
       name: 'disabled',
       type: 'checkbox',
+    },
+    {
+      name: 'tenant',
+      type: 'relationship',
+      relationTo: 'tenants',
+      required: false,
+      hasMany: false,
+      index: true,
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+      },
+      hooks: {
+        beforeChange: [
+          async ({ req, data }) => {
+            if (data == null) return data
+            if (!data.tenant && req.user?.tenant) {
+              data.tenant = req.user.tenant
+            }
+            return data
+          },
+        ],
+      },
+    },
+    {
+      name: 'isPrimaryUnit',
+      type: 'checkbox',
+      defaultValue: false,
     },
   ],
   timestamps: true,

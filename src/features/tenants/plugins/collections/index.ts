@@ -1,0 +1,209 @@
+import { UnitTypeEnum } from '@/features/units'
+import { CollectionConfig } from 'payload'
+
+export const Tenants: CollectionConfig = {
+  slug: 'tenants',
+  admin: {
+    useAsTitle: 'name',
+    description: 'Organizations using the platform (universities, government, etc.)',
+    group: 'System',
+  },
+  access: {
+    read: () => true,
+    create: () => true,
+    update: () => true,
+    delete: () => false,
+  },
+  fields: [
+    {
+      name: 'name',
+      type: 'text',
+      required: true,
+      label: 'Organization Name',
+      admin: {
+        description: 'e.g., University of North Carolina, Virginia Commonwealth University',
+      },
+    },
+    {
+      name: 'domain',
+      type: 'text',
+      required: true,
+      unique: true,
+      label: 'Domain',
+      admin: {
+        description: 'e.g., unc.edu, vcu.edu',
+      },
+    },
+
+    {
+      name: 'adminContact',
+      type: 'email',
+      required: true,
+      label: 'Admin Contact Email',
+      admin: {
+        description: 'Primary contact for this organization',
+      },
+    },
+    {
+      name: 'primaryUnit',
+      type: 'relationship',
+      relationTo: 'organization',
+      label: 'Primary Unit',
+      admin: {
+        description: 'Main unit created automatically for this tenant',
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'governanceSettings',
+      type: 'group',
+      label: 'Governance Settings',
+      fields: [
+        {
+          name: 'policyReminderDays',
+          type: 'array',
+          label: 'Policy Reminder Cadence (Days)',
+          defaultValue: [{ day: 3 }, { day: 7 }, { day: 14 }],
+          admin: {
+            description: 'Days after policy assignment to send reminders',
+          },
+          fields: [
+            {
+              name: 'day',
+              type: 'number',
+              required: true,
+              min: 1,
+            },
+          ],
+        },
+
+        {
+          name: 'trainingEscalationDays',
+          type: 'array',
+          label: 'Training Escalation Cadence (Days)',
+          defaultValue: [{ day: 15 }, { day: 30 }, { day: 45 }],
+          admin: {
+            description: 'Days after training assignment to escalate',
+          },
+          fields: [
+            {
+              name: 'day',
+              type: 'number',
+              required: true,
+              min: 1,
+            },
+          ],
+        },
+
+        {
+          name: 'rollCallFrequency',
+          type: 'select',
+          label: 'Roll Call Frequency',
+          defaultValue: 'quarterly',
+          options: [
+            { label: 'Monthly', value: 'monthly' },
+            { label: 'Quarterly', value: 'quarterly' },
+            { label: 'Semi-Annual', value: 'semiannual' },
+            { label: 'Annual', value: 'annual' },
+          ],
+        },
+
+        {
+          name: 'passwordRotationDays',
+          type: 'number',
+          label: 'Password Rotation (Days)',
+          defaultValue: 90,
+          min: 30,
+          max: 365,
+          admin: {
+            description: 'Force password change every N days',
+          },
+        },
+      ],
+    },
+    {
+      name: 'status',
+      type: 'select',
+      defaultValue: 'active',
+      required: true,
+      options: [
+        {
+          label: 'Active',
+          value: 'active',
+        },
+        {
+          label: 'Suspended',
+          value: 'suspended',
+        },
+        {
+          label: 'Archived',
+          value: 'archived',
+        },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'metadata',
+      type: 'group',
+      label: 'Additional Info',
+      admin: {
+        position: 'sidebar',
+      },
+      fields: [
+        {
+          name: 'timezone',
+          type: 'select',
+          label: 'Timezone',
+          defaultValue: 'America/New_York',
+          options: [
+            { label: 'Eastern Time', value: 'America/New_York' },
+            { label: 'Central Time', value: 'America/Chicago' },
+            { label: 'Mountain Time', value: 'America/Denver' },
+            { label: 'Pacific Time', value: 'America/Los_Angeles' },
+          ],
+        },
+
+        {
+          name: 'notes',
+          type: 'textarea',
+          label: 'Internal Notes',
+          admin: {
+            description: 'Admin-only notes about this tenant',
+          },
+        },
+      ],
+    },
+  ],
+  hooks: {
+    afterChange: [
+      async ({ doc, req, operation }) => {
+        if (operation === 'create' && !doc.primaryUnit) {
+          const { payload } = req
+
+          const primaryUnit = await payload.create({
+            collection: 'organization',
+            data: {
+              name: `${doc.name} - Primary Unit`,
+              tenant: doc.id,
+              isPrimaryUnit: true,
+              parentOrg: null,
+              status: 'active',
+              type: UnitTypeEnum.DEPARTMENT,
+            },
+          })
+
+          await payload.update({
+            collection: 'tenants',
+            id: doc.id,
+            data: {
+              primaryUnit: primaryUnit.id,
+            },
+          })
+        }
+      },
+    ],
+  },
+  timestamps: true,
+}
