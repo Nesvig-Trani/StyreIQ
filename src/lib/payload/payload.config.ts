@@ -18,9 +18,11 @@ import { WelcomeEmailsPlugin } from '@/features/welcome-emails/plugins'
 import { flagInactiveAccountsTask } from '../../features/social-medias/plugins/tasks/flagInactiveAccounts/def'
 import { detectRisksTask } from '../../features/flags/plugins/tasks/detectRisks/def'
 import { TenantPlugin } from '@/features/tenants/plugins'
+import { tenantContextMiddleware } from '@/middleware/tenant-context'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+const ALL_METHODS = ['get', 'post', 'put', 'patch', 'delete', 'options', 'head'] as const
 
 const auditLogCollections = {
   users: true,
@@ -53,6 +55,13 @@ export default buildConfig({
     generateSchemaOutputFile: path.resolve(dirname, '../../types/payload-db-schema.ts'),
   }),
   sharp,
+  endpoints: [
+    ...ALL_METHODS.map((m) => ({
+      path: '/api/*',
+      method: m,
+      handler: tenantContextMiddleware,
+    })),
+  ],
   plugins: [
     OrganizationsPlugin({
       disabled: false,

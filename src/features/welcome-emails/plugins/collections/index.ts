@@ -1,8 +1,21 @@
 import { CollectionConfig } from 'payload'
 import { WelcomeEmailCollectionSlug } from '../types'
+import { injectTenantHook } from '@/features/tenants/hooks/inject-tenant'
+import {
+  adminOnlyCreateAccess,
+  adminOnlyUpdateAccess,
+  superAdminOnlyDeleteAccess,
+  tenantBasedReadAccess,
+} from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 export const WelcomeEmails: CollectionConfig = {
   slug: WelcomeEmailCollectionSlug,
+  access: {
+    read: tenantBasedReadAccess,
+    create: adminOnlyCreateAccess,
+    update: adminOnlyUpdateAccess,
+    delete: superAdminOnlyDeleteAccess,
+  },
   fields: [
     {
       name: 'instructions',
@@ -61,15 +74,7 @@ export const WelcomeEmails: CollectionConfig = {
         readOnly: true,
       },
       hooks: {
-        beforeChange: [
-          async ({ req, data }) => {
-            if (data == null) return data
-            if (!data.tenant && req.user?.tenant) {
-              data.tenant = req.user.tenant
-            }
-            return data
-          },
-        ],
+        beforeChange: [injectTenantHook],
       },
     },
   ],

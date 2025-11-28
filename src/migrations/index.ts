@@ -14,6 +14,7 @@ import * as migration_20250811_181449 from './20250811_181449'
 import * as migration_20250829_131117_add_offboarding_completed_field_to_users from './20250829_131117_add_offboarding_completed_field_to_users'
 import * as migration_20250903_163942 from './20250903_163942'
 import * as migration_20251127_144406_add_tenant_to_all_collections from './20251127_144406_add_tenant_to_all_collections'
+import * as migration_20251128_211757_add_a_new_user_role from './20251128_211757_add_a_new_user_role'
 
 export const migrations = [
   {
@@ -95,5 +96,10 @@ export const migrations = [
     up: migration_20251127_144406_add_tenant_to_all_collections.up,
     down: migration_20251127_144406_add_tenant_to_all_collections.down,
     name: '20251127_144406_add_tenant_to_all_collections',
+  },
+  {
+    up: migration_20251128_211757_add_a_new_user_role.up,
+    down: migration_20251128_211757_add_a_new_user_role.down,
+    name: '20251128_211757_add_a_new_user_role',
   },
 ]

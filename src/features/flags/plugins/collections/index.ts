@@ -6,13 +6,27 @@ import {
 } from '../types'
 import { createComment, createFlag, markAsResolved } from '../endpoints'
 import { FlagHistoryActionsEnum, FlagSourceEnum } from '@/features/flags/schemas'
-import { canReadFlags } from '../access'
 import { flagStatusOptions } from '@/features/flags/constants/flagStatusOptions'
+import { injectTenantHook } from '@/features/tenants/hooks/inject-tenant'
+
+import {
+  authenticatedCreateAccess,
+  immutableUpdateAccess,
+  managerCreateAccess,
+  managerUpdateAccess,
+  ownerUpdateAccess,
+  socialMediaManagerReadAccess,
+  superAdminOnlyDeleteAccess,
+  tenantBasedReadAccess,
+} from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 export const Flags: CollectionConfig = {
   slug: FlagsCollectionSlug,
   access: {
-    read: canReadFlags,
+    read: socialMediaManagerReadAccess,
+    create: managerCreateAccess,
+    update: managerUpdateAccess,
+    delete: superAdminOnlyDeleteAccess,
   },
   fields: [
     {
@@ -77,15 +91,7 @@ export const Flags: CollectionConfig = {
         readOnly: true,
       },
       hooks: {
-        beforeChange: [
-          async ({ req, data }) => {
-            if (data == null) return data
-            if (!data.tenant && req.user?.tenant) {
-              data.tenant = req.user.tenant
-            }
-            return data
-          },
-        ],
+        beforeChange: [injectTenantHook],
       },
     },
   ],
@@ -94,6 +100,12 @@ export const Flags: CollectionConfig = {
 
 export const FlagComments: CollectionConfig = {
   slug: FlagCommentsCollectionSlug,
+  access: {
+    read: tenantBasedReadAccess,
+    create: authenticatedCreateAccess,
+    update: ownerUpdateAccess(FlagCommentsCollectionSlug),
+    delete: superAdminOnlyDeleteAccess,
+  },
   fields: [
     {
       name: 'flag',
@@ -121,15 +133,7 @@ export const FlagComments: CollectionConfig = {
         readOnly: true,
       },
       hooks: {
-        beforeChange: [
-          async ({ req, data }) => {
-            if (data == null) return data
-            if (!data.tenant && req.user?.tenant) {
-              data.tenant = req.user.tenant
-            }
-            return data
-          },
-        ],
+        beforeChange: [injectTenantHook],
       },
     },
   ],
@@ -138,6 +142,12 @@ export const FlagComments: CollectionConfig = {
 
 export const FlagHistory: CollectionConfig = {
   slug: FlagHistoryCollectionSlug,
+  access: {
+    read: tenantBasedReadAccess,
+    create: authenticatedCreateAccess,
+    update: immutableUpdateAccess,
+    delete: superAdminOnlyDeleteAccess,
+  },
   fields: [
     {
       name: 'flag',
@@ -180,15 +190,7 @@ export const FlagHistory: CollectionConfig = {
         readOnly: true,
       },
       hooks: {
-        beforeChange: [
-          async ({ req, data }) => {
-            if (data == null) return data
-            if (!data.tenant && req.user?.tenant) {
-              data.tenant = req.user.tenant
-            }
-            return data
-          },
-        ],
+        beforeChange: [injectTenantHook],
       },
     },
   ],
