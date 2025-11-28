@@ -201,7 +201,7 @@ export interface Organization {
 export interface User {
   id: number
   name: string
-  role?: ('super_admin' | 'unit_admin' | 'social_media_manager') | null
+  role?: ('super_admin' | 'central_admin' | 'unit_admin' | 'social_media_manager') | null
   status?: ('active' | 'inactive' | 'rejected' | 'pending_activation') | null
   admin_policy_agreement: boolean
   date_of_last_policy_review?: string | null
