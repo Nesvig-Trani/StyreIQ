@@ -1,24 +1,14 @@
 import { z } from 'zod'
 import { paginationSchema } from '@/shared/schemas/pagination'
 import { Organization, User } from '@/types/payload-types'
-
-export enum UserRolesEnum {
-  SuperAdmin = 'super_admin',
-  UnitAdmin = 'unit_admin',
-  SocialMediaManager = 'social_media_manager',
-}
-
-export enum UserStatusEnum {
-  Active = 'active',
-  Inactive = 'inactive',
-  PendingActivation = 'pending_activation',
-  Rejected = 'rejected',
-}
+import { UserRolesEnum, UserStatusEnum } from '@/shared/constants/user-roles'
+export { UserRolesEnum, UserStatusEnum }
 
 export const roleLabelMap: Record<UserRolesEnum, string> = {
   [UserRolesEnum.SuperAdmin]: 'Super Admin',
   [UserRolesEnum.UnitAdmin]: 'Unit Admin',
   [UserRolesEnum.SocialMediaManager]: 'Social Media Manager',
+  [UserRolesEnum.CentralAdmin]: 'Central Admin',
 }
 
 export const statusLabelMap: Record<UserStatusEnum, string> = {

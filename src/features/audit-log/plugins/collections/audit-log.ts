@@ -1,11 +1,46 @@
-import { CollectionConfig } from 'payload'
+import { CollectionConfig, Where } from 'payload'
 import { AuditLogActionEnum } from '../types/index'
-import { canReadAuditLog } from '../access'
+import { injectTenantHook } from '@/features/tenants/hooks/inject-tenant'
+import { UserRolesEnum } from '@/features/users'
+import { getAccessibleOrgIdsForUserWithPayload } from '@/shared'
+import { superAdminOnlyDeleteAccess } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 export const AuditLogs: CollectionConfig = {
   slug: 'audit_log',
   access: {
-    read: canReadAuditLog,
+    read: async ({ req }): Promise<boolean | Where> => {
+      const { user, payload } = req
+      if (!user) return false
+
+      const { role, tenant, id } = user
+
+      if (role === UserRolesEnum.SuperAdmin) return true
+      if (!tenant) return false
+
+      switch (role) {
+        case UserRolesEnum.CentralAdmin:
+          return { tenant: { equals: tenant } }
+
+        case UserRolesEnum.UnitAdmin: {
+          const accessibleOrgIds = await getAccessibleOrgIdsForUserWithPayload(user, payload)
+          return {
+            and: [{ tenant: { equals: tenant } }, { organizations: { in: accessibleOrgIds } }],
+          }
+        }
+
+        case UserRolesEnum.SocialMediaManager:
+          return {
+            and: [{ tenant: { equals: tenant } }, { user: { equals: id } }],
+          }
+
+        default:
+          return false
+      }
+    },
+
+    create: async ({ req }) => !!req.user,
+    update: async () => false,
+    delete: superAdminOnlyDeleteAccess,
   },
   fields: [
     {
@@ -89,15 +124,7 @@ export const AuditLogs: CollectionConfig = {
         readOnly: true,
       },
       hooks: {
-        beforeChange: [
-          async ({ req, data }) => {
-            if (data == null) return data
-            if (!data.tenant && req.user?.tenant) {
-              data.tenant = req.user.tenant
-            }
-            return data
-          },
-        ],
+        beforeChange: [injectTenantHook],
       },
     },
   ],

@@ -1,9 +1,26 @@
 import { CollectionConfig } from 'payload'
 import { AcknowledgmentsCollectionSlug, PoliciesCollectionSlug } from '@/features/policies/schemas'
 import { getLastPolicyVersion } from '../queries'
+import { injectTenantHook } from '@/features/tenants/hooks/inject-tenant'
+import { UserRolesEnum } from '@/features/users'
+import { getAccessibleOrgIdsForUserWithPayload } from '@/shared'
+import {
+  adminOnlyCreateAccess,
+  adminOnlyUpdateAccess,
+  authenticatedCreateAccess,
+  immutableUpdateAccess,
+  superAdminOnlyDeleteAccess,
+  tenantBasedReadAccess,
+} from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 export const Policies: CollectionConfig = {
   slug: PoliciesCollectionSlug,
+  access: {
+    read: tenantBasedReadAccess,
+    create: adminOnlyCreateAccess,
+    update: adminOnlyUpdateAccess,
+    delete: superAdminOnlyDeleteAccess,
+  },
   hooks: {
     beforeValidate: [
       async ({ data, operation, req }) => {
@@ -12,7 +29,7 @@ export const Policies: CollectionConfig = {
         const lastPolicy = await getLastPolicyVersion()
         await req.payload.update({
           collection: 'users',
-          where: {},
+          where: { tenant: { equals: req.user.tenant } },
           data: {
             date_of_last_policy_review: new Date().toISOString(),
             admin_policy_agreement: false,
@@ -57,15 +74,7 @@ export const Policies: CollectionConfig = {
         readOnly: true,
       },
       hooks: {
-        beforeChange: [
-          async ({ req, data }) => {
-            if (data == null) return data
-            if (!data.tenant && req.user?.tenant) {
-              data.tenant = req.user.tenant
-            }
-            return data
-          },
-        ],
+        beforeChange: [injectTenantHook],
       },
     },
   ],
@@ -73,6 +82,67 @@ export const Policies: CollectionConfig = {
 
 export const Acknowledgments: CollectionConfig = {
   slug: AcknowledgmentsCollectionSlug,
+  access: {
+    read: async ({ req }) => {
+      const { user, payload } = req
+      if (!user) return false
+
+      const { role, tenant, id } = user
+
+      if (role === UserRolesEnum.SuperAdmin) return true
+      if (!tenant) return false
+
+      switch (role) {
+        case UserRolesEnum.CentralAdmin: {
+          const allUsersInTenant = await payload.find({
+            collection: 'users',
+            where: { tenant: { equals: tenant } },
+            limit: 0,
+          })
+
+          const userIds = allUsersInTenant.docs.map((u) => u.id)
+
+          return {
+            tenant: { equals: tenant },
+            user: { in: userIds },
+          }
+        }
+
+        case UserRolesEnum.UnitAdmin: {
+          const accessibleOrgIds = await getAccessibleOrgIdsForUserWithPayload(user, payload)
+
+          const usersInScope = await payload.find({
+            collection: 'users',
+            where: {
+              organizations: { in: accessibleOrgIds },
+              tenant: { equals: tenant },
+            },
+            limit: 0,
+          })
+
+          const userIds = usersInScope.docs.map((u) => u.id)
+
+          return {
+            tenant: { equals: tenant },
+            user: { in: userIds },
+          }
+        }
+
+        case UserRolesEnum.SocialMediaManager:
+          return {
+            tenant: { equals: tenant },
+            user: { equals: id },
+          }
+
+        default:
+          return false
+      }
+    },
+
+    create: authenticatedCreateAccess,
+    update: immutableUpdateAccess,
+    delete: superAdminOnlyDeleteAccess,
+  },
   hooks: {
     beforeValidate: [
       async ({ data, operation, req }) => {
@@ -94,7 +164,6 @@ export const Acknowledgments: CollectionConfig = {
       },
     ],
   },
-
   fields: [
     {
       name: 'policy',
@@ -118,15 +187,7 @@ export const Acknowledgments: CollectionConfig = {
         readOnly: true,
       },
       hooks: {
-        beforeChange: [
-          async ({ req, data }) => {
-            if (data == null) return data
-            if (!data.tenant && req.user?.tenant) {
-              data.tenant = req.user.tenant
-            }
-            return data
-          },
-        ],
+        beforeChange: [injectTenantHook],
       },
     },
   ],

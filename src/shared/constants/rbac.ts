@@ -1,4 +1,4 @@
-import { UserRolesEnum } from '@/features/users'
+import { UserRolesEnum } from './user-roles'
 
 export type Resource =
   | 'USERS'
@@ -19,6 +19,7 @@ export type Permission = {
     ownerOnly?: boolean
     unitOnly?: boolean
     childUnitsIncluded?: boolean
+    tenantScoped?: boolean
   }
 }
 
@@ -29,6 +30,7 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
       actions: ['create', 'read', 'update', 'delete'],
       conditions: {
         childUnitsIncluded: true,
+        tenantScoped: false,
       },
     },
     {
@@ -36,6 +38,7 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
       actions: ['create', 'read', 'update', 'delete'],
       conditions: {
         childUnitsIncluded: true,
+        tenantScoped: false,
       },
     },
     {
@@ -43,6 +46,7 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
       actions: ['create', 'read', 'update', 'delete'],
       conditions: {
         childUnitsIncluded: true,
+        tenantScoped: false,
       },
     },
     {
@@ -50,6 +54,7 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
       actions: ['create', 'read', 'update', 'delete'],
       conditions: {
         childUnitsIncluded: true,
+        tenantScoped: false,
       },
     },
     {
@@ -57,19 +62,93 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
       actions: ['create', 'read', 'update', 'delete'],
       conditions: {
         childUnitsIncluded: true,
+        tenantScoped: false,
       },
     },
     {
       resource: 'POLICIES',
       actions: ['create', 'read', 'update', 'delete'],
+      conditions: {
+        tenantScoped: false,
+      },
     },
     {
       resource: 'REVIEW_REQUESTS',
       actions: ['read', 'update'],
+      conditions: {
+        tenantScoped: false,
+      },
     },
     {
       resource: 'AUDIT_LOGS',
       actions: ['read'],
+      conditions: {
+        tenantScoped: false,
+      },
+    },
+  ],
+  [UserRolesEnum.CentralAdmin]: [
+    {
+      resource: 'DASHBOARD',
+      actions: ['read', 'update'],
+      conditions: {
+        tenantScoped: true,
+        childUnitsIncluded: true,
+      },
+    },
+    {
+      resource: 'UNITS',
+      actions: ['create', 'read', 'update'],
+      conditions: {
+        tenantScoped: true,
+        childUnitsIncluded: true,
+      },
+    },
+    {
+      resource: 'USERS',
+      actions: ['create', 'read', 'update', 'delete'],
+      conditions: {
+        tenantScoped: true,
+        childUnitsIncluded: true,
+      },
+    },
+    {
+      resource: 'SOCIAL_MEDIAS',
+      actions: ['create', 'read', 'update', 'delete'],
+      conditions: {
+        tenantScoped: true,
+        childUnitsIncluded: true,
+      },
+    },
+    {
+      resource: 'FLAGS',
+      actions: ['create', 'read', 'update'],
+      conditions: {
+        tenantScoped: true,
+        childUnitsIncluded: true,
+      },
+    },
+    {
+      resource: 'POLICIES',
+      actions: ['create', 'read', 'update'],
+      conditions: {
+        tenantScoped: true,
+      },
+    },
+    {
+      resource: 'REVIEW_REQUESTS',
+      actions: ['read', 'update'],
+      conditions: {
+        tenantScoped: true,
+      },
+    },
+    {
+      resource: 'AUDIT_LOGS',
+      actions: ['read'],
+      conditions: {
+        tenantScoped: true,
+        childUnitsIncluded: true,
+      },
     },
   ],
   [UserRolesEnum.UnitAdmin]: [
@@ -77,6 +156,7 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
       resource: 'DASHBOARD',
       actions: ['create', 'read', 'update', 'delete'],
       conditions: {
+        tenantScoped: true,
         childUnitsIncluded: true,
       },
     },
@@ -84,6 +164,7 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
       resource: 'UNITS',
       actions: ['read', 'update'],
       conditions: {
+        tenantScoped: true,
         unitOnly: true,
         childUnitsIncluded: true,
       },
@@ -92,6 +173,7 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
       resource: 'USERS',
       actions: ['create', 'read', 'update'],
       conditions: {
+        tenantScoped: true,
         unitOnly: true,
         childUnitsIncluded: true,
       },
@@ -100,6 +182,7 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
       resource: 'SOCIAL_MEDIAS',
       actions: ['create', 'read', 'update'],
       conditions: {
+        tenantScoped: true,
         unitOnly: true,
         childUnitsIncluded: true,
       },
@@ -108,6 +191,7 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
       resource: 'FLAGS',
       actions: ['create', 'read', 'update'],
       conditions: {
+        tenantScoped: true,
         unitOnly: true,
         childUnitsIncluded: true,
       },
@@ -115,11 +199,15 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
     {
       resource: 'POLICIES',
       actions: ['read'],
+      conditions: {
+        tenantScoped: true,
+      },
     },
     {
       resource: 'AUDIT_LOGS',
       actions: ['read'],
       conditions: {
+        tenantScoped: true,
         unitOnly: true,
         childUnitsIncluded: true,
       },
@@ -130,43 +218,48 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
       resource: 'DASHBOARD',
       actions: ['create', 'read', 'update', 'delete'],
       conditions: {
-        childUnitsIncluded: true,
+        tenantScoped: true,
+        ownerOnly: true,
       },
     },
     {
       resource: 'UNITS',
       actions: ['read'],
       conditions: {
+        tenantScoped: true,
         unitOnly: true,
-        childUnitsIncluded: true,
       },
     },
     {
       resource: 'USERS',
       actions: ['read', 'update'],
       conditions: {
-        childUnitsIncluded: true,
+        tenantScoped: true,
+        ownerOnly: true,
       },
     },
     {
       resource: 'SOCIAL_MEDIAS',
       actions: ['read'],
       conditions: {
-        unitOnly: true,
-        childUnitsIncluded: true,
+        tenantScoped: true,
+        ownerOnly: true,
       },
     },
     {
       resource: 'FLAGS',
       actions: ['read'],
       conditions: {
-        unitOnly: true,
-        childUnitsIncluded: true,
+        tenantScoped: true,
+        ownerOnly: true,
       },
     },
     {
       resource: 'POLICIES',
       actions: ['read'],
+      conditions: {
+        tenantScoped: true,
+      },
     },
   ],
 }

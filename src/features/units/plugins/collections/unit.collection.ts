@@ -1,7 +1,13 @@
 import { CollectionConfig } from 'payload'
 import { createUnit, disableUnit, filteredUsers, updateUnit } from '../endpoints'
-import { canDeleteUnit, canReadUnit } from '../access'
 import { unitTypeOptions } from '@/features/units/constants/unitTypeOptions'
+import { UserRolesEnum } from '@/features/users'
+import { getAccessibleOrgIdsForUser, getAccessibleOrgIdsForUserWithPayload } from '@/shared'
+import { injectTenantHook } from '@/features/tenants/hooks/inject-tenant'
+import {
+  superAdminOnlyDeleteAccess,
+  tenantCreateAccess,
+} from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 export const Unit: CollectionConfig = {
   slug: 'organization',
@@ -9,8 +15,58 @@ export const Unit: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: canReadUnit,
-    delete: canDeleteUnit,
+    read: async ({ req }) => {
+      const { user, payload } = req
+      if (!user) return false
+
+      const { role, tenant } = user
+
+      if (role === UserRolesEnum.SuperAdmin) return true
+      if (!tenant) return false
+
+      const accessibleOrgIds = await getAccessibleOrgIdsForUserWithPayload(user, payload)
+
+      return {
+        tenant: { equals: tenant },
+        id: { in: accessibleOrgIds },
+      }
+    },
+
+    create: tenantCreateAccess,
+
+    update: async ({ req, id, data }) => {
+      const { user, payload } = req
+      if (!user || !id) return false
+
+      const { role, tenant } = user
+
+      if (role === UserRolesEnum.SuperAdmin) return true
+      if (!tenant) return false
+
+      if (data?.tenant && data.tenant !== tenant) return false
+
+      switch (role) {
+        case UserRolesEnum.CentralAdmin:
+          return { tenant: { equals: tenant } }
+
+        case UserRolesEnum.UnitAdmin: {
+          const targetOrg = await payload.findByID({
+            collection: 'organization',
+            id: id as string | number,
+          })
+
+          if (!targetOrg?.parentOrg) return false
+
+          const accessibleOrgIds = await getAccessibleOrgIdsForUserWithPayload(user, payload)
+          return accessibleOrgIds.includes(Number(id))
+        }
+
+        default:
+          return false
+      }
+    },
+
+    delete: superAdminOnlyDeleteAccess,
   },
   fields: [
     {
@@ -99,15 +155,7 @@ export const Unit: CollectionConfig = {
         readOnly: true,
       },
       hooks: {
-        beforeChange: [
-          async ({ req, data }) => {
-            if (data == null) return data
-            if (!data.tenant && req.user?.tenant) {
-              data.tenant = req.user.tenant
-            }
-            return data
-          },
-        ],
+        beforeChange: [injectTenantHook],
       },
     },
     {
@@ -116,6 +164,45 @@ export const Unit: CollectionConfig = {
       defaultValue: false,
     },
   ],
+  hooks: {
+    beforeChange: [
+      async ({ data, req, operation, originalDoc }) => {
+        if (operation === 'create' && req.user?.role === UserRolesEnum.UnitAdmin) {
+          if (!data.parentOrg) {
+            throw new Error(
+              'Unit Admins cannot create main units. A parent organization is required.',
+            )
+          }
+
+          const accessibleOrgIds = await getAccessibleOrgIdsForUser(req.user)
+          const parentId = typeof data.parentOrg === 'object' ? data.parentOrg.id : data.parentOrg
+
+          if (!accessibleOrgIds.includes(Number(parentId))) {
+            throw new Error('You do not have access to the specified parent organization.')
+          }
+        }
+
+        if (operation === 'update' && req.user?.role === UserRolesEnum.UnitAdmin) {
+          if (originalDoc && !originalDoc.parentOrg) {
+            throw new Error('Unit Admins cannot edit main units. Only sub-units can be modified.')
+          }
+
+          if (data.parentOrg === null) {
+            throw new Error('Unit Admins cannot remove parent organization.')
+          }
+        }
+
+        if (operation === 'update' && data.isPrimaryUnit !== undefined) {
+          if (
+            originalDoc?.isPrimaryUnit !== data.isPrimaryUnit &&
+            req.user?.role !== UserRolesEnum.SuperAdmin
+          ) {
+            throw new Error('Only SuperAdmin can modify Primary Unit status.')
+          }
+        }
+      },
+    ],
+  },
   timestamps: true,
   endpoints: [createUnit, updateUnit, disableUnit, filteredUsers],
 }

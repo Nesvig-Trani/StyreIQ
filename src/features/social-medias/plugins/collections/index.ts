@@ -1,11 +1,10 @@
-import { CollectionConfig } from 'payload'
+import { CollectionConfig, Where } from 'payload'
 import { createSocialMedia, patchSocialMedia, updateSocialMediaStatus } from '../endpoints'
 import {
   linkedToolsOptions,
   SocialMediaStatusEnum,
   statusLabelMap,
 } from '@/features/social-medias/schemas'
-import { canReadSocialMedias } from '../access'
 import { platformOptions } from '@/features/social-medias/constants/platformOptions'
 import { thirdPartyManagementOptions } from '@/features/social-medias/constants/thirdPartyManagementOptions'
 import { passwordManagementPracticeOptions } from '@/features/social-medias/constants/passwordManagementPracticeOptions'
@@ -13,6 +12,13 @@ import { verificationStatusOptions } from '@/features/social-medias/constants/ve
 import { scrapLatestPost } from '../endpoints/get-and-store-latest-post'
 import { SocialMediaPosts, SocialMediaPostsCollectionSlug } from './posts'
 import { getSavedLatestPost } from '../endpoints/get-saved-latest-post'
+import { injectTenantHook } from '@/features/tenants/hooks/inject-tenant'
+import { UserRolesEnum } from '@/features/users'
+import { getAccessibleOrgIdsForUserWithPayload } from '@/shared'
+import {
+  tenantValidatedDeleteAccess,
+  tenantValidatedUpdateAccess,
+} from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 export const SocialMediasCollectionSlug = 'social-medias'
 
@@ -24,7 +30,77 @@ export const SocialMedias: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: canReadSocialMedias,
+    read: async ({ req }): Promise<boolean | Where> => {
+      const { user, payload } = req
+      if (!user) return false
+
+      const { role, tenant, id } = user
+
+      if (role === UserRolesEnum.SuperAdmin) return true
+      if (!tenant) return false
+
+      switch (role) {
+        case UserRolesEnum.CentralAdmin:
+          return { tenant: { equals: tenant } }
+
+        case UserRolesEnum.UnitAdmin: {
+          const accessibleOrgIds = await getAccessibleOrgIdsForUserWithPayload(user, payload)
+          return {
+            and: [{ tenant: { equals: tenant } }, { organization: { in: accessibleOrgIds } }],
+          }
+        }
+
+        case UserRolesEnum.SocialMediaManager:
+          return {
+            and: [
+              { tenant: { equals: tenant } },
+              {
+                or: [
+                  { socialMediaManagers: { contains: id } },
+                  { primaryAdmin: { equals: id } },
+                  { backupAdmin: { equals: id } },
+                ],
+              },
+            ],
+          }
+
+        default:
+          return false
+      }
+    },
+
+    create: async ({ req, data }) => {
+      const { user, payload } = req
+      if (!user) return false
+
+      const { role, tenant } = user
+
+      if (role === UserRolesEnum.SuperAdmin) return true
+      if (!tenant) return false
+
+      if (data?.tenant && data.tenant !== tenant) return false
+
+      switch (role) {
+        case UserRolesEnum.CentralAdmin:
+          return true
+
+        case UserRolesEnum.UnitAdmin: {
+          if (!data?.organization) return false
+
+          const accessibleOrgIds = await getAccessibleOrgIdsForUserWithPayload(user, payload)
+          const orgId =
+            typeof data.organization === 'object' ? data.organization.id : data.organization
+
+          return accessibleOrgIds.includes(Number(orgId))
+        }
+
+        default:
+          return false
+      }
+    },
+
+    update: tenantValidatedUpdateAccess(SocialMediasCollectionSlug),
+    delete: tenantValidatedDeleteAccess(SocialMediasCollectionSlug),
   },
   fields: [
     {
@@ -189,18 +265,39 @@ export const SocialMedias: CollectionConfig = {
         readOnly: true,
       },
       hooks: {
-        beforeChange: [
-          async ({ req, data }) => {
-            if (data == null) return data
-            if (!data.tenant && req.user?.tenant) {
-              data.tenant = req.user.tenant
-            }
-            return data
-          },
-        ],
+        beforeChange: [injectTenantHook],
       },
     },
   ],
+  hooks: {
+    beforeChange: [
+      async ({ data, req, operation }) => {
+        if (operation === 'update' && data.tenant) {
+          const existing = await req.payload.findByID({
+            collection: SocialMediasCollectionSlug,
+            id: data.id,
+          })
+
+          if (existing && existing.tenant !== data.tenant) {
+            throw new Error('Cannot change tenant assignment after social media creation')
+          }
+        }
+
+        if (data.organization && data.tenant) {
+          const org = await req.payload.findByID({
+            collection: 'organization',
+            id: typeof data.organization === 'object' ? data.organization.id : data.organization,
+          })
+
+          if (org && org.tenant !== data.tenant) {
+            throw new Error('Organization must belong to the same tenant')
+          }
+        }
+
+        return data
+      },
+    ],
+  },
   timestamps: true,
   endpoints: [
     createSocialMedia,
