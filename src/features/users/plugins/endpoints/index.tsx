@@ -22,6 +22,11 @@ import { welcomeEmailBody } from '@/features/users/constants/welcomeEmailBody'
 import { WelcomeEmailCollectionSlug } from '@/features/welcome-emails/plugins/types'
 import { AuditLogActionEnum } from '@/features/audit-log/plugins/types'
 import { requestDemoEmailBody } from '../../constants/requestDemoEmailBody'
+import {
+  extractTenantId,
+  validateRelatedEntityTenant,
+  validateTenantAccess,
+} from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 export const createUser: Endpoint = {
   path: '/',
@@ -42,6 +47,43 @@ export const createUser: Endpoint = {
         })
       }
       const data = await req.json()
+
+      const tenantCheck = validateTenantAccess({
+        req,
+        targetTenantId: data.tenant,
+        entityName: 'user',
+      })
+
+      if (!tenantCheck.valid) {
+        return new Response(JSON.stringify({ error: tenantCheck.error!.message }), {
+          status: tenantCheck.error!.status,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      if (!data.tenant) {
+        data.tenant = tenantCheck.userTenant
+      }
+
+      if (data.organizations && Array.isArray(data.organizations)) {
+        for (const orgRef of data.organizations) {
+          const orgId = typeof orgRef === 'object' ? orgRef.id : orgRef
+
+          const orgCheck = await validateRelatedEntityTenant({
+            req,
+            collection: 'organization',
+            entityId: orgId,
+            entityName: 'Organization',
+          })
+
+          if (!orgCheck.valid) {
+            return new Response(JSON.stringify({ error: orgCheck.error!.message }), {
+              status: orgCheck.error!.status,
+              headers: JSON_HEADERS,
+            })
+          }
+        }
+      }
 
       if (data.organizations && !Array.isArray(data.organizations)) {
         data.organizations = [String(data.organizations)]
@@ -211,6 +253,51 @@ export const updateUser: Endpoint = {
           status: 404,
           headers: JSON_HEADERS,
         })
+      }
+
+      const tenantId = extractTenantId(userExists.tenant)
+
+      const tenantCheck = validateTenantAccess({
+        req,
+        targetTenantId: tenantId,
+        entityName: 'user',
+      })
+
+      if (!tenantCheck.valid) {
+        return new Response(JSON.stringify({ error: tenantCheck.error!.message }), {
+          status: tenantCheck.error!.status,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      if (data.tenant && data.tenant !== user.tenant && user.role !== UserRolesEnum.SuperAdmin) {
+        return new Response(JSON.stringify({ error: 'Cannot change user tenant' }), {
+          status: 403,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      if (dataParsed.organizations && Array.isArray(dataParsed.organizations)) {
+        for (const orgRef of dataParsed.organizations) {
+          const orgId =
+            typeof orgRef === 'object' && orgRef !== null
+              ? (orgRef as { id: number }).id
+              : Number(orgRef)
+
+          const orgCheck = await validateRelatedEntityTenant({
+            req,
+            collection: 'organization',
+            entityId: orgId,
+            entityName: 'Organization',
+          })
+
+          if (!orgCheck.valid) {
+            return new Response(JSON.stringify({ error: orgCheck.error!.message }), {
+              status: orgCheck.error!.status,
+              headers: JSON_HEADERS,
+            })
+          }
+        }
       }
 
       if (
@@ -397,6 +484,30 @@ export const setUserApprovalStatus: Endpoint = {
       }
       const data = await req.json()
       const parseData = setUserStatusSchema.parse(data)
+
+      const targetUser = await req.payload.findByID({ collection: 'users', id: parseData.id })
+
+      if (!targetUser) {
+        return new Response(JSON.stringify({ error: 'User not found' }), {
+          status: 404,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      const tenantId = extractTenantId(targetUser.tenant)
+      const tenantCheck = validateTenantAccess({
+        req,
+        targetTenantId: tenantId,
+        entityName: 'user',
+      })
+
+      if (!tenantCheck.valid) {
+        return new Response(JSON.stringify({ error: tenantCheck.error!.message }), {
+          status: tenantCheck.error!.status,
+          headers: JSON_HEADERS,
+        })
+      }
+
       const updateData: Partial<User> = {
         status: parseData.approved ? UserStatusEnum.Active : UserStatusEnum.Rejected,
       }

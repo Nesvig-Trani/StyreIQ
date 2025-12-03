@@ -17,6 +17,11 @@ import { JSON_HEADERS } from '@/shared/constants'
 import { z } from 'zod'
 import { SocialMediasCollectionSlug } from '@/features/social-medias'
 import { UserRolesEnum } from '@/features/users'
+import {
+  extractTenantId,
+  validateRelatedEntityTenant,
+  validateTenantAccess,
+} from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 export const createFlag: Endpoint = {
   path: '/',
@@ -33,6 +38,31 @@ export const createFlag: Endpoint = {
       }
       const data = await req.json()
       const dataParsed = createFlagSchema.parse(data)
+
+      const tenantCheck = validateTenantAccess({
+        req,
+        targetTenantId: data.tenant,
+        entityName: 'flag',
+      })
+
+      if (!tenantCheck.valid) {
+        throw new EndpointError(tenantCheck.error!.message, tenantCheck.error!.status)
+      }
+
+      if (!data.tenant) {
+        data.tenant = tenantCheck.userTenant
+      }
+
+      const entityCheck = await validateRelatedEntityTenant({
+        req,
+        collection: dataParsed.affectedEntityType,
+        entityId: Number(dataParsed.affectedEntity),
+        entityName: 'Affected entity',
+      })
+
+      if (!entityCheck.valid) {
+        throw new EndpointError(entityCheck.error!.message, entityCheck.error!.status)
+      }
 
       let organizations
 
@@ -142,6 +172,22 @@ export const markAsResolved: Endpoint = {
         id: Number(flagId),
       })
 
+      if (!flag) {
+        throw new EndpointError('Flag not found', 404)
+      }
+
+      const tenantId = extractTenantId(flag.tenant)
+
+      const tenantCheck = validateTenantAccess({
+        req,
+        targetTenantId: tenantId,
+        entityName: 'flag',
+      })
+
+      if (!tenantCheck.valid) {
+        throw new EndpointError(tenantCheck.error!.message, tenantCheck.error!.status)
+      }
+
       if (!flagId) {
         throw new EndpointError('No flag id', 404)
       }
@@ -219,8 +265,20 @@ export const createComment: Endpoint = {
         id: Number(flagId),
       })
 
-      if (!flagId) {
-        throw new EndpointError('No flag id', 404)
+      if (!flag) {
+        throw new EndpointError('Flag not found', 404)
+      }
+
+      const tenantId = extractTenantId(flag.tenant)
+
+      const tenantCheck = validateTenantAccess({
+        req,
+        targetTenantId: tenantId,
+        entityName: 'flag',
+      })
+
+      if (!tenantCheck.valid) {
+        throw new EndpointError(tenantCheck.error!.message, tenantCheck.error!.status)
       }
 
       const createComment = await req.payload.create({
