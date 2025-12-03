@@ -5,6 +5,11 @@ import { Endpoint } from 'payload'
 import { calcParentPathAndDepth } from '@/features/units/utils/calcPathAndDepth'
 import { EndpointError } from '@/shared'
 import { z } from 'zod'
+import {
+  extractTenantId,
+  validateRelatedEntityTenant,
+  validateTenantAccess,
+} from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 export const createUnit: Endpoint = {
   path: '/',
@@ -28,6 +33,23 @@ export const createUnit: Endpoint = {
 
       const { parentOrg, name, admin } = data
 
+      const tenantCheck = validateTenantAccess({
+        req,
+        targetTenantId: data.tenant,
+        entityName: 'unit',
+      })
+
+      if (!tenantCheck.valid) {
+        return new Response(JSON.stringify({ error: tenantCheck.error!.message }), {
+          status: tenantCheck.error!.status,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      if (!data.tenant) {
+        data.tenant = tenantCheck.userTenant
+      }
+
       if (user.role !== UserRolesEnum.SuperAdmin && !parentOrg) {
         return new Response(
           JSON.stringify({ error: 'parentOrg is required for non-super_admin users' }),
@@ -36,6 +58,22 @@ export const createUnit: Endpoint = {
             headers: JSON_HEADERS,
           },
         )
+      }
+
+      if (parentOrg) {
+        const parentCheck = await validateRelatedEntityTenant({
+          req,
+          collection: 'organization',
+          entityId: parentOrg,
+          entityName: 'Parent organization',
+        })
+
+        if (!parentCheck.valid) {
+          return new Response(JSON.stringify({ error: parentCheck.error!.message }), {
+            status: parentCheck.error!.status,
+            headers: JSON_HEADERS,
+          })
+        }
       }
 
       const createOrganization = await req.payload.create({
@@ -116,6 +154,56 @@ export const updateUnit: Endpoint = {
       const data = await req.json()
       const { id, parentOrg, name, admin } = data
 
+      const targetUnit = await req.payload.findByID({
+        collection: 'organization',
+        id: id,
+      })
+
+      if (!targetUnit) {
+        return new Response(JSON.stringify({ error: 'Unit not found' }), {
+          status: 404,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      const tenantId = extractTenantId(targetUnit.tenant)
+
+      const tenantCheck = validateTenantAccess({
+        req,
+        targetTenantId: tenantId,
+        entityName: 'unit',
+      })
+
+      if (!tenantCheck.valid) {
+        return new Response(JSON.stringify({ error: tenantCheck.error!.message }), {
+          status: tenantCheck.error!.status,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      if (data.tenant && data.tenant !== user.tenant && user.role !== UserRolesEnum.SuperAdmin) {
+        return new Response(JSON.stringify({ error: 'Cannot change unit tenant' }), {
+          status: 403,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      if (parentOrg) {
+        const parentCheck = await validateRelatedEntityTenant({
+          req,
+          collection: 'organization',
+          entityId: parentOrg,
+          entityName: 'Parent organization',
+        })
+
+        if (!parentCheck.valid) {
+          return new Response(JSON.stringify({ error: parentCheck.error!.message }), {
+            status: parentCheck.error!.status,
+            headers: JSON_HEADERS,
+          })
+        }
+      }
+
       if (user.role !== UserRolesEnum.SuperAdmin && !parentOrg) {
         return new Response(
           JSON.stringify({ error: 'parentOrg is required for non-super_admin users' }),
@@ -187,6 +275,28 @@ export const disableUnit: Endpoint = {
         throw new EndpointError('Unauthorized', 401)
       }
       const { id } = req.routeParams
+      const unitId = typeof id === 'string' ? parseInt(id) : Number(id)
+      const targetUnit = await req.payload.findByID({
+        collection: 'organization',
+        id: unitId,
+      })
+
+      if (!targetUnit) {
+        throw new EndpointError('Organization not found', 404)
+      }
+
+      const tenantId = extractTenantId(targetUnit.tenant)
+
+      const tenantCheck = validateTenantAccess({
+        req,
+        targetTenantId: tenantId,
+        entityName: 'unit',
+      })
+
+      if (!tenantCheck.valid) {
+        throw new EndpointError(tenantCheck.error!.message, tenantCheck.error!.status)
+      }
+
       const disabledOrg = await req.payload.update({
         collection: 'organization',
         where: { id: { equals: id } },
