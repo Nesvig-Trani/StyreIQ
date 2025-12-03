@@ -1,6 +1,133 @@
 import { UserRolesEnum } from '@/features/users'
 import { getAccessibleOrgIdsForUserWithPayload } from '@/shared'
-import { Access, CollectionSlug, User, Where } from 'payload'
+import { Access, CollectionSlug, PayloadRequest, User, Where } from 'payload'
+
+interface HasId {
+  id: number
+}
+interface ValidateTenantOptions {
+  req: PayloadRequest
+  targetTenantId?: string | number | null
+  entityName?: string
+}
+
+interface ValidateRelatedEntityOptions {
+  req: PayloadRequest
+  collection: string
+  entityId: string | number
+  entityName?: string
+}
+
+function hasId(value: unknown): value is HasId {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    'id' in value &&
+    typeof (value as HasId).id === 'number'
+  )
+}
+
+export function extractTenantId(tenant: number | HasId | null | undefined): number | null {
+  if (!tenant) return null
+  if (hasId(tenant)) return tenant.id
+  return typeof tenant === 'number' ? tenant : null
+}
+
+export function getTenantWhereClause(user: User): Where {
+  return {
+    tenant: { equals: user.tenant },
+  }
+}
+
+export function validateTenantAccess({
+  req,
+  targetTenantId,
+  entityName = 'resource',
+}: ValidateTenantOptions): {
+  valid: boolean
+  error?: { message: string; status: number }
+  userTenant?: string | number
+} {
+  if (req.user?.role === UserRolesEnum.SuperAdmin) {
+    return { valid: true }
+  }
+
+  if (!req.user?.tenant) {
+    return {
+      valid: false,
+      error: {
+        message: 'User has no tenant assigned',
+        status: 400,
+      },
+    }
+  }
+
+  const userTenantId = extractTenantId(req.user.tenant)
+  const targetId = targetTenantId
+
+  if (targetId && targetId !== userTenantId) {
+    return {
+      valid: false,
+      error: {
+        message: `Cannot access ${entityName} from different tenant`,
+        status: 403,
+      },
+    }
+  }
+
+  return {
+    valid: true,
+    userTenant: userTenantId!,
+  }
+}
+
+export async function validateRelatedEntityTenant({
+  req,
+  collection,
+  entityId,
+  entityName = 'entity',
+}: ValidateRelatedEntityOptions): Promise<{
+  valid: boolean
+  error?: { message: string; status: number }
+  entity?: unknown
+}> {
+  const entity = await req.payload.findByID({
+    collection: collection as CollectionSlug,
+    id: entityId,
+  })
+
+  if (!entity) {
+    return {
+      valid: false,
+      error: {
+        message: `${entityName} not found`,
+        status: 404,
+      },
+    }
+  }
+
+  if (req.user?.role === UserRolesEnum.SuperAdmin) {
+    return { valid: true, entity }
+  }
+
+  if ('tenant' in entity) {
+    const entityTenant = entity.tenant as number | HasId | null | undefined
+    const entityTenantId = extractTenantId(entityTenant)
+    const userTenantId = extractTenantId(req.user?.tenant)
+
+    if (entityTenantId !== userTenantId) {
+      return {
+        valid: false,
+        error: {
+          message: `${entityName} belongs to different tenant`,
+          status: 400,
+        },
+      }
+    }
+  }
+
+  return { valid: true, entity }
+}
 
 export const tenantBasedReadAccess: Access = async ({ req }): Promise<boolean | Where> => {
   const { user } = req
@@ -266,13 +393,4 @@ export const tenantValidatedDeleteAccess = (collectionSlug: CollectionSlug): Acc
       return false
     }
   }
-}
-
-export const validateTenantAccess = (user: User, tenant: string | number): boolean => {
-  if (user.role === UserRolesEnum.SuperAdmin) return true
-  return user.tenant === tenant
-}
-
-export const getTenantWhereClause = (user: User): Where => {
-  return { tenant: { equals: user.tenant } }
 }

@@ -15,6 +15,11 @@ import { UserRolesEnum } from '@/features/users/schemas'
 import { JSON_HEADERS } from '@/shared/constants'
 import { Organization } from '@/types/payload-types'
 import { getUserById } from '@/features/users'
+import {
+  extractTenantId,
+  validateRelatedEntityTenant,
+  validateTenantAccess,
+} from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 /**
  * Creates a social media record.
@@ -38,6 +43,47 @@ export const createSocialMedia: Endpoint = {
       const data = await req.json()
       const dataParsed = createSocialMediaFormSchema.parse(data)
       // Validates if the users are differents.
+
+      const tenantCheck = validateTenantAccess({
+        req,
+        targetTenantId: data.tenant,
+        entityName: 'social media',
+      })
+
+      if (!tenantCheck.valid) {
+        throw new EndpointError(tenantCheck.error!.message, tenantCheck.error!.status)
+      }
+
+      if (!data.tenant) {
+        data.tenant = tenantCheck.userTenant
+      }
+
+      const orgCheck = await validateRelatedEntityTenant({
+        req,
+        collection: 'organization',
+        entityId: dataParsed.organization,
+        entityName: 'Organization',
+      })
+
+      if (!orgCheck.valid) {
+        throw new EndpointError(orgCheck.error!.message, orgCheck.error!.status)
+      }
+
+      if (Array.isArray(dataParsed.socialMediaManagers)) {
+        for (const managerId of dataParsed.socialMediaManagers) {
+          const managerCheck = await validateRelatedEntityTenant({
+            req,
+            collection: 'users',
+            entityId: managerId,
+            entityName: 'Social Media Manager',
+          })
+
+          if (!managerCheck.valid) {
+            throw new EndpointError(managerCheck.error!.message, managerCheck.error!.status)
+          }
+        }
+      }
+
       if (dataParsed.primaryAdmin === dataParsed.backupAdmin) {
         throw new EndpointError(
           "Fields 'Administrator' and 'Backup Administrator' must be differents.",
@@ -164,6 +210,26 @@ export const patchSocialMedia: Endpoint = {
       }
 
       const socialMediaId = Number(req.routeParams?.id)
+      const targetSocialMedia = await req.payload.findByID({
+        collection: 'social-medias',
+        id: socialMediaId,
+      })
+
+      if (!targetSocialMedia) {
+        throw new EndpointError('Social media not found', 404)
+      }
+
+      const tenantId = extractTenantId(targetSocialMedia.tenant)
+
+      const tenantCheck = validateTenantAccess({
+        req,
+        targetTenantId: tenantId,
+        entityName: 'social media',
+      })
+      if (!tenantCheck.valid) {
+        throw new EndpointError(tenantCheck.error!.message, tenantCheck.error!.status)
+      }
+
       const updatedSocialMedia = await req.payload.update({
         collection: SocialMediasCollectionSlug,
         id: socialMediaId,
@@ -224,6 +290,28 @@ export const updateSocialMediaStatus: Endpoint = {
       }
 
       const socialMediaId = Number(req.routeParams?.id)
+
+      const targetSocialMedia = await req.payload.findByID({
+        collection: 'social-medias',
+        id: socialMediaId,
+      })
+
+      if (!targetSocialMedia) {
+        throw new EndpointError('Social media not found', 404)
+      }
+
+      const tenantId = extractTenantId(targetSocialMedia.tenant)
+
+      const tenantCheck = validateTenantAccess({
+        req,
+        targetTenantId: tenantId,
+        entityName: 'social media',
+      })
+
+      if (!tenantCheck.valid) {
+        throw new EndpointError(tenantCheck.error!.message, tenantCheck.error!.status)
+      }
+
       const data = await req.json()
 
       if (!Object.values(SocialMediaStatusEnum).includes(data.status)) {
