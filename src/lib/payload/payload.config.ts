@@ -19,6 +19,8 @@ import { flagInactiveAccountsTask } from '../../features/social-medias/plugins/t
 import { detectRisksTask } from '../../features/flags/plugins/tasks/detectRisks/def'
 import { TenantPlugin } from '@/features/tenants/plugins'
 import { tenantContextMiddleware } from '@/middleware/tenant-context'
+import { ComplianceTasksPlugin } from '@/features/compliance-tasks/plugins'
+import { sendComplianceRemindersTask } from '@/features/compliance-tasks/task/sendComplianceReminders/def'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -88,12 +90,16 @@ export default buildConfig({
     TenantPlugin({
       disabled: false,
     }),
+    ComplianceTasksPlugin({
+      disabled: false,
+      autoGenerateOnUserCreation: true,
+    }),
   ],
   cors: ['http://localhost:3000'],
   cookiePrefix: 'payload',
   email: EmailAdapter(),
   jobs: {
-    tasks: [flagInactiveAccountsTask, detectRisksTask],
+    tasks: [flagInactiveAccountsTask, detectRisksTask, sendComplianceRemindersTask],
     autoRun: [
       {
         //Every sunday at midnight
@@ -103,7 +109,11 @@ export default buildConfig({
       },
     ],
     shouldAutoRun(payload) {
-      return payload.config.jobs?.tasks?.some((task) => task.slug === flagInactiveAccountsTask.slug)
+      return payload.config.jobs?.tasks?.some(
+        (task) =>
+          task.slug === flagInactiveAccountsTask.slug ||
+          task.slug === sendComplianceRemindersTask.slug,
+      )
     },
   },
 })
