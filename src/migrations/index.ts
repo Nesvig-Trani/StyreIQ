@@ -15,6 +15,7 @@ import * as migration_20250829_131117_add_offboarding_completed_field_to_users f
 import * as migration_20250903_163942 from './20250903_163942'
 import * as migration_20251127_144406_add_tenant_to_all_collections from './20251127_144406_add_tenant_to_all_collections'
 import * as migration_20251128_211757_add_a_new_user_role from './20251128_211757_add_a_new_user_role'
+import * as migration_20251203_124451_add_compliance_tasks_and_relations from './20251203_124451_add_compliance_tasks_and_relations'
 
 export const migrations = [
   {
@@ -101,5 +102,10 @@ export const migrations = [
     up: migration_20251128_211757_add_a_new_user_role.up,
     down: migration_20251128_211757_add_a_new_user_role.down,
     name: '20251128_211757_add_a_new_user_role',
+  },
+  {
+    up: migration_20251203_124451_add_compliance_tasks_and_relations.up,
+    down: migration_20251203_124451_add_compliance_tasks_and_relations.down,
+    name: '20251203_124451_add_compliance_tasks_and_relations',
   },
 ]

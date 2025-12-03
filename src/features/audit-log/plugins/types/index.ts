@@ -8,4 +8,6 @@ export enum AuditLogActionEnum {
   UserCreation = 'user_creation',
   PasswordRecovery = 'password_recovery',
   PasswordReset = 'password_reset',
+  ComplianceTasksGenerated = 'compliance_task_generated',
+  TaskEscalation = 'task_escalation',
 }

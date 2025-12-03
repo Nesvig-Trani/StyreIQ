@@ -86,6 +86,14 @@ export const AuditLogs: CollectionConfig = {
           label: 'Password Reset',
           value: AuditLogActionEnum.PasswordReset,
         },
+        {
+          label: 'Compliance Tasks Generated',
+          value: AuditLogActionEnum.ComplianceTasksGenerated,
+        },
+        {
+          label: 'Task Escalation',
+          value: AuditLogActionEnum.TaskEscalation,
+        },
       ],
       required: true,
     },

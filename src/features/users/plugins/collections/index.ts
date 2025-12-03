@@ -15,6 +15,8 @@ import { Organization } from '@/types/payload-types'
 import { getAccessibleOrgIdsForUser, getAccessibleOrgIdsForUserWithPayload } from '@/shared'
 import { injectTenantHook } from '@/features/tenants/hooks/inject-tenant'
 
+import { ComplianceTaskGenerator } from '@/features/compliance-tasks/services/compliance-task-generator'
+
 export const Users: CollectionConfig = {
   slug: 'users',
   admin: {
@@ -277,6 +279,33 @@ export const Users: CollectionConfig = {
     },
   ],
   hooks: {
+    afterChange: [
+      async ({ doc, req, operation }) => {
+        if (operation === 'create') {
+          const generator = new ComplianceTaskGenerator(req.payload)
+          await generator.generateTasksForNewUser(doc)
+
+          await req.payload.create({
+            collection: 'audit_log',
+            data: {
+              user: req.user?.id || doc.id,
+              action: 'compliance_task_generated',
+              entity: 'users',
+              metadata: {
+                userId: doc.id,
+                tasksGenerated: [
+                  'PASSWORD_SETUP',
+                  'POLICY_ACKNOWLEDGMENT',
+                  'TRAINING_COMPLETION',
+                  'USER_ROLL_CALL',
+                ],
+              },
+              tenant: doc.tenant,
+            },
+          })
+        }
+      },
+    ],
     beforeChange: [
       async ({ data, req, operation }) => {
         if (operation === 'update' && data.tenant) {
