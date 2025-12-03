@@ -10,4 +10,6 @@ export const actionLabels = {
   [AuditLogActionEnum.UserCreation]: 'User Creation',
   [AuditLogActionEnum.PasswordRecovery]: 'Password Recovery',
   [AuditLogActionEnum.PasswordReset]: 'Password Reset',
+  [AuditLogActionEnum.ComplianceTasksGenerated]: 'Compliance Tasks Generated',
+  [AuditLogActionEnum.TaskEscalation]: 'Task Escalation',
 }

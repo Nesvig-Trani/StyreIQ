@@ -80,6 +80,7 @@ export interface Config {
     flagComments: FlagComment
     audit_log: AuditLog
     tenants: Tenant
+    compliance_tasks: ComplianceTask
     'payload-jobs': PayloadJob
     'payload-locked-documents': PayloadLockedDocument
     'payload-preferences': PayloadPreference
@@ -107,6 +108,7 @@ export interface Config {
     flagComments: FlagCommentsSelect<false> | FlagCommentsSelect<true>
     audit_log: AuditLogSelect<false> | AuditLogSelect<true>
     tenants: TenantsSelect<false> | TenantsSelect<true>
+    compliance_tasks: ComplianceTasksSelect<false> | ComplianceTasksSelect<true>
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>
     'payload-locked-documents':
       | PayloadLockedDocumentsSelect<false>
@@ -127,6 +129,7 @@ export interface Config {
     tasks: {
       flagInactiveAccounts: TaskFlagInactiveAccounts
       detectRisks: TaskDetectRisks
+      sendComplianceReminders: TaskSendComplianceReminders
       inline: {
         input: unknown
         output: unknown
@@ -563,6 +566,8 @@ export interface AuditLog {
     | 'user_creation'
     | 'password_recovery'
     | 'password_reset'
+    | 'compliance_task_generated'
+    | 'task_escalation'
   entity: string
   prev?:
     | {
@@ -622,6 +627,68 @@ export interface AuditLog {
   createdAt: string
 }
 /**
+ * Automatically generated compliance tasks for users
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "compliance_tasks".
+ */
+export interface ComplianceTask {
+  id: number
+  /**
+   * Type of compliance task
+   */
+  type: 'PASSWORD_SETUP' | 'POLICY_ACKNOWLEDGMENT' | 'TRAINING_COMPLETION' | 'USER_ROLL_CALL'
+  /**
+   * User who must complete this task
+   */
+  assignedUser: number | User
+  status: 'PENDING' | 'COMPLETED' | 'OVERDUE' | 'ESCALATED'
+  /**
+   * Deadline for task completion
+   */
+  dueDate: string
+  /**
+   * When the task was completed
+   */
+  completedAt?: string | null
+  /**
+   * Details about the task
+   */
+  description?: string | null
+  /**
+   * For POLICY_ACKNOWLEDGMENT tasks
+   */
+  relatedPolicy?: (number | null) | Policy
+  /**
+   * For TRAINING_COMPLETION tasks
+   */
+  relatedTraining?: string | null
+  /**
+   * Log of reminders sent for this task
+   */
+  remindersSent?:
+    | {
+        sentAt?: string | null
+        daysSinceDue?: number | null
+        id?: string | null
+      }[]
+    | null
+  /**
+   * Escalation history (SMM → Unit Admin → Central Admin)
+   */
+  escalations?:
+    | {
+        escalatedAt?: string | null
+        escalatedTo?: (number | null) | User
+        reason?: string | null
+        id?: string | null
+      }[]
+    | null
+  tenant: number | Tenant
+  updatedAt: string
+  createdAt: string
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs".
  */
@@ -673,7 +740,7 @@ export interface PayloadJob {
     | {
         executedAt: string
         completedAt: string
-        taskSlug: 'inline' | 'flagInactiveAccounts' | 'detectRisks'
+        taskSlug: 'inline' | 'flagInactiveAccounts' | 'detectRisks' | 'sendComplianceReminders'
         taskID: string
         input?:
           | {
@@ -706,7 +773,7 @@ export interface PayloadJob {
         id?: string | null
       }[]
     | null
-  taskSlug?: ('inline' | 'flagInactiveAccounts' | 'detectRisks') | null
+  taskSlug?: ('inline' | 'flagInactiveAccounts' | 'detectRisks' | 'sendComplianceReminders') | null
   queue?: string | null
   waitUntil?: string | null
   processing?: boolean | null
@@ -771,6 +838,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tenants'
         value: number | Tenant
+      } | null)
+    | ({
+        relationTo: 'compliance_tasks'
+        value: number | ComplianceTask
       } | null)
     | ({
         relationTo: 'payload-jobs'
@@ -1109,6 +1180,38 @@ export interface TenantsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "compliance_tasks_select".
+ */
+export interface ComplianceTasksSelect<T extends boolean = true> {
+  type?: T
+  assignedUser?: T
+  status?: T
+  dueDate?: T
+  completedAt?: T
+  description?: T
+  relatedPolicy?: T
+  relatedTraining?: T
+  remindersSent?:
+    | T
+    | {
+        sentAt?: T
+        daysSinceDue?: T
+        id?: T
+      }
+  escalations?:
+    | T
+    | {
+        escalatedAt?: T
+        escalatedTo?: T
+        reason?: T
+        id?: T
+      }
+  tenant?: T
+  updatedAt?: T
+  createdAt?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs_select".
  */
 export interface PayloadJobsSelect<T extends boolean = true> {
@@ -1186,6 +1289,17 @@ export interface TaskFlagInactiveAccounts {
  * via the `definition` "TaskDetectRisks".
  */
 export interface TaskDetectRisks {
+  input?: unknown
+  output: {
+    success: boolean
+    message: string
+  }
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskSendComplianceReminders".
+ */
+export interface TaskSendComplianceReminders {
   input?: unknown
   output: {
     success: boolean
