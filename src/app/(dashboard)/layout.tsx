@@ -8,6 +8,7 @@ import { UserRolesEnum } from '@/features/users'
 import { LexicalContentModal } from '@/shared/components/rich-text-editor/preview-modal'
 import { Separator } from '@/shared/components/ui/separator'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
+import { TenantBadge } from './tenant-badge'
 
 export const metadata = {
   description: 'StyreIQ Dashboard',
@@ -20,6 +21,16 @@ export default async function DashboardLayout(props: { children: React.ReactNode
   await serverAuthGuard()
   const { user } = await getAuthUser()
   const { payload } = await getPayloadContext()
+
+  let tenantData = null
+  if (user?.tenant) {
+    const tenantId = typeof user.tenant === 'object' ? user.tenant.id : user.tenant
+    tenantData = await payload.findByID({
+      collection: 'tenants',
+      id: tenantId,
+    })
+  }
+
   await payload.jobs.queue({
     task: 'detectRisks',
     input: {},
@@ -48,12 +59,16 @@ export default async function DashboardLayout(props: { children: React.ReactNode
 
   return (
     <SidebarProvider>
-      <AppSidebar user={user} />
+      <AppSidebar user={user} tenant={tenantData} />
+
       <SidebarInset>
         <header className="flex h-14 shrink-0 items-center gap-2 border-b bg-background px-3 sm:px-4 lg:hidden">
           <SidebarTrigger />
           <Separator orientation="vertical" className="h-6" />
           <span className="text-base lg:text-lg font-semibold">StyreIQ</span>
+          <div className="ml-auto hidden lg:block">
+            <TenantBadge tenant={tenantData} />
+          </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-3 sm:p-4 bg-gray-50">{children}</div>
         {lastVersion && lastVersion.text && (

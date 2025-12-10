@@ -55,14 +55,6 @@ export const createUser = async (data: z.infer<typeof createUserFormSchema>) => 
       role: data.role,
       status: data.status,
       organizations: data.organizations,
-      hasKnowledgeStandards: data.hasKnowledgeStandards,
-      isCompletedTrainingAccessibility: data.isCompletedTrainingAccessibility,
-      isCompletedTrainingRisk: data.isCompletedTrainingRisk,
-      isEnabledTwoFactor: data.isEnabledTwoFactor,
-      isInUseSecurePassword: data.isInUseSecurePassword,
-      isCompletedTrainingBrand: data.isCompletedTrainingBrand,
-      passwordUpdatedAt: data.passwordUpdatedAt,
-      offboardingCompleted: data.offboardingCompleted,
     }),
   })
 
@@ -90,12 +82,6 @@ export const updateUser = async (data: z.infer<typeof updateUserSchema>) => {
       role: data.role,
       status: data.status,
       organizations: data.organizations,
-      hasKnowledgeStandards: data.hasKnowledgeStandards,
-      isCompletedTrainingAccessibility: data.isCompletedTrainingAccessibility,
-      isCompletedTrainingRisk: data.isCompletedTrainingRisk,
-      isEnabledTwoFactor: data.isEnabledTwoFactor,
-      isInUseSecurePassword: data.isInUseSecurePassword,
-      isCompletedTrainingBrand: data.isCompletedTrainingBrand,
       passwordUpdatedAt: data.passwordUpdatedAt,
     }),
   })

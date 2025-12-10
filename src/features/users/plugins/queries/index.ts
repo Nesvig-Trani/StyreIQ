@@ -1,35 +1,35 @@
 'use server'
 import { PaginatedDocs, Where } from 'payload'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
-import { User } from '@/types/payload-types'
+import type { User } from '@/types/payload-types'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { UserRolesEnum, UserStatusEnum } from '@/features/users'
 import { getAccessibleOrgIdsForUser } from '@/shared'
+import { normalizeUserTenant } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
-export const getUsersByOrganizations = async ({
-  orgIds,
-}: {
-  orgIds: number[]
-}): Promise<PaginatedDocs<User>> => {
-  try {
-    const { payload } = await getPayloadContext()
-    const { user } = await getAuthUser()
+function createCleanUserForQueries(user: User | null | undefined): User | null {
+  if (!user) return null
+  if (!user.tenant) return null
 
-    const where: Where =
-      orgIds.length === 0
-        ? {}
-        : {
-            'organizations.id': { in: orgIds },
-          }
+  let tenantId: number | null = null
 
-    const users = await payload.find({
-      collection: 'users',
-      where,
-      overrideAccess: false,
-      user,
-    })
-    return users
-  } catch {
+  if (typeof user.tenant === 'number') {
+    tenantId = user.tenant
+  } else if (typeof user.tenant === 'object' && user.tenant !== null && 'id' in user.tenant) {
+    tenantId = user.tenant.id
+  }
+
+  return {
+    ...user,
+    tenant: tenantId,
+  } as User
+}
+
+export const getUsersByOrganizations = async ({ orgIds }: { orgIds: number[] }) => {
+  const { payload } = await getPayloadContext()
+  const { user } = await getAuthUser()
+
+  if (!user) {
     return {
       docs: [],
       hasNextPage: false,
@@ -40,6 +40,17 @@ export const getUsersByOrganizations = async ({
       pagingCounter: 0,
     }
   }
+
+  const userWithTenantId = normalizeUserTenant(user)
+
+  const where: Where = orgIds.length === 0 ? {} : { 'organizations.id': { in: orgIds } }
+
+  return await payload.find({
+    collection: 'users',
+    where,
+    overrideAccess: false,
+    user: userWithTenantId,
+  })
 }
 
 export const getUserById = async ({ id }: { id: number }) => {
@@ -79,31 +90,64 @@ export const getPendingActivationUsers = async ({
   user: User | null
 }) => {
   const { payload } = await getPayloadContext()
-  const users = await payload.find({
+
+  if (!user) {
+    return {
+      docs: [],
+      totalDocs: 0,
+      hasNextPage: false,
+      hasPrevPage: false,
+      totalPages: 0,
+      limit: 0,
+      page: 1,
+      pagingCounter: 0,
+      prevPage: null,
+      nextPage: null,
+    }
+  }
+
+  const cleanUser = createCleanUserForQueries(user)
+
+  return await payload.find({
     collection: 'users',
-    where: {
-      status: { equals: UserStatusEnum.PendingActivation },
-    },
+    where: { status: { equals: UserStatusEnum.PendingActivation } },
     depth: 1,
     limit,
     page,
     overrideAccess: false,
-    user: user,
+    user: cleanUser,
   })
-  return users
 }
 
 export const getAllUsers = async () => {
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
 
+  if (!user) {
+    return {
+      docs: [],
+      totalDocs: 0,
+      hasNextPage: false,
+      hasPrevPage: false,
+      totalPages: 0,
+      limit: 0,
+      page: 1,
+      pagingCounter: 0,
+      prevPage: null,
+      nextPage: null,
+    }
+  }
+
+  const userWithTenantId = normalizeUserTenant(user)
+
   const users = await payload.find({
     collection: 'users',
     limit: 0,
     depth: 0,
     overrideAccess: false,
-    user,
+    user: userWithTenantId,
   })
+
   return users
 }
 
@@ -127,18 +171,32 @@ export const getTotalUsers = async (): Promise<number> => {
 export const getUsersByRoles = async (roles: UserRolesEnum[]) => {
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
-  const users = await payload.find({
+
+  if (!user) {
+    return {
+      docs: [],
+      totalDocs: 0,
+      hasNextPage: false,
+      hasPrevPage: false,
+      totalPages: 0,
+      limit: 0,
+      page: 1,
+      pagingCounter: 0,
+      prevPage: null,
+      nextPage: null,
+    }
+  }
+  const userWithTenantId = normalizeUserTenant(user)
+
+  return await payload.find({
     collection: 'users',
     where: {
-      role: {
-        in: roles,
-      },
+      role: { in: roles },
       status: { equals: UserStatusEnum.Active },
     },
     overrideAccess: false,
-    user,
+    user: userWithTenantId,
   })
-  return users
 }
 
 export const getUsersByOrganizationAndRole = async ({
@@ -148,24 +206,10 @@ export const getUsersByOrganizationAndRole = async ({
   organizationId: number
   roles: UserRolesEnum[]
 }): Promise<PaginatedDocs<User>> => {
-  try {
-    const { payload } = await getPayloadContext()
-    const { user } = await getAuthUser()
+  const { payload } = await getPayloadContext()
+  const { user } = await getAuthUser()
 
-    const users = await payload.find({
-      collection: 'users',
-      where: {
-        'organizations.id': { equals: organizationId },
-        role: {
-          in: roles,
-        },
-        status: { equals: UserStatusEnum.Active },
-      },
-      overrideAccess: false,
-      user,
-    })
-    return users
-  } catch {
+  if (!user) {
     return {
       docs: [],
       hasNextPage: false,
@@ -176,6 +220,19 @@ export const getUsersByOrganizationAndRole = async ({
       pagingCounter: 0,
     }
   }
+
+  const userWithTenantId = normalizeUserTenant(user)
+
+  return await payload.find({
+    collection: 'users',
+    where: {
+      'organizations.id': { equals: organizationId },
+      role: { in: roles },
+      status: { equals: UserStatusEnum.Active },
+    },
+    overrideAccess: false,
+    user: userWithTenantId,
+  })
 }
 
 interface DashboardData {
@@ -194,11 +251,11 @@ interface DashboardData {
   unassignedAccounts: number
 }
 
-export const getUsersInfoForDashboard = async () => {
+export const getUsersInfoForDashboard = async (): Promise<DashboardData> => {
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
 
-  if (!user) {
+  if (!user)
     return {
       totalAccounts: 0,
       accountsByStatus: {
@@ -214,28 +271,29 @@ export const getUsersInfoForDashboard = async () => {
       pendingApproval: 0,
       unassignedAccounts: 0,
     }
-  }
+
+  const userWithTenantId = normalizeUserTenant(user)
 
   let where: Where = {}
   let users: PaginatedDocs<User>
 
   if (user.role === UserRolesEnum.SocialMediaManager) {
-    users = (await payload.find({
+    users = await payload.find({
       collection: 'users',
       where: {
         id: { equals: user.id },
       },
       limit: 0,
       overrideAccess: false,
-      user,
-    })) as PaginatedDocs<User>
+      user: userWithTenantId,
+    })
   } else if (user.role === UserRolesEnum.SuperAdmin) {
-    users = (await payload.find({
+    users = await payload.find({
       collection: 'users',
       limit: 0,
       overrideAccess: false,
-      user,
-    })) as PaginatedDocs<User>
+      user: userWithTenantId,
+    })
   } else {
     const accessibleOrgIds = await getAccessibleOrgIdsForUser(user)
 
@@ -263,40 +321,36 @@ export const getUsersInfoForDashboard = async () => {
       },
     }
 
-    users = (await payload.find({
+    users = await payload.find({
       collection: 'users',
       where,
       limit: 0,
       overrideAccess: false,
-      user,
-    })) as PaginatedDocs<User>
+      user: userWithTenantId,
+    })
   }
 
   const dashboardData: DashboardData = {
     totalAccounts: users.totalDocs,
     accountsByStatus: {
-      active: users.docs.filter((u: User) => u.status === UserStatusEnum.Active).length,
-      inactive: users.docs.filter((u: User) => u.status === UserStatusEnum.Inactive).length,
-      inTransition: users.docs.filter((u: User) => u.status === UserStatusEnum.PendingActivation)
-        .length,
+      active: users.docs.filter((u) => u.status === UserStatusEnum.Active).length,
+      inactive: users.docs.filter((u) => u.status === UserStatusEnum.Inactive).length,
+      inTransition: users.docs.filter((u) => u.status === UserStatusEnum.PendingActivation).length,
     },
     activeUsers: {
       superAdmin: users.docs.filter(
-        (u: User) => u.role === UserRolesEnum.SuperAdmin && u.status === UserStatusEnum.Active,
+        (u) => u.role === UserRolesEnum.SuperAdmin && u.status === UserStatusEnum.Active,
       ).length,
       unitAdmins: users.docs.filter(
-        (u: User) => u.role === UserRolesEnum.UnitAdmin && u.status === UserStatusEnum.Active,
+        (u) => u.role === UserRolesEnum.UnitAdmin && u.status === UserStatusEnum.Active,
       ).length,
       socialMediaManagers: users.docs.filter(
-        (u: User) =>
-          u.role === UserRolesEnum.SocialMediaManager && u.status === UserStatusEnum.Active,
+        (u) => u.role === UserRolesEnum.SocialMediaManager && u.status === UserStatusEnum.Active,
       ).length,
     },
-    pendingApproval: users.docs.filter((u: User) => u.status === UserStatusEnum.PendingActivation)
+    pendingApproval: users.docs.filter((u) => u.status === UserStatusEnum.PendingActivation).length,
+    unassignedAccounts: users.docs.filter((u) => !u.organizations || u.organizations.length === 0)
       .length,
-    unassignedAccounts: users.docs.filter(
-      (u: User) => !u.organizations || u.organizations.length === 0,
-    ).length,
   }
 
   return dashboardData

@@ -1,15 +1,50 @@
 import { JSON_HEADERS } from '@/shared/constants'
 import { UserRolesEnum } from '@/features/users/schemas'
 import { getUsersByOrganizationAndRole, getUsersByRoles } from '@/features/users/plugins/queries'
-import { Endpoint } from 'payload'
+import { Endpoint, Payload } from 'payload'
 import { calcParentPathAndDepth } from '@/features/units/utils/calcPathAndDepth'
 import { EndpointError } from '@/shared'
 import { z } from 'zod'
 import {
-  extractTenantId,
+  extractTenantIdFromProperty,
   validateRelatedEntityTenant,
   validateTenantAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+
+async function calculateUnitPathAndDepth(
+  payload: Payload,
+  unitId: number,
+  parentOrg: number,
+  name: string,
+) {
+  const { parentPath, parentDepth } = await calcParentPathAndDepth({
+    payload,
+    id: unitId,
+    parentOrg,
+    name,
+  })
+
+  const path = parentPath ? `${parentPath}/${unitId}` : `${unitId}`
+  const depth = parentDepth + 1
+
+  return { path, depth }
+}
+
+async function updateAdminOrganizations(payload: Payload, adminId: number, newOrgId: number) {
+  const findAdmin = await payload.findByID({
+    collection: 'users',
+    id: adminId,
+    depth: 0,
+  })
+  const organizations = findAdmin.organizations as number[]
+  await payload.update({
+    collection: 'users',
+    id: adminId,
+    data: {
+      organizations: Array.from(new Set([...organizations, newOrgId])),
+    },
+  })
+}
 
 export const createUnit: Endpoint = {
   path: '/',
@@ -84,14 +119,12 @@ export const createUnit: Endpoint = {
 
       const currentId = createOrganization.id
 
-      const { parentPath, parentDepth } = await calcParentPathAndDepth({
-        payload: req.payload,
-        id: createOrganization.id,
+      const { path, depth } = await calculateUnitPathAndDepth(
+        req.payload,
+        currentId,
         parentOrg,
         name,
-      })
-      const path = parentPath ? `${parentPath}/${currentId}` : `${currentId}`
-      const depth = parentDepth + 1
+      )
 
       await req.payload.update({
         collection: 'organization',
@@ -102,19 +135,7 @@ export const createUnit: Endpoint = {
         },
       })
 
-      const findAdmin = await req.payload.findByID({
-        collection: 'users',
-        id: admin,
-        depth: 0,
-      })
-      const organizations = findAdmin.organizations as number[]
-      await req.payload.update({
-        collection: 'users',
-        id: admin,
-        data: {
-          organizations: [...organizations, createOrganization.id],
-        },
-      })
+      await updateAdminOrganizations(req.payload, admin, createOrganization.id)
 
       return new Response(JSON.stringify(createOrganization), {
         status: 201,
@@ -166,7 +187,7 @@ export const updateUnit: Endpoint = {
         })
       }
 
-      const tenantId = extractTenantId(targetUnit.tenant)
+      const tenantId = extractTenantIdFromProperty(targetUnit.tenant)
 
       const tenantCheck = validateTenantAccess({
         req,
@@ -214,15 +235,7 @@ export const updateUnit: Endpoint = {
         )
       }
 
-      const { parentPath, parentDepth } = await calcParentPathAndDepth({
-        payload: req.payload,
-        id,
-        parentOrg,
-        name,
-      })
-
-      const path = parentPath ? `${parentPath}/${id}` : `${id}`
-      const depth = parentDepth + 1
+      const { path, depth } = await calculateUnitPathAndDepth(req.payload, id, parentOrg, name)
 
       await req.payload.update({
         collection: 'organization',
@@ -235,15 +248,7 @@ export const updateUnit: Endpoint = {
         req,
       })
 
-      const findAdmin = await req.payload.findByID({ collection: 'users', id: admin, depth: 0 })
-      const organizations = findAdmin.organizations as number[]
-      await req.payload.update({
-        collection: 'users',
-        id: admin,
-        data: {
-          organizations: Array.from(new Set([...organizations, id])),
-        },
-      })
+      await updateAdminOrganizations(req.payload, admin, id)
 
       return new Response(JSON.stringify(createUnit), {
         status: 200,
@@ -285,7 +290,7 @@ export const disableUnit: Endpoint = {
         throw new EndpointError('Organization not found', 404)
       }
 
-      const tenantId = extractTenantId(targetUnit.tenant)
+      const tenantId = extractTenantIdFromProperty(targetUnit.tenant)
 
       const tenantCheck = validateTenantAccess({
         req,

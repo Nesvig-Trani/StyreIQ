@@ -2,6 +2,7 @@ import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { Where } from 'payload'
 import { endOfDay, startOfDay } from 'date-fns'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
+import { normalizeUserTenant } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 type WithId = { id: number }
 
@@ -36,7 +37,21 @@ export const getAuditLogs = async ({
 }) => {
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
+  if (!user)
+    return {
+      docs: [],
+      totalDocs: 0,
+      hasNextPage: false,
+      hasPrevPage: false,
+      totalPages: 0,
+      limit: 0,
+      page: 1,
+      pagingCounter: 0,
+      prevPage: null,
+      nextPage: null,
+    }
 
+  const userWithTenantId = normalizeUserTenant(user)
   const createdAt: Record<string, string | Date> = {}
   if (from) {
     createdAt.greater_than_equal = startOfDay(new Date(from))
@@ -57,7 +72,7 @@ export const getAuditLogs = async ({
       ...(Object.keys(createdAt).length > 0 && { createdAt }),
     },
     overrideAccess: false,
-    user,
+    user: userWithTenantId,
   })
 
   const filterByEntityAndId = (entity: EntityType, id: number, docs: typeof baseLogs.docs) =>
@@ -99,6 +114,10 @@ export const getSocialMediaAuditLogs = async ({
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
 
+  if (!user) return { docs: [] }
+
+  const userWithTenantId = normalizeUserTenant(user)
+
   const createdAt: Record<string, string | Date> = {}
 
   const where: Where = {
@@ -114,7 +133,7 @@ export const getSocialMediaAuditLogs = async ({
     depth: 1,
     where,
     overrideAccess: false,
-    user,
+    user: userWithTenantId,
   })
 
   return auditLogs

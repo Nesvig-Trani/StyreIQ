@@ -1,5 +1,6 @@
 'use server'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
+import { normalizeUserTenant } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { Where } from 'payload'
 
@@ -7,6 +8,21 @@ export const getAllUnits = async () => {
   try {
     const { payload } = await getPayloadContext()
     const { user } = await getAuthUser()
+
+    if (!user) {
+      return {
+        docs: [],
+        hasNextPage: false,
+        hasPrevPage: false,
+        totalDocs: 0,
+        totalPages: 0,
+        limit: 0,
+        pagingCounter: 0,
+      }
+    }
+
+    const userWithTenantId = normalizeUserTenant(user)
+
     const organizations = await payload.find({
       collection: 'organization',
       depth: 1,
@@ -18,22 +34,11 @@ export const getAllUnits = async () => {
         path: true,
       },
       where: {
-        or: [
-          {
-            disabled: {
-              equals: false,
-            },
-          },
-          {
-            disabled: {
-              equals: null,
-            },
-          },
-        ],
+        or: [{ disabled: { equals: false } }, { disabled: { equals: null } }],
       },
       limit: 0,
       overrideAccess: false,
-      user,
+      user: userWithTenantId,
     })
     return organizations
   } catch {
@@ -53,10 +58,6 @@ export const getUnitsWithFilter = async ({ status, type }: { status?: string; ty
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
 
-  const disabledFilter = {
-    or: [{ disabled: { equals: false } }, { disabled: { equals: null } }],
-  }
-
   if (!user) {
     return {
       docs: [],
@@ -69,13 +70,19 @@ export const getUnitsWithFilter = async ({ status, type }: { status?: string; ty
     }
   }
 
+  const userWithTenantId = normalizeUserTenant(user)
+
+  const disabledFilter = {
+    or: [{ disabled: { equals: false } }, { disabled: { equals: null } }],
+  }
+
   if (user?.role === 'super_admin') {
     // If the user is a super admin, return all organizations with the specified filters
     return payload.find({
       collection: 'organization',
       depth: 1,
       overrideAccess: false,
-      user,
+      user: userWithTenantId,
       limit: 0,
       sort: ['createdAt'],
       where: {
@@ -134,7 +141,7 @@ export const getUnitsWithFilter = async ({ status, type }: { status?: string; ty
     collection: 'organization',
     depth: 1,
     overrideAccess: false,
-    user,
+    user: userWithTenantId,
     limit: 0,
     sort: ['createdAt'],
     where,

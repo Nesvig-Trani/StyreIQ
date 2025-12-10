@@ -1,5 +1,6 @@
 import { UserRolesEnum } from '@/features/users'
 import { getAccessibleOrgIdsForUserWithPayload } from '@/shared'
+import { Tenant } from '@/types/payload-types'
 import { Access, CollectionSlug, PayloadRequest, User, Where } from 'payload'
 
 interface HasId {
@@ -27,16 +28,38 @@ function hasId(value: unknown): value is HasId {
   )
 }
 
-export function extractTenantId(tenant: number | HasId | null | undefined): number | null {
-  if (!tenant) return null
-  if (hasId(tenant)) return tenant.id
-  return typeof tenant === 'number' ? tenant : null
+export function normalizeUserTenant(user: User): User {
+  const tenantId = extractTenantId(user)
+  return { ...user, tenant: tenantId } as User
 }
 
-export function getTenantWhereClause(user: User): Where {
-  return {
-    tenant: { equals: user.tenant },
+export function extractTenantId(user: User | null | undefined): number | null {
+  if (!user || !user.tenant) return null
+
+  const tenantId =
+    typeof user.tenant === 'object' && user.tenant !== null ? user.tenant.id : user.tenant
+
+  if (!tenantId || tenantId === 'NaN' || isNaN(Number(tenantId))) {
+    return null
   }
+
+  return Number(tenantId)
+}
+
+export function extractTenantIdFromProperty(
+  tenant: number | Tenant | null | undefined,
+): number | null {
+  if (!tenant) return null
+
+  if (typeof tenant === 'number') {
+    return tenant
+  }
+
+  if (typeof tenant === 'object' && tenant !== null && 'id' in tenant) {
+    return tenant.id
+  }
+
+  return null
 }
 
 export function validateTenantAccess({
@@ -46,7 +69,7 @@ export function validateTenantAccess({
 }: ValidateTenantOptions): {
   valid: boolean
   error?: { message: string; status: number }
-  userTenant?: string | number
+  userTenant?: number | null
 } {
   if (req.user?.role === UserRolesEnum.SuperAdmin) {
     return { valid: true }
@@ -62,7 +85,7 @@ export function validateTenantAccess({
     }
   }
 
-  const userTenantId = extractTenantId(req.user.tenant)
+  const userTenantId = extractTenantId(req.user)
   const targetId = targetTenantId
 
   if (targetId && targetId !== userTenantId) {
@@ -77,7 +100,7 @@ export function validateTenantAccess({
 
   return {
     valid: true,
-    userTenant: userTenantId!,
+    userTenant: userTenantId,
   }
 }
 
@@ -112,8 +135,8 @@ export async function validateRelatedEntityTenant({
 
   if ('tenant' in entity) {
     const entityTenant = entity.tenant as number | HasId | null | undefined
-    const entityTenantId = extractTenantId(entityTenant)
-    const userTenantId = extractTenantId(req.user?.tenant)
+    const entityTenantId = hasId(entityTenant) ? entityTenant.id : entityTenant
+    const userTenantId = extractTenantId(req.user)
 
     if (entityTenantId !== userTenantId) {
       return {
@@ -133,31 +156,35 @@ export const tenantBasedReadAccess: Access = async ({ req }): Promise<boolean | 
   const { user } = req
   if (!user) return false
 
-  const { role, tenant } = user
+  const { role } = user
 
   if (role === UserRolesEnum.SuperAdmin) return true
-  if (!tenant) return false
 
-  return { tenant: { equals: tenant } }
+  const tenantId = extractTenantId(user)
+  if (!tenantId) return false
+
+  return { tenant: { equals: tenantId } }
 }
 
 export const organizationBasedReadAccess: Access = async ({ req }): Promise<boolean | Where> => {
   const { user, payload } = req
   if (!user) return false
 
-  const { role, tenant } = user
+  const { role } = user
 
   if (role === UserRolesEnum.SuperAdmin) return true
-  if (!tenant) return false
+
+  const tenantId = extractTenantId(user)
+  if (!tenantId) return false
 
   switch (role) {
     case UserRolesEnum.CentralAdmin:
-      return { tenant: { equals: tenant } }
+      return { tenant: { equals: tenantId } }
 
     case UserRolesEnum.UnitAdmin: {
       const accessibleOrgIds = await getAccessibleOrgIdsForUserWithPayload(user, payload)
       return {
-        and: [{ tenant: { equals: tenant } }, { organizations: { in: accessibleOrgIds } }],
+        and: [{ tenant: { equals: tenantId } }, { organizations: { in: accessibleOrgIds } }],
       }
     }
 
@@ -170,19 +197,21 @@ export const socialMediaManagerReadAccess: Access = async ({ req }): Promise<boo
   const { user, payload } = req
   if (!user) return false
 
-  const { role, tenant, id } = user
+  const { role, id } = user
 
   if (role === UserRolesEnum.SuperAdmin) return true
-  if (!tenant) return false
+
+  const tenantId = extractTenantId(user)
+  if (!tenantId) return false
 
   switch (role) {
     case UserRolesEnum.CentralAdmin:
-      return { tenant: { equals: tenant } }
+      return { tenant: { equals: tenantId } }
 
     case UserRolesEnum.UnitAdmin: {
       const accessibleOrgIds = await getAccessibleOrgIdsForUserWithPayload(user, payload)
       return {
-        and: [{ tenant: { equals: tenant } }, { organizations: { in: accessibleOrgIds } }],
+        and: [{ tenant: { equals: tenantId } }, { organizations: { in: accessibleOrgIds } }],
       }
     }
 
@@ -190,7 +219,7 @@ export const socialMediaManagerReadAccess: Access = async ({ req }): Promise<boo
       const accessibleOrgIds = await getAccessibleOrgIdsForUserWithPayload(user, payload)
       return {
         and: [
-          { tenant: { equals: tenant } },
+          { tenant: { equals: tenantId } },
           {
             or: [{ affectedEntity: { equals: id } }, { organizations: { in: accessibleOrgIds } }],
           },
@@ -238,12 +267,14 @@ export const tenantValidatedCreateAccess: Access = async ({ req, data }) => {
   const { user } = req
   if (!user) return false
 
-  const { role, tenant } = user
+  const { role } = user
 
   if (role === UserRolesEnum.SuperAdmin) return true
-  if (!tenant) return false
 
-  if (data?.tenant && data.tenant !== tenant) return false
+  const tenantId = extractTenantId(user)
+  if (!tenantId) return false
+
+  if (data?.tenant && data.tenant !== tenantId) return false
 
   switch (role) {
     case UserRolesEnum.CentralAdmin:
@@ -256,12 +287,14 @@ export const tenantValidatedCreateAccess: Access = async ({ req, data }) => {
 export const tenantCreateAccess: Access = ({ req: { user }, data }) => {
   if (!user) return false
 
-  const { role, tenant } = user
+  const { role } = user
 
   if (role === UserRolesEnum.SuperAdmin) return true
-  if (!tenant) return false
 
-  if (data?.tenant && data.tenant !== tenant) return false
+  const tenantId = extractTenantId(user)
+  if (!tenantId) return false
+
+  if (data?.tenant && data.tenant !== tenantId) return false
 
   return true
 }
@@ -306,9 +339,12 @@ export const tenantValidatedUpdateAccess = (collectionSlug: CollectionSlug): Acc
     const { user, payload } = req
     if (!user || !id || typeof id !== 'string') return false
 
-    const { role, tenant } = user
+    const { role } = user
 
     if (role === UserRolesEnum.SuperAdmin) return true
+
+    const tenantId = extractTenantId(user)
+    if (!tenantId) return false
 
     try {
       const targetDoc = await payload.findByID({
@@ -318,8 +354,13 @@ export const tenantValidatedUpdateAccess = (collectionSlug: CollectionSlug): Acc
 
       if (!targetDoc) return false
 
-      if ('tenant' in targetDoc && targetDoc.tenant !== tenant) return false
-      if (data?.tenant && data.tenant !== tenant) return false
+      const targetTenantId =
+        'tenant' in targetDoc
+          ? extractTenantId({ tenant: targetDoc.tenant } as unknown as User)
+          : null
+
+      if (targetTenantId && targetTenantId !== tenantId) return false
+      if (data?.tenant && data.tenant !== tenantId) return false
 
       switch (role) {
         case UserRolesEnum.CentralAdmin:
@@ -369,9 +410,12 @@ export const tenantValidatedDeleteAccess = (collectionSlug: CollectionSlug): Acc
     const { user, payload } = req
     if (!user || !id || typeof id !== 'string') return false
 
-    const { role, tenant } = user
+    const { role } = user
 
     if (role === UserRolesEnum.SuperAdmin) return true
+
+    const tenantId = extractTenantId(user)
+    if (!tenantId) return false
 
     try {
       const targetDoc = await payload.findByID({
@@ -381,7 +425,12 @@ export const tenantValidatedDeleteAccess = (collectionSlug: CollectionSlug): Acc
 
       if (!targetDoc) return false
 
-      if ('tenant' in targetDoc && targetDoc.tenant !== tenant) return false
+      const targetTenantId =
+        'tenant' in targetDoc
+          ? extractTenantId({ tenant: targetDoc.tenant } as unknown as User)
+          : null
+
+      if (targetTenantId && targetTenantId !== tenantId) return false
 
       switch (role) {
         case UserRolesEnum.CentralAdmin:
