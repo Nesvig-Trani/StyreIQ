@@ -34,12 +34,6 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
       role: undefined,
       status: undefined,
       organizations: [],
-      isEnabledTwoFactor: false,
-      isInUseSecurePassword: false,
-      isCompletedTrainingAccessibility: false,
-      isCompletedTrainingRisk: false,
-      isCompletedTrainingBrand: false,
-      hasKnowledgeStandards: false,
     },
   })
 

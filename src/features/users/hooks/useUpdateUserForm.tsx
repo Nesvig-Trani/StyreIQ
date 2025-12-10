@@ -79,65 +79,6 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
           type: 'date',
           size: 'half',
         },
-        {
-          name: 'isEnabledTwoFactor',
-          label: '',
-          type: 'separator',
-          size: 'full',
-        },
-        {
-          label: 'Is two-factor authentication enabled on your accounts where available?',
-          name: 'isEnabledTwoFactor',
-          type: 'checkbox',
-          checkboxMode: 'boolean',
-          size: 'half',
-        },
-
-        {
-          label:
-            'Are you using secure passwords for both your social media accounts and the profiles you use to access them?',
-          name: 'isInUseSecurePassword',
-          type: 'checkbox',
-          checkboxMode: 'boolean',
-          size: 'half',
-        },
-        {
-          label: 'Have you completed accessibility training?',
-          name: 'isCompletedTrainingAccessibility',
-          type: 'checkbox',
-          checkboxMode: 'boolean',
-          size: 'half',
-        },
-        {
-          label: 'Have you completed risk mitigation training?',
-          name: 'isCompletedTrainingRisk',
-          type: 'checkbox',
-          checkboxMode: 'boolean',
-          size: 'half',
-        },
-        // TODO: disable some user questions
-        // {
-        //   label:
-        //     'Have you reviewed and acknowledged the organization’s brand and identity guidelines?',
-        //   name: 'isCompletedTrainingBrand',
-        //   type: 'checkbox',
-        //   checkboxMode: 'boolean',
-        //   size: 'half',
-        // },
-        // {
-        //   label: 'Do you have acknowledgment of naming and branding standards?',
-        //   name: 'hasKnowledgeStandards',
-        //   type: 'checkbox',
-        //   checkboxMode: 'boolean',
-        //   size: 'half',
-        // },
-        // {
-        //   name: 'offboardingCompleted',
-        //   label: 'Offboarding completed?',
-        //   type: 'checkbox',
-        //   checkboxMode: 'boolean',
-        //   size: 'half',
-        // },
       ],
       onSubmit: async (submitData) => {
         try {
@@ -173,14 +114,7 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
         role: data.role as UserRolesEnum,
         status: data.status as UserStatusEnum,
         organizations: data.organizations?.map((org) => org.toString()),
-        isEnabledTwoFactor: data.isEnabledTwoFactor || false,
-        isInUseSecurePassword: data.isInUseSecurePassword || false,
-        isCompletedTrainingAccessibility: data.isCompletedTrainingAccessibility || false,
-        isCompletedTrainingRisk: data.isCompletedTrainingRisk || false,
-        isCompletedTrainingBrand: data.isCompletedTrainingBrand || false,
-        hasKnowledgeStandards: data.hasKnowledgeStandards || false,
         passwordUpdatedAt: data.passwordUpdatedAt ? new Date(data.passwordUpdatedAt) : undefined,
-        offboardingCompleted: false,
       },
     },
   )

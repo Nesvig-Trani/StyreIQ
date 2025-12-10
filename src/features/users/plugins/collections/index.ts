@@ -16,6 +16,7 @@ import { getAccessibleOrgIdsForUser, getAccessibleOrgIdsForUserWithPayload } fro
 import { injectTenantHook } from '@/features/tenants/hooks/inject-tenant'
 
 import { ComplianceTaskGenerator } from '@/features/compliance-tasks/services/compliance-task-generator'
+import { extractTenantId } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -28,19 +29,20 @@ export const Users: CollectionConfig = {
       const { user, payload } = req
       if (!user) return false
 
-      const { role, tenant, id } = user
+      const { role, id } = user
 
       if (role === UserRolesEnum.SuperAdmin) return true
-      if (!tenant) return false
+      const tenantId = extractTenantId(user)
+      if (!tenantId) return false
 
       switch (role) {
         case UserRolesEnum.CentralAdmin:
-          return { tenant: { equals: tenant } }
+          return { tenant: { equals: tenantId } }
 
         case UserRolesEnum.UnitAdmin: {
           const accessibleOrgIds = await getAccessibleOrgIdsForUserWithPayload(user, payload)
           return {
-            and: [{ tenant: { equals: tenant } }, { organizations: { in: accessibleOrgIds } }],
+            and: [{ tenant: { equals: tenantId } }, { organizations: { in: accessibleOrgIds } }],
           }
         }
 
@@ -55,7 +57,7 @@ export const Users: CollectionConfig = {
     create: async ({ req: { user }, data }) => {
       if (!user) return false
 
-      const { role, tenant } = user
+      const { role } = user
       const access = new AccessControl(user)
 
       if (role === UserRolesEnum.SuperAdmin) {
@@ -63,9 +65,10 @@ export const Users: CollectionConfig = {
       }
 
       if (!access.can('create', 'USERS')) return false
-      if (!tenant) return false
+      const tenantId = extractTenantId(user)
+      if (!tenantId) return false
 
-      if (data?.tenant && data.tenant !== tenant) return false
+      if (data?.tenant && data.tenant !== tenantId) return false
 
       switch (role) {
         case UserRolesEnum.CentralAdmin:
@@ -92,7 +95,7 @@ export const Users: CollectionConfig = {
     update: async ({ req: { user, payload }, id, data }) => {
       if (!user || !id || typeof id !== 'string') return false
 
-      const { role, tenant } = user
+      const { role } = user
       const access = new AccessControl(user)
 
       if (role === UserRolesEnum.SuperAdmin) {
@@ -100,6 +103,7 @@ export const Users: CollectionConfig = {
       }
 
       if (!access.can('update', 'USERS')) return false
+      const tenantId = extractTenantId(user)
 
       try {
         const targetUser = await payload.findByID({
@@ -109,8 +113,9 @@ export const Users: CollectionConfig = {
 
         if (!targetUser) return false
 
-        if (targetUser.tenant !== tenant) return false
-        if (data?.tenant && data.tenant !== tenant) return false
+        const targetTenantId = extractTenantId({ tenant: targetUser.tenant } as typeof user)
+        if (targetTenantId !== tenantId) return false
+        if (data?.tenant && data.tenant !== tenantId) return false
 
         switch (role) {
           case UserRolesEnum.CentralAdmin:
@@ -142,7 +147,7 @@ export const Users: CollectionConfig = {
     delete: async ({ req: { user, payload }, id }) => {
       if (!user || !id || typeof id !== 'string') return false
 
-      const { role, tenant } = user
+      const { role } = user
       const access = new AccessControl(user)
 
       if (!access.can('delete', 'USERS')) return false
@@ -153,6 +158,8 @@ export const Users: CollectionConfig = {
 
         case UserRolesEnum.CentralAdmin: {
           try {
+            const tenantId = extractTenantId(user)
+
             const targetUser = await payload.findByID({
               collection: 'users',
               id: id as string,
@@ -160,7 +167,8 @@ export const Users: CollectionConfig = {
 
             if (!targetUser) return false
 
-            return targetUser.tenant === tenant
+            const targetTenantId = extractTenantId({ tenant: targetUser.tenant } as typeof user)
+            return targetTenantId === tenantId
           } catch {
             return false
           }
@@ -282,39 +290,40 @@ export const Users: CollectionConfig = {
     afterChange: [
       async ({ doc, req, operation }) => {
         if (operation === 'create') {
-          const generator = new ComplianceTaskGenerator(req.payload)
-          await generator.generateTasksForNewUser(doc)
+          setTimeout(async () => {
+            try {
+              const generator = new ComplianceTaskGenerator(req.payload)
+              await generator.generateTasksForNewUser(doc)
 
-          await req.payload.create({
-            collection: 'audit_log',
-            data: {
-              user: req.user?.id || doc.id,
-              action: 'compliance_task_generated',
-              entity: 'users',
-              metadata: {
-                userId: doc.id,
-                tasksGenerated: [
-                  'PASSWORD_SETUP',
-                  'POLICY_ACKNOWLEDGMENT',
-                  'TRAINING_COMPLETION',
-                  'USER_ROLL_CALL',
-                ],
-              },
-              tenant: doc.tenant,
-            },
-          })
+              await req.payload.create({
+                collection: 'audit_log',
+                data: {
+                  user: req.user?.id || doc.id,
+                  action: 'compliance_task_generated',
+                  entity: 'users',
+                  metadata: {
+                    userId: doc.id,
+                    tasksGenerated: [
+                      'PASSWORD_SETUP',
+                      'POLICY_ACKNOWLEDGMENT',
+                      'TRAINING_COMPLETION',
+                      'USER_ROLL_CALL',
+                    ],
+                  },
+                  tenant: doc.tenant,
+                },
+              })
+            } catch (error) {
+              console.error('Error generating compliance tasks:', error)
+            }
+          }, 1000)
         }
       },
     ],
     beforeChange: [
-      async ({ data, req, operation }) => {
+      async ({ data, operation, originalDoc }) => {
         if (operation === 'update' && data.tenant) {
-          const existing = await req.payload.findByID({
-            collection: 'users',
-            id: data.id,
-          })
-
-          if (existing && existing.tenant !== data.tenant) {
+          if (originalDoc && originalDoc.tenant !== data.tenant) {
             throw new Error('Cannot change tenant assignment after user creation')
           }
         }

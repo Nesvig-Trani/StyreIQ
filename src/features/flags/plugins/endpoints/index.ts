@@ -18,7 +18,7 @@ import { z } from 'zod'
 import { SocialMediasCollectionSlug } from '@/features/social-medias'
 import { UserRolesEnum } from '@/features/users'
 import {
-  extractTenantId,
+  extractTenantIdFromProperty,
   validateRelatedEntityTenant,
   validateTenantAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
@@ -38,6 +38,9 @@ export const createFlag: Endpoint = {
       }
       const data = await req.json()
       const dataParsed = createFlagSchema.parse(data)
+      if (!data.tenant) {
+        data.tenant = user.tenant ? extractTenantIdFromProperty(user.tenant) : null
+      }
 
       const tenantCheck = validateTenantAccess({
         req,
@@ -47,10 +50,6 @@ export const createFlag: Endpoint = {
 
       if (!tenantCheck.valid) {
         throw new EndpointError(tenantCheck.error!.message, tenantCheck.error!.status)
-      }
-
-      if (!data.tenant) {
-        data.tenant = tenantCheck.userTenant
       }
 
       const entityCheck = await validateRelatedEntityTenant({
@@ -163,9 +162,6 @@ export const markAsResolved: Endpoint = {
       }
 
       const flagId = req.routeParams?.id
-      if (!flagId) {
-        throw new EndpointError('No flag id', 404)
-      }
 
       const flag = await req.payload.findByID({
         collection: FlagsCollectionSlug,
@@ -173,10 +169,10 @@ export const markAsResolved: Endpoint = {
       })
 
       if (!flag) {
-        throw new EndpointError('Flag not found', 404)
+        throw new EndpointError('No flag id', 404)
       }
 
-      const tenantId = extractTenantId(flag.tenant)
+      const tenantId = extractTenantIdFromProperty(flag.tenant)
 
       const tenantCheck = validateTenantAccess({
         req,
@@ -186,10 +182,6 @@ export const markAsResolved: Endpoint = {
 
       if (!tenantCheck.valid) {
         throw new EndpointError(tenantCheck.error!.message, tenantCheck.error!.status)
-      }
-
-      if (!flagId) {
-        throw new EndpointError('No flag id', 404)
       }
       const updatedFlag = await req.payload.update({
         collection: FlagsCollectionSlug,
@@ -266,10 +258,10 @@ export const createComment: Endpoint = {
       })
 
       if (!flag) {
-        throw new EndpointError('Flag not found', 404)
+        throw new EndpointError('No flag id', 404)
       }
 
-      const tenantId = extractTenantId(flag.tenant)
+      const tenantId = extractTenantIdFromProperty(flag.tenant)
 
       const tenantCheck = validateTenantAccess({
         req,

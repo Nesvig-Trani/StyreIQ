@@ -1,5 +1,10 @@
-import { UnitTypeEnum } from '@/features/units'
 import { CollectionConfig } from 'payload'
+import {
+  createTenant,
+  getAggregateMetrics,
+  getTenantMetrics,
+  updateGovernanceSettings,
+} from '../endpoints'
 
 export const Tenants: CollectionConfig = {
   slug: 'tenants',
@@ -176,34 +181,6 @@ export const Tenants: CollectionConfig = {
       ],
     },
   ],
-  hooks: {
-    afterChange: [
-      async ({ doc, req, operation }) => {
-        if (operation === 'create' && !doc.primaryUnit) {
-          const { payload } = req
-
-          const primaryUnit = await payload.create({
-            collection: 'organization',
-            data: {
-              name: `${doc.name} - Primary Unit`,
-              tenant: doc.id,
-              isPrimaryUnit: true,
-              parentOrg: null,
-              status: 'active',
-              type: UnitTypeEnum.DEPARTMENT,
-            },
-          })
-
-          await payload.update({
-            collection: 'tenants',
-            id: doc.id,
-            data: {
-              primaryUnit: primaryUnit.id,
-            },
-          })
-        }
-      },
-    ],
-  },
   timestamps: true,
+  endpoints: [getAggregateMetrics, updateGovernanceSettings, getTenantMetrics, createTenant],
 }

@@ -50,14 +50,6 @@ export const userBaseSchema = z.object({
       return undefined
     }, z.date())
     .optional(),
-  isEnabledTwoFactor: z.boolean().optional(),
-  isInUseSecurePassword: z.boolean().optional(),
-  isAcceptedPolicies: z.boolean().optional(),
-  isCompletedTrainingAccessibility: z.boolean().optional(),
-  isCompletedTrainingRisk: z.boolean().optional(),
-  isCompletedTrainingBrand: z.boolean().optional(),
-  hasKnowledgeStandards: z.boolean().optional(),
-  offboardingCompleted: z.boolean().optional(),
 })
 
 export const createUserFormSchema = userBaseSchema.superRefine((data, ctx) => {

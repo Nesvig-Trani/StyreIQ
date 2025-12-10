@@ -1,21 +1,19 @@
+import { serverAuthGuard } from '@/features/auth/hooks/serverAuthGuard'
+import { getAuthUser } from '@/features/auth/utils/getAuthUser'
+import { UserRolesEnum } from '@/features/users'
+
+import { Button } from '@/shared/components/ui/button'
+import Link from 'next/link'
+import { Users, AlertTriangle, ShieldAlert, UserCheck, CheckCircle, XCircle } from 'lucide-react'
+import { ActivityIcon } from 'lucide-react'
 import { getUsersInfoForDashboard } from '@/features/users/plugins/queries'
 import { getFlagInfoForDashboard } from '@/features/flags/plugins/queries'
-import {
-  Users,
-  UserCheck,
-  AlertTriangle,
-  ShieldAlert,
-  XCircle,
-  CheckCircle,
-  ActivityIcon,
-} from 'lucide-react'
-import { Button } from '@/shared'
-import Link from 'next/link'
-import { HeaderMetricCard } from '@/features/dashboard/components/header-metric-card'
-
-import { StatusCard } from '@/features/dashboard/components/status-card'
-import { DashboardRiskSection } from '../../../features/dashboard/components/dashboard-client-wrapper'
 import { getSocialMediaAccountsCount } from '@/features/social-medias/plugins/queries'
+import { AggregateMetricsView } from '@/features/dashboard/components/aggregate-metrics'
+import { CentralAdminDashboard } from '@/features/dashboard/components/central-admin-dashboard'
+import { HeaderMetricCard } from '@/features/dashboard/components/header-metric-card'
+import { StatusCard } from '@/features/dashboard/components/status-card'
+import { DashboardRiskSection } from '@/features/dashboard/components/dashboard-client-wrapper'
 
 const getRiskLevel = (value: number, thresholds: { low: number; medium: number }) => {
   if (value >= thresholds.medium) return 'high'
@@ -24,6 +22,12 @@ const getRiskLevel = (value: number, thresholds: { low: number; medium: number }
 }
 
 export default async function DashboardPage() {
+  await serverAuthGuard()
+  const { user } = await getAuthUser()
+
+  const tenant = user && typeof user.tenant === 'object' ? user.tenant : null
+  const tenantId = tenant?.id || (user && (user.tenant as number))
+
   const data = await getUsersInfoForDashboard()
   const flags = await getFlagInfoForDashboard()
   const socialMediaAccounts = await getSocialMediaAccountsCount()
@@ -61,6 +65,10 @@ export default async function DashboardPage() {
       </div>
 
       <main className="mx-auto px-0 py-0">
+        {user && user.role === UserRolesEnum.SuperAdmin && <AggregateMetricsView />}
+        {user && user.role === UserRolesEnum.CentralAdmin && user.tenant && (
+          <CentralAdminDashboard tenantId={tenantId} />
+        )}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
           <HeaderMetricCard
             title="Total Accounts"

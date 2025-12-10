@@ -31,6 +31,15 @@ export const mainNavigation: NavItem[] = [
     },
   },
   {
+    title: 'Tenants',
+    url: '/dashboard/tenants',
+    icon: Building2Icon,
+    permission: {
+      resource: 'TENANTS',
+      action: 'read',
+    },
+  },
+  {
     title: 'Units',
     url: '/dashboard/units',
     icon: Building2Icon,

@@ -13,13 +13,84 @@ import {
 import { SocialMediasCollectionSlug } from '../collections'
 import { UserRolesEnum } from '@/features/users/schemas'
 import { JSON_HEADERS } from '@/shared/constants'
-import { Organization } from '@/types/payload-types'
+import { Organization, User } from '@/types/payload-types'
 import { getUserById } from '@/features/users'
 import {
-  extractTenantId,
+  extractTenantIdFromProperty,
   validateRelatedEntityTenant,
   validateTenantAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+
+async function validateSocialMediaCreationPermissions(user: User | null) {
+  const rolesWithGrant = [UserRolesEnum.SuperAdmin, UserRolesEnum.UnitAdmin]
+  if (!user || !user.role || !rolesWithGrant.includes(user.role as UserRolesEnum)) {
+    throw new EndpointError("You don't have permission to perform this action.", 401)
+  }
+}
+
+async function validateAdminsDifferent(primaryAdminId: string, backupAdminId?: string) {
+  if (primaryAdminId === backupAdminId) {
+    throw new EndpointError(
+      "Fields 'Administrator' and 'Backup Administrator' must be differents.",
+      409,
+    )
+  }
+}
+
+async function validateAdmin(adminId: number, errorMessage: string) {
+  const user = await getUserById({ id: adminId })
+
+  const allowedRoles = [UserRolesEnum.UnitAdmin, UserRolesEnum.SocialMediaManager]
+
+  if (!user.role || !allowedRoles.includes(user.role as UserRolesEnum)) {
+    throw new EndpointError(errorMessage, 409)
+  }
+
+  return user
+}
+
+async function validateSocialMediaManagers(req: PayloadRequest, managerIds: string[]) {
+  await Promise.all(
+    managerIds.map(async (managerId) => {
+      const managerCheck = await validateRelatedEntityTenant({
+        req,
+        collection: 'users',
+        entityId: managerId,
+        entityName: 'Social Media Manager',
+      })
+
+      if (!managerCheck.valid) {
+        throw new EndpointError(managerCheck.error!.message, managerCheck.error!.status)
+      }
+    }),
+  )
+}
+
+async function validateUnitAdminOrganization(
+  req: PayloadRequest,
+  user: User | null,
+  organizationId: string,
+) {
+  const organizations = await req.payload.find({
+    collection: 'organization',
+    depth: 0,
+    select: {
+      id: true,
+      name: true,
+      parentOrg: true,
+      depth: true,
+      path: true,
+    },
+    limit: 0,
+    overrideAccess: false,
+    user,
+  })
+
+  const orgIds = organizations.docs.map((organization: Organization) => organization.id)
+  if (!orgIds.includes(Number(organizationId))) {
+    throw new EndpointError('Unit selected is not valid.', 409)
+  }
+}
 
 /**
  * Creates a social media record.
@@ -34,15 +105,13 @@ export const createSocialMedia: Endpoint = {
       }
 
       const user = req.user
+      await validateSocialMediaCreationPermissions(user)
 
-      // Validates the role which can create social medias.
-      const rolesWithGrant = [UserRolesEnum.SuperAdmin, UserRolesEnum.UnitAdmin]
-      if (!user || !user.role || !rolesWithGrant.includes(user.role as UserRolesEnum)) {
-        throw new EndpointError("You don't have permission to perform this action.", 401)
-      }
       const data = await req.json()
       const dataParsed = createSocialMediaFormSchema.parse(data)
-      // Validates if the users are differents.
+      if (!data.tenant && user && user.tenant) {
+        data.tenant = extractTenantIdFromProperty(user.tenant)
+      }
 
       const tenantCheck = validateTenantAccess({
         req,
@@ -52,10 +121,6 @@ export const createSocialMedia: Endpoint = {
 
       if (!tenantCheck.valid) {
         throw new EndpointError(tenantCheck.error!.message, tenantCheck.error!.status)
-      }
-
-      if (!data.tenant) {
-        data.tenant = tenantCheck.userTenant
       }
 
       const orgCheck = await validateRelatedEntityTenant({
@@ -70,69 +135,23 @@ export const createSocialMedia: Endpoint = {
       }
 
       if (Array.isArray(dataParsed.socialMediaManagers)) {
-        for (const managerId of dataParsed.socialMediaManagers) {
-          const managerCheck = await validateRelatedEntityTenant({
-            req,
-            collection: 'users',
-            entityId: managerId,
-            entityName: 'Social Media Manager',
-          })
-
-          if (!managerCheck.valid) {
-            throw new EndpointError(managerCheck.error!.message, managerCheck.error!.status)
-          }
-        }
+        await validateSocialMediaManagers(req, dataParsed.socialMediaManagers)
       }
 
-      if (dataParsed.primaryAdmin === dataParsed.backupAdmin) {
-        throw new EndpointError(
-          "Fields 'Administrator' and 'Backup Administrator' must be differents.",
-          409,
-        )
+      await validateAdminsDifferent(dataParsed.primaryAdmin, dataParsed.backupAdmin)
+
+      if (UserRolesEnum.UnitAdmin === (user && (user.role as UserRolesEnum))) {
+        await validateUnitAdminOrganization(req, user, dataParsed.organization)
       }
 
-      if (UserRolesEnum.UnitAdmin === (user.role as UserRolesEnum)) {
-        const organizations = await req.payload.find({
-          collection: 'organization',
-          depth: 0,
-          select: {
-            id: true,
-            name: true,
-            parentOrg: true,
-            depth: true,
-            path: true,
-          },
-          limit: 0,
-          overrideAccess: false,
-          user,
-        })
-
-        const orgIds = organizations.docs.map((organization: Organization) => organization.id)
-        // Validates if the organizations selected is valid.
-        if (!orgIds.includes(Number(dataParsed.organization))) {
-          throw new EndpointError('Unit selected is not valid.', 409)
-        }
-      }
-
-      const selectedPrimaryAdmin = await getUserById({ id: Number(dataParsed.primaryAdmin) })
-      if (
-        !selectedPrimaryAdmin.role ||
-        ![UserRolesEnum.UnitAdmin, UserRolesEnum.SocialMediaManager].includes(
-          selectedPrimaryAdmin.role as UserRolesEnum,
-        )
-      ) {
-        throw new EndpointError('Administrator user selected is not valid.', 409)
-      }
-
-      const selectedBackupAdmin = await getUserById({ id: Number(dataParsed.backupAdmin) })
-      if (
-        !selectedBackupAdmin.role ||
-        ![UserRolesEnum.UnitAdmin, UserRolesEnum.SocialMediaManager].includes(
-          selectedBackupAdmin.role as UserRolesEnum,
-        )
-      ) {
-        throw new EndpointError('Backup administrator user selected is not valid.', 409)
-      }
+      const selectedPrimaryAdmin = await validateAdmin(
+        Number(dataParsed.primaryAdmin),
+        'Administrator user selected is not valid.',
+      )
+      const selectedBackupAdmin = await validateAdmin(
+        Number(dataParsed.backupAdmin),
+        'Backup administrator user selected is not valid.',
+      )
 
       const socialMedia = await req.payload.create({
         collection: SocialMediasCollectionSlug,
@@ -215,11 +234,7 @@ export const patchSocialMedia: Endpoint = {
         id: socialMediaId,
       })
 
-      if (!targetSocialMedia) {
-        throw new EndpointError('Social media not found', 404)
-      }
-
-      const tenantId = extractTenantId(targetSocialMedia.tenant)
+      const tenantId = extractTenantIdFromProperty(targetSocialMedia.tenant)
 
       const tenantCheck = validateTenantAccess({
         req,
@@ -296,11 +311,7 @@ export const updateSocialMediaStatus: Endpoint = {
         id: socialMediaId,
       })
 
-      if (!targetSocialMedia) {
-        throw new EndpointError('Social media not found', 404)
-      }
-
-      const tenantId = extractTenantId(targetSocialMedia.tenant)
+      const tenantId = extractTenantIdFromProperty(targetSocialMedia.tenant)
 
       const tenantCheck = validateTenantAccess({
         req,

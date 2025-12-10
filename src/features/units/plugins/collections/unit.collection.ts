@@ -5,6 +5,7 @@ import { UserRolesEnum } from '@/features/users'
 import { getAccessibleOrgIdsForUser, getAccessibleOrgIdsForUserWithPayload } from '@/shared'
 import { injectTenantHook } from '@/features/tenants/hooks/inject-tenant'
 import {
+  extractTenantId,
   superAdminOnlyDeleteAccess,
   tenantCreateAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
@@ -19,15 +20,17 @@ export const Unit: CollectionConfig = {
       const { user, payload } = req
       if (!user) return false
 
-      const { role, tenant } = user
+      const { role } = user
 
       if (role === UserRolesEnum.SuperAdmin) return true
-      if (!tenant) return false
+
+      const tenantId = extractTenantId(user)
+      if (!tenantId) return false
 
       const accessibleOrgIds = await getAccessibleOrgIdsForUserWithPayload(user, payload)
 
       return {
-        tenant: { equals: tenant },
+        tenant: { equals: tenantId },
         id: { in: accessibleOrgIds },
       }
     },
@@ -38,16 +41,18 @@ export const Unit: CollectionConfig = {
       const { user, payload } = req
       if (!user || !id) return false
 
-      const { role, tenant } = user
+      const { role } = user
 
       if (role === UserRolesEnum.SuperAdmin) return true
-      if (!tenant) return false
 
-      if (data?.tenant && data.tenant !== tenant) return false
+      const tenantId = extractTenantId(user)
+      if (!tenantId) return false
+
+      if (data?.tenant && data.tenant !== tenantId) return false
 
       switch (role) {
         case UserRolesEnum.CentralAdmin:
-          return { tenant: { equals: tenant } }
+          return { tenant: { equals: tenantId } }
 
         case UserRolesEnum.UnitAdmin: {
           const targetOrg = await payload.findByID({

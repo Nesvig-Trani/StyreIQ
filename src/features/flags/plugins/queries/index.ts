@@ -3,11 +3,15 @@ import { FlagsCollectionSlug } from '../types'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { FlagStatusEnum, FlagTypeEnum } from '@/features/flags/schemas'
 import { endOfDay, startOfDay } from 'date-fns'
-import { Where } from 'payload'
+import { User, Where } from 'payload'
 import { Flag } from '@/types/payload-types'
 import { UserRolesEnum } from '@/features/users'
 import { getAccessibleOrgIdsForUser } from '@/shared'
 import { SocialMediasCollectionSlug } from '@/features/social-medias'
+import {
+  normalizeUserTenant,
+  extractTenantId,
+} from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 export const getFlags = async ({
   flagType,
@@ -58,6 +62,7 @@ export const getFlags = async ({
     ...(Object.keys(lastActivity).length > 0 && { lastActivity }),
     ...(Object.keys(detectionDate).length > 0 && { detectionDate }),
   }
+  const userWithTenantId = normalizeUserTenant(user as User)
 
   const flags = await payload.find({
     collection: FlagsCollectionSlug,
@@ -66,7 +71,7 @@ export const getFlags = async ({
     where,
     depth: 1,
     overrideAccess: false,
-    user,
+    user: userWithTenantId,
   })
   return flags
 }
@@ -100,38 +105,57 @@ export const getFlagInfoForDashboard = async (): Promise<FlagsData> => {
 
   let where: Where = {}
 
-  if (user.role === UserRolesEnum.SocialMediaManager) {
-    const socialMedias = await payload.find({
-      collection: SocialMediasCollectionSlug,
-      where: {
-        socialMediaManagers: { in: [user.id] },
-      },
-      limit: 0,
-    })
-
-    const socialMediaIds = socialMedias.docs.map((sm) => sm.id)
-
-    where = {
-      or: [
-        {
-          'affectedEntity.relationTo': { equals: 'social-medias' },
-          'affectedEntity.value': { in: socialMediaIds },
+  switch (user.role) {
+    case UserRolesEnum.SocialMediaManager: {
+      const socialMedias = await payload.find({
+        collection: SocialMediasCollectionSlug,
+        where: {
+          socialMediaManagers: { in: [user.id] },
         },
-        {
-          'affectedEntity.relationTo': { equals: 'users' },
-          'affectedEntity.value': { equals: user.id },
+        limit: 0,
+      })
+
+      const socialMediaIds = socialMedias.docs.map((sm) => sm.id)
+
+      where = {
+        or: [
+          {
+            'affectedEntity.relationTo': { equals: 'social-medias' },
+            'affectedEntity.value': { in: socialMediaIds },
+          },
+          {
+            'affectedEntity.relationTo': { equals: 'users' },
+            'affectedEntity.value': { equals: user.id },
+          },
+        ],
+      }
+      break
+    }
+    case UserRolesEnum.UnitAdmin: {
+      const accessibleOrgIds = await getAccessibleOrgIdsForUser(user)
+
+      where = {
+        'organizations.id': {
+          in: accessibleOrgIds,
         },
-      ],
+      }
+      break
     }
-  } else if (user.role === UserRolesEnum.UnitAdmin) {
-    const accessibleOrgIds = await getAccessibleOrgIdsForUser(user)
-    where = {
-      'organizations.id': {
-        in: accessibleOrgIds,
-      },
+    case UserRolesEnum.CentralAdmin: {
+      const tenantId = extractTenantId(user)
+
+      where = tenantId ? { tenant: { equals: tenantId } } : {}
+
+      break
     }
-  } else if (user.role === UserRolesEnum.SuperAdmin) {
-    where = {}
+
+    case UserRolesEnum.SuperAdmin: {
+      where = {}
+      break
+    }
+    default:
+      where = { id: { equals: -1 } }
+      break
   }
 
   const flags = await payload.find({

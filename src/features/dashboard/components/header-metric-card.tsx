@@ -3,7 +3,7 @@ import React from 'react'
 
 interface HeaderMetricCardProps {
   title: string
-  value: number
+  value: number | string
   subtitle: string
   riskLevel?: string
   color?: 'blue' | 'yellow' | 'red' | 'green'

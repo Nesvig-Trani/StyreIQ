@@ -11,6 +11,7 @@ import {
   immutableUpdateAccess,
   superAdminOnlyDeleteAccess,
   tenantBasedReadAccess,
+  extractTenantId,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 export const Policies: CollectionConfig = {
@@ -26,15 +27,20 @@ export const Policies: CollectionConfig = {
       async ({ data, operation, req }) => {
         if (!req.user) return
         if (operation !== 'create') return
+        const tenantId = extractTenantId(req.user)
+
+        if (tenantId) {
+          await req.payload.update({
+            collection: 'users',
+            where: { tenant: { equals: tenantId } },
+            data: {
+              date_of_last_policy_review: new Date().toISOString(),
+              admin_policy_agreement: false,
+            },
+          })
+        }
         const lastPolicy = await getLastPolicyVersion()
-        await req.payload.update({
-          collection: 'users',
-          where: { tenant: { equals: req.user.tenant } },
-          data: {
-            date_of_last_policy_review: new Date().toISOString(),
-            admin_policy_agreement: false,
-          },
-        })
+
         return {
           ...data,
           version:
@@ -87,23 +93,24 @@ export const Acknowledgments: CollectionConfig = {
       const { user, payload } = req
       if (!user) return false
 
-      const { role, tenant, id } = user
+      const { role, id } = user
 
       if (role === UserRolesEnum.SuperAdmin) return true
-      if (!tenant) return false
+      const tenantId = extractTenantId(user)
+      if (!tenantId) return false
 
       switch (role) {
         case UserRolesEnum.CentralAdmin: {
           const allUsersInTenant = await payload.find({
             collection: 'users',
-            where: { tenant: { equals: tenant } },
+            where: { tenant: { equals: tenantId } },
             limit: 0,
           })
 
           const userIds = allUsersInTenant.docs.map((u) => u.id)
 
           return {
-            tenant: { equals: tenant },
+            tenant: { equals: tenantId },
             user: { in: userIds },
           }
         }
@@ -115,7 +122,7 @@ export const Acknowledgments: CollectionConfig = {
             collection: 'users',
             where: {
               organizations: { in: accessibleOrgIds },
-              tenant: { equals: tenant },
+              tenant: { equals: tenantId },
             },
             limit: 0,
           })
@@ -123,14 +130,14 @@ export const Acknowledgments: CollectionConfig = {
           const userIds = usersInScope.docs.map((u) => u.id)
 
           return {
-            tenant: { equals: tenant },
+            tenant: { equals: tenantId },
             user: { in: userIds },
           }
         }
 
         case UserRolesEnum.SocialMediaManager:
           return {
-            tenant: { equals: tenant },
+            tenant: { equals: tenantId },
             user: { equals: id },
           }
 
@@ -146,8 +153,10 @@ export const Acknowledgments: CollectionConfig = {
   hooks: {
     beforeValidate: [
       async ({ data, operation, req }) => {
-        if (!req.user) return
-        if (operation !== 'create') return
+        if (!req.user || operation !== 'create') {
+          return data
+        }
+
         await req.payload.update({
           collection: 'users',
           where: { id: { equals: req.user.id } },

@@ -1,7 +1,8 @@
-import { Organization, User } from '@/types/payload-types'
+import { Organization } from '@/types/payload-types'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { UserRolesEnum } from '@/features/users'
-import type { Payload } from 'payload'
+import type { Payload, User } from 'payload'
+import { extractTenantId } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 export interface AccessibleOrganizationsResult {
   organizations: Organization[]
@@ -41,13 +42,15 @@ export async function getAccessibleOrganizationsWithPayload(
   }
 
   if (user.role === UserRolesEnum.CentralAdmin) {
-    if (!user.tenant) {
+    const tenantId = extractTenantId(user as User)
+
+    if (!tenantId) {
       return { organizations: [], accessibleOrgIds: [] }
     }
 
     const allTenantOrgs = await payload.find({
       collection: 'organization',
-      where: { tenant: { equals: user.tenant } },
+      where: { tenant: { equals: tenantId } },
       limit: 0,
     })
 

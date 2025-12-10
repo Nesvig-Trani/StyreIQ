@@ -23,7 +23,7 @@ import { WelcomeEmailCollectionSlug } from '@/features/welcome-emails/plugins/ty
 import { AuditLogActionEnum } from '@/features/audit-log/plugins/types'
 import { requestDemoEmailBody } from '../../constants/requestDemoEmailBody'
 import {
-  extractTenantId,
+  extractTenantIdFromProperty,
   validateRelatedEntityTenant,
   validateTenantAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
@@ -33,11 +33,12 @@ export const createUser: Endpoint = {
   method: 'post',
   handler: async (req) => {
     try {
-      if (!req.json)
+      if (!req.json) {
         return new Response(JSON.stringify({ error: 'Missing JSON body' }), {
           status: 400,
           headers: JSON_HEADERS,
         })
+      }
 
       const user = req.user
       if (!user) {
@@ -66,23 +67,25 @@ export const createUser: Endpoint = {
       }
 
       if (data.organizations && Array.isArray(data.organizations)) {
-        for (const orgRef of data.organizations) {
-          const orgId = typeof orgRef === 'object' ? orgRef.id : orgRef
+        await Promise.all(
+          data.organizations.map(async (orgRef: unknown) => {
+            const orgId =
+              typeof orgRef === 'object' && orgRef !== null && 'id' in orgRef
+                ? (orgRef as { id: number }).id
+                : orgRef
 
-          const orgCheck = await validateRelatedEntityTenant({
-            req,
-            collection: 'organization',
-            entityId: orgId,
-            entityName: 'Organization',
-          })
-
-          if (!orgCheck.valid) {
-            return new Response(JSON.stringify({ error: orgCheck.error!.message }), {
-              status: orgCheck.error!.status,
-              headers: JSON_HEADERS,
+            const orgCheck = await validateRelatedEntityTenant({
+              req,
+              collection: 'organization',
+              entityId: orgId as number,
+              entityName: 'Organization',
             })
-          }
-        }
+
+            if (!orgCheck.valid) {
+              throw new Error(orgCheck.error!.message)
+            }
+          }),
+        )
       }
 
       if (data.organizations && !Array.isArray(data.organizations)) {
@@ -121,17 +124,13 @@ export const createUser: Endpoint = {
           status:
             user.role === UserRolesEnum.UnitAdmin
               ? UserStatusEnum.PendingActivation
-              : dataParsed.status,
+              : dataParsed.status || UserStatusEnum.Active,
           organizations: dataParsed.organizations?.map((org) => Number(org)),
           admin_policy_agreement: false,
-          hasKnowledgeStandards: dataParsed.hasKnowledgeStandards,
-          isCompletedTrainingAccessibility: dataParsed.isCompletedTrainingAccessibility,
-          isCompletedTrainingRisk: dataParsed.isCompletedTrainingRisk,
-          isEnabledTwoFactor: dataParsed.isEnabledTwoFactor,
-          isInUseSecurePassword: dataParsed.isInUseSecurePassword,
-          isCompletedTrainingBrand: dataParsed.isCompletedTrainingBrand,
-          passwordUpdatedAt: dataParsed.passwordUpdatedAt?.toISOString(),
-          offboardingCompleted: dataParsed.offboardingCompleted,
+          tenant:
+            typeof req.user?.tenant === 'object' && req.user.tenant !== null
+              ? req.user.tenant.id
+              : req.user?.tenant,
         },
         req,
       })
@@ -149,7 +148,6 @@ export const createUser: Endpoint = {
         ) || [],
       )
 
-      // Send welcome email
       const welcomeEmail = await req.payload.find({
         collection: WelcomeEmailCollectionSlug,
         sort: '-createdAt',
@@ -206,6 +204,7 @@ export const createUser: Endpoint = {
                 timestamp: new Date().toISOString(),
                 actionType: 'user_creation',
               },
+              tenant: createUser.tenant,
             },
           })
         } catch (auditError) {
@@ -255,7 +254,7 @@ export const updateUser: Endpoint = {
         })
       }
 
-      const tenantId = extractTenantId(userExists.tenant)
+      const tenantId = extractTenantIdFromProperty(userExists.tenant)
 
       const tenantCheck = validateTenantAccess({
         req,
@@ -278,26 +277,25 @@ export const updateUser: Endpoint = {
       }
 
       if (dataParsed.organizations && Array.isArray(dataParsed.organizations)) {
-        for (const orgRef of dataParsed.organizations) {
-          const orgId =
-            typeof orgRef === 'object' && orgRef !== null
-              ? (orgRef as { id: number }).id
-              : Number(orgRef)
+        await Promise.all(
+          dataParsed.organizations.map(async (orgRef) => {
+            const orgId =
+              typeof orgRef === 'object' && orgRef !== null
+                ? (orgRef as { id: number }).id
+                : Number(orgRef)
 
-          const orgCheck = await validateRelatedEntityTenant({
-            req,
-            collection: 'organization',
-            entityId: orgId,
-            entityName: 'Organization',
-          })
-
-          if (!orgCheck.valid) {
-            return new Response(JSON.stringify({ error: orgCheck.error!.message }), {
-              status: orgCheck.error!.status,
-              headers: JSON_HEADERS,
+            const orgCheck = await validateRelatedEntityTenant({
+              req,
+              collection: 'organization',
+              entityId: orgId,
+              entityName: 'Organization',
             })
-          }
-        }
+
+            if (!orgCheck.valid) {
+              throw new Error(orgCheck.error!.message)
+            }
+          }),
+        )
       }
 
       if (
@@ -308,24 +306,29 @@ export const updateUser: Endpoint = {
 
         const orgsWhereUserIsOnlyAdmin: Organization[] = []
 
-        for (const org of organizations) {
-          const otherAdmins = await req.payload.find({
-            collection: 'users',
-            where: {
-              and: [
-                { 'organizations.id': { equals: org.id } },
-                { role: { equals: UserRolesEnum.UnitAdmin } },
-                { id: { not_equals: userExists.id } },
-              ],
-            },
-            overrideAccess: false,
-            user,
-          })
+        const results = await Promise.all(
+          organizations.map(async (org) => {
+            const otherAdmins = await req.payload.find({
+              collection: 'users',
+              where: {
+                and: [
+                  { 'organizations.id': { equals: org.id } },
+                  { role: { equals: UserRolesEnum.UnitAdmin } },
+                  { id: { not_equals: userExists.id } },
+                ],
+              },
+              overrideAccess: false,
+              user,
+            })
 
-          if (!otherAdmins.docs.length) {
-            orgsWhereUserIsOnlyAdmin.push(org)
-          }
-        }
+            if (!otherAdmins.docs.length) {
+              return org
+            }
+            return null
+          }),
+        )
+
+        orgsWhereUserIsOnlyAdmin.push(...results.filter((org): org is Organization => org !== null))
 
         if (orgsWhereUserIsOnlyAdmin.length > 0) {
           return new Response(
@@ -351,12 +354,6 @@ export const updateUser: Endpoint = {
           status: dataParsed.status,
           organizations: dataParsed.organizations?.map((org) => Number(org)),
           admin_policy_agreement: false,
-          hasKnowledgeStandards: dataParsed.hasKnowledgeStandards,
-          isCompletedTrainingAccessibility: dataParsed.isCompletedTrainingAccessibility,
-          isCompletedTrainingRisk: dataParsed.isCompletedTrainingRisk,
-          isEnabledTwoFactor: dataParsed.isEnabledTwoFactor,
-          isInUseSecurePassword: dataParsed.isInUseSecurePassword,
-          isCompletedTrainingBrand: dataParsed.isCompletedTrainingBrand,
           passwordUpdatedAt: dataParsed.passwordUpdatedAt?.toISOString(),
         },
         req,
@@ -494,7 +491,7 @@ export const setUserApprovalStatus: Endpoint = {
         })
       }
 
-      const tenantId = extractTenantId(targetUser.tenant)
+      const tenantId = extractTenantIdFromProperty(targetUser.tenant)
       const tenantCheck = validateTenantAccess({
         req,
         targetTenantId: tenantId,
