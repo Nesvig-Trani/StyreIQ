@@ -4,14 +4,33 @@ import { Where } from 'payload'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { SocialMediasCollectionSlug } from '../collections'
+import { normalizeUserTenant } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 export const getAllSocialMediaAccounts = async () => {
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
+
+  if (!user) {
+    return {
+      docs: [],
+      totalDocs: 0,
+      hasNextPage: false,
+      hasPrevPage: false,
+      totalPages: 0,
+      limit: 0,
+      page: 1,
+      pagingCounter: 0,
+      prevPage: null,
+      nextPage: null,
+    }
+  }
+
+  const userWithTenantId = normalizeUserTenant(user)
+
   const socialMedias = await payload.find({
     collection: SocialMediasCollectionSlug,
     limit: 0,
-    user,
+    user: userWithTenantId,
     overrideAccess: false,
   })
 
@@ -25,6 +44,8 @@ export const getSocialMediaAccountsCount = async (): Promise<number> => {
   if (!user) {
     return 0
   }
+
+  const userWithTenantId = normalizeUserTenant(user)
 
   const where: Where = {}
 
@@ -46,7 +67,7 @@ export const getSocialMediaAccountsCount = async (): Promise<number> => {
     collection: SocialMediasCollectionSlug,
     where,
     limit: 0,
-    user,
+    user: userWithTenantId,
     overrideAccess: false,
   })
 
@@ -70,6 +91,22 @@ export const getSocialMediaAccounts = async ({
 }) => {
   const { user } = await getAuthUser()
   const { payload } = await getPayloadContext()
+
+  if (!user)
+    return {
+      docs: [],
+      totalDocs: 0,
+      hasNextPage: false,
+      hasPrevPage: false,
+      totalPages: 0,
+      limit: 0,
+      page: 1,
+      pagingCounter: 0,
+      prevPage: null,
+      nextPage: null,
+    }
+
+  const userWithTenantId = normalizeUserTenant(user)
 
   const where: Where = {
     ...(status?.length && { status: { in: status } }),
@@ -98,16 +135,14 @@ export const getSocialMediaAccounts = async ({
     where['organization.id'] = { in: organization.map(Number) }
   }
 
-  const socialMedias = await payload.find({
+  return await payload.find({
     collection: SocialMediasCollectionSlug,
     where,
     limit: pageSize,
     page: pageIndex + 1,
-    user,
+    user: userWithTenantId,
     overrideAccess: false,
   })
-
-  return socialMedias
 }
 
 export const getSocialMediaById = async ({ id }: { id: number }) => {

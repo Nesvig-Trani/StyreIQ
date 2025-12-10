@@ -1,37 +1,39 @@
 import { FlagSourceEnum, FlagStatusEnum, FlagTypeEnum } from '@/features/flags/schemas'
-import payload from 'payload'
+import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 
 export async function flagInactiveAccounts() {
+  const { payload } = await getPayloadContext()
+
   const tenants = await payload.find({
     collection: 'tenants',
     where: { status: { equals: 'active' } },
     limit: 0,
   })
 
-  for (const tenant of tenants.docs) {
-    const result = await payload.find({
-      collection: 'social-medias',
-      where: {
-        and: [{ tenant: { equals: tenant.id } }, { status: { in: ['active', 'in_transition'] } }],
-      },
-    })
+  const tenantIds = tenants.docs.map((t) => t.id)
 
-    for (const account of result.docs) {
-      const status = account.status
-      const isActiveOrTransition = status === 'active' || status === 'in_transition'
-      const daysSinceActivity =
-        (Date.now() - new Date(account.updatedAt).getTime()) / (1000 * 60 * 60 * 24)
-      const shouldFlagInactive = isActiveOrTransition && daysSinceActivity > 30
+  const result = await payload.find({
+    collection: 'social-medias',
+    where: {
+      and: [{ tenant: { in: tenantIds } }, { status: { in: ['active', 'in_transition'] } }],
+    },
+  })
 
-      if (!shouldFlagInactive) {
-        continue
-      }
+  const accountsToProcess = result.docs.filter((account) => {
+    const status = account.status
+    const isActiveOrTransition = status === 'active' || status === 'in_transition'
+    const daysSinceActivity =
+      (Date.now() - new Date(account.updatedAt).getTime()) / (1000 * 60 * 60 * 24)
+    return isActiveOrTransition && daysSinceActivity > 30
+  })
 
+  const results = await Promise.allSettled(
+    accountsToProcess.map(async (account) => {
       await payload.update({
         collection: 'social-medias',
         id: account.id,
         data: {
-          inactiveFlag: shouldFlagInactive,
+          inactiveFlag: true,
         },
       })
 
@@ -49,9 +51,18 @@ export async function flagInactiveAccounts() {
           source: FlagSourceEnum.AUTOMATED_SYSTEM,
           description: `Account has been inactive for 30+ days`,
           suggestedAction: 'Review account activity and consider archiving if no longer in use',
-          tenant: tenant.id,
+          tenant: account.tenant,
         },
       })
+    }),
+  )
+
+  const errors = results.filter((r) => r.status === 'rejected') as PromiseRejectedResult[]
+
+  if (errors.length > 0) {
+    console.error('Errors encountered when flagging inactive accounts:')
+    for (const err of errors) {
+      console.error(err.reason)
     }
   }
 }

@@ -9,6 +9,7 @@ export type Resource =
   | 'REVIEW_REQUESTS'
   | 'AUDIT_LOGS'
   | 'DASHBOARD'
+  | 'TENANTS'
 
 export type ResourceAction = 'create' | 'read' | 'update' | 'delete'
 
@@ -27,6 +28,14 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
   [UserRolesEnum.SuperAdmin]: [
     {
       resource: 'DASHBOARD',
+      actions: ['create', 'read', 'update', 'delete'],
+      conditions: {
+        childUnitsIncluded: true,
+        tenantScoped: false,
+      },
+    },
+    {
+      resource: 'TENANTS',
       actions: ['create', 'read', 'update', 'delete'],
       conditions: {
         childUnitsIncluded: true,
@@ -97,6 +106,14 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
       },
     },
     {
+      resource: 'TENANTS',
+      actions: ['read', 'update'],
+      conditions: {
+        tenantScoped: true,
+        ownerOnly: true,
+      },
+    },
+    {
       resource: 'UNITS',
       actions: ['create', 'read', 'update'],
       conditions: {
@@ -162,7 +179,7 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
     },
     {
       resource: 'UNITS',
-      actions: ['read', 'update'],
+      actions: ['create', 'read', 'update'],
       conditions: {
         tenantScoped: true,
         unitOnly: true,

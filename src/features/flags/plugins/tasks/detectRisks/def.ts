@@ -1,5 +1,5 @@
 import { TaskConfig } from 'payload'
-import { FindRisksAndCreateFlag } from '.'
+import { findRisksAndCreateFlag } from '.'
 
 export const detectRisksTask = {
   slug: 'detectRisks',
@@ -17,7 +17,7 @@ export const detectRisksTask = {
     },
   ],
   handler: async () => {
-    await FindRisksAndCreateFlag()
+    await findRisksAndCreateFlag()
     return {
       output: {
         success: true,

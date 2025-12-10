@@ -16,6 +16,7 @@ import { injectTenantHook } from '@/features/tenants/hooks/inject-tenant'
 import { UserRolesEnum } from '@/features/users'
 import { getAccessibleOrgIdsForUserWithPayload } from '@/shared'
 import {
+  extractTenantId,
   tenantValidatedDeleteAccess,
   tenantValidatedUpdateAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
@@ -34,26 +35,28 @@ export const SocialMedias: CollectionConfig = {
       const { user, payload } = req
       if (!user) return false
 
-      const { role, tenant, id } = user
+      const { role, id } = user
 
       if (role === UserRolesEnum.SuperAdmin) return true
-      if (!tenant) return false
+
+      const tenantId = extractTenantId(user)
+      if (!tenantId) return false
 
       switch (role) {
         case UserRolesEnum.CentralAdmin:
-          return { tenant: { equals: tenant } }
+          return { tenant: { equals: tenantId } }
 
         case UserRolesEnum.UnitAdmin: {
           const accessibleOrgIds = await getAccessibleOrgIdsForUserWithPayload(user, payload)
           return {
-            and: [{ tenant: { equals: tenant } }, { organization: { in: accessibleOrgIds } }],
+            and: [{ tenant: { equals: tenantId } }, { organization: { in: accessibleOrgIds } }],
           }
         }
 
         case UserRolesEnum.SocialMediaManager:
           return {
             and: [
-              { tenant: { equals: tenant } },
+              { tenant: { equals: tenantId } },
               {
                 or: [
                   { socialMediaManagers: { contains: id } },
@@ -73,12 +76,13 @@ export const SocialMedias: CollectionConfig = {
       const { user, payload } = req
       if (!user) return false
 
-      const { role, tenant } = user
+      const { role } = user
 
       if (role === UserRolesEnum.SuperAdmin) return true
-      if (!tenant) return false
+      const tenantId = extractTenantId(user)
+      if (!tenantId) return false
 
-      if (data?.tenant && data.tenant !== tenant) return false
+      if (data?.tenant && data.tenant !== tenantId) return false
 
       switch (role) {
         case UserRolesEnum.CentralAdmin:

@@ -1,30 +1,29 @@
 'use client'
-import * as React from 'react'
-import { LogOut } from 'lucide-react'
-
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarGroup,
   SidebarRail,
 } from '@/shared/components/ui/sidebar'
+import { LogOut, Building2 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { User } from '@/types/payload-types'
+import { Tenant, User } from '@/types/payload-types'
 import { useAccess } from '@/shared/hooks/use-access'
 import { mainNavigation } from './nav-config'
 import { roleLabelMap, UserRolesEnum } from '@/features/users'
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user: User
+  tenant?: Tenant | null
 }
 
-export function AppSidebar({ user, ...props }: AppSidebarProps) {
+export function AppSidebar({ user, tenant, ...props }: AppSidebarProps) {
   const router = useRouter()
   const pathname = usePathname()
   const { can } = useAccess(user)
@@ -52,15 +51,29 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
         </SidebarMenu>
       </SidebarHeader>
 
-      <div className="flex justify-center pb-2">
-        <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg w-40 h-13">
-          <div className="min-w-0">
-            <div className="text-xs font-medium text-gray-900 truncate">
-              {roleLabelMap[user.role as UserRolesEnum]}
+      <div className="flex flex-col gap-2 px-4 pb-2">
+        <div className="flex justify-center">
+          <div className="p-3 bg-gray-50 rounded-lg w-full">
+            <div className="min-w-0">
+              <div className="text-xs font-medium text-gray-900 truncate">
+                {roleLabelMap[user.role as UserRolesEnum]}
+              </div>
+              <div className="text-xs text-gray-500 truncate">{user.email}</div>
             </div>
-            <div className="text-xs text-gray-500 truncate">{user.email}</div>
           </div>
         </div>
+
+        {tenant && user.role !== UserRolesEnum.SuperAdmin && (
+          <div className="px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex items-center gap-2">
+              <Building2 className="w-4 h-4 text-blue-600 flex-shrink-0" />
+              <div className="flex-1 min-w-0">
+                <div className="text-xs font-medium text-blue-900 truncate">{tenant.name}</div>
+                <div className="text-xs text-blue-600 truncate">{tenant.domain}</div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <SidebarContent>
