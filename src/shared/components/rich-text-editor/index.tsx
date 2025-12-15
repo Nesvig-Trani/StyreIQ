@@ -12,11 +12,13 @@ import { toast } from 'sonner'
 interface RichTextEditorProps {
   initialState: string
   isSuperAdmin?: boolean
+  selectedTenantId?: number | null
 }
 
 export default function RichTextEditor({
   initialState,
   isSuperAdmin = false,
+  selectedTenantId,
 }: RichTextEditorProps) {
   const [editorState, setEditorState] = useState<EditorState>()
   const { isLoading, startLoading, stopLoading } = useLoading()
@@ -33,8 +35,16 @@ export default function RichTextEditor({
         return
       }
 
+      if (isSuperAdmin && !selectedTenantId) {
+        toast.error('Please select a tenant before saving a policy')
+        return
+      }
+
       startLoading()
-      await savePolicy({ data: editorState?.toJSON() })
+      await savePolicy({
+        data: editorState?.toJSON(),
+        tenant: selectedTenantId,
+      })
       toast.success('Policy saved successfully')
       router.refresh()
     } catch (e) {
@@ -52,9 +62,10 @@ export default function RichTextEditor({
         {isSuperAdmin ? (
           <Button
             onClick={onSubmit}
-            disabled={!editorState || isLoading}
+            disabled={!editorState || isLoading || !selectedTenantId}
             loading={isLoading}
             loadingText="Saving..."
+            title={!selectedTenantId ? 'Select a tenant first' : undefined}
           >
             Save
           </Button>
@@ -68,6 +79,12 @@ export default function RichTextEditor({
           </Button>
         )}
       </div>
+
+      {isSuperAdmin && !selectedTenantId && (
+        <p className="text-xs text-amber-600 mt-2">
+          Please select a tenant from the selector to save policies for that organization.
+        </p>
+      )}
     </div>
   )
 }

@@ -1,6 +1,5 @@
 import { CollectionConfig } from 'payload'
 import { AcknowledgmentsCollectionSlug, PoliciesCollectionSlug } from '@/features/policies/schemas'
-import { getLastPolicyVersion } from '../queries'
 import { injectTenantHook } from '@/features/tenants/hooks/inject-tenant'
 import { UserRolesEnum } from '@/features/users'
 import { getAccessibleOrgIdsForUserWithPayload } from '@/shared'
@@ -12,6 +11,7 @@ import {
   superAdminOnlyDeleteAccess,
   tenantBasedReadAccess,
   extractTenantId,
+  getSelectedTenantFromRequest,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 export const Policies: CollectionConfig = {
@@ -27,7 +27,9 @@ export const Policies: CollectionConfig = {
       async ({ data, operation, req }) => {
         if (!req.user) return
         if (operation !== 'create') return
-        const tenantId = extractTenantId(req.user)
+
+        const tenantId =
+          data?.tenant || extractTenantId(req.user) || getSelectedTenantFromRequest(req)
 
         if (tenantId) {
           await req.payload.update({
@@ -39,15 +41,24 @@ export const Policies: CollectionConfig = {
             },
           })
         }
-        const lastPolicy = await getLastPolicyVersion()
+
+        const lastPolicy = await req.payload.find({
+          collection: PoliciesCollectionSlug,
+          where: tenantId ? { tenant: { equals: tenantId } } : {},
+          sort: '-version',
+          limit: 1,
+        })
+
+        const lastPolicyDoc = lastPolicy.docs[0]
 
         return {
           ...data,
           version:
-            lastPolicy && lastPolicy.version
-              ? Math.round((lastPolicy?.version + 0.1) * 10) / 10
+            lastPolicyDoc && lastPolicyDoc.version
+              ? Math.round((lastPolicyDoc.version + 0.1) * 10) / 10
               : 0.1,
           author: req.user.id,
+          tenant: tenantId,
         }
       },
     ],
@@ -56,7 +67,7 @@ export const Policies: CollectionConfig = {
     {
       name: 'version',
       type: 'number',
-      unique: true,
+      unique: false,
       defaultValue: 0.1,
     },
     {

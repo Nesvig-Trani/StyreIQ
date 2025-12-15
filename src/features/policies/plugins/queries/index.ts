@@ -1,8 +1,13 @@
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { AcknowledgmentsCollectionSlug, PoliciesCollectionSlug } from '../../schemas'
-
-import { normalizeUserTenant } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
+import {
+  createUserForQueriesFromCookie,
+  getSelectedTenantIdFromCookie,
+} from '@/app/(dashboard)/server-tenant-context'
+import { UserRolesEnum } from '@/features/users'
+import { Where } from 'payload'
+import { extractTenantId } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 export const getLastPolicyVersion = async () => {
   const { payload } = await getPayloadContext()
@@ -10,14 +15,31 @@ export const getLastPolicyVersion = async () => {
 
   if (!user) return null
 
-  const userWithTenantId = normalizeUserTenant(user)
+  const userForQueries = await createUserForQueriesFromCookie(user)
+  const selectedTenantId = await getSelectedTenantIdFromCookie()
+
+  const where: Where = {}
+
+  if (user.role === UserRolesEnum.SuperAdmin) {
+    if (selectedTenantId !== null) {
+      where.tenant = { equals: selectedTenantId }
+    } else {
+      return null
+    }
+  } else {
+    const userTenantId = extractTenantId(user)
+    if (!userTenantId) return null
+
+    where.tenant = { equals: userTenantId }
+  }
 
   const { docs: [lastPolicy] = [] } = await payload.find({
     collection: PoliciesCollectionSlug,
+    where,
     sort: '-version',
     limit: 1,
-    overrideAccess: false,
-    user: userWithTenantId,
+    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+    user: userForQueries,
   })
 
   return lastPolicy ?? null
@@ -29,12 +51,41 @@ export const getPolicies = async () => {
 
   if (!user) return { docs: [] }
 
-  const userWithTenantId = normalizeUserTenant(user)
+  const userForQueries = await createUserForQueriesFromCookie(user)
+  const selectedTenantId = await getSelectedTenantIdFromCookie()
+
+  const where: Where = {}
+
+  const emptyResult = {
+    docs: [],
+    totalDocs: 0,
+    limit: 0,
+    totalPages: 0,
+    page: 1,
+    pagingCounter: 1,
+    hasPrevPage: false,
+    hasNextPage: false,
+  }
+
+  let tenantId: number | null
+
+  if (user.role === UserRolesEnum.SuperAdmin) {
+    tenantId = selectedTenantId
+  } else {
+    tenantId = extractTenantId(user)
+  }
+
+  if (!tenantId) {
+    return emptyResult
+  }
+
+  where.tenant = { equals: tenantId }
 
   return await payload.find({
     collection: PoliciesCollectionSlug,
-    overrideAccess: false,
-    user: userWithTenantId,
+    where,
+    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+    user: userForQueries,
   })
 }
 
@@ -50,7 +101,7 @@ export const hasUserAcknowledged = async ({
 
   if (!user) return false
 
-  const userWithTenantId = normalizeUserTenant(user)
+  const userForQueries = await createUserForQueriesFromCookie(user)
 
   const acceptedVersion = await payload.find({
     collection: AcknowledgmentsCollectionSlug,
@@ -61,7 +112,7 @@ export const hasUserAcknowledged = async ({
       policy: { equals: lastVersionId },
     },
     overrideAccess: false,
-    user: userWithTenantId,
+    user: userForQueries,
   })
 
   return acceptedVersion.docs?.length > 0
