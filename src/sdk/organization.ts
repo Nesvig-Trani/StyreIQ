@@ -21,6 +21,7 @@ export const createUnit = async (data: z.infer<typeof createUnitFormSchema>) => 
       status: data.status,
       description: data.description,
       delegatedPermissions: data.delegatedPermissions,
+      tenant: data.tenant,
     }),
   })
 

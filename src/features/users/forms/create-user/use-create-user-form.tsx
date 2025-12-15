@@ -21,9 +21,14 @@ interface UserFormProps {
   authUserRole?: UserRolesEnum | null
   initialOrganizations: Organization[]
   topOrgDepth?: number
+  selectedTenantId: number | null
 }
 
-export function useCreateUserForm({ authUserRole, initialOrganizations }: UserFormProps) {
+export function useCreateUserForm({
+  authUserRole,
+  initialOrganizations,
+  selectedTenantId,
+}: UserFormProps) {
   const router = useRouter()
 
   const allowedRoles =
@@ -106,6 +111,7 @@ export function useCreateUserForm({ authUserRole, initialOrganizations }: UserFo
       onSubmit: async (submitData) => {
         const fixed = {
           ...submitData,
+          tenant: selectedTenantId,
         }
 
         try {

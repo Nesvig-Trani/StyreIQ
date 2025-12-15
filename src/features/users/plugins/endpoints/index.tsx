@@ -127,10 +127,7 @@ export const createUser: Endpoint = {
               : dataParsed.status || UserStatusEnum.Active,
           organizations: dataParsed.organizations?.map((org) => Number(org)),
           admin_policy_agreement: false,
-          tenant:
-            typeof req.user?.tenant === 'object' && req.user.tenant !== null
-              ? req.user.tenant.id
-              : req.user?.tenant,
+          tenant: dataParsed.tenant,
         },
         req,
       })
