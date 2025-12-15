@@ -15,6 +15,9 @@ import { AccessControl } from '@/shared/utils/rbac'
 import { checkUserReadAccess } from '@/shared'
 import { UserRolesEnum } from '@/features/users/schemas'
 
+import { getPayloadContext } from '@/shared/utils/getPayloadContext'
+import { getServerTenantContext } from '../../server-tenant-context'
+
 export default async function UsersPage(props: {
   searchParams?: Promise<{
     [key: string]: string
@@ -30,6 +33,9 @@ export default async function UsersPage(props: {
 
   const parsedParams = parseSearchParamsWithSchema(searchParams, userSearchSchema)
 
+  const { payload } = await getPayloadContext()
+  const tenantContext = await getServerTenantContext(user, payload)
+
   const users = await getUsers({
     pageIndex: parsedParams.pagination.pageIndex + 1,
     pageSize: parsedParams.pagination.pageSize,
@@ -44,11 +50,26 @@ export default async function UsersPage(props: {
         <div className="mb-6">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="space-y-2">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 flex-wrap">
                 <h2 className="text-2xl font-bold">Users</h2>
                 <Badge variant="secondary" className="text-xs">
                   {users.totalDocs} Total Users
                 </Badge>
+
+                {user?.role === UserRolesEnum.SuperAdmin && tenantContext.selectedTenant && (
+                  <Badge
+                    variant="outline"
+                    className="text-xs bg-blue-50 text-blue-700 border-blue-200"
+                  >
+                    {tenantContext.selectedTenant.name}
+                  </Badge>
+                )}
+                {user?.role === UserRolesEnum.SuperAdmin && tenantContext.isViewingAllTenants && (
+                  <Badge variant="outline" className="text-xs bg-gray-100 text-gray-600">
+                    All Tenants
+                  </Badge>
+                )}
+
                 {user?.role === UserRolesEnum.UnitAdmin && (
                   <Badge variant="outline" className="text-xs">
                     Filtered by your unit hierarchy
@@ -85,7 +106,7 @@ export default async function UsersPage(props: {
                 </>
               )}
 
-              {access.can('create', 'USERS') ? (
+              {access.can('create', 'USERS') && !tenantContext.isViewingAllTenants ? (
                 <Button size="sm" className="w-full sm:w-auto">
                   <Link
                     className={'flex items-center justify-center gap-2'}

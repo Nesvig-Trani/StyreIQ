@@ -6,9 +6,13 @@ import { getUsersByRoles, UserRolesEnum } from '@/features/users'
 import { redirect } from 'next/navigation'
 import { ChevronRight, Home } from 'lucide-react'
 import Link from 'next/link'
+import { getPayloadContext } from '@/shared/utils/getPayloadContext'
+import { getServerTenantContext } from '@/app/(dashboard)/server-tenant-context'
 
 export default async function CreateSocialMediaPage() {
   const { user } = await getAuthUser()
+  const { payload } = await getPayloadContext()
+  const tenantContext = await getServerTenantContext(user, payload)
 
   if (
     !(
@@ -66,6 +70,7 @@ export default async function CreateSocialMediaPage() {
                 users={users.docs}
                 organizations={organizations.docs}
                 currentUser={user}
+                selectedTenantId={tenantContext.tenantIdForFilter}
               />
             </div>
           </CardContent>

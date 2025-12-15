@@ -11,9 +11,14 @@ import { AccessControl } from '@/shared/utils/rbac'
 import { ChevronRight, Home } from 'lucide-react'
 import { Card, CardContent } from '@/shared'
 import Link from 'next/link'
+import { getServerTenantContext } from '@/app/(dashboard)/server-tenant-context'
+import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 
 export default async function CreateUnit() {
   const { user } = await getAuthUser()
+  const { payload } = await getPayloadContext()
+  const tenantContext = await getServerTenantContext(user, payload)
+
   if (!user) {
     return (
       <div className="p-4">
@@ -41,13 +46,6 @@ export default async function CreateUnit() {
         </Button>
       </div>
     )
-  }
-
-  // Find StyreIQ organization to set as default parent
-  const styreIQOrg = organizations.docs.find((org) => org.name === 'StyreIQ')
-
-  if (!styreIQOrg) {
-    throw new Error('StyreIQ organization not found')
   }
 
   if (organizations.docs.length === 0 && access.can('create', 'UNITS')) {
@@ -89,7 +87,7 @@ export default async function CreateUnit() {
                 userRole={user?.role as UserRolesEnum}
                 users={users.docs}
                 organizations={organizations.docs}
-                defaultParentOrg={styreIQOrg?.id?.toString()}
+                selectedTenantId={tenantContext.tenantIdForFilter}
               />
             </div>
           </CardContent>

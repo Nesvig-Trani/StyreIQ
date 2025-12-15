@@ -10,9 +10,13 @@ import { getSocialMediaAccounts } from '@/features/social-medias/plugins/queries
 import { getAllUnits } from '@/features/units/plugins/queries'
 import { getAllUsers } from '@/features/users'
 import { getSocialMediaAuditLogs } from '@/features/audit-log/plugins/queries'
+import { getPayloadContext } from '@/shared/utils/getPayloadContext'
+import { getServerTenantContext } from '../../server-tenant-context'
 
 export default async function SocialMediasPage(props: AppPageProps) {
   const { user } = await getAuthUser()
+  const { payload } = await getPayloadContext()
+  const tenantContext = await getServerTenantContext(user, payload)
   if (!user) {
     return (
       <div className="p-4">
@@ -65,6 +69,7 @@ export default async function SocialMediasPage(props: AppPageProps) {
       }}
       organizations={organizations.docs}
       users={users.docs}
+      isViewingAllTenants={tenantContext.isViewingAllTenants}
     />
   )
 }

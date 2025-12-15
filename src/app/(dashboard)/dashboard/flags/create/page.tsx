@@ -1,11 +1,18 @@
+import { getServerTenantContext } from '@/app/(dashboard)/server-tenant-context'
+import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { CreateFlagForm } from '@/features/flags/forms/create-flag-form'
 import { getAllSocialMediaAccounts } from '@/features/social-medias/plugins/queries'
 import { getAllUsers } from '@/features/users'
 import { Card, CardContent } from '@/shared'
+import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { ChevronRight, Home } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function CreateFlagPage() {
+  const { user } = await getAuthUser()
+  const { payload } = await getPayloadContext()
+  const tenantContext = await getServerTenantContext(user, payload)
+
   const users = await getAllUsers()
   const socialMedias = await getAllSocialMediaAccounts()
   return (
@@ -31,7 +38,11 @@ export default async function CreateFlagPage() {
         <Card className="shadow-lg border-0">
           <CardContent className="p-6">
             <div className="max-w-4xl">
-              <CreateFlagForm users={users.docs} socialMedias={socialMedias.docs} />
+              <CreateFlagForm
+                users={users.docs}
+                socialMedias={socialMedias.docs}
+                selectedTenantId={tenantContext.tenantIdForFilter}
+              />
             </div>
           </CardContent>
         </Card>

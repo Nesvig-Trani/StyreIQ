@@ -12,6 +12,8 @@ import { treePaginationAndFilter } from '@/features/units/utils/treePaginationAn
 import { CirclePlus } from 'lucide-react'
 import { Badge } from '@/shared/components/ui/badge'
 import { AccessControl } from '@/shared/utils/rbac'
+import { getPayloadContext } from '@/shared/utils/getPayloadContext'
+import { getServerTenantContext } from '../../server-tenant-context'
 
 export default async function UnitsPage(props: {
   searchParams?: Promise<{
@@ -20,6 +22,8 @@ export default async function UnitsPage(props: {
 }) {
   const searchParams = await props.searchParams
   const { user } = await getAuthUser()
+  const { payload } = await getPayloadContext()
+  const tenantContext = await getServerTenantContext(user, payload)
   if (!user) {
     return (
       <Card>
@@ -78,7 +82,7 @@ export default async function UnitsPage(props: {
                 </div>
               </div>
               <div className="w-full sm:w-auto">
-                {access.can('create', 'UNITS') && (
+                {access.can('create', 'UNITS') && !tenantContext.isViewingAllTenants && (
                   <Button size="sm" className="w-full sm:w-auto">
                     <Link
                       className="flex items-center justify-center gap-2"
