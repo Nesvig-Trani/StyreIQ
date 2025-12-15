@@ -55,6 +55,7 @@ export const createUser = async (data: z.infer<typeof createUserFormSchema>) => 
       role: data.role,
       status: data.status,
       organizations: data.organizations,
+      tenant: data.tenant,
     }),
   })
 

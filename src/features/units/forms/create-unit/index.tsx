@@ -8,12 +8,14 @@ export const CreateUnitForm = ({
   users,
   organizations,
   defaultParentOrg,
+  selectedTenantId,
 }: CreateUnitFormProps) => {
   const { formComponent } = useCreateUnit({
     userRole,
     users,
     organizations,
     defaultParentOrg,
+    selectedTenantId,
   })
   return <div>{formComponent}</div>
 }

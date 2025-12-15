@@ -49,6 +49,7 @@ export const createFlagSchema = z.object({
   source: z.string().optional(),
   description: z.string(),
   suggestedAction: z.string(),
+  tenant: z.number().nullable().optional(),
 })
 
 export const createFlagCommentSchema = z.object({

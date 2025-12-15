@@ -31,6 +31,7 @@ const baseSocialMediaSchema = z.object({
   platformSupportDetails: z.string().optional(),
   socialMediaManagers: z.array(z.string()).min(1, 'At least one social media manager is required'),
   notes: z.string().optional(),
+  tenant: z.number().nullable().optional(),
 })
 
 export const createSocialMediaFormSchema = baseSocialMediaSchema.refine(
@@ -42,6 +43,7 @@ export const createSocialMediaFormSchema = baseSocialMediaSchema.refine(
 )
 
 export const updateSocialMediaFormSchema = baseSocialMediaSchema
+  .omit({ tenant: true })
   .extend({
     id: z.number(),
   })
@@ -183,12 +185,13 @@ export type CreateSocialMediaFormProps = {
   users: User[]
   organizations: Organization[]
   currentUser: User | null
+  selectedTenantId: number | null
 }
 
 export type UpdateSocialMediaFormProps = {
   data: SocialMedia
   user: User | null
-} & CreateSocialMediaFormProps
+} & Omit<CreateSocialMediaFormProps, 'selectedTenantId'>
 
 export const socialMediaSearchSchema = paginationSchema.extend({
   status: z.array(z.nativeEnum(SocialMediaStatusEnum)).optional(),

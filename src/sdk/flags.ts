@@ -13,6 +13,7 @@ export const createFlag = async (data: CreateFlagFormSchema) => {
       affectedEntity: data.affectedEntity,
       description: data.description,
       suggestedAction: data.suggestedAction,
+      tenant: data.tenant,
     }),
   })
 

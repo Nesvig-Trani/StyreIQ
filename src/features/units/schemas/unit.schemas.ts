@@ -37,6 +37,7 @@ export const createUnitFormSchema = z.object({
   status: z.enum(['active', 'inactive', 'pending_review']),
   description: z.string().optional(),
   delegatedPermissions: z.boolean().optional(),
+  tenant: z.number().nullable().optional(),
 })
 
 export const updateUnitFormSchema = createUnitFormSchema.extend({
@@ -71,6 +72,7 @@ export type CreateUnitFormProps = {
   users: User[]
   organizations: Organization[]
   defaultParentOrg?: string
+  selectedTenantId: number | null
 }
 
 export type UpdateUnitFormProps = {

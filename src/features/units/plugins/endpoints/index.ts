@@ -30,7 +30,7 @@ async function calculateUnitPathAndDepth(
   return { path, depth }
 }
 
-async function updateAdminOrganizations(payload: Payload, adminId: number, newOrgId: number) {
+async function addOrganizationToAdmin(payload: Payload, adminId: number, newOrgId: number) {
   const findAdmin = await payload.findByID({
     collection: 'users',
     id: adminId,
@@ -41,7 +41,19 @@ async function updateAdminOrganizations(payload: Payload, adminId: number, newOr
     collection: 'users',
     id: adminId,
     data: {
-      organizations: Array.from(new Set([...organizations, newOrgId])),
+      organizations: [...organizations, newOrgId],
+    },
+  })
+}
+
+async function updateAdminOrganizations(payload: Payload, adminId: number, orgId: number) {
+  const findAdmin = await payload.findByID({ collection: 'users', id: adminId, depth: 0 })
+  const organizations = findAdmin.organizations as number[]
+  await payload.update({
+    collection: 'users',
+    id: adminId,
+    data: {
+      organizations: Array.from(new Set([...organizations, orgId])),
     },
   })
 }
@@ -135,7 +147,7 @@ export const createUnit: Endpoint = {
         },
       })
 
-      await updateAdminOrganizations(req.payload, admin, createOrganization.id)
+      await addOrganizationToAdmin(req.payload, admin, createOrganization.id)
 
       return new Response(JSON.stringify(createOrganization), {
         status: 201,

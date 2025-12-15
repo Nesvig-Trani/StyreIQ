@@ -16,7 +16,12 @@ import { useState, useEffect, useMemo } from 'react'
 import { User } from '@/types/payload-types'
 import { fetchFilteredUsers } from '../services/getFilteredUsersFromUnit'
 
-function useCreateUnit({ userRole, organizations, defaultParentOrg }: CreateUnitFormProps) {
+function useCreateUnit({
+  userRole,
+  organizations,
+  defaultParentOrg,
+  selectedTenantId,
+}: CreateUnitFormProps) {
   const router = useRouter()
   const [filteredUsers, setFilteredUsers] = useState<User[]>([])
 
@@ -120,8 +125,12 @@ function useCreateUnit({ userRole, organizations, defaultParentOrg }: CreateUnit
       schema: createUnitFormSchema,
       fields,
       onSubmit: async (submitData) => {
+        const data = {
+          ...submitData,
+          tenant: selectedTenantId,
+        }
         try {
-          await createUnit(submitData)
+          await createUnit(data)
           form.reset()
           toast.success('Unit created successfully')
           router.push('/dashboard/units')
