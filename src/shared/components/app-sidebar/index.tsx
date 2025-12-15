@@ -13,10 +13,11 @@ import {
 import { LogOut, Building2 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Tenant, User } from '@/types/payload-types'
+import type { Tenant, User } from '@/types/payload-types'
 import { useAccess } from '@/shared/hooks/use-access'
 import { mainNavigation } from './nav-config'
 import { roleLabelMap, UserRolesEnum } from '@/features/users'
+import { TenantSelector } from '@/features/tenants/components/tenant-selector'
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user: User
@@ -27,6 +28,8 @@ export function AppSidebar({ user, tenant, ...props }: AppSidebarProps) {
   const router = useRouter()
   const pathname = usePathname()
   const { can } = useAccess(user)
+
+  const isSuperAdmin = user.role === UserRolesEnum.SuperAdmin
 
   const allowedNavItems = mainNavigation.filter((item) =>
     can(item.permission.action, item.permission.resource),
@@ -51,25 +54,27 @@ export function AppSidebar({ user, tenant, ...props }: AppSidebarProps) {
         </SidebarMenu>
       </SidebarHeader>
 
-      <div className="flex flex-col gap-2 px-4 pb-2">
-        <div className="flex justify-center">
-          <div className="p-3 bg-gray-50 rounded-lg w-full">
-            <div className="min-w-0">
-              <div className="text-xs font-medium text-gray-900 truncate">
-                {roleLabelMap[user.role as UserRolesEnum]}
-              </div>
-              <div className="text-xs text-gray-500 truncate">{user.email}</div>
+      <div className="flex flex-col gap-3 px-4 pb-2">
+        <div className="p-3 bg-gray-50 rounded-lg w-full">
+          <div className="min-w-0">
+            <div className="text-xs font-medium text-gray-900 truncate">
+              {roleLabelMap[user.role as UserRolesEnum]}
             </div>
+            <div className="text-xs text-gray-500 truncate">{user.email}</div>
           </div>
         </div>
 
-        {tenant && user.role !== UserRolesEnum.SuperAdmin && (
+        {isSuperAdmin && <TenantSelector />}
+
+        {tenant && !isSuperAdmin && (
           <div className="px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg">
             <div className="flex items-center gap-2">
               <Building2 className="w-4 h-4 text-blue-600 flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <div className="text-xs font-medium text-blue-900 truncate">{tenant.name}</div>
-                <div className="text-xs text-blue-600 truncate">{tenant.domain}</div>
+                {tenant.domain && (
+                  <div className="text-xs text-blue-600 truncate">{tenant.domain}</div>
+                )}
               </div>
             </div>
           </div>
