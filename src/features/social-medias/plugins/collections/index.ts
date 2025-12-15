@@ -17,6 +17,7 @@ import { UserRolesEnum } from '@/features/users'
 import { getAccessibleOrgIdsForUserWithPayload } from '@/shared'
 import {
   extractTenantId,
+  extractTenantIdFromProperty,
   tenantValidatedDeleteAccess,
   tenantValidatedUpdateAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
@@ -282,8 +283,13 @@ export const SocialMedias: CollectionConfig = {
             id: data.id,
           })
 
-          if (existing && existing.tenant !== data.tenant) {
-            throw new Error('Cannot change tenant assignment after social media creation')
+          if (existing) {
+            const existingTenantId = extractTenantIdFromProperty(existing.tenant)
+            const dataTenantId = extractTenantIdFromProperty(data.tenant)
+
+            if (existingTenantId !== dataTenantId) {
+              throw new Error('Cannot change tenant assignment after social media creation')
+            }
           }
         }
 
@@ -293,8 +299,13 @@ export const SocialMedias: CollectionConfig = {
             id: typeof data.organization === 'object' ? data.organization.id : data.organization,
           })
 
-          if (org && org.tenant !== data.tenant) {
-            throw new Error('Organization must belong to the same tenant')
+          if (org) {
+            const orgTenantId = extractTenantIdFromProperty(org.tenant)
+            const dataTenantId = extractTenantIdFromProperty(data.tenant)
+
+            if (orgTenantId !== dataTenantId) {
+              throw new Error('Organization must belong to the same tenant')
+            }
           }
         }
 

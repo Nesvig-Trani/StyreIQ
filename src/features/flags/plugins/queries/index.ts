@@ -3,15 +3,15 @@ import { FlagsCollectionSlug } from '../types'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { FlagStatusEnum, FlagTypeEnum } from '@/features/flags/schemas'
 import { endOfDay, startOfDay } from 'date-fns'
-import { User, Where } from 'payload'
+import { Where } from 'payload'
 import { Flag } from '@/types/payload-types'
 import { UserRolesEnum } from '@/features/users'
 import { getAccessibleOrgIdsForUser } from '@/shared'
 import { SocialMediasCollectionSlug } from '@/features/social-medias'
 import {
-  normalizeUserTenant,
-  extractTenantId,
-} from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+  createUserForQueriesFromCookie,
+  getSelectedTenantIdFromCookie,
+} from '@/app/(dashboard)/server-tenant-context'
 
 export const getFlags = async ({
   flagType,
@@ -36,6 +36,25 @@ export const getFlags = async ({
 }) => {
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
+
+  if (!user) {
+    return {
+      docs: [],
+      totalDocs: 0,
+      hasNextPage: false,
+      hasPrevPage: false,
+      totalPages: 0,
+      limit: 0,
+      page: 1,
+      pagingCounter: 0,
+      prevPage: null,
+      nextPage: null,
+    }
+  }
+
+  const userForQueries = await createUserForQueriesFromCookie(user)
+  const selectedTenantId = await getSelectedTenantIdFromCookie()
+
   const lastActivity: Record<string, string | Date> = {}
 
   if (lastActivityFrom) {
@@ -62,7 +81,10 @@ export const getFlags = async ({
     ...(Object.keys(lastActivity).length > 0 && { lastActivity }),
     ...(Object.keys(detectionDate).length > 0 && { detectionDate }),
   }
-  const userWithTenantId = normalizeUserTenant(user as User)
+
+  if (user.role === UserRolesEnum.SuperAdmin && selectedTenantId !== null) {
+    where.tenant = { equals: selectedTenantId }
+  }
 
   const flags = await payload.find({
     collection: FlagsCollectionSlug,
@@ -70,8 +92,8 @@ export const getFlags = async ({
     page: pageIndex + 1,
     where,
     depth: 1,
-    overrideAccess: false,
-    user: userWithTenantId,
+    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+    user: userForQueries,
   })
   return flags
 }
@@ -103,6 +125,8 @@ export const getFlagInfoForDashboard = async (): Promise<FlagsData> => {
     }
   }
 
+  const selectedTenantId = await getSelectedTenantIdFromCookie()
+
   let where: Where = {}
 
   switch (user.role) {
@@ -132,25 +156,22 @@ export const getFlagInfoForDashboard = async (): Promise<FlagsData> => {
       break
     }
     case UserRolesEnum.UnitAdmin: {
-      const accessibleOrgIds = await getAccessibleOrgIdsForUser(user)
+      const accessibleOrgIds = await getAccessibleOrgIdsForUser(user, selectedTenantId)
 
       where = {
-        'organizations.id': {
-          in: accessibleOrgIds,
-        },
+        'organizations.id': { in: accessibleOrgIds },
       }
       break
     }
     case UserRolesEnum.CentralAdmin: {
-      const tenantId = extractTenantId(user)
+      const tenantId = typeof user.tenant === 'object' ? user.tenant?.id : user.tenant
 
       where = tenantId ? { tenant: { equals: tenantId } } : {}
 
       break
     }
-
     case UserRolesEnum.SuperAdmin: {
-      where = {}
+      where = selectedTenantId !== null ? { tenant: { equals: selectedTenantId } } : {}
       break
     }
     default:

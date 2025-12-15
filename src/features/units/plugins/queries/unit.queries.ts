@@ -1,6 +1,10 @@
 'use server'
+import {
+  createUserForQueriesFromCookie,
+  getSelectedTenantIdFromCookie,
+} from '@/app/(dashboard)/server-tenant-context'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
-import { normalizeUserTenant } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+import { UserRolesEnum } from '@/shared/constants/user-roles'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { Where } from 'payload'
 
@@ -21,7 +25,16 @@ export const getAllUnits = async () => {
       }
     }
 
-    const userWithTenantId = normalizeUserTenant(user)
+    const userForQueries = await createUserForQueriesFromCookie(user)
+    const selectedTenantId = await getSelectedTenantIdFromCookie()
+
+    const where: Where = {
+      or: [{ disabled: { equals: false } }, { disabled: { equals: null } }],
+    }
+
+    if (user.role === UserRolesEnum.SuperAdmin && selectedTenantId !== null) {
+      where.tenant = { equals: selectedTenantId }
+    }
 
     const organizations = await payload.find({
       collection: 'organization',
@@ -32,13 +45,12 @@ export const getAllUnits = async () => {
         parentOrg: true,
         depth: true,
         path: true,
+        tenant: true,
       },
-      where: {
-        or: [{ disabled: { equals: false } }, { disabled: { equals: null } }],
-      },
+      where,
       limit: 0,
-      overrideAccess: false,
-      user: userWithTenantId,
+      overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+      user: userForQueries,
     })
     return organizations
   } catch {
@@ -70,26 +82,33 @@ export const getUnitsWithFilter = async ({ status, type }: { status?: string; ty
     }
   }
 
-  const userWithTenantId = normalizeUserTenant(user)
+  const userForQueries = await createUserForQueriesFromCookie(user)
+  const selectedTenantId = await getSelectedTenantIdFromCookie()
 
   const disabledFilter = {
     or: [{ disabled: { equals: false } }, { disabled: { equals: null } }],
   }
 
   if (user?.role === 'super_admin') {
-    // If the user is a super admin, return all organizations with the specified filters
+    // If the user is a super admin, return all organizations with the specified filte
+    const where: Where = {
+      ...disabledFilter,
+      ...(status ? { status: { equals: status } } : {}),
+      ...(type ? { type: { equals: type } } : {}),
+    }
+
+    if (selectedTenantId !== null) {
+      where.tenant = { equals: selectedTenantId }
+    }
+
     return payload.find({
       collection: 'organization',
       depth: 1,
-      overrideAccess: false,
-      user: userWithTenantId,
+      overrideAccess: true,
+      user: userForQueries,
       limit: 0,
       sort: ['createdAt'],
-      where: {
-        ...disabledFilter,
-        ...(status ? { status: { equals: status } } : {}),
-        ...(type ? { type: { equals: type } } : {}),
-      },
+      where,
     })
   }
 
@@ -141,7 +160,7 @@ export const getUnitsWithFilter = async ({ status, type }: { status?: string; ty
     collection: 'organization',
     depth: 1,
     overrideAccess: false,
-    user: userWithTenantId,
+    user: userForQueries,
     limit: 0,
     sort: ['createdAt'],
     where,

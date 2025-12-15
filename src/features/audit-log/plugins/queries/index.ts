@@ -2,7 +2,11 @@ import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { Where } from 'payload'
 import { endOfDay, startOfDay } from 'date-fns'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
-import { normalizeUserTenant } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+import {
+  createUserForQueriesFromCookie,
+  getSelectedTenantIdFromCookie,
+} from '@/app/(dashboard)/server-tenant-context'
+import { UserRolesEnum } from '@/features/users'
 
 type WithId = { id: number }
 
@@ -51,7 +55,9 @@ export const getAuditLogs = async ({
       nextPage: null,
     }
 
-  const userWithTenantId = normalizeUserTenant(user)
+  const userForQueries = await createUserForQueriesFromCookie(user)
+  const selectedTenantId = await getSelectedTenantIdFromCookie()
+
   const createdAt: Record<string, string | Date> = {}
   if (from) {
     createdAt.greater_than_equal = startOfDay(new Date(from))
@@ -60,19 +66,25 @@ export const getAuditLogs = async ({
     createdAt.less_than_equal = endOfDay(new Date(to))
   }
 
+  const where: Where = {
+    ...(entity.length > 0 && { entity: { in: entity } }),
+    ...(action.length > 0 && { action: { in: action } }),
+    ...(userId && { user: { equals: userId } }),
+    ...(Object.keys(createdAt).length > 0 && { createdAt }),
+  }
+
+  if (user.role === UserRolesEnum.SuperAdmin && selectedTenantId !== null) {
+    where.tenant = { equals: selectedTenantId }
+  }
+
   const baseLogs = await payload.find({
     collection: 'audit_log',
     depth: 1,
     limit: 0,
     page: pageIndex + 1,
-    where: {
-      ...(entity.length > 0 && { entity: { in: entity } }),
-      ...(action.length > 0 && { action: { in: action } }),
-      ...(userId && { user: { equals: userId } }),
-      ...(Object.keys(createdAt).length > 0 && { createdAt }),
-    },
-    overrideAccess: false,
-    user: userWithTenantId,
+    where,
+    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+    user: userForQueries,
   })
 
   const filterByEntityAndId = (entity: EntityType, id: number, docs: typeof baseLogs.docs) =>
@@ -116,9 +128,10 @@ export const getSocialMediaAuditLogs = async ({
 
   if (!user) return { docs: [] }
 
-  const userWithTenantId = normalizeUserTenant(user)
+  const userForQueries = await createUserForQueriesFromCookie(user)
 
   const createdAt: Record<string, string | Date> = {}
+  const selectedTenantId = await getSelectedTenantIdFromCookie()
 
   const where: Where = {
     entity: { equals: 'social-medias' },
@@ -128,12 +141,16 @@ export const getSocialMediaAuditLogs = async ({
     or: [{ 'current.id': { equals: socialMediaId } }, { 'prev.id': { equals: socialMediaId } }],
   }
 
+  if (user.role === UserRolesEnum.SuperAdmin && selectedTenantId !== null) {
+    where.tenant = { equals: selectedTenantId }
+  }
+
   const auditLogs = await payload.find({
     collection: 'audit_log',
     depth: 1,
     where,
-    overrideAccess: false,
-    user: userWithTenantId,
+    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+    user: userForQueries,
   })
 
   return auditLogs
