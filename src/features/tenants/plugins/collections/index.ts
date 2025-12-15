@@ -2,7 +2,9 @@ import { CollectionConfig } from 'payload'
 import {
   createTenant,
   getAggregateMetrics,
+  getSelectedTenant,
   getTenantMetrics,
+  selectTenant,
   updateGovernanceSettings,
 } from '../endpoints'
 
@@ -182,5 +184,12 @@ export const Tenants: CollectionConfig = {
     },
   ],
   timestamps: true,
-  endpoints: [getAggregateMetrics, updateGovernanceSettings, getTenantMetrics, createTenant],
+  endpoints: [
+    getAggregateMetrics,
+    updateGovernanceSettings,
+    getTenantMetrics,
+    createTenant,
+    selectTenant,
+    getSelectedTenant,
+  ],
 }

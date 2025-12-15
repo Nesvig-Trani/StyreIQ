@@ -1,19 +1,33 @@
 import { serverAuthGuard } from '@/features/auth/hooks/serverAuthGuard'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { UserRolesEnum } from '@/features/users'
+import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 
 import { Button } from '@/shared/components/ui/button'
+import { Badge } from '@/shared/components/ui/badge'
 import Link from 'next/link'
-import { Users, AlertTriangle, ShieldAlert, UserCheck, CheckCircle, XCircle } from 'lucide-react'
+import {
+  Users,
+  AlertTriangle,
+  ShieldAlert,
+  UserCheck,
+  CheckCircle,
+  XCircle,
+  Building2,
+  Globe,
+} from 'lucide-react'
 import { ActivityIcon } from 'lucide-react'
+
 import { getUsersInfoForDashboard } from '@/features/users/plugins/queries'
 import { getFlagInfoForDashboard } from '@/features/flags/plugins/queries'
 import { getSocialMediaAccountsCount } from '@/features/social-medias/plugins/queries'
+
 import { AggregateMetricsView } from '@/features/dashboard/components/aggregate-metrics'
 import { CentralAdminDashboard } from '@/features/dashboard/components/central-admin-dashboard'
 import { HeaderMetricCard } from '@/features/dashboard/components/header-metric-card'
 import { StatusCard } from '@/features/dashboard/components/status-card'
 import { DashboardRiskSection } from '@/features/dashboard/components/dashboard-client-wrapper'
+import { getServerTenantContext } from '../server-tenant-context'
 
 const getRiskLevel = (value: number, thresholds: { low: number; medium: number }) => {
   if (value >= thresholds.medium) return 'high'
@@ -24,6 +38,10 @@ const getRiskLevel = (value: number, thresholds: { low: number; medium: number }
 export default async function DashboardPage() {
   await serverAuthGuard()
   const { user } = await getAuthUser()
+  const { payload } = await getPayloadContext()
+
+  const tenantContext = await getServerTenantContext(user, payload)
+  const { selectedTenant, isViewingAllTenants } = tenantContext
 
   const tenant = user && typeof user.tenant === 'object' ? user.tenant : null
   const tenantId = tenant?.id || (user && (user.tenant as number))
@@ -47,7 +65,26 @@ export default async function DashboardPage() {
       <div className="mb-8">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div className="flex flex-col">
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 !m-0">Dashboard</h1>
+            <div className="flex items-center gap-3 flex-wrap">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900 !m-0">Dashboard</h1>
+
+              {user && user.role === UserRolesEnum.SuperAdmin && (
+                <>
+                  {isViewingAllTenants ? (
+                    <Badge variant="outline" className="bg-gray-100 text-gray-600">
+                      <Globe className="h-3 w-3 mr-1" />
+                      All Tenants
+                    </Badge>
+                  ) : selectedTenant ? (
+                    <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                      <Building2 className="h-3 w-3 mr-1" />
+                      {selectedTenant.name}
+                    </Badge>
+                  ) : null}
+                </>
+              )}
+            </div>
+
             <p className="text-sm text-gray-600 !mt-2 !ml-1">
               Monitor social media governance and risk across your organization
             </p>
@@ -57,15 +94,19 @@ export default async function DashboardPage() {
             <Button variant="outline">
               <Link href={`/dashboard/social-media-accounts`}>View All Accounts</Link>
             </Button>
-            <Button variant="default">
-              <Link href={`/dashboard/social-media-accounts/create`}>Create Account</Link>
-            </Button>
+            {!isViewingAllTenants && (
+              <Button variant="default">
+                <Link href={`/dashboard/social-media-accounts/create`}>Create Account</Link>
+              </Button>
+            )}
           </div>
         </div>
       </div>
 
       <main className="mx-auto px-0 py-0">
-        {user && user.role === UserRolesEnum.SuperAdmin && <AggregateMetricsView />}
+        {user && user.role === UserRolesEnum.SuperAdmin && isViewingAllTenants && (
+          <AggregateMetricsView />
+        )}
         {user && user.role === UserRolesEnum.CentralAdmin && user.tenant && (
           <CentralAdminDashboard tenantId={tenantId} />
         )}

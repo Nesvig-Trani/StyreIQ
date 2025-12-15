@@ -54,3 +54,22 @@ export const updateGovernanceSettings = async (
 
   return response.json()
 }
+
+export const selectTenantRequest = async (tenantId: number | null) => {
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/tenants/select-tenant`, {
+    method: 'POST',
+    headers: JSON_HEADERS,
+    credentials: 'include',
+    body: JSON.stringify({ tenantId }),
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}))
+    throw new EndpointError(
+      errorData.error || errorData.message || 'Failed to select tenant',
+      response.status,
+    )
+  }
+
+  return response.json()
+}
