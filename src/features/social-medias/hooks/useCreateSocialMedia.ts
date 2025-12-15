@@ -21,6 +21,7 @@ export function useCreateSocialMedia({
   users,
   organizations,
   currentUser,
+  selectedTenantId,
 }: CreateSocialMediaFormProps) {
   const tree = createUnitTree(organizations as UnitWithDepth[])
   const router = useRouter()
@@ -279,6 +280,7 @@ export function useCreateSocialMedia({
           const dataToSubmit = {
             ...submitData,
             ...(currentUser?.role === 'unit_admin' && { status: 'pending' }),
+            tenant: selectedTenantId,
           }
 
           await createSocialMedia(dataToSubmit)

@@ -109,6 +109,7 @@ export const createSocialMedia: Endpoint = {
 
       const data = await req.json()
       const dataParsed = createSocialMediaFormSchema.parse(data)
+
       if (!data.tenant && user && user.tenant) {
         data.tenant = extractTenantIdFromProperty(user.tenant)
       }
@@ -176,6 +177,7 @@ export const createSocialMedia: Endpoint = {
           socialMediaManagers: Array.isArray(dataParsed.socialMediaManagers)
             ? dataParsed.socialMediaManagers.map(Number)
             : [],
+          tenant: dataParsed.tenant,
         },
         req,
       })
@@ -333,6 +335,7 @@ export const updateSocialMediaStatus: Endpoint = {
         id: socialMediaId,
         data: {
           status: data.status,
+          tenant: data.tenant,
           ...(data.deactivationReason && { deactivationReason: data.deactivationReason }),
         },
         req,

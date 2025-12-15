@@ -50,6 +50,7 @@ export const userBaseSchema = z.object({
       return undefined
     }, z.date())
     .optional(),
+  tenant: z.number().nullable().optional(),
 })
 
 export const createUserFormSchema = userBaseSchema.superRefine((data, ctx) => {

@@ -11,9 +11,10 @@ import { affectedEntityOptions } from '../constants/affectedEntityOptions'
 interface CreateFlagFormProps {
   users: User[]
   socialMedias: SocialMedia[]
+  selectedTenantId: number | null
 }
 
-export function useCreateFlag({ users, socialMedias }: CreateFlagFormProps) {
+export function useCreateFlag({ users, socialMedias, selectedTenantId }: CreateFlagFormProps) {
   const router = useRouter()
 
   const { formComponent, form } = useFormHelper(
@@ -82,7 +83,11 @@ export function useCreateFlag({ users, socialMedias }: CreateFlagFormProps) {
         },
       ],
       onSubmit: async (submitData) => {
-        await createFlag(submitData)
+        const dataWithTenant = {
+          ...submitData,
+          tenant: selectedTenantId,
+        }
+        await createFlag(dataWithTenant)
         form.reset()
         toast.success('Risk flag created successfully')
         router.push('/dashboard/flags')

@@ -8,17 +8,20 @@ interface UserFormProps {
   authUserRole?: UserRolesEnum | null
   initialOrganizations: Organization[]
   topOrgDepth?: number
+  selectedTenantId: number | null
 }
 
 export const CreateUserForm: React.FC<UserFormProps> = ({
   authUserRole,
   initialOrganizations,
   topOrgDepth,
+  selectedTenantId,
 }) => {
   const { formComponent } = useCreateUserForm({
     authUserRole,
     initialOrganizations,
     topOrgDepth,
+    selectedTenantId,
   })
 
   return <div>{formComponent}</div>
