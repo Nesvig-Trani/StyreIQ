@@ -4,18 +4,24 @@ import { CreateUserForm, UserRolesEnum } from '@/features/users'
 import { Organization } from '@/types/payload-types'
 import { checkUserCreateAccess } from '@/shared'
 import { getAccessibleOrganizationsForUser } from '@/shared'
-
 import { ChevronRight, Home } from 'lucide-react'
 import { Card, CardContent } from '@/shared'
+import { getPayloadContext } from '@/shared/utils/getPayloadContext'
+import { getServerTenantContext } from '@/app/(dashboard)/server-tenant-context'
 
 export default async function CreateUserPage() {
   const { user, accessDenied, component } = await checkUserCreateAccess()
+  const { payload } = await getPayloadContext()
+  const tenantContext = await getServerTenantContext(user, payload)
 
   if (accessDenied) {
     return component
   }
 
-  const organizations = await getAccessibleOrganizationsForUser(user)
+  const organizations = await getAccessibleOrganizationsForUser(
+    user,
+    tenantContext.tenantIdForFilter,
+  )
 
   const userOrgs = user?.organizations as Organization[]
 
@@ -57,6 +63,7 @@ export default async function CreateUserPage() {
                 initialOrganizations={organizations}
                 authUserRole={user?.role as UserRolesEnum}
                 topOrgDepth={orgWithMinDepth?.depth || undefined}
+                selectedTenantId={tenantContext.tenantIdForFilter}
               />
             </div>
           </CardContent>

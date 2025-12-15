@@ -5,14 +5,21 @@ import LexicalEditor from '@/shared/components/rich-text-editor'
 import { Card, CardContent } from '@/shared/components/ui/card'
 import { Badge } from '@/shared/components/ui/badge'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
+import { getPayloadContext } from '@/shared/utils/getPayloadContext'
+import { getServerTenantContext } from '../../server-tenant-context'
+import { Globe } from 'lucide-react'
 
 export default async function PoliciesPage() {
-  const lastPolicy = await getLastPolicyVersion()
+  const { user } = await getAuthUser()
+  const { payload } = await getPayloadContext()
+  const tenantContext = await getServerTenantContext(user, payload)
+  const isSuperAdmin = user?.role === 'super_admin'
+
+  const isViewingAllTenants = tenantContext.isViewingAllTenants
+
+  const lastPolicy = isViewingAllTenants ? null : await getLastPolicyVersion()
   const policies = await getPolicies()
   const initialState = JSON.stringify(lastPolicy?.text ?? emptyLexicalState)
-
-  const { user } = await getAuthUser()
-  const isSuperAdmin = user?.role === 'super_admin'
 
   return (
     <Card>
@@ -22,29 +29,55 @@ export default async function PoliciesPage() {
             <div className="space-y-2">
               <div className="flex items-center gap-3">
                 <h2 className="text-2xl font-bold">Governance Policy Editor</h2>
-                <Badge variant="secondary" className="text-xs">
-                  Current Version {lastPolicy?.version || 0}
-                </Badge>
+                {!isViewingAllTenants && lastPolicy && (
+                  <Badge variant="secondary" className="text-xs">
+                    Current Version {lastPolicy.version}
+                  </Badge>
+                )}
               </div>
               <div className="space-y-3">
                 <h3 className="text-lg font-semibold">
-                  {isSuperAdmin
-                    ? 'Keep your rules in one place.'
-                    : 'Check current policies and rules.'}
+                  {isViewingAllTenants
+                    ? 'Select a tenant to manage policies'
+                    : isSuperAdmin
+                      ? 'Keep your rules in one place.'
+                      : 'Check current policies and rules.'}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  {isSuperAdmin
-                    ? 'Upload and share policies, guidelines, and compliance documents so every unit has the same source of truth. When a new policy is added or updated, users are prompted to attest they&apos;ve read and acknowledged it.'
-                    : 'Here you can view current policies, guidelines, and compliance documents. Only Super Admins can edit and update these policies.'}
+                  {isViewingAllTenants
+                    ? 'Policies are tenant-specific. Please select a tenant from the selector to view or edit their governance policies.'
+                    : isSuperAdmin
+                      ? 'Upload and share policies, guidelines, and compliance documents so every unit has the same source of truth. When a new policy is added or updated, users are prompted to attest they&apos;ve read and acknowledged it.'
+                      : 'Here you can view current policies, guidelines, and compliance documents. Only Super Admins can edit and update these policies.'}
                 </p>
               </div>
             </div>
-            <div className="w-full sm:w-auto">
-              <PolicyHistory policies={policies.docs} />
-            </div>
+
+            {!isViewingAllTenants && (
+              <div className="w-full sm:w-auto">
+                <PolicyHistory policies={policies.docs} />
+              </div>
+            )}
           </div>
         </div>
-        <LexicalEditor initialState={initialState} isSuperAdmin={isSuperAdmin} />
+
+        {isViewingAllTenants ? (
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
+            <div className="max-w-md mx-auto space-y-4">
+              <Globe className="h-12 w-12 mx-auto text-gray-400" />
+              <h3 className="text-lg font-semibold text-gray-900">Viewing All Tenants</h3>
+              <p className="text-sm text-gray-600">
+                To create or edit policies, please select a specific tenant.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <LexicalEditor
+            initialState={initialState}
+            isSuperAdmin={isSuperAdmin}
+            selectedTenantId={tenantContext.tenantIdForFilter}
+          />
+        )}
       </CardContent>
     </Card>
   )

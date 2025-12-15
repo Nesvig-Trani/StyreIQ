@@ -7,11 +7,15 @@ import { getFlags } from '@/features/flags/plugins/queries'
 import Link from 'next/link'
 import { CirclePlus } from 'lucide-react'
 import { getAllUnits } from '@/features/units/plugins/queries'
+import { getServerTenantContext } from '../../server-tenant-context'
+import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 
 export default async function FlagsPage(props: {
   searchParams?: Promise<{ [key: string]: string }>
 }) {
   const { user } = await getAuthUser()
+  const { payload } = await getPayloadContext()
+  const tenantContext = await getServerTenantContext(user, payload)
   const searchParams = await props.searchParams
 
   const parsedParams = parseSearchParamsWithSchema(searchParams, flagsSearchSchema)
@@ -52,16 +56,18 @@ export default async function FlagsPage(props: {
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-              <Button size="sm" className="w-full sm:w-auto">
-                <Link
-                  className="flex items-center justify-center gap-2"
-                  href="/dashboard/flags/create"
-                  prefetch
-                >
-                  <CirclePlus className="h-4 w-4" />
-                  Create Risk Flag
-                </Link>
-              </Button>
+              {!tenantContext.isViewingAllTenants && (
+                <Button size="sm" className="w-full sm:w-auto">
+                  <Link
+                    className="flex items-center justify-center gap-2"
+                    href="/dashboard/flags/create"
+                    prefetch
+                  >
+                    <CirclePlus className="h-4 w-4" />
+                    Create Risk Flag
+                  </Link>
+                </Button>
+              )}
             </div>
           </div>
         </div>

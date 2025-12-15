@@ -28,6 +28,7 @@ export type DashboardSocialMediasProps = {
   socialMedias: SocialMediasPaginated
   organizations: Organization[]
   users: User[]
+  isViewingAllTenants?: boolean
 }
 
 export const DashboardSocialMedias: React.FC<DashboardSocialMediasProps> = ({
@@ -35,6 +36,7 @@ export const DashboardSocialMedias: React.FC<DashboardSocialMediasProps> = ({
   socialMedias,
   organizations,
   users,
+  isViewingAllTenants = false,
 }) => {
   const { can } = useAccess(user)
 
@@ -63,7 +65,7 @@ export const DashboardSocialMedias: React.FC<DashboardSocialMediasProps> = ({
               </div>
             </div>
             <div className="w-full sm:w-auto">
-              {can('create', 'SOCIAL_MEDIAS') && (
+              {can('create', 'SOCIAL_MEDIAS') && !isViewingAllTenants && (
                 <Button size="sm" className="w-full sm:w-auto">
                   <Link
                     title="create social media account"
