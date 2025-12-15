@@ -1,12 +1,15 @@
 import { JSON_HEADERS } from '@/shared/constants'
 import { env } from '@/config/env'
 
-export const savePolicy = async ({ data }: { data: unknown }) => {
+export const savePolicy = async ({ data, tenant }: { data: unknown; tenant?: number | null }) => {
   const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/policies`, {
     method: 'POST',
     headers: JSON_HEADERS,
     credentials: 'include',
-    body: JSON.stringify({ text: data }),
+    body: JSON.stringify({
+      text: data,
+      tenant: tenant,
+    }),
   })
 
   if (!response.ok) {
@@ -16,12 +19,21 @@ export const savePolicy = async ({ data }: { data: unknown }) => {
   return response.json()
 }
 
-export const acceptPolicy = async ({ policy }: { policy: number }) => {
+export const acceptPolicy = async ({
+  policy,
+  tenant,
+}: {
+  policy: number
+  tenant?: number | null
+}) => {
   const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/acknowledgments`, {
     method: 'POST',
     headers: JSON_HEADERS,
     credentials: 'include',
-    body: JSON.stringify({ policy }),
+    body: JSON.stringify({
+      policy,
+      tenant: tenant,
+    }),
   })
 
   if (!response.ok) {

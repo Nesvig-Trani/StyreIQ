@@ -58,7 +58,7 @@ export async function getServerTenantContext(
     where: {
       status: { equals: 'active' },
     },
-    limit: 1,
+    limit: 0,
     sort: 'name',
   })
 
