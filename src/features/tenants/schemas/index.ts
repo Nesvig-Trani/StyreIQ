@@ -1,6 +1,8 @@
 import { paginationSchema } from '@/shared/schemas/pagination'
 import { z } from 'zod'
 
+export const SELECTED_TENANT_COOKIE_NAME = 'styreiq_selected_tenant'
+export const COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 30
 export const tenantSearchSchema = paginationSchema.extend({
   tenantId: z.array(z.coerce.number()).optional(),
 })

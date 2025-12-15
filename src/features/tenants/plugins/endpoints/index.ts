@@ -2,9 +2,16 @@ import { Endpoint } from 'payload'
 import { UserRolesEnum } from '@/features/users'
 import { EndpointError } from '@/shared'
 import { JSON_HEADERS } from '@/shared/constants'
-import { extractTenantId } from '../collections/helpers/access-control-helpers'
+import {
+  extractTenantId,
+  getSelectedTenantFromRequest,
+} from '../collections/helpers/access-control-helpers'
 import { Tenant, ComplianceTask } from '@/types/payload-types'
-import { createTenantSchema } from '../../schemas'
+import {
+  COOKIE_MAX_AGE_SECONDS,
+  createTenantSchema,
+  SELECTED_TENANT_COOKIE_NAME,
+} from '../../schemas'
 import { UnitTypeEnum } from '@/features/units'
 import { AuditLogActionEnum } from '@/features/audit-log/plugins/types'
 
@@ -301,5 +308,136 @@ export const updateGovernanceSettings: Endpoint = {
       status: 200,
       headers: JSON_HEADERS,
     })
+  },
+}
+
+export const selectTenant: Endpoint = {
+  path: '/select-tenant',
+  method: 'post',
+  handler: async (req) => {
+    if (!req.json) {
+      throw new EndpointError('Missing JSON body', 400)
+    }
+
+    const body = await req.json()
+    const { tenantId } = body as { tenantId: number | null }
+
+    // Explicitly clear tenant selection (view all tenants)
+    if (tenantId === null || tenantId === undefined) {
+      const response = new Response(
+        JSON.stringify({
+          success: true,
+          message: 'Switched to viewing all tenants',
+          tenant: null,
+        }),
+        { status: 200, headers: JSON_HEADERS },
+      )
+
+      response.headers.set(
+        'Set-Cookie',
+        `${SELECTED_TENANT_COOKIE_NAME}=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax`,
+      )
+
+      return response
+    }
+
+    let tenant
+    try {
+      tenant = await req.payload.findByID({
+        collection: 'tenants',
+        id: tenantId,
+      })
+    } catch {
+      throw new EndpointError(`Tenant with ID ${tenantId} not found`, 404)
+    }
+
+    const isProduction = process.env.NODE_ENV === 'production'
+    const cookieValue = [
+      `${SELECTED_TENANT_COOKIE_NAME}=${tenantId}`,
+      'Path=/',
+      `Max-Age=${COOKIE_MAX_AGE_SECONDS}`,
+      'HttpOnly',
+      'SameSite=Lax',
+      isProduction ? 'Secure' : '',
+    ]
+      .filter(Boolean)
+      .join('; ')
+
+    const response = new Response(
+      JSON.stringify({
+        success: true,
+        message: `Switched to tenant: ${tenant.name}`,
+        tenant: {
+          id: tenant.id,
+          name: tenant.name,
+          domain: tenant.domain,
+        },
+      }),
+      { status: 200, headers: JSON_HEADERS },
+    )
+
+    response.headers.set('Set-Cookie', cookieValue)
+
+    return response
+  },
+}
+
+export const getSelectedTenant: Endpoint = {
+  path: '/selected-tenant',
+  method: 'get',
+  handler: async (req) => {
+    const selectedTenantId = getSelectedTenantFromRequest(req)
+
+    if (!selectedTenantId) {
+      return new Response(
+        JSON.stringify({
+          success: true,
+          tenant: null,
+          isViewingAllTenants: true,
+        }),
+        { status: 200, headers: JSON_HEADERS },
+      )
+    }
+
+    let tenant
+    try {
+      tenant = await req.payload.findByID({
+        collection: 'tenants',
+        id: selectedTenantId,
+      })
+    } catch {
+      return new Response(
+        JSON.stringify({
+          success: true,
+          tenant: null,
+          isViewingAllTenants: true,
+        }),
+        { status: 200, headers: JSON_HEADERS },
+      )
+    }
+
+    if (!tenant) {
+      return new Response(
+        JSON.stringify({
+          success: true,
+          tenant: null,
+          isViewingAllTenants: true,
+        }),
+        { status: 200, headers: JSON_HEADERS },
+      )
+    }
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        tenant: {
+          id: tenant.id,
+          name: tenant.name,
+          domain: tenant.domain,
+        },
+        isViewingAllTenants: false,
+      }),
+      { status: 200, headers: JSON_HEADERS },
+    )
   },
 }
