@@ -1,7 +1,16 @@
+import { SELECTED_TENANT_COOKIE_NAME } from '@/features/tenants/schemas'
 import { UserRolesEnum } from '@/features/users'
 import { getAccessibleOrgIdsForUserWithPayload } from '@/shared'
 import { Tenant } from '@/types/payload-types'
-import { Access, CollectionSlug, PayloadRequest, User, Where } from 'payload'
+import {
+  Access,
+  CollectionAfterDeleteHook,
+  CollectionSlug,
+  FieldHook,
+  PayloadRequest,
+  User,
+  Where,
+} from 'payload'
 
 interface HasId {
   id: number
@@ -26,11 +35,6 @@ function hasId(value: unknown): value is HasId {
     'id' in value &&
     typeof (value as HasId).id === 'number'
   )
-}
-
-export function normalizeUserTenant(user: User): User {
-  const tenantId = extractTenantId(user)
-  return { ...user, tenant: tenantId } as User
 }
 
 export function extractTenantId(user: User | null | undefined): number | null {
@@ -232,29 +236,54 @@ export const socialMediaManagerReadAccess: Access = async ({ req }): Promise<boo
   }
 }
 
-export const adminOnlyCreateAccess: Access = async ({ req }) => {
+export const adminOnlyCreateAccess: Access = async ({ req, data }) => {
   const { user } = req
   if (!user) return false
 
   const { role } = user
 
   switch (role) {
-    case UserRolesEnum.SuperAdmin:
-    case UserRolesEnum.CentralAdmin:
+    case UserRolesEnum.SuperAdmin: {
+      const selectedTenantId = getSelectedTenantFromRequest(req)
+      const dataTenantId = data?.tenant ? extractTenantIdFromProperty(data.tenant) : null
+      if (!dataTenantId && !selectedTenantId) {
+        return false
+      }
+
       return true
+    }
+    case UserRolesEnum.CentralAdmin: {
+      const tenantId = extractTenantId(user)
+      if (!tenantId) return false
+
+      const dataTenantId = data?.tenant ? extractTenantIdFromProperty(data.tenant) : null
+
+      if (dataTenantId && dataTenantId !== tenantId) {
+        return false
+      }
+
+      return true
+    }
     default:
       return false
   }
 }
 
-export const managerCreateAccess: Access = async ({ req }) => {
+export const managerCreateAccess: Access = async ({ req, data }) => {
   const { user } = req
   if (!user) return false
 
   const { role } = user
 
   switch (role) {
-    case UserRolesEnum.SuperAdmin:
+    case UserRolesEnum.SuperAdmin: {
+      const selectedTenantId = getSelectedTenantFromRequest(req)
+      const dataTenantId = data?.tenant ? extractTenantIdFromProperty(data.tenant) : null
+      if (!dataTenantId && !selectedTenantId) {
+        return false
+      }
+      return true
+    }
     case UserRolesEnum.CentralAdmin:
     case UserRolesEnum.UnitAdmin:
       return true
@@ -263,33 +292,20 @@ export const managerCreateAccess: Access = async ({ req }) => {
   }
 }
 
-export const tenantValidatedCreateAccess: Access = async ({ req, data }) => {
+export const tenantCreateAccess: Access = ({ req, data }) => {
+  if (!req.user) return false
+
   const { user } = req
-  if (!user) return false
-
   const { role } = user
 
-  if (role === UserRolesEnum.SuperAdmin) return true
-
-  const tenantId = extractTenantId(user)
-  if (!tenantId) return false
-
-  if (data?.tenant && data.tenant !== tenantId) return false
-
-  switch (role) {
-    case UserRolesEnum.CentralAdmin:
-      return true
-    default:
+  if (role === UserRolesEnum.SuperAdmin) {
+    const selectedTenantId = getSelectedTenantFromRequest(req)
+    const dataTenantId = data?.tenant ? extractTenantIdFromProperty(data.tenant) : null
+    if (!dataTenantId && !selectedTenantId) {
       return false
+    }
+    return true
   }
-}
-
-export const tenantCreateAccess: Access = ({ req: { user }, data }) => {
-  if (!user) return false
-
-  const { role } = user
-
-  if (role === UserRolesEnum.SuperAdmin) return true
 
   const tenantId = extractTenantId(user)
   if (!tenantId) return false
@@ -442,4 +458,52 @@ export const tenantValidatedDeleteAccess = (collectionSlug: CollectionSlug): Acc
       return false
     }
   }
+}
+
+export const getSelectedTenantFromRequest = (
+  req: Parameters<FieldHook>[0]['req'],
+): number | null => {
+  const cookieHeader = req.headers?.get?.('cookie') || ''
+
+  const cookies = cookieHeader.split(';').reduce(
+    (acc, cookie) => {
+      const [key, value] = cookie.trim().split('=')
+      if (key && value) {
+        acc[key] = value
+      }
+      return acc
+    },
+    {} as Record<string, string>,
+  )
+
+  const selectedTenantId = cookies[SELECTED_TENANT_COOKIE_NAME]
+
+  if (!selectedTenantId) return null
+
+  const tenantId = parseInt(selectedTenantId, 10)
+  return isNaN(tenantId) ? null : tenantId
+}
+
+export const getTenantIdForAuditLog = (
+  req: Parameters<CollectionAfterDeleteHook>[0]['req'],
+  doc: Record<string, unknown>,
+): number | null => {
+  const user = req.user
+
+  if (!user) return null
+
+  if (doc.tenant) {
+    if (typeof doc.tenant === 'object' && doc.tenant !== null && 'id' in doc.tenant) {
+      return (doc.tenant as { id: number }).id
+    }
+    if (typeof doc.tenant === 'number') {
+      return doc.tenant
+    }
+  }
+
+  if (user.role === UserRolesEnum.SuperAdmin) {
+    return getSelectedTenantFromRequest(req)
+  }
+
+  return extractTenantId(user)
 }
