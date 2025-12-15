@@ -46,33 +46,36 @@ export const TenantProvider: FC<TenantProviderProps> = ({
   const tenantIdForFilter = selectedTenant?.id ?? null
 
   useEffect(() => {
-    const currentId = selectedTenant?.id ?? null
-    const initialId = initialSelectedTenant?.id ?? null
-
-    if (currentId !== initialId) {
-      setSelectedTenant(initialSelectedTenant)
-    }
-  }, [initialSelectedTenant, selectedTenant?.id])
+    setSelectedTenant(initialSelectedTenant)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialSelectedTenant?.id])
 
   const selectTenant = useCallback(
     async (tenantId: number | null): Promise<void> => {
-      setIsLoading(true)
-      setError(null)
+      try {
+        setIsLoading(true)
+        setError(null)
 
-      await selectTenantRequest(tenantId)
+        await selectTenantRequest(tenantId)
 
-      if (tenantId === null) {
-        setSelectedTenant(null)
-      } else {
-        const tenant = availableTenants.find((t) => t.id === tenantId)
-        if (tenant) {
-          setSelectedTenant(tenant)
+        if (tenantId === null) {
+          setSelectedTenant(null)
         } else {
-          throw new Error('Tenant not found in available tenants')
+          const tenant = availableTenants.find((t) => t.id === tenantId)
+          if (tenant) {
+            setSelectedTenant(tenant)
+          } else {
+            throw new Error('Tenant not found in available tenants')
+          }
         }
-      }
 
-      router.refresh()
+        router.refresh()
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'Failed to switch tenant'
+        setError(errorMessage)
+      } finally {
+        setIsLoading(false)
+      }
     },
     [availableTenants, router],
   )
