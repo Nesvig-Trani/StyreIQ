@@ -4,7 +4,11 @@ import { Where } from 'payload'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { SocialMediasCollectionSlug } from '../collections'
-import { normalizeUserTenant } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+import {
+  createUserForQueriesFromCookie,
+  getSelectedTenantIdFromCookie,
+} from '@/app/(dashboard)/server-tenant-context'
+import { UserRolesEnum } from '@/shared/constants/user-roles'
 
 export const getAllSocialMediaAccounts = async () => {
   const { payload } = await getPayloadContext()
@@ -25,13 +29,21 @@ export const getAllSocialMediaAccounts = async () => {
     }
   }
 
-  const userWithTenantId = normalizeUserTenant(user)
+  const userForQueries = await createUserForQueriesFromCookie(user)
+  const selectedTenantId = await getSelectedTenantIdFromCookie()
+
+  const where: Where = {}
+
+  if (user.role === UserRolesEnum.SuperAdmin && selectedTenantId !== null) {
+    where.tenant = { equals: selectedTenantId }
+  }
 
   const socialMedias = await payload.find({
     collection: SocialMediasCollectionSlug,
+    where,
     limit: 0,
-    user: userWithTenantId,
-    overrideAccess: false,
+    user: userForQueries,
+    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
   })
 
   return socialMedias
@@ -45,30 +57,45 @@ export const getSocialMediaAccountsCount = async (): Promise<number> => {
     return 0
   }
 
-  const userWithTenantId = normalizeUserTenant(user)
+  const userForQueries = await createUserForQueriesFromCookie(user)
+  const selectedTenantId = await getSelectedTenantIdFromCookie()
 
   const where: Where = {}
 
-  if (user.role === 'unit_admin') {
-    const organizationIds = (user.organizations ?? []).map((org) =>
-      typeof org === 'object' && org !== null && 'id' in org ? org.id : (org as number),
-    )
-
-    if (organizationIds.length > 0) {
-      where['organization.id'] = { in: organizationIds }
-    } else {
-      where['organization.id'] = { in: [-1] }
+  switch (user.role) {
+    case UserRolesEnum.SuperAdmin: {
+      if (selectedTenantId !== null) {
+        where.tenant = { equals: selectedTenantId }
+      }
+      break
     }
-  } else if (user.role === 'social_media_manager') {
-    where['socialMediaManagers'] = { in: [user.id] }
+
+    case 'unit_admin': {
+      const organizationIds = (user.organizations ?? []).map((org) =>
+        typeof org === 'object' && org !== null && 'id' in org ? org.id : (org as number),
+      )
+
+      where['organization.id'] = {
+        in: organizationIds.length > 0 ? organizationIds : [-1],
+      }
+      break
+    }
+
+    case 'social_media_manager': {
+      where['socialMediaManagers'] = { in: [user.id] }
+      break
+    }
+
+    default:
+      break
   }
 
   const socialMediaAccounts = await payload.find({
     collection: SocialMediasCollectionSlug,
     where,
     limit: 0,
-    user: userWithTenantId,
-    overrideAccess: false,
+    user: userForQueries,
+    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
   })
 
   return socialMediaAccounts.totalDocs
@@ -106,33 +133,56 @@ export const getSocialMediaAccounts = async ({
       nextPage: null,
     }
 
-  const userWithTenantId = normalizeUserTenant(user)
+  const userForQueries = await createUserForQueriesFromCookie(user)
+  const selectedTenantId = await getSelectedTenantIdFromCookie()
 
   const where: Where = {
     ...(status?.length && { status: { in: status } }),
-    ...(platform?.length && {
-      // Let DB handle case-insensitive comparison if your adapter supports it.
-      platform: { in: platform },
-    }),
+    ...(platform?.length && { platform: { in: platform } }),
     ...(primaryAdmin?.length && {
       'primaryAdmin.id': { in: primaryAdmin.map(Number) },
     }),
   }
 
-  if (user?.role === 'unit_admin') {
-    const organizationIds = (user.organizations ?? []).map((org) =>
-      typeof org === 'object' && org !== null && 'id' in org ? org.id : (org as number),
-    )
-    if (organization?.length) {
-      const filteredOrgIds = organization.map(Number).filter((id) => organizationIds.includes(id))
-      where['organization.id'] = { in: filteredOrgIds.length > 0 ? filteredOrgIds : [-1] }
-    } else {
-      where['organization.id'] = { in: organizationIds.length > 0 ? organizationIds : [-1] }
+  switch (user.role) {
+    case UserRolesEnum.SuperAdmin: {
+      if (selectedTenantId !== null) {
+        where.tenant = { equals: selectedTenantId }
+      }
+      if (organization?.length) {
+        where['organization.id'] = { in: organization.map(Number) }
+      }
+      break
     }
-  } else if (user?.role === 'social_media_manager') {
-    where['socialMediaManagers'] = { in: [user.id] }
-  } else if (organization?.length) {
-    where['organization.id'] = { in: organization.map(Number) }
+
+    case 'unit_admin': {
+      const organizationIds = (user.organizations ?? []).map((org) =>
+        typeof org === 'object' && org !== null && 'id' in org ? org.id : (org as number),
+      )
+
+      if (organization?.length) {
+        const filteredOrgIds = organization.map(Number).filter((id) => organizationIds.includes(id))
+
+        where['organization.id'] = {
+          in: filteredOrgIds.length > 0 ? filteredOrgIds : [-1],
+        }
+      } else {
+        where['organization.id'] = {
+          in: organizationIds.length > 0 ? organizationIds : [-1],
+        }
+      }
+      break
+    }
+    case 'social_media_manager': {
+      where['socialMediaManagers'] = { in: [user.id] }
+      break
+    }
+    default: {
+      if (organization?.length) {
+        where['organization.id'] = { in: organization.map(Number) }
+      }
+      break
+    }
   }
 
   return await payload.find({
@@ -140,8 +190,8 @@ export const getSocialMediaAccounts = async ({
     where,
     limit: pageSize,
     page: pageIndex + 1,
-    user: userWithTenantId,
-    overrideAccess: false,
+    user: userForQueries,
+    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
   })
 }
 

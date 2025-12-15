@@ -5,25 +5,12 @@ import type { User } from '@/types/payload-types'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { UserRolesEnum, UserStatusEnum } from '@/features/users'
 import { getAccessibleOrgIdsForUser } from '@/shared'
-import { normalizeUserTenant } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
-function createCleanUserForQueries(user: User | null | undefined): User | null {
-  if (!user) return null
-  if (!user.tenant) return null
-
-  let tenantId: number | null = null
-
-  if (typeof user.tenant === 'number') {
-    tenantId = user.tenant
-  } else if (typeof user.tenant === 'object' && user.tenant !== null && 'id' in user.tenant) {
-    tenantId = user.tenant.id
-  }
-
-  return {
-    ...user,
-    tenant: tenantId,
-  } as User
-}
+import {
+  createUserForQueriesFromCookie,
+  getSelectedTenantIdFromCookie,
+} from '@/app/(dashboard)/server-tenant-context'
+import { extractTenantId } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 export const getUsersByOrganizations = async ({ orgIds }: { orgIds: number[] }) => {
   const { payload } = await getPayloadContext()
@@ -41,7 +28,7 @@ export const getUsersByOrganizations = async ({ orgIds }: { orgIds: number[] }) 
     }
   }
 
-  const userWithTenantId = normalizeUserTenant(user)
+  const userForQueries = await createUserForQueriesFromCookie(user)
 
   const where: Where = orgIds.length === 0 ? {} : { 'organizations.id': { in: orgIds } }
 
@@ -49,7 +36,7 @@ export const getUsersByOrganizations = async ({ orgIds }: { orgIds: number[] }) 
     collection: 'users',
     where,
     overrideAccess: false,
-    user: userWithTenantId,
+    user: userForQueries,
   })
 }
 
@@ -106,7 +93,7 @@ export const getPendingActivationUsers = async ({
     }
   }
 
-  const cleanUser = createCleanUserForQueries(user)
+  const userForQueries = await createUserForQueriesFromCookie(user)
 
   return await payload.find({
     collection: 'users',
@@ -115,7 +102,7 @@ export const getPendingActivationUsers = async ({
     limit,
     page,
     overrideAccess: false,
-    user: cleanUser,
+    user: userForQueries,
   })
 }
 
@@ -138,14 +125,21 @@ export const getAllUsers = async () => {
     }
   }
 
-  const userWithTenantId = normalizeUserTenant(user)
+  const userForQueries = await createUserForQueriesFromCookie(user)
+  const selectedTenantId = await getSelectedTenantIdFromCookie()
+
+  const where: Where = {}
+  if (user.role === UserRolesEnum.SuperAdmin && selectedTenantId !== null) {
+    where.tenant = { equals: selectedTenantId }
+  }
 
   const users = await payload.find({
     collection: 'users',
+    where,
     limit: 0,
     depth: 0,
-    overrideAccess: false,
-    user: userWithTenantId,
+    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+    user: userForQueries,
   })
 
   return users
@@ -186,16 +180,30 @@ export const getUsersByRoles = async (roles: UserRolesEnum[]) => {
       nextPage: null,
     }
   }
-  const userWithTenantId = normalizeUserTenant(user)
+  const userForQueries = await createUserForQueriesFromCookie(user)
+  const selectedTenantId = await getSelectedTenantIdFromCookie()
+
+  const where: Where = {
+    role: { in: roles },
+    status: { equals: UserStatusEnum.Active },
+  }
+
+  if (user.role === UserRolesEnum.SuperAdmin) {
+    if (selectedTenantId !== null) {
+      where.tenant = { equals: selectedTenantId }
+    }
+  } else {
+    const userTenantId = extractTenantId(user)
+    if (userTenantId) {
+      where.tenant = { equals: userTenantId }
+    }
+  }
 
   return await payload.find({
     collection: 'users',
-    where: {
-      role: { in: roles },
-      status: { equals: UserStatusEnum.Active },
-    },
-    overrideAccess: false,
-    user: userWithTenantId,
+    where,
+    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+    user: userForQueries,
   })
 }
 
@@ -221,7 +229,7 @@ export const getUsersByOrganizationAndRole = async ({
     }
   }
 
-  const userWithTenantId = normalizeUserTenant(user)
+  const userForQueries = await createUserForQueriesFromCookie(user)
 
   return await payload.find({
     collection: 'users',
@@ -231,7 +239,7 @@ export const getUsersByOrganizationAndRole = async ({
       status: { equals: UserStatusEnum.Active },
     },
     overrideAccess: false,
-    user: userWithTenantId,
+    user: userForQueries,
   })
 }
 
@@ -255,79 +263,81 @@ export const getUsersInfoForDashboard = async (): Promise<DashboardData> => {
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
 
-  if (!user)
-    return {
-      totalAccounts: 0,
-      accountsByStatus: {
-        active: 0,
-        inactive: 0,
-        inTransition: 0,
-      },
-      activeUsers: {
-        superAdmin: 0,
-        unitAdmins: 0,
-        socialMediaManagers: 0,
-      },
-      pendingApproval: 0,
-      unassignedAccounts: 0,
-    }
+  const defaultData: DashboardData = {
+    totalAccounts: 0,
+    accountsByStatus: {
+      active: 0,
+      inactive: 0,
+      inTransition: 0,
+    },
+    activeUsers: {
+      superAdmin: 0,
+      unitAdmins: 0,
+      socialMediaManagers: 0,
+    },
+    pendingApproval: 0,
+    unassignedAccounts: 0,
+  }
 
-  const userWithTenantId = normalizeUserTenant(user)
+  if (!user) return defaultData
+
+  const userForQueries = await createUserForQueriesFromCookie(user)
+  const selectedTenantId = await getSelectedTenantIdFromCookie()
 
   let where: Where = {}
   let users: PaginatedDocs<User>
 
-  if (user.role === UserRolesEnum.SocialMediaManager) {
-    users = await payload.find({
-      collection: 'users',
-      where: {
-        id: { equals: user.id },
-      },
-      limit: 0,
-      overrideAccess: false,
-      user: userWithTenantId,
-    })
-  } else if (user.role === UserRolesEnum.SuperAdmin) {
-    users = await payload.find({
-      collection: 'users',
-      limit: 0,
-      overrideAccess: false,
-      user: userWithTenantId,
-    })
-  } else {
-    const accessibleOrgIds = await getAccessibleOrgIdsForUser(user)
-
-    if (accessibleOrgIds.length === 0) {
-      return {
-        totalAccounts: 0,
-        accountsByStatus: {
-          active: 0,
-          inactive: 0,
-          inTransition: 0,
+  switch (user.role) {
+    case UserRolesEnum.SocialMediaManager: {
+      users = await payload.find({
+        collection: 'users',
+        where: {
+          id: { equals: user.id },
         },
-        activeUsers: {
-          superAdmin: 0,
-          unitAdmins: 0,
-          socialMediaManagers: 0,
-        },
-        pendingApproval: 0,
-        unassignedAccounts: 0,
+        limit: 0,
+        overrideAccess: false,
+        user: userForQueries,
+      })
+      break
+    }
+    case UserRolesEnum.SuperAdmin: {
+      if (selectedTenantId !== null) {
+        where = {
+          tenant: { equals: selectedTenantId },
+        }
       }
-    }
 
-    where = {
-      'organizations.id': {
-        in: accessibleOrgIds,
-      },
+      users = await payload.find({
+        collection: 'users',
+        where,
+        limit: 0,
+        overrideAccess: true,
+        user: userForQueries,
+      })
+      break
     }
+    default: {
+      const accessibleOrgIds = await getAccessibleOrgIdsForUser(user, selectedTenantId)
 
-    users = await payload.find({
-      collection: 'users',
-      where,
-      limit: 0,
-      overrideAccess: false,
-      user: userWithTenantId,
-    })
+      if (accessibleOrgIds.length === 0) {
+        return defaultData
+      }
+
+      where = {
+        'organizations.id': {
+          in: accessibleOrgIds,
+        },
+      }
+
+      users = await payload.find({
+        collection: 'users',
+        where,
+        limit: 0,
+        overrideAccess: false,
+        user: userForQueries,
+      })
+      break
+    }
   }
 
   const dashboardData: DashboardData = {
@@ -379,61 +389,82 @@ export const getUsers = async ({
     }
   }
 
-  if (user.role === UserRolesEnum.SocialMediaManager) {
-    const me = await payload.find({
-      collection: 'users',
-      where: {
-        id: { equals: user.id },
-      },
-      page: 1,
-      limit: 1,
-      overrideAccess: false,
-      user,
-    })
+  const userForQueries = await createUserForQueriesFromCookie(user)
+  const selectedTenantId = await getSelectedTenantIdFromCookie()
 
-    return me
-  }
+  let result
 
-  if (user.role === UserRolesEnum.SuperAdmin) {
-    const users = await payload.find({
-      collection: 'users',
-      page: pageIndex,
-      limit: pageSize,
-      overrideAccess: false,
-      user,
-    })
-    return users
-  }
+  switch (user.role) {
+    case UserRolesEnum.SocialMediaManager: {
+      const me = await payload.find({
+        collection: 'users',
+        where: {
+          id: { equals: user.id },
+        },
+        page: 1,
+        limit: 1,
+        overrideAccess: false,
+        user: userForQueries,
+      })
 
-  const accessibleOrgIds = await getAccessibleOrgIdsForUser(user)
+      result = me
+      break
+    }
+    case UserRolesEnum.SuperAdmin: {
+      const where: Where = {}
 
-  if (accessibleOrgIds.length === 0) {
-    return {
-      docs: [],
-      totalDocs: 0,
-      totalPages: 0,
-      page: pageIndex,
-      limit: pageSize,
-      hasNextPage: false,
-      hasPrevPage: false,
-      pagingCounter: 0,
+      if (selectedTenantId !== null) {
+        where.tenant = { equals: selectedTenantId }
+      }
+
+      const users = await payload.find({
+        collection: 'users',
+        page: pageIndex,
+        limit: pageSize,
+        where,
+        overrideAccess: true,
+        user: userForQueries,
+      })
+
+      result = users
+      break
+    }
+    default: {
+      const accessibleOrgIds = await getAccessibleOrgIdsForUser(user, selectedTenantId)
+
+      if (accessibleOrgIds.length === 0) {
+        result = {
+          docs: [],
+          totalDocs: 0,
+          totalPages: 0,
+          page: pageIndex,
+          limit: pageSize,
+          hasNextPage: false,
+          hasPrevPage: false,
+          pagingCounter: 0,
+        }
+        break
+      }
+
+      const where: Where = {
+        'organizations.id': {
+          in: accessibleOrgIds,
+        },
+      }
+
+      const users = await payload.find({
+        collection: 'users',
+        page: pageIndex,
+        limit: pageSize,
+        where,
+        overrideAccess: false,
+        user: userForQueries,
+      })
+
+      result = users
+      break
     }
   }
 
-  const where: Where = {
-    'organizations.id': {
-      in: accessibleOrgIds,
-    },
-  }
-
-  const users = await payload.find({
-    collection: 'users',
-    page: pageIndex,
-    limit: pageSize,
-    where,
-    overrideAccess: false,
-    user,
-  })
-
-  return users
+  return result
 }

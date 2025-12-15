@@ -1,6 +1,7 @@
 import { AuditLog } from '@/types/payload-types'
 import { CollectionAfterChangeHook } from 'payload'
 import { AuditLogCollectionKey } from '@/lib/payload/payload.config'
+import { getTenantIdForAuditLog } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 const AuditLogAfterChange: CollectionAfterChangeHook = async ({
   doc,
@@ -16,6 +17,8 @@ const AuditLogAfterChange: CollectionAfterChangeHook = async ({
 
       const { slug } = collection
 
+      const tenantId = getTenantIdForAuditLog(req, doc)
+
       const data: Omit<AuditLog, 'createdAt' | 'updatedAt' | 'id'> = {
         user: req.user?.id,
         action: operation,
@@ -24,6 +27,7 @@ const AuditLogAfterChange: CollectionAfterChangeHook = async ({
           relationTo: collection.slug as AuditLogCollectionKey,
           value: doc.id,
         },
+        tenant: tenantId,
       }
 
       switch (slug) {

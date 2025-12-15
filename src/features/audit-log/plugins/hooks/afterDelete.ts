@@ -1,17 +1,22 @@
 import { AuditLogActionEnum } from '../types'
 import { CollectionAfterDeleteHook } from 'payload'
 import { AuditLog } from '@/types/payload-types'
+import { getTenantIdForAuditLog } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 
 export const AuditLogAfterDelete: CollectionAfterDeleteHook = async ({ doc, req, collection }) => {
   setTimeout(async () => {
     try {
       if (!req.user) return doc
       const { slug } = collection
+
+      const tenantId = getTenantIdForAuditLog(req, doc)
+
       const data: Omit<AuditLog, 'createdAt' | 'updatedAt' | 'id'> = {
         user: req.user?.id,
         action: AuditLogActionEnum.Delete,
         entity: collection.slug,
         prev: doc,
+        tenant: tenantId,
       }
 
       switch (slug) {
