@@ -10,6 +10,7 @@ export type Resource =
   | 'AUDIT_LOGS'
   | 'DASHBOARD'
   | 'TENANTS'
+  | 'ROLE_REQUESTS'
 
 export type ResourceAction = 'create' | 'read' | 'update' | 'delete'
 
@@ -95,6 +96,13 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
         tenantScoped: false,
       },
     },
+    {
+      resource: 'ROLE_REQUESTS',
+      actions: ['create', 'read', 'update', 'delete'],
+      conditions: {
+        tenantScoped: false,
+      },
+    },
   ],
   [UserRolesEnum.CentralAdmin]: [
     {
@@ -167,6 +175,13 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
         childUnitsIncluded: true,
       },
     },
+    {
+      resource: 'ROLE_REQUESTS',
+      actions: ['create', 'read', 'update'],
+      conditions: {
+        tenantScoped: true,
+      },
+    },
   ],
   [UserRolesEnum.UnitAdmin]: [
     {
@@ -229,6 +244,14 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
         childUnitsIncluded: true,
       },
     },
+    {
+      resource: 'ROLE_REQUESTS',
+      actions: ['create', 'read'],
+      conditions: {
+        tenantScoped: true,
+        ownerOnly: true,
+      },
+    },
   ],
   [UserRolesEnum.SocialMediaManager]: [
     {
@@ -276,6 +299,14 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
       actions: ['read'],
       conditions: {
         tenantScoped: true,
+      },
+    },
+    {
+      resource: 'ROLE_REQUESTS',
+      actions: ['create', 'read'],
+      conditions: {
+        tenantScoped: true,
+        ownerOnly: true,
       },
     },
   ],

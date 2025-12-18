@@ -21,6 +21,7 @@ import { TenantPlugin } from '@/features/tenants/plugins'
 import { tenantContextMiddleware } from '@/middleware/tenant-context'
 import { ComplianceTasksPlugin } from '@/features/compliance-tasks/plugins'
 import { sendComplianceRemindersTask } from '@/features/compliance-tasks/task/sendComplianceReminders/def'
+import { RoleRequestsPlugin } from '@/features/role-request/plugins'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -93,6 +94,9 @@ export default buildConfig({
     ComplianceTasksPlugin({
       disabled: false,
       autoGenerateOnUserCreation: true,
+    }),
+    RoleRequestsPlugin({
+      disabled: false,
     }),
   ],
   cors: ['http://localhost:3000'],

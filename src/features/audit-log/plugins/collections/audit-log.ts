@@ -106,6 +106,8 @@ export const AuditLogs: CollectionConfig = {
           label: 'Task Escalation',
           value: AuditLogActionEnum.TaskEscalation,
         },
+        { label: 'Role Request Approved', value: AuditLogActionEnum.RoleRequestApproved },
+        { label: 'Role Request Rejected', value: AuditLogActionEnum.RoleRequestRejected },
       ],
       required: true,
     },
