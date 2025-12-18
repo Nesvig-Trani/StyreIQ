@@ -10,4 +10,6 @@ export enum AuditLogActionEnum {
   PasswordReset = 'password_reset',
   ComplianceTasksGenerated = 'compliance_task_generated',
   TaskEscalation = 'task_escalation',
+  RoleRequestApproved = 'role_request_approved',
+  RoleRequestRejected = 'role_request_rejected',
 }

@@ -1,5 +1,6 @@
 import { Resource, ResourceAction } from '@/shared/constants/rbac'
 import {
+  BadgePlus,
   Building2Icon,
   FlagIcon,
   HistoryIcon,
@@ -90,6 +91,15 @@ export const mainNavigation: NavItem[] = [
     icon: HistoryIcon,
     permission: {
       resource: 'AUDIT_LOGS',
+      action: 'read',
+    },
+  },
+  {
+    title: 'Role Request',
+    url: '/dashboard/role-request',
+    icon: BadgePlus,
+    permission: {
+      resource: 'ROLE_REQUESTS',
       action: 'read',
     },
   },
