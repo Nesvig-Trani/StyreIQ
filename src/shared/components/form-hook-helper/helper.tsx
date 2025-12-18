@@ -96,11 +96,22 @@ export const FormHelper = <
 
         {fields.map((fieldData, index) => {
           // Check the condition for the dependent field
-          const shouldRenderField =
-            !fieldData.dependsOn ||
-            (Array.isArray(fieldData.dependsOn.value)
-              ? fieldData.dependsOn.value.includes(watchedValues[fieldData.dependsOn.field])
-              : fieldData.dependsOn.value === watchedValues[fieldData.dependsOn.field])
+          let shouldRenderField = true
+
+          if (fieldData.dependsOn) {
+            const { field, value } = fieldData.dependsOn
+
+            const watchedValue = watchedValues[field]
+            const fieldValues: (string | number | boolean)[] = Array.isArray(watchedValue)
+              ? watchedValue
+              : [watchedValue]
+
+            const dependsOnValues: (string | number | boolean)[] = Array.isArray(value)
+              ? value
+              : [value]
+
+            shouldRenderField = fieldValues.some((val) => dependsOnValues.includes(val))
+          }
 
           if (!shouldRenderField) {
             return null

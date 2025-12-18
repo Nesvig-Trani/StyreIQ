@@ -21,6 +21,7 @@ import { ScrollArea } from '@/shared'
 import { unitTypeOptions } from '@/features/units/constants/unitTypeOptions'
 import { DisableUnitButton } from '@/features/units/components/disable-unit'
 import { UserRolesEnum } from '@/features/users'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export default function UnitHierarchy({
   organizations,
@@ -45,6 +46,9 @@ export default function UnitHierarchy({
     isDisableModalOpen,
     setIsDisableModalOpen,
   } = useUnitHierarchy({ organizations, originalData, pagination, users })
+
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSocialMediaManager = effectiveRole === UserRolesEnum.SocialMediaManager
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div className="flex flex-col border rounded-lg">
@@ -139,7 +143,7 @@ export default function UnitHierarchy({
                     </CardTitle>
                   </div>
                   <div className="flex gap-2 shrink-0">
-                    {user?.role !== UserRolesEnum.SocialMediaManager && (
+                    {!isSocialMediaManager && (
                       <>
                         {isEditing ? (
                           <Button size="sm" variant="outline" onClick={() => setIsEditing(false)}>

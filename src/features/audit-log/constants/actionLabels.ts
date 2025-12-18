@@ -12,4 +12,6 @@ export const actionLabels = {
   [AuditLogActionEnum.PasswordReset]: 'Password Reset',
   [AuditLogActionEnum.ComplianceTasksGenerated]: 'Compliance Tasks Generated',
   [AuditLogActionEnum.TaskEscalation]: 'Task Escalation',
+  [AuditLogActionEnum.RoleRequestApproved]: 'Role Request Approved',
+  [AuditLogActionEnum.RoleRequestRejected]: 'Role Request Rejected',
 }
