@@ -18,6 +18,12 @@ import { useAccess } from '@/shared/hooks/use-access'
 import { mainNavigation } from './nav-config'
 import { roleLabelMap, UserRolesEnum } from '@/features/users'
 import { TenantSelector } from '@/features/tenants/components/tenant-selector'
+import {
+  getEffectiveRoleFromUser,
+  normalizeActiveRole,
+  normalizeRoles,
+} from '@/shared/utils/role-hierarchy'
+import { RoleSwitcher } from '@/features/users/components/role-switcher'
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user: User
@@ -29,7 +35,11 @@ export function AppSidebar({ user, tenant, ...props }: AppSidebarProps) {
   const pathname = usePathname()
   const { can } = useAccess(user)
 
-  const isSuperAdmin = user.role === UserRolesEnum.SuperAdmin
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
+
+  const userRoles = normalizeRoles(user.roles)
+  const activeRole = normalizeActiveRole(user.active_role)
 
   const allowedNavItems = mainNavigation.filter((item) =>
     can(item.permission.action, item.permission.resource),
@@ -58,7 +68,7 @@ export function AppSidebar({ user, tenant, ...props }: AppSidebarProps) {
         <div className="p-3 bg-gray-50 rounded-lg w-full">
           <div className="min-w-0">
             <div className="text-xs font-medium text-gray-900 truncate">
-              {roleLabelMap[user.role as UserRolesEnum]}
+              {roleLabelMap[effectiveRole as UserRolesEnum]}
             </div>
             <div className="text-xs text-gray-500 truncate">{user.email}</div>
           </div>
@@ -80,6 +90,12 @@ export function AppSidebar({ user, tenant, ...props }: AppSidebarProps) {
           </div>
         )}
       </div>
+
+      {userRoles.length > 1 && activeRole && (
+        <div className="px-4 pb-2">
+          <RoleSwitcher userRoles={userRoles} activeRole={activeRole} />
+        </div>
+      )}
 
       <SidebarContent>
         <SidebarGroup>
