@@ -7,6 +7,7 @@ import { EyeIcon, FileLock2, PencilIcon } from 'lucide-react'
 import { UnitCell } from '@/features/units/components/unit-cell'
 import { Badge } from '@/shared'
 import { UserDetailsDialog } from '../components/details'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 function useUserTable({
   user,
@@ -37,11 +38,21 @@ function useUserTable({
       },
     },
     {
-      accessorKey: 'role',
-      header: 'Role',
+      accessorKey: 'roles',
+      header: 'Roles',
       cell: ({ row }) => {
-        const role = row.getValue('role')
-        return <span>{roleLabelMap[role as UserRolesEnum]}</span>
+        const roles = row.getValue('roles') as UserRolesEnum[]
+
+        if (!Array.isArray(roles) || roles.length === 0) {
+          return <span className="text-gray-400">No roles</span>
+        }
+
+        const roleLabels = roles
+          .map((role) => roleLabelMap[role])
+          .filter(Boolean)
+          .join(', ')
+
+        return <span>{roleLabels}</span>
       },
     },
     {
@@ -57,7 +68,8 @@ function useUserTable({
       header: 'Units',
       cell: ({ row }) => {
         const organizations = row.original.organizations as Organization[]
-        if (row.original.role === UserRolesEnum.SuperAdmin) {
+        const effectiveRole = getEffectiveRoleFromUser(row.original)
+        if (effectiveRole === UserRolesEnum.SuperAdmin) {
           return (
             <Badge variant="secondary" className="text-xs">
               StyreIQ
@@ -76,22 +88,22 @@ function useUserTable({
       header: 'Actions',
       cell: ({ row }) => {
         const id = row.original.id
-        const role = row.original.role
+        const effectiveRole = getEffectiveRoleFromUser(user)
         const isOwnRecord = user?.id === id
         const isDialogOpen = selectedUserId === id.toString()
 
         const canViewDetails =
-          user?.role === UserRolesEnum.SuperAdmin ||
-          user?.role === UserRolesEnum.UnitAdmin ||
-          user?.role === UserRolesEnum.SocialMediaManager
+          effectiveRole === UserRolesEnum.SuperAdmin ||
+          effectiveRole === UserRolesEnum.UnitAdmin ||
+          effectiveRole === UserRolesEnum.SocialMediaManager
 
         const canEdit =
-          user?.role === UserRolesEnum.SuperAdmin ||
-          (user?.role === UserRolesEnum.UnitAdmin && role === UserRolesEnum.SocialMediaManager) ||
-          (user?.role === UserRolesEnum.SocialMediaManager && isOwnRecord)
+          effectiveRole === UserRolesEnum.SuperAdmin ||
+          effectiveRole === UserRolesEnum.UnitAdmin ||
+          (effectiveRole === UserRolesEnum.SocialMediaManager && isOwnRecord)
 
         const canManageAccess =
-          user?.role === UserRolesEnum.UnitAdmin || user?.role === UserRolesEnum.SuperAdmin
+          effectiveRole === UserRolesEnum.UnitAdmin || effectiveRole === UserRolesEnum.SuperAdmin
 
         return (
           <div className="flex gap-2">
@@ -114,7 +126,7 @@ function useUserTable({
               />
             )}
 
-            {canManageAccess && role !== UserRolesEnum.SuperAdmin && (
+            {canManageAccess && effectiveRole !== UserRolesEnum.SuperAdmin && (
               <Button size="icon" variant="outline">
                 <Link href={`/dashboard/users/access/${id}`}>
                   <FileLock2 className="h-4 w-4" />

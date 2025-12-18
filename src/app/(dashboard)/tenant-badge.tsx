@@ -5,7 +5,7 @@ import { Building2, Globe } from 'lucide-react'
 interface TenantBadgeProps {
   tenant: Tenant | null
   isViewingAllTenants?: boolean
-  userRole?: UserRolesEnum
+  userRole: UserRolesEnum | null
 }
 
 export function TenantBadge({ tenant, isViewingAllTenants, userRole }: TenantBadgeProps) {

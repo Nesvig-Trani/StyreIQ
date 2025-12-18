@@ -25,10 +25,10 @@ import {
   statusClassMap,
   statusColorMap,
   statusLabelMap,
-  UserRolesEnum,
   UserStatusEnum,
 } from '@/features/users'
 import type { User } from '@/types/payload-types'
+import { normalizeRoles } from '@/shared/utils/role-hierarchy'
 
 interface UserDetailsDialogProps {
   user: User
@@ -68,6 +68,8 @@ export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
     </span>
   )
 
+  const userRoles = normalizeRoles(user.roles)
+
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -78,7 +80,11 @@ export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
             {user.status === 'active' && <CircleCheck className="h-4 w-4 text-green-600" />}
           </DialogTitle>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Badge variant="outline">{roleLabelMap[user.role as UserRolesEnum]}</Badge>
+            {userRoles.map((role) => (
+              <Badge key={role} variant="secondary">
+                {roleLabelMap[role]}
+              </Badge>
+            ))}
             <Badge className={`${statusClassMap[color]} capitalize`}>
               {statusLabelMap[status]}
             </Badge>
@@ -94,7 +100,21 @@ export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
                 <InfoField label="User ID" value={user.id.toString()} />
               </div>
               <div className="space-y-4">
-                <InfoField label="Role" value={roleLabelMap[user.role as UserRolesEnum]} />
+                <InfoField
+                  label="All Roles"
+                  value={
+                    <div className="flex flex-wrap gap-1">
+                      {userRoles.map((role) => (
+                        <span
+                          key={role}
+                          className="px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-700"
+                        >
+                          {roleLabelMap[role]}
+                        </span>
+                      ))}
+                    </div>
+                  }
+                />
                 <InfoField label="Status" value={statusLabelMap[user.status as UserStatusEnum]} />
                 <InfoField label="Login Attempts" value={user.loginAttempts?.toString() || '0'} />
               </div>

@@ -8,17 +8,19 @@ import { ChevronRight, Home } from 'lucide-react'
 import Link from 'next/link'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { getServerTenantContext } from '@/app/(dashboard)/server-tenant-context'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export default async function CreateSocialMediaPage() {
   const { user } = await getAuthUser()
   const { payload } = await getPayloadContext()
   const tenantContext = await getServerTenantContext(user, payload)
 
+  const effectiveRole = getEffectiveRoleFromUser(user)
+
   if (
-    !(
-      user &&
-      user.role &&
-      [UserRolesEnum.SuperAdmin, UserRolesEnum.UnitAdmin].includes(user.role as UserRolesEnum)
+    !effectiveRole ||
+    ![UserRolesEnum.SuperAdmin, UserRolesEnum.UnitAdmin, UserRolesEnum.SocialMediaManager].includes(
+      effectiveRole,
     )
   ) {
     redirect('/dashboard/social-media-accounts')

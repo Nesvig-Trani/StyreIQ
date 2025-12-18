@@ -5,6 +5,7 @@ import { Tenant, User } from '@/types/payload-types'
 
 import useTenantsTable from '@/features/tenants/hooks/useTenantsTable'
 import { UserRolesEnum } from '@/features/users'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export default function TenantsTable({
   user,
@@ -20,7 +21,8 @@ export default function TenantsTable({
     pageCount: number
   }
 }) {
-  const isCentralAdmin = user?.role === UserRolesEnum.CentralAdmin
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isCentralAdmin = effectiveRole === UserRolesEnum.CentralAdmin
   const { columns } = useTenantsTable({ canEdit: isCentralAdmin })
 
   return (

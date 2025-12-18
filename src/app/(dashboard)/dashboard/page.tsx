@@ -28,6 +28,7 @@ import { HeaderMetricCard } from '@/features/dashboard/components/header-metric-
 import { StatusCard } from '@/features/dashboard/components/status-card'
 import { DashboardRiskSection } from '@/features/dashboard/components/dashboard-client-wrapper'
 import { getServerTenantContext } from '../server-tenant-context'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 const getRiskLevel = (value: number, thresholds: { low: number; medium: number }) => {
   if (value >= thresholds.medium) return 'high'
@@ -42,6 +43,8 @@ export default async function DashboardPage() {
 
   const tenantContext = await getServerTenantContext(user, payload)
   const { selectedTenant, isViewingAllTenants } = tenantContext
+
+  const effectiveRole = getEffectiveRoleFromUser(user)
 
   const tenant = user && typeof user.tenant === 'object' ? user.tenant : null
   const tenantId = tenant?.id || (user && (user.tenant as number))
@@ -68,7 +71,7 @@ export default async function DashboardPage() {
             <div className="flex items-center gap-3 flex-wrap">
               <h1 className="text-xl sm:text-2xl font-bold text-gray-900 !m-0">Dashboard</h1>
 
-              {user && user.role === UserRolesEnum.SuperAdmin && (
+              {user && effectiveRole === UserRolesEnum.SuperAdmin && (
                 <>
                   {isViewingAllTenants ? (
                     <Badge variant="outline" className="bg-gray-100 text-gray-600">
@@ -104,10 +107,10 @@ export default async function DashboardPage() {
       </div>
 
       <main className="mx-auto px-0 py-0">
-        {user && user.role === UserRolesEnum.SuperAdmin && isViewingAllTenants && (
+        {user && effectiveRole === UserRolesEnum.SuperAdmin && isViewingAllTenants && (
           <AggregateMetricsView />
         )}
-        {user && user.role === UserRolesEnum.CentralAdmin && user.tenant && (
+        {user && effectiveRole === UserRolesEnum.CentralAdmin && user.tenant && (
           <CentralAdminDashboard tenantId={tenantId} />
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">

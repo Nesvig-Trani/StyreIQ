@@ -6,6 +6,7 @@ import type { Tenant, User } from '@/types/payload-types'
 import { UserRolesEnum } from '@/features/users'
 import { useRouter } from 'next/navigation'
 import { selectTenantRequest } from '@/sdk/tenants'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export interface TenantContextType {
   selectedTenant: Tenant | null
@@ -40,7 +41,8 @@ export const TenantProvider: FC<TenantProviderProps> = ({
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const isSuperAdmin = user.role === UserRolesEnum.SuperAdmin
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
   const canSwitchTenants = isSuperAdmin
   const isViewingAllTenants = isSuperAdmin && selectedTenant === null
   const tenantIdForFilter = selectedTenant?.id ?? null

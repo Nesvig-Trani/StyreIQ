@@ -17,6 +17,7 @@ import { UserRolesEnum } from '@/features/users/schemas'
 
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { getServerTenantContext } from '../../server-tenant-context'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export default async function UsersPage(props: {
   searchParams?: Promise<{
@@ -24,7 +25,9 @@ export default async function UsersPage(props: {
   }>
 }) {
   const { user, accessDenied, component } = await checkUserReadAccess()
-
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
+  const isUnitAdmin = effectiveRole === UserRolesEnum.UnitAdmin
   if (accessDenied) {
     return component
   }
@@ -56,7 +59,7 @@ export default async function UsersPage(props: {
                   {users.totalDocs} Total Users
                 </Badge>
 
-                {user?.role === UserRolesEnum.SuperAdmin && tenantContext.selectedTenant && (
+                {isSuperAdmin && tenantContext.selectedTenant && (
                   <Badge
                     variant="outline"
                     className="text-xs bg-blue-50 text-blue-700 border-blue-200"
@@ -64,13 +67,13 @@ export default async function UsersPage(props: {
                     {tenantContext.selectedTenant.name}
                   </Badge>
                 )}
-                {user?.role === UserRolesEnum.SuperAdmin && tenantContext.isViewingAllTenants && (
+                {isSuperAdmin && tenantContext.isViewingAllTenants && (
                   <Badge variant="outline" className="text-xs bg-gray-100 text-gray-600">
                     All Tenants
                   </Badge>
                 )}
 
-                {user?.role === UserRolesEnum.UnitAdmin && (
+                {isUnitAdmin && (
                   <Badge variant="outline" className="text-xs">
                     Filtered by your unit hierarchy
                   </Badge>
@@ -85,7 +88,7 @@ export default async function UsersPage(props: {
                   Each user is tied to a unit in your org chart so you can see every point of
                   access, track accountability, and reduce hidden risks. You can also assign
                   trainings, policy attestations, and other governance tasks directly to users.
-                  {user?.role === UserRolesEnum.UnitAdmin && (
+                  {isUnitAdmin && (
                     <span className="block mt-2 text-blue-600">
                       As a Unit Admin, you can only view and manage users within your unit
                       hierarchy.

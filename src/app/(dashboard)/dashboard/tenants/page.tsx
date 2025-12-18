@@ -7,13 +7,15 @@ import { tenantSearchSchema } from '@/features/tenants/schemas'
 import TenantsTable from '@/features/tenants/components/tenants-table'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { UserRolesEnum } from '@/features/users'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export default async function TenantsPage(props: {
   searchParams?: Promise<{ [key: string]: string }>
 }) {
   const { user } = await getAuthUser()
   const searchParams = await props.searchParams
-
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
   const parsedParams = parseSearchParamsWithSchema(searchParams, tenantSearchSchema)
 
   const tenants = await getTenants({
@@ -36,7 +38,7 @@ export default async function TenantsPage(props: {
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-              {user?.role === UserRolesEnum.SuperAdmin && (
+              {isSuperAdmin && (
                 <Button size="sm" className="w-full sm:w-auto">
                   <Link
                     className="flex items-center justify-center gap-2"

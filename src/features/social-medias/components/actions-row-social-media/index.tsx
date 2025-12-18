@@ -18,6 +18,7 @@ import {
 import { Textarea } from '@/shared'
 import type { AuditLog, SocialMedia, User } from '@/types/payload-types'
 import { SocialMediaDetailsDialog } from '../social-media-details'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 interface SocialMediaWithLogs extends SocialMedia {
   auditLogs?: {
@@ -49,14 +50,14 @@ export const ActionsRowSocialMedia: React.FC<ActionsRowSocialMediaProps> = ({
   } = useChangeStatusSocialMedia(socialMedia)
 
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false)
-
-  const isSuperAdmin = user?.role === UserRolesEnum.SuperAdmin
-  const isUnitAdmin = user?.role === UserRolesEnum.UnitAdmin
-  const isSocialMediaManager = user?.role === UserRolesEnum.SocialMediaManager
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
+  const isUnitAdmin = effectiveRole === UserRolesEnum.UnitAdmin
+  const isSocialMediaManager = effectiveRole === UserRolesEnum.SocialMediaManager
 
   const canViewDetails = isSuperAdmin || isUnitAdmin || isSocialMediaManager
   const canEdit = isSuperAdmin || isUnitAdmin
-  const canApproveActivate = isSuperAdmin
+  const canApproveActivate = isSuperAdmin || isUnitAdmin
   const canToggleStatus = isSuperAdmin
 
   const renderActionButtons = () => {
@@ -88,10 +89,7 @@ export const ActionsRowSocialMedia: React.FC<ActionsRowSocialMediaProps> = ({
           <Switch
             checked={stateSocialMedia.status === SocialMediaStatusEnum.Active}
             onCheckedChange={onChangeStatus}
-            disabled={
-              user?.role !== UserRolesEnum.SuperAdmin &&
-              stateSocialMedia.status === SocialMediaStatusEnum.Inactive
-            }
+            disabled={!isSuperAdmin && stateSocialMedia.status === SocialMediaStatusEnum.Inactive}
           />
         )}
 

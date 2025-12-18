@@ -8,12 +8,15 @@ import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { getServerTenantContext } from '../../server-tenant-context'
 import { Globe } from 'lucide-react'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { UserRolesEnum } from '@/features/users'
 
 export default async function PoliciesPage() {
   const { user } = await getAuthUser()
   const { payload } = await getPayloadContext()
   const tenantContext = await getServerTenantContext(user, payload)
-  const isSuperAdmin = user?.role === 'super_admin'
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
 
   const isViewingAllTenants = tenantContext.isViewingAllTenants
 

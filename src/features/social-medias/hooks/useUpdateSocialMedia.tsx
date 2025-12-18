@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation'
 import { platformOptions } from '@/features/social-medias/constants/platformOptions'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Organization, User } from '@/types/payload-types'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 function getEntityId<T extends { id: number }>(entity: number | T | undefined): string | null {
   if (!entity) return null
@@ -49,7 +50,10 @@ export function useUpdateSocialMedia({
 
       const numericOrgId = parseInt(organizationId, 10)
       const roleArray = Array.isArray(roles) ? roles : [roles]
-      const hasRole = (user: User) => !!user.role && roleArray.includes(user.role)
+      const hasRole = (user: User) => {
+        const effectiveRole = getEffectiveRoleFromUser(user)
+        return !!effectiveRole && roleArray.includes(effectiveRole)
+      }
 
       const belongsToOrg = (user: User, orgId: number) =>
         Array.isArray(user.organizations) &&
@@ -307,13 +311,14 @@ export function useUpdateSocialMedia({
       ],
       onSubmit: async (submitData) => {
         try {
+          const effectiveRole = getEffectiveRoleFromUser(currentUser)
           const dataToSubmit = {
             ...submitData,
-            ...(currentUser?.role === 'unit_admin' && { status: 'pending' }),
+            ...(effectiveRole === 'unit_admin' && { status: 'pending' }),
           }
 
           await updateSocialMedia({ ...dataToSubmit, id: data.id })
-          if (currentUser?.role === 'unit_admin') {
+          if (effectiveRole === 'unit_admin') {
             toast.success('Social media account updated successfully and is pending approval')
           } else {
             toast.success('Social media account updated successfully')
