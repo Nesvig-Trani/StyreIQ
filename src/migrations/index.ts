@@ -17,6 +17,7 @@ import * as migration_20251127_144406_add_tenant_to_all_collections from './2025
 import * as migration_20251128_211757_add_a_new_user_role from './20251128_211757_add_a_new_user_role'
 import * as migration_20251203_124451_add_compliance_tasks_and_relations from './20251203_124451_add_compliance_tasks_and_relations'
 import * as migration_20251212_161815 from './20251212_161815'
+import * as migration_20251216_003738 from './20251216_003738'
 
 export const migrations = [
   {
@@ -113,5 +114,10 @@ export const migrations = [
     up: migration_20251212_161815.up,
     down: migration_20251212_161815.down,
     name: '20251212_161815',
+  },
+  {
+    up: migration_20251216_003738.up,
+    down: migration_20251216_003738.down,
+    name: '20251216_003738',
   },
 ]

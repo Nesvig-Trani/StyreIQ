@@ -68,7 +68,7 @@ export type Tree = {
 }
 
 export type CreateUnitFormProps = {
-  userRole?: UserRolesEnum
+  userRole: UserRolesEnum | null
   users: User[]
   organizations: Organization[]
   defaultParentOrg?: string

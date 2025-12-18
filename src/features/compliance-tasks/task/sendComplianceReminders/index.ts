@@ -3,6 +3,7 @@ import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { UserRolesEnum } from '@/features/users'
 import { complianceReminderEmailBody } from '../../constants/complianceReminderEmailBody'
 import { Payload } from 'payload'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 interface ReminderCadence {
   day: number
@@ -196,7 +197,8 @@ async function findEscalationTarget(
   user: User,
   tenant: Tenant,
 ): Promise<User | null> {
-  switch (user.role) {
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  switch (effectiveRole) {
     case UserRolesEnum.SocialMediaManager: {
       const userOrgs = user.organizations || []
 

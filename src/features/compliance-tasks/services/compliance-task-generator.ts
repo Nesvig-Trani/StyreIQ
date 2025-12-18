@@ -2,6 +2,7 @@ import { Payload } from 'payload'
 import { User } from '@/types/payload-types'
 import { UserRolesEnum } from '@/features/users'
 import { ComplianceTaskStatus, ComplianceTaskType } from '../schema'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export class ComplianceTaskGenerator {
   constructor(private payload: Payload) {}
@@ -94,7 +95,8 @@ export class ComplianceTaskGenerator {
       throw new Error('User tenant is required')
     }
 
-    if (!user.role) return
+    const effectiveRole = getEffectiveRoleFromUser(user)
+    if (!effectiveRole) return
 
     const tenantId = typeof user.tenant === 'object' ? user.tenant.id : user.tenant
 
@@ -112,7 +114,7 @@ export class ComplianceTaskGenerator {
 
     const dueDate = this.addDays(new Date(), trainingWindow)
 
-    const requiredTrainings = this.getRequiredTrainingsForRole(user.role)
+    const requiredTrainings = this.getRequiredTrainingsForRole(effectiveRole)
 
     if (requiredTrainings.length === 0) return
 
@@ -185,8 +187,8 @@ export class ComplianceTaskGenerator {
     return this.addDays(new Date(), daysMap[frequency])
   }
 
-  private getRequiredTrainingsForRole(role: string): Array<{ id: string; name: string }> {
-    const trainingsByRole: Record<string, Array<{ id: string; name: string }>> = {
+  private getRequiredTrainingsForRole(role: UserRolesEnum): Array<{ id: string; name: string }> {
+    const trainingsByRole: Record<UserRolesEnum, Array<{ id: string; name: string }>> = {
       [UserRolesEnum.SocialMediaManager]: [
         { id: 'training-accessibility', name: 'Accessibility Training' },
         { id: 'training-risk', name: 'Risk Management Training' },

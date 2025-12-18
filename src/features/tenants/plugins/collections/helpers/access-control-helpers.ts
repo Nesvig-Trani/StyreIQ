@@ -1,6 +1,7 @@
 import { SELECTED_TENANT_COOKIE_NAME } from '@/features/tenants/schemas'
 import { UserRolesEnum } from '@/features/users'
 import { getAccessibleOrgIdsForUserWithPayload } from '@/shared'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 import { Tenant } from '@/types/payload-types'
 import {
   Access,
@@ -75,7 +76,8 @@ export function validateTenantAccess({
   error?: { message: string; status: number }
   userTenant?: number | null
 } {
-  if (req.user?.role === UserRolesEnum.SuperAdmin) {
+  const effectiveRole = getEffectiveRoleFromUser(req.user)
+  if (effectiveRole) {
     return { valid: true }
   }
 
@@ -133,7 +135,8 @@ export async function validateRelatedEntityTenant({
     }
   }
 
-  if (req.user?.role === UserRolesEnum.SuperAdmin) {
+  const effectiveRole = getEffectiveRoleFromUser(req.user)
+  if (effectiveRole === UserRolesEnum.SuperAdmin) {
     return { valid: true, entity }
   }
 
@@ -160,9 +163,9 @@ export const tenantBasedReadAccess: Access = async ({ req }): Promise<boolean | 
   const { user } = req
   if (!user) return false
 
-  const { role } = user
+  const effectiveRole = getEffectiveRoleFromUser(user)
 
-  if (role === UserRolesEnum.SuperAdmin) return true
+  if (effectiveRole === UserRolesEnum.SuperAdmin) return true
 
   const tenantId = extractTenantId(user)
   if (!tenantId) return false
@@ -174,14 +177,14 @@ export const organizationBasedReadAccess: Access = async ({ req }): Promise<bool
   const { user, payload } = req
   if (!user) return false
 
-  const { role } = user
+  const effectiveRole = getEffectiveRoleFromUser(user)
 
-  if (role === UserRolesEnum.SuperAdmin) return true
+  if (effectiveRole === UserRolesEnum.SuperAdmin) return true
 
   const tenantId = extractTenantId(user)
   if (!tenantId) return false
 
-  switch (role) {
+  switch (effectiveRole) {
     case UserRolesEnum.CentralAdmin:
       return { tenant: { equals: tenantId } }
 
@@ -201,14 +204,13 @@ export const socialMediaManagerReadAccess: Access = async ({ req }): Promise<boo
   const { user, payload } = req
   if (!user) return false
 
-  const { role, id } = user
-
-  if (role === UserRolesEnum.SuperAdmin) return true
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  if (effectiveRole === UserRolesEnum.SuperAdmin) return true
 
   const tenantId = extractTenantId(user)
   if (!tenantId) return false
 
-  switch (role) {
+  switch (effectiveRole) {
     case UserRolesEnum.CentralAdmin:
       return { tenant: { equals: tenantId } }
 
@@ -218,16 +220,15 @@ export const socialMediaManagerReadAccess: Access = async ({ req }): Promise<boo
         and: [{ tenant: { equals: tenantId } }, { organizations: { in: accessibleOrgIds } }],
       }
     }
-
     case UserRolesEnum.SocialMediaManager: {
       const accessibleOrgIds = await getAccessibleOrgIdsForUserWithPayload(user, payload)
+
+      if (accessibleOrgIds.length === 0) {
+        return false
+      }
+
       return {
-        and: [
-          { tenant: { equals: tenantId } },
-          {
-            or: [{ affectedEntity: { equals: id } }, { organizations: { in: accessibleOrgIds } }],
-          },
-        ],
+        and: [{ tenant: { equals: tenantId } }, { organizations: { in: accessibleOrgIds } }],
       }
     }
 
@@ -240,9 +241,9 @@ export const adminOnlyCreateAccess: Access = async ({ req, data }) => {
   const { user } = req
   if (!user) return false
 
-  const { role } = user
+  const effectiveRole = getEffectiveRoleFromUser(user)
 
-  switch (role) {
+  switch (effectiveRole) {
     case UserRolesEnum.SuperAdmin: {
       const selectedTenantId = getSelectedTenantFromRequest(req)
       const dataTenantId = data?.tenant ? extractTenantIdFromProperty(data.tenant) : null
@@ -273,9 +274,9 @@ export const managerCreateAccess: Access = async ({ req, data }) => {
   const { user } = req
   if (!user) return false
 
-  const { role } = user
+  const effectiveRole = getEffectiveRoleFromUser(user)
 
-  switch (role) {
+  switch (effectiveRole) {
     case UserRolesEnum.SuperAdmin: {
       const selectedTenantId = getSelectedTenantFromRequest(req)
       const dataTenantId = data?.tenant ? extractTenantIdFromProperty(data.tenant) : null
@@ -296,9 +297,9 @@ export const tenantCreateAccess: Access = ({ req, data }) => {
   if (!req.user) return false
 
   const { user } = req
-  const { role } = user
+  const effectiveRole = getEffectiveRoleFromUser(user)
 
-  if (role === UserRolesEnum.SuperAdmin) {
+  if (effectiveRole === UserRolesEnum.SuperAdmin) {
     const selectedTenantId = getSelectedTenantFromRequest(req)
     const dataTenantId = data?.tenant ? extractTenantIdFromProperty(data.tenant) : null
     if (!dataTenantId && !selectedTenantId) {
@@ -323,9 +324,9 @@ export const adminOnlyUpdateAccess: Access = async ({ req }) => {
   const { user } = req
   if (!user) return false
 
-  const { role } = user
+  const effectiveRole = getEffectiveRoleFromUser(user)
 
-  switch (role) {
+  switch (effectiveRole) {
     case UserRolesEnum.SuperAdmin:
     case UserRolesEnum.CentralAdmin:
       return true
@@ -338,9 +339,9 @@ export const managerUpdateAccess: Access = async ({ req }) => {
   const { user } = req
   if (!user) return false
 
-  const { role } = user
+  const effectiveRole = getEffectiveRoleFromUser(user)
 
-  switch (role) {
+  switch (effectiveRole) {
     case UserRolesEnum.SuperAdmin:
     case UserRolesEnum.CentralAdmin:
     case UserRolesEnum.UnitAdmin:
@@ -355,9 +356,9 @@ export const tenantValidatedUpdateAccess = (collectionSlug: CollectionSlug): Acc
     const { user, payload } = req
     if (!user || !id || typeof id !== 'string') return false
 
-    const { role } = user
+    const effectiveRole = getEffectiveRoleFromUser(user)
 
-    if (role === UserRolesEnum.SuperAdmin) return true
+    if (effectiveRole === UserRolesEnum.SuperAdmin) return true
 
     const tenantId = extractTenantId(user)
     if (!tenantId) return false
@@ -378,7 +379,7 @@ export const tenantValidatedUpdateAccess = (collectionSlug: CollectionSlug): Acc
       if (targetTenantId && targetTenantId !== tenantId) return false
       if (data?.tenant && data.tenant !== tenantId) return false
 
-      switch (role) {
+      switch (effectiveRole) {
         case UserRolesEnum.CentralAdmin:
           return true
         default:
@@ -395,9 +396,9 @@ export const ownerUpdateAccess = (collectionSlug: CollectionSlug): Access => {
     const { user, payload } = req
     if (!user || !id || typeof id !== 'string') return false
 
-    const { role, id: userId } = user
-
-    if (role === UserRolesEnum.SuperAdmin) return true
+    const { id: userId } = user
+    const effectiveRole = getEffectiveRoleFromUser(user)
+    if (effectiveRole === UserRolesEnum.SuperAdmin) return true
 
     try {
       const doc = await payload.findByID({
@@ -417,8 +418,8 @@ export const immutableUpdateAccess: Access = async () => false
 export const superAdminOnlyDeleteAccess: Access = async ({ req }) => {
   const { user } = req
   if (!user) return false
-
-  return user.role === UserRolesEnum.SuperAdmin
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  return effectiveRole === UserRolesEnum.SuperAdmin
 }
 
 export const tenantValidatedDeleteAccess = (collectionSlug: CollectionSlug): Access => {
@@ -426,9 +427,9 @@ export const tenantValidatedDeleteAccess = (collectionSlug: CollectionSlug): Acc
     const { user, payload } = req
     if (!user || !id || typeof id !== 'string') return false
 
-    const { role } = user
+    const effectiveRole = getEffectiveRoleFromUser(user)
 
-    if (role === UserRolesEnum.SuperAdmin) return true
+    if (effectiveRole === UserRolesEnum.SuperAdmin) return true
 
     const tenantId = extractTenantId(user)
     if (!tenantId) return false
@@ -448,7 +449,7 @@ export const tenantValidatedDeleteAccess = (collectionSlug: CollectionSlug): Acc
 
       if (targetTenantId && targetTenantId !== tenantId) return false
 
-      switch (role) {
+      switch (effectiveRole) {
         case UserRolesEnum.CentralAdmin:
           return true
         default:
@@ -489,7 +490,7 @@ export const getTenantIdForAuditLog = (
   doc: Record<string, unknown>,
 ): number | null => {
   const user = req.user
-
+  const effectiveRole = getEffectiveRoleFromUser(user)
   if (!user) return null
 
   if (doc.tenant) {
@@ -501,7 +502,7 @@ export const getTenantIdForAuditLog = (
     }
   }
 
-  if (user.role === UserRolesEnum.SuperAdmin) {
+  if (effectiveRole === UserRolesEnum.SuperAdmin) {
     return getSelectedTenantFromRequest(req)
   }
 

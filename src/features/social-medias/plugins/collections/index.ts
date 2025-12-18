@@ -21,6 +21,7 @@ import {
   tenantValidatedDeleteAccess,
   tenantValidatedUpdateAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export const SocialMediasCollectionSlug = 'social-medias'
 
@@ -36,14 +37,14 @@ export const SocialMedias: CollectionConfig = {
       const { user, payload } = req
       if (!user) return false
 
-      const { role, id } = user
+      const effectiveRole = getEffectiveRoleFromUser(user)
 
-      if (role === UserRolesEnum.SuperAdmin) return true
+      if (effectiveRole === UserRolesEnum.SuperAdmin) return true
 
       const tenantId = extractTenantId(user)
       if (!tenantId) return false
 
-      switch (role) {
+      switch (effectiveRole) {
         case UserRolesEnum.CentralAdmin:
           return { tenant: { equals: tenantId } }
 
@@ -53,16 +54,15 @@ export const SocialMedias: CollectionConfig = {
             and: [{ tenant: { equals: tenantId } }, { organization: { in: accessibleOrgIds } }],
           }
         }
-
         case UserRolesEnum.SocialMediaManager:
           return {
             and: [
               { tenant: { equals: tenantId } },
               {
                 or: [
-                  { socialMediaManagers: { contains: id } },
-                  { primaryAdmin: { equals: id } },
-                  { backupAdmin: { equals: id } },
+                  { socialMediaManagers: { contains: user.id } },
+                  { primaryAdmin: { equals: user.id } },
+                  { backupAdmin: { equals: user.id } },
                 ],
               },
             ],
@@ -72,20 +72,20 @@ export const SocialMedias: CollectionConfig = {
           return false
       }
     },
-
     create: async ({ req, data }) => {
       const { user, payload } = req
       if (!user) return false
 
-      const { role } = user
+      const effectiveRole = getEffectiveRoleFromUser(user)
+      const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
 
-      if (role === UserRolesEnum.SuperAdmin) return true
+      if (isSuperAdmin) return true
       const tenantId = extractTenantId(user)
       if (!tenantId) return false
 
       if (data?.tenant && data.tenant !== tenantId) return false
 
-      switch (role) {
+      switch (effectiveRole) {
         case UserRolesEnum.CentralAdmin:
           return true
 
@@ -97,6 +97,26 @@ export const SocialMedias: CollectionConfig = {
             typeof data.organization === 'object' ? data.organization.id : data.organization
 
           return accessibleOrgIds.includes(Number(orgId))
+        }
+        case UserRolesEnum.SocialMediaManager: {
+          if (!data?.organization) return false
+
+          const userOrgs = user.organizations || []
+          const orgId =
+            typeof data.organization === 'object' ? data.organization.id : data.organization
+
+          const hasAccess = userOrgs.some((org) => {
+            const id = typeof org === 'object' ? org.id : org
+            return id === orgId
+          })
+
+          if (!hasAccess) return false
+
+          if (data?.status && data.status !== SocialMediaStatusEnum.PendingApproval) {
+            return false
+          }
+
+          return true
         }
 
         default:
@@ -305,6 +325,16 @@ export const SocialMedias: CollectionConfig = {
 
             if (orgTenantId !== dataTenantId) {
               throw new Error('Organization must belong to the same tenant')
+            }
+          }
+        }
+
+        if (operation === 'create' && req.user) {
+          const effectiveRole = getEffectiveRoleFromUser(req.user)
+
+          if (effectiveRole === UserRolesEnum.SocialMediaManager) {
+            if (!data.status || data.status !== SocialMediaStatusEnum.PendingApproval) {
+              data.status = SocialMediaStatusEnum.PendingApproval
             }
           }
         }

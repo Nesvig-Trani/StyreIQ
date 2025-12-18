@@ -67,6 +67,7 @@ export interface Config {
   }
   blocks: {}
   collections: {
+    'role-requests': RoleRequest
     organization: Organization
     organization_access: OrganizationAccess
     'welcome-emails': WelcomeEmail
@@ -95,6 +96,7 @@ export interface Config {
     }
   }
   collectionsSelect: {
+    'role-requests': RoleRequestsSelect<false> | RoleRequestsSelect<true>
     organization: OrganizationSelect<false> | OrganizationSelect<true>
     organization_access: OrganizationAccessSelect<false> | OrganizationAccessSelect<true>
     'welcome-emails': WelcomeEmailsSelect<false> | WelcomeEmailsSelect<true>
@@ -157,6 +159,81 @@ export interface UserAuthOperations {
   }
 }
 /**
+ * Requests for additional user roles
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "role-requests".
+ */
+export interface RoleRequest {
+  id: number
+  /**
+   * User requesting the additional role
+   */
+  user: number | User
+  /**
+   * Role being requested
+   */
+  requestedRole: 'unit_admin' | 'social_media_manager' | 'central_admin'
+  /**
+   * Unit for which the role is requested (for SMM role)
+   */
+  unitId?: (number | null) | Organization
+  /**
+   * Explain why you need this additional role
+   */
+  justification: string
+  status: 'pending' | 'approved' | 'rejected'
+  /**
+   * Admin who approved/rejected this request
+   */
+  approvedBy?: (number | null) | User
+  /**
+   * Notes from the approver
+   */
+  reviewNotes?: string | null
+  tenant: number | Tenant
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number
+  name: string
+  roles: ('super_admin' | 'central_admin' | 'unit_admin' | 'social_media_manager')[]
+  /**
+   * Currently active role (for users with multiple roles)
+   */
+  active_role?: ('super_admin' | 'central_admin' | 'unit_admin' | 'social_media_manager') | null
+  status?: ('active' | 'inactive' | 'rejected' | 'pending_activation') | null
+  admin_policy_agreement: boolean
+  date_of_last_policy_review?: string | null
+  date_of_last_training?: string | null
+  organizations?: (number | Organization)[] | null
+  reject_reason?: string | null
+  isEnabledTwoFactor?: boolean | null
+  isInUseSecurePassword?: boolean | null
+  isCompletedTrainingAccessibility?: boolean | null
+  isCompletedTrainingRisk?: boolean | null
+  isCompletedTrainingBrand?: boolean | null
+  hasKnowledgeStandards?: boolean | null
+  passwordUpdatedAt?: string | null
+  offboardingCompleted?: boolean | null
+  tenant?: (number | null) | Tenant
+  updatedAt: string
+  createdAt: string
+  email: string
+  resetPasswordToken?: string | null
+  resetPasswordExpiration?: string | null
+  salt?: string | null
+  hash?: string | null
+  loginAttempts?: number | null
+  lockUntil?: string | null
+  password?: string | null
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "organization".
  */
@@ -196,40 +273,6 @@ export interface Organization {
   isPrimaryUnit?: boolean | null
   updatedAt: string
   createdAt: string
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number
-  name: string
-  role?: ('super_admin' | 'central_admin' | 'unit_admin' | 'social_media_manager') | null
-  status?: ('active' | 'inactive' | 'rejected' | 'pending_activation') | null
-  admin_policy_agreement: boolean
-  date_of_last_policy_review?: string | null
-  date_of_last_training?: string | null
-  organizations?: (number | Organization)[] | null
-  reject_reason?: string | null
-  isEnabledTwoFactor?: boolean | null
-  isInUseSecurePassword?: boolean | null
-  isCompletedTrainingAccessibility?: boolean | null
-  isCompletedTrainingRisk?: boolean | null
-  isCompletedTrainingBrand?: boolean | null
-  hasKnowledgeStandards?: boolean | null
-  passwordUpdatedAt?: string | null
-  offboardingCompleted?: boolean | null
-  tenant?: (number | null) | Tenant
-  updatedAt: string
-  createdAt: string
-  email: string
-  resetPasswordToken?: string | null
-  resetPasswordExpiration?: string | null
-  salt?: string | null
-  hash?: string | null
-  loginAttempts?: number | null
-  lockUntil?: string | null
-  password?: string | null
 }
 /**
  * Organizations using the platform (universities, government, etc.)
@@ -568,6 +611,8 @@ export interface AuditLog {
     | 'password_reset'
     | 'compliance_task_generated'
     | 'task_escalation'
+    | 'role_request_approved'
+    | 'role_request_rejected'
   entity: string
   prev?:
     | {
@@ -788,6 +833,10 @@ export interface PayloadLockedDocument {
   id: number
   document?:
     | ({
+        relationTo: 'role-requests'
+        value: number | RoleRequest
+      } | null)
+    | ({
         relationTo: 'organization'
         value: number | Organization
       } | null)
@@ -891,6 +940,22 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "role-requests_select".
+ */
+export interface RoleRequestsSelect<T extends boolean = true> {
+  user?: T
+  requestedRole?: T
+  unitId?: T
+  justification?: T
+  status?: T
+  approvedBy?: T
+  reviewNotes?: T
+  tenant?: T
+  updatedAt?: T
+  createdAt?: T
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "organization_select".
  */
 export interface OrganizationSelect<T extends boolean = true> {
@@ -955,7 +1020,8 @@ export interface WelcomeEmailsSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T
-  role?: T
+  roles?: T
+  active_role?: T
   status?: T
   admin_policy_agreement?: T
   date_of_last_policy_review?: T

@@ -7,6 +7,11 @@ import {
   extractTenantId,
   superAdminOnlyDeleteAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+import {
+  getEffectiveRole,
+  normalizeActiveRole,
+  normalizeRoles,
+} from '@/shared/utils/role-hierarchy'
 
 export const AuditLogs: CollectionConfig = {
   slug: 'audit_log',
@@ -15,13 +20,16 @@ export const AuditLogs: CollectionConfig = {
       const { user, payload } = req
       if (!user) return false
 
-      const { role, id } = user
+      const { id } = user
+      const roles = normalizeRoles(user.roles)
+      const activeRole = normalizeActiveRole(user.active_role)
+      const effectiveRole = getEffectiveRole(roles, activeRole)
 
-      if (role === UserRolesEnum.SuperAdmin) return true
+      if (effectiveRole === UserRolesEnum.SuperAdmin) return true
       const tenantId = extractTenantId(user)
       if (!tenantId) return false
 
-      switch (role) {
+      switch (effectiveRole) {
         case UserRolesEnum.CentralAdmin:
           return { tenant: { equals: tenantId } }
 

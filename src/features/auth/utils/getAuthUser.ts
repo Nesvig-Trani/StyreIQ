@@ -5,6 +5,7 @@ import { OrganizationAccess } from '@/types/payload-types'
 import { getUnitAccessByUserId } from '@/features/units'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { UserRolesEnum, UserStatusEnum } from '@/features/users'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export async function getAuthUser() {
   const headers = await getHeaders()
@@ -31,6 +32,8 @@ export async function verifyUser() {
     return null
   }
 
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
   const accessibleOrganizations: OrganizationAccess[] = []
   const orgAccessResult = await getUnitAccessByUserId({ id: user.id })
   orgAccessResult.docs.forEach((access) => {
@@ -41,7 +44,7 @@ export async function verifyUser() {
   })
 
   if (accessibleOrganizations.length === 0 || user.status !== UserStatusEnum.Active) {
-    if (user.role === UserRolesEnum.SuperAdmin) {
+    if (isSuperAdmin) {
       return user
     }
     return null
