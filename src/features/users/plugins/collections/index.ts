@@ -9,6 +9,7 @@ import {
   userForgotPassword,
   userResetPassword,
   requestDemo,
+  switchUserRole,
 } from '../endpoints'
 import { AccessControl } from '@/shared/utils/rbac'
 import { Organization } from '@/types/payload-types'
@@ -17,6 +18,11 @@ import { injectTenantHook } from '@/features/tenants/hooks/inject-tenant'
 
 import { ComplianceTaskGenerator } from '@/features/compliance-tasks/services/compliance-task-generator'
 import { extractTenantId } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+import {
+  getEffectiveRole,
+  getEffectiveRoleFromUser,
+  validateRoleCompatibility,
+} from '@/shared/utils/role-hierarchy'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -29,13 +35,13 @@ export const Users: CollectionConfig = {
       const { user, payload } = req
       if (!user) return false
 
-      const { role, id } = user
-
-      if (role === UserRolesEnum.SuperAdmin) return true
+      const { id } = user
+      const effectiveRole = getEffectiveRoleFromUser(user)
+      if (effectiveRole === UserRolesEnum.SuperAdmin) return true
       const tenantId = extractTenantId(user)
       if (!tenantId) return false
 
-      switch (role) {
+      switch (effectiveRole) {
         case UserRolesEnum.CentralAdmin:
           return { tenant: { equals: tenantId } }
 
@@ -57,10 +63,10 @@ export const Users: CollectionConfig = {
     create: async ({ req: { user }, data }) => {
       if (!user) return false
 
-      const { role } = user
+      const effectiveRole = getEffectiveRoleFromUser(user)
       const access = new AccessControl(user)
 
-      if (role === UserRolesEnum.SuperAdmin) {
+      if (effectiveRole === UserRolesEnum.SuperAdmin) {
         return access.can('create', 'USERS')
       }
 
@@ -70,7 +76,7 @@ export const Users: CollectionConfig = {
 
       if (data?.tenant && data.tenant !== tenantId) return false
 
-      switch (role) {
+      switch (effectiveRole) {
         case UserRolesEnum.CentralAdmin:
           return true
 
@@ -94,11 +100,10 @@ export const Users: CollectionConfig = {
 
     update: async ({ req: { user, payload }, id, data }) => {
       if (!user || !id || typeof id !== 'string') return false
-
-      const { role } = user
+      const effectiveRole = getEffectiveRoleFromUser(user)
       const access = new AccessControl(user)
 
-      if (role === UserRolesEnum.SuperAdmin) {
+      if (effectiveRole === UserRolesEnum.SuperAdmin) {
         return access.can('update', 'USERS')
       }
 
@@ -117,7 +122,7 @@ export const Users: CollectionConfig = {
         if (targetTenantId !== tenantId) return false
         if (data?.tenant && data.tenant !== tenantId) return false
 
-        switch (role) {
+        switch (effectiveRole) {
           case UserRolesEnum.CentralAdmin:
             return true
 
@@ -147,12 +152,12 @@ export const Users: CollectionConfig = {
     delete: async ({ req: { user, payload }, id }) => {
       if (!user || !id || typeof id !== 'string') return false
 
-      const { role } = user
+      const effectiveRole = getEffectiveRoleFromUser(user)
       const access = new AccessControl(user)
 
       if (!access.can('delete', 'USERS')) return false
 
-      switch (role) {
+      switch (effectiveRole) {
         case UserRolesEnum.SuperAdmin:
           return true
 
@@ -186,23 +191,31 @@ export const Users: CollectionConfig = {
       required: true,
     },
     {
-      name: 'role',
+      name: 'roles',
+      type: 'select',
+      hasMany: true,
+      required: true,
+      options: [
+        { label: 'Super Admin', value: UserRolesEnum.SuperAdmin },
+        { label: 'Central Admin', value: UserRolesEnum.CentralAdmin },
+        { label: 'Unit Admin', value: UserRolesEnum.UnitAdmin },
+        { label: 'Social Media Manager', value: UserRolesEnum.SocialMediaManager },
+      ],
+      defaultValue: [UserRolesEnum.SocialMediaManager],
+    },
+    {
+      name: 'active_role',
       type: 'select',
       options: [
-        {
-          label: 'Super Admin',
-          value: UserRolesEnum.SuperAdmin,
-        },
-        {
-          label: 'Central Admin',
-          value: UserRolesEnum.CentralAdmin,
-        },
+        { label: 'Super Admin', value: UserRolesEnum.SuperAdmin },
+        { label: 'Central Admin', value: UserRolesEnum.CentralAdmin },
         { label: 'Unit Admin', value: UserRolesEnum.UnitAdmin },
-        {
-          label: 'Social Media Manager',
-          value: UserRolesEnum.SocialMediaManager,
-        },
+        { label: 'Social Media Manager', value: UserRolesEnum.SocialMediaManager },
       ],
+      admin: {
+        description: 'Currently active role (for users with multiple roles)',
+        readOnly: false,
+      },
     },
     {
       name: 'status',
@@ -321,10 +334,58 @@ export const Users: CollectionConfig = {
       },
     ],
     beforeChange: [
-      async ({ data, operation, originalDoc }) => {
-        if (operation === 'update' && data.tenant) {
-          if (originalDoc && originalDoc.tenant !== data.tenant) {
-            throw new Error('Cannot change tenant assignment after user creation')
+      async ({ data, operation, originalDoc, req }) => {
+        if (operation === 'update' && data.tenant && originalDoc?.tenant !== data.tenant) {
+          throw new Error('Cannot change tenant assignment after user creation')
+        }
+
+        if ((operation === 'create' || operation === 'update') && data.roles) {
+          const validation = validateRoleCompatibility(data.roles)
+
+          if (!validation.valid) {
+            throw new Error(`Role assignment error: ${validation.errors.join(', ')}`)
+          }
+        }
+
+        if (data.roles) {
+          const currentActiveRole = data.active_role ?? originalDoc?.active_role
+
+          if (currentActiveRole && !data.roles.includes(currentActiveRole)) {
+            data.active_role = getEffectiveRole(data.roles)
+          }
+        }
+
+        if (operation === 'create' && data.roles && !data.active_role) {
+          data.active_role = getEffectiveRole(data.roles)
+        }
+
+        if (
+          operation === 'create' &&
+          data.roles?.includes(UserRolesEnum.CentralAdmin) &&
+          data.tenant
+        ) {
+          try {
+            const tenantId = typeof data.tenant === 'object' ? data.tenant.id : data.tenant
+
+            const tenant = await req.payload.findByID({
+              collection: 'tenants',
+              id: tenantId,
+            })
+
+            const primaryUnitId =
+              tenant.primaryUnit && typeof tenant.primaryUnit === 'object'
+                ? tenant.primaryUnit.id
+                : tenant.primaryUnit
+
+            if (primaryUnitId) {
+              const currentOrgs = data.organizations ?? []
+
+              if (!currentOrgs.includes(primaryUnitId)) {
+                data.organizations = [...currentOrgs, primaryUnitId]
+              }
+            }
+          } catch (error) {
+            req.payload.logger.error('Failed to inherit Primary Unit', { error })
           }
         }
 
@@ -341,5 +402,6 @@ export const Users: CollectionConfig = {
     userForgotPassword,
     userResetPassword,
     requestDemo,
+    switchUserRole,
   ],
 }

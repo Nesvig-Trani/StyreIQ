@@ -34,11 +34,39 @@ export const statusClassMap: Record<string, string> = {
 const RoleEnum = z.nativeEnum(UserRolesEnum)
 const StatusEnum = z.nativeEnum(UserStatusEnum)
 
+const validateUserRoles = (
+  data: {
+    roles: UserRolesEnum[]
+    organizations?: unknown[]
+  },
+  ctx: z.RefinementCtx,
+) => {
+  const hasSuperAdmin = data.roles.includes(UserRolesEnum.SuperAdmin)
+  const hasOtherRoles = data.roles.some((role) => role !== UserRolesEnum.SuperAdmin)
+
+  if (hasSuperAdmin && hasOtherRoles) {
+    ctx.addIssue({
+      path: ['roles'],
+      code: z.ZodIssueCode.custom,
+      message: 'Super Admin cannot be combined with other roles.',
+    })
+  }
+
+  if (!hasSuperAdmin) {
+    if (!data.organizations || data.organizations.length === 0) {
+      ctx.addIssue({
+        path: ['organizations'],
+        code: z.ZodIssueCode.custom,
+        message: 'Unit is required unless the user is Super Admin.',
+      })
+    }
+  }
+}
+
 export const userBaseSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8, 'Password should have at least 8 characters'),
   name: z.string(),
-  role: RoleEnum.optional(),
   status: StatusEnum.optional(),
   organizations: z.array(z.string()).optional(),
   passwordUpdatedAt: z
@@ -51,19 +79,13 @@ export const userBaseSchema = z.object({
     }, z.date())
     .optional(),
   tenant: z.number().nullable().optional(),
+  active_role: RoleEnum.optional(),
+  roles: z.array(RoleEnum).min(1, 'At least one role is required'),
 })
 
-export const createUserFormSchema = userBaseSchema.superRefine((data, ctx) => {
-  if (data.role !== UserRolesEnum.SuperAdmin) {
-    if (!data.organizations || data.organizations.length === 0) {
-      ctx.addIssue({
-        path: ['organizations'],
-        code: z.ZodIssueCode.custom,
-        message: 'Unit is required unless the role is Super Admin.',
-      })
-    }
-  }
-})
+export const createUserFormSchema = userBaseSchema
+  .omit({ active_role: true })
+  .superRefine(validateUserRoles)
 
 export const createFirstUserFormSchema = z.object({
   name: z.string(),
@@ -71,9 +93,9 @@ export const createFirstUserFormSchema = z.object({
   password: z.string().min(8),
 })
 
-export const updateUserFormSchema = userBaseSchema.omit({
-  password: true,
-})
+export const updateUserFormSchema = userBaseSchema
+  .omit({ password: true })
+  .superRefine(validateUserRoles)
 
 export const forgotPasswordSchema = z.object({
   email: z.string().email(),
@@ -84,7 +106,7 @@ export const resetPasswordSchema = z.object({
   password: z.string(),
 })
 
-export const updateUserSchema = updateUserFormSchema.extend({ id: z.number() })
+export const updateUserSchema = z.intersection(updateUserFormSchema, z.object({ id: z.number() }))
 
 export const userSearchSchema = paginationSchema.extend({})
 

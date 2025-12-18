@@ -3,6 +3,7 @@ import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { UserRolesEnum } from '@/features/users'
 import type { Payload, User, Where } from 'payload'
 import { extractTenantId } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+import { getEffectiveRole } from '@/shared/utils/role-hierarchy'
 
 export interface AccessibleOrganizationsResult {
   organizations: Organization[]
@@ -34,7 +35,10 @@ export async function getAccessibleOrganizationsWithPayload(
     return { organizations: [], accessibleOrgIds: [] }
   }
 
-  switch (user.role) {
+  const userRoles = user.roles || (user.role ? [user.role] : [])
+  const effectiveRole = getEffectiveRole(userRoles, user.active_role)
+
+  switch (effectiveRole) {
     case UserRolesEnum.SuperAdmin: {
       const where: Where = {}
 

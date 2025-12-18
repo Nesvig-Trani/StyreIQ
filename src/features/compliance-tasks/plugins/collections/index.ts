@@ -7,6 +7,7 @@ import {
   adminOnlyCreateAccess,
   superAdminOnlyDeleteAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export const ComplianceTasks: CollectionConfig = {
   slug: 'compliance_tasks',
@@ -20,14 +21,15 @@ export const ComplianceTasks: CollectionConfig = {
       const { user, payload } = req
       if (!user) return false
 
-      const { role, tenant, id } = user
+      const { tenant, id } = user
+      const effectiveRole = getEffectiveRoleFromUser(user)
 
-      if (role === UserRolesEnum.SuperAdmin) return true
+      if (effectiveRole === UserRolesEnum.SuperAdmin) return true
       if (!tenant) return false
 
       const tenantId = typeof tenant === 'object' ? tenant.id : tenant
 
-      switch (role) {
+      switch (effectiveRole) {
         case UserRolesEnum.CentralAdmin:
           return { tenant: { equals: tenantId } }
 
@@ -66,9 +68,10 @@ export const ComplianceTasks: CollectionConfig = {
       const { user, payload } = req
       if (!user || !id) return false
 
-      const { role, tenant, id: userId } = user
+      const { tenant, id: userId } = user
+      const effectiveRole = getEffectiveRoleFromUser(user)
 
-      if (role === UserRolesEnum.SuperAdmin) return true
+      if (effectiveRole === UserRolesEnum.SuperAdmin) return true
       if (!tenant) return false
 
       try {
@@ -81,7 +84,7 @@ export const ComplianceTasks: CollectionConfig = {
 
         const tenantId = typeof tenant === 'object' ? tenant.id : tenant
 
-        switch (role) {
+        switch (effectiveRole) {
           case UserRolesEnum.CentralAdmin:
             return task.tenant === tenantId
 

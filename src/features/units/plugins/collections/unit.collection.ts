@@ -9,6 +9,7 @@ import {
   superAdminOnlyDeleteAccess,
   tenantCreateAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export const Unit: CollectionConfig = {
   slug: 'organization',
@@ -20,9 +21,9 @@ export const Unit: CollectionConfig = {
       const { user, payload } = req
       if (!user) return false
 
-      const { role } = user
+      const effectiveRole = getEffectiveRoleFromUser(user)
 
-      if (role === UserRolesEnum.SuperAdmin) return true
+      if (effectiveRole === UserRolesEnum.SuperAdmin) return true
 
       const tenantId = extractTenantId(user)
       if (!tenantId) return false
@@ -41,16 +42,16 @@ export const Unit: CollectionConfig = {
       const { user, payload } = req
       if (!user || !id) return false
 
-      const { role } = user
+      const effectiveRole = getEffectiveRoleFromUser(user)
 
-      if (role === UserRolesEnum.SuperAdmin) return true
+      if (effectiveRole === UserRolesEnum.SuperAdmin) return true
 
       const tenantId = extractTenantId(user)
       if (!tenantId) return false
 
       if (data?.tenant && data.tenant !== tenantId) return false
 
-      switch (role) {
+      switch (effectiveRole) {
         case UserRolesEnum.CentralAdmin:
           return { tenant: { equals: tenantId } }
 
@@ -172,7 +173,10 @@ export const Unit: CollectionConfig = {
   hooks: {
     beforeChange: [
       async ({ data, req, operation, originalDoc }) => {
-        if (operation === 'create' && req.user?.role === UserRolesEnum.UnitAdmin) {
+        const effectiveRole = getEffectiveRoleFromUser(req.user)
+        const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
+        const isUnitAdmin = effectiveRole === UserRolesEnum.UnitAdmin
+        if (operation === 'create' && isUnitAdmin) {
           if (!data.parentOrg) {
             throw new Error(
               'Unit Admins cannot create main units. A parent organization is required.',
@@ -187,7 +191,7 @@ export const Unit: CollectionConfig = {
           }
         }
 
-        if (operation === 'update' && req.user?.role === UserRolesEnum.UnitAdmin) {
+        if (operation === 'update' && isUnitAdmin) {
           if (originalDoc && !originalDoc.parentOrg) {
             throw new Error('Unit Admins cannot edit main units. Only sub-units can be modified.')
           }
@@ -198,10 +202,7 @@ export const Unit: CollectionConfig = {
         }
 
         if (operation === 'update' && data.isPrimaryUnit !== undefined) {
-          if (
-            originalDoc?.isPrimaryUnit !== data.isPrimaryUnit &&
-            req.user?.role !== UserRolesEnum.SuperAdmin
-          ) {
+          if (originalDoc?.isPrimaryUnit !== data.isPrimaryUnit && !isSuperAdmin) {
             throw new Error('Only SuperAdmin can modify Primary Unit status.')
           }
         }
