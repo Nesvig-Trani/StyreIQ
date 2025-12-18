@@ -8,6 +8,7 @@ import {
 import { UserRolesEnum } from '@/features/users'
 import { Where } from 'payload'
 import { extractTenantId } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export const getLastPolicyVersion = async () => {
   const { payload } = await getPayloadContext()
@@ -20,7 +21,10 @@ export const getLastPolicyVersion = async () => {
 
   const where: Where = {}
 
-  if (user.role === UserRolesEnum.SuperAdmin) {
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
+
+  if (isSuperAdmin) {
     if (selectedTenantId !== null) {
       where.tenant = { equals: selectedTenantId }
     } else {
@@ -38,7 +42,7 @@ export const getLastPolicyVersion = async () => {
     where,
     sort: '-version',
     limit: 1,
-    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+    overrideAccess: isSuperAdmin,
     user: userForQueries,
   })
 
@@ -53,7 +57,8 @@ export const getPolicies = async () => {
 
   const userForQueries = await createUserForQueriesFromCookie(user)
   const selectedTenantId = await getSelectedTenantIdFromCookie()
-
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
   const where: Where = {}
 
   const emptyResult = {
@@ -69,7 +74,7 @@ export const getPolicies = async () => {
 
   let tenantId: number | null
 
-  if (user.role === UserRolesEnum.SuperAdmin) {
+  if (isSuperAdmin) {
     tenantId = selectedTenantId
   } else {
     tenantId = extractTenantId(user)
@@ -84,7 +89,7 @@ export const getPolicies = async () => {
   return await payload.find({
     collection: PoliciesCollectionSlug,
     where,
-    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+    overrideAccess: isSuperAdmin,
     user: userForQueries,
   })
 }

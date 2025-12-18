@@ -22,6 +22,7 @@ import {
   validateRelatedEntityTenant,
   validateTenantAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export const createFlag: Endpoint = {
   path: '/',
@@ -157,7 +158,9 @@ export const markAsResolved: Endpoint = {
       }
 
       const user = req.user
-      if (user?.role !== UserRolesEnum.SuperAdmin) {
+      const effectiveRole = getEffectiveRoleFromUser(user)
+      const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
+      if (!isSuperAdmin) {
         throw new EndpointError('Unauthorized')
       }
 
@@ -198,7 +201,7 @@ export const markAsResolved: Endpoint = {
         collection: FlagHistoryCollectionSlug,
         data: {
           flag: flag.id,
-          user: user.id,
+          user: user && user.id,
           action: FlagHistoryActionsEnum.STATUS_CHANGED,
           prevStatus: flag.status,
           newStatus: FlagStatusEnum.RESOLVED,

@@ -14,6 +14,7 @@ import {
 } from '../../schemas'
 import { UnitTypeEnum } from '@/features/units'
 import { AuditLogActionEnum } from '@/features/audit-log/plugins/types'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export const createTenant: Endpoint = {
   path: '/',
@@ -27,8 +28,8 @@ export const createTenant: Endpoint = {
     if (!user) {
       throw new EndpointError('Unauthorized', 401)
     }
-
-    if (user.role !== UserRolesEnum.SuperAdmin) {
+    const effectiveRole = getEffectiveRoleFromUser(user)
+    if (effectiveRole !== UserRolesEnum.SuperAdmin) {
       throw new EndpointError('Only Super Admins can create tenants', 403)
     }
 
@@ -127,7 +128,8 @@ export const getTenantMetrics: Endpoint = {
     const requestedTenantId = Number(req.routeParams?.id)
     const userTenantId = extractTenantId(req.user)
 
-    if (req.user.role !== UserRolesEnum.SuperAdmin && userTenantId !== requestedTenantId) {
+    const effectiveRole = getEffectiveRoleFromUser(req.user)
+    if (effectiveRole !== UserRolesEnum.SuperAdmin && userTenantId !== requestedTenantId) {
       return new Response(JSON.stringify({ error: 'Forbidden' }), {
         status: 403,
         headers: JSON_HEADERS,
@@ -174,7 +176,8 @@ export const getAggregateMetrics: Endpoint = {
   path: '/aggregate-metrics',
   method: 'get',
   handler: async (req) => {
-    if (!req.user || req.user.role !== UserRolesEnum.SuperAdmin) {
+    const effectiveRole = getEffectiveRoleFromUser(req.user)
+    if (!req.user || effectiveRole !== UserRolesEnum.SuperAdmin) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         status: 403,
         headers: JSON_HEADERS,
@@ -255,7 +258,8 @@ export const updateGovernanceSettings: Endpoint = {
 
     const user = req.user
 
-    if (!user || user.role !== UserRolesEnum.CentralAdmin) {
+    const effectiveRole = getEffectiveRoleFromUser(user)
+    if (!user || effectiveRole !== UserRolesEnum.CentralAdmin) {
       throw new EndpointError('Only Central Admin can modify governance settings', 403)
     }
 

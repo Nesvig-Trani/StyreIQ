@@ -11,6 +11,7 @@ import {
   getSelectedTenantIdFromCookie,
 } from '@/app/(dashboard)/server-tenant-context'
 import { extractTenantId } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+import { getEffectiveRoleFromUser, normalizeRoles } from '@/shared/utils/role-hierarchy'
 
 export const getUsersByOrganizations = async ({ orgIds }: { orgIds: number[] }) => {
   const { payload } = await getPayloadContext()
@@ -125,11 +126,12 @@ export const getAllUsers = async () => {
     }
   }
 
+  const effectiveRole = getEffectiveRoleFromUser(user)
   const userForQueries = await createUserForQueriesFromCookie(user)
   const selectedTenantId = await getSelectedTenantIdFromCookie()
 
   const where: Where = {}
-  if (user.role === UserRolesEnum.SuperAdmin && selectedTenantId !== null) {
+  if (effectiveRole === UserRolesEnum.SuperAdmin && selectedTenantId !== null) {
     where.tenant = { equals: selectedTenantId }
   }
 
@@ -138,7 +140,7 @@ export const getAllUsers = async () => {
     where,
     limit: 0,
     depth: 0,
-    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+    overrideAccess: effectiveRole === UserRolesEnum.SuperAdmin,
     user: userForQueries,
   })
 
@@ -180,15 +182,17 @@ export const getUsersByRoles = async (roles: UserRolesEnum[]) => {
       nextPage: null,
     }
   }
+
+  const effectiveRole = getEffectiveRoleFromUser(user)
   const userForQueries = await createUserForQueriesFromCookie(user)
   const selectedTenantId = await getSelectedTenantIdFromCookie()
 
   const where: Where = {
-    role: { in: roles },
+    roles: { in: roles },
     status: { equals: UserStatusEnum.Active },
   }
 
-  if (user.role === UserRolesEnum.SuperAdmin) {
+  if (effectiveRole === UserRolesEnum.SuperAdmin) {
     if (selectedTenantId !== null) {
       where.tenant = { equals: selectedTenantId }
     }
@@ -199,10 +203,10 @@ export const getUsersByRoles = async (roles: UserRolesEnum[]) => {
     }
   }
 
-  return await payload.find({
+  return payload.find({
     collection: 'users',
     where,
-    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+    overrideAccess: effectiveRole === UserRolesEnum.SuperAdmin,
     user: userForQueries,
   })
 }
@@ -231,11 +235,11 @@ export const getUsersByOrganizationAndRole = async ({
 
   const userForQueries = await createUserForQueriesFromCookie(user)
 
-  return await payload.find({
+  return payload.find({
     collection: 'users',
     where: {
       'organizations.id': { equals: organizationId },
-      role: { in: roles },
+      roles: { in: roles },
       status: { equals: UserStatusEnum.Active },
     },
     overrideAccess: false,
@@ -281,13 +285,14 @@ export const getUsersInfoForDashboard = async (): Promise<DashboardData> => {
 
   if (!user) return defaultData
 
+  const effectiveRole = getEffectiveRoleFromUser(user)
   const userForQueries = await createUserForQueriesFromCookie(user)
   const selectedTenantId = await getSelectedTenantIdFromCookie()
 
   let where: Where = {}
   let users: PaginatedDocs<User>
 
-  switch (user.role) {
+  switch (effectiveRole) {
     case UserRolesEnum.SocialMediaManager: {
       users = await payload.find({
         collection: 'users',
@@ -348,15 +353,22 @@ export const getUsersInfoForDashboard = async (): Promise<DashboardData> => {
       inTransition: users.docs.filter((u) => u.status === UserStatusEnum.PendingActivation).length,
     },
     activeUsers: {
-      superAdmin: users.docs.filter(
-        (u) => u.role === UserRolesEnum.SuperAdmin && u.status === UserStatusEnum.Active,
-      ).length,
-      unitAdmins: users.docs.filter(
-        (u) => u.role === UserRolesEnum.UnitAdmin && u.status === UserStatusEnum.Active,
-      ).length,
-      socialMediaManagers: users.docs.filter(
-        (u) => u.role === UserRolesEnum.SocialMediaManager && u.status === UserStatusEnum.Active,
-      ).length,
+      superAdmin: users.docs.filter((u) => {
+        const roles = normalizeRoles(u.roles)
+        return roles.includes(UserRolesEnum.SuperAdmin) && u.status === UserStatusEnum.Active
+      }).length,
+
+      unitAdmins: users.docs.filter((u) => {
+        const roles = normalizeRoles(u.roles)
+        return roles.includes(UserRolesEnum.UnitAdmin) && u.status === UserStatusEnum.Active
+      }).length,
+
+      socialMediaManagers: users.docs.filter((u) => {
+        const roles = normalizeRoles(u.roles)
+        return (
+          roles.includes(UserRolesEnum.SocialMediaManager) && u.status === UserStatusEnum.Active
+        )
+      }).length,
     },
     pendingApproval: users.docs.filter((u) => u.status === UserStatusEnum.PendingActivation).length,
     unassignedAccounts: users.docs.filter((u) => !u.organizations || u.organizations.length === 0)
@@ -389,12 +401,13 @@ export const getUsers = async ({
     }
   }
 
+  const effectiveRole = getEffectiveRoleFromUser(user)
   const userForQueries = await createUserForQueriesFromCookie(user)
   const selectedTenantId = await getSelectedTenantIdFromCookie()
 
   let result
 
-  switch (user.role) {
+  switch (effectiveRole) {
     case UserRolesEnum.SocialMediaManager: {
       const me = await payload.find({
         collection: 'users',

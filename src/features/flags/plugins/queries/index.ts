@@ -12,6 +12,7 @@ import {
   createUserForQueriesFromCookie,
   getSelectedTenantIdFromCookie,
 } from '@/app/(dashboard)/server-tenant-context'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export const getFlags = async ({
   flagType,
@@ -52,6 +53,8 @@ export const getFlags = async ({
     }
   }
 
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
   const userForQueries = await createUserForQueriesFromCookie(user)
   const selectedTenantId = await getSelectedTenantIdFromCookie()
 
@@ -82,8 +85,80 @@ export const getFlags = async ({
     ...(Object.keys(detectionDate).length > 0 && { detectionDate }),
   }
 
-  if (user.role === UserRolesEnum.SuperAdmin && selectedTenantId !== null) {
+  if (isSuperAdmin && selectedTenantId !== null) {
     where.tenant = { equals: selectedTenantId }
+  }
+
+  if (effectiveRole === UserRolesEnum.SocialMediaManager) {
+    const socialMedias = await payload.find({
+      collection: SocialMediasCollectionSlug,
+      where: {
+        socialMediaManagers: { in: [user.id] },
+      },
+      limit: 0,
+      depth: 0,
+    })
+
+    const socialMediaIds = socialMedias.docs.map((sm) => sm.id)
+
+    const socialMediaOrgIds = socialMedias.docs
+      .map((sm) => (typeof sm.organization === 'number' ? sm.organization : sm.organization?.id))
+      .filter((id): id is number => Boolean(id))
+
+    const allFlags = await payload.find({
+      collection: FlagsCollectionSlug,
+      limit: 0,
+      where,
+      depth: 1,
+      overrideAccess: false,
+      user: userForQueries,
+    })
+
+    const relevantFlags = allFlags.docs.filter((flag) => {
+      const flagOrgIds = Array.isArray(flag.organizations)
+        ? flag.organizations.map((org) => (typeof org === 'number' ? org : org.id))
+        : []
+
+      const hasOrgAccess = flagOrgIds.some((orgId) => socialMediaOrgIds.includes(orgId))
+
+      if (!hasOrgAccess) return false
+      if (!flag.affectedEntity || typeof flag.affectedEntity !== 'object') {
+        return true
+      }
+
+      const { relationTo, value } = flag.affectedEntity as {
+        relationTo: string
+        value: number | { id: number }
+      }
+
+      const entityId = typeof value === 'number' ? value : value.id
+
+      if (relationTo === 'social-medias') {
+        return socialMediaIds.includes(entityId)
+      }
+      if (relationTo === 'users') {
+        return entityId === user.id
+      }
+
+      return true
+    })
+
+    const startIndex = pageIndex * pageSize
+    const endIndex = startIndex + pageSize
+    const paginatedFlags = relevantFlags.slice(startIndex, endIndex)
+
+    return {
+      docs: paginatedFlags,
+      totalDocs: relevantFlags.length,
+      hasNextPage: endIndex < relevantFlags.length,
+      hasPrevPage: pageIndex > 0,
+      totalPages: Math.ceil(relevantFlags.length / pageSize),
+      limit: pageSize,
+      page: pageIndex + 1,
+      pagingCounter: startIndex + 1,
+      prevPage: pageIndex > 0 ? pageIndex : null,
+      nextPage: endIndex < relevantFlags.length ? pageIndex + 2 : null,
+    }
   }
 
   const flags = await payload.find({
@@ -92,7 +167,7 @@ export const getFlags = async ({
     page: pageIndex + 1,
     where,
     depth: 1,
-    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+    overrideAccess: isSuperAdmin,
     user: userForQueries,
   })
   return flags
@@ -128,8 +203,9 @@ export const getFlagInfoForDashboard = async (): Promise<FlagsData> => {
   const selectedTenantId = await getSelectedTenantIdFromCookie()
 
   let where: Where = {}
+  const effectiveRole = getEffectiveRoleFromUser(user)
 
-  switch (user.role) {
+  switch (effectiveRole) {
     case UserRolesEnum.SocialMediaManager: {
       const socialMedias = await payload.find({
         collection: SocialMediasCollectionSlug,

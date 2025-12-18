@@ -7,6 +7,7 @@ import {
   createUserForQueriesFromCookie,
 } from '@/app/(dashboard)/server-tenant-context'
 import { extractTenantId } from '../collections/helpers/access-control-helpers'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export const getTenants = async ({
   tenantIds,
@@ -30,8 +31,9 @@ export const getTenants = async ({
   let where: Where = {
     ...(tenantIds && tenantIds.length > 0 && { id: { in: tenantIds } }),
   }
+  const effectiveRole = getEffectiveRoleFromUser(user)
 
-  switch (user.role) {
+  switch (effectiveRole) {
     case UserRolesEnum.SuperAdmin: {
       if (selectedTenantId !== null) {
         where.id = { equals: selectedTenantId }
@@ -61,7 +63,7 @@ export const getTenants = async ({
     page: pageIndex + 1,
     where,
     depth: 1,
-    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+    overrideAccess: effectiveRole === UserRolesEnum.SuperAdmin,
     user: userForQueries,
   })
 
