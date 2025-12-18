@@ -10,6 +10,7 @@ import {
   validateRelatedEntityTenant,
   validateTenantAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 async function calculateUnitPathAndDepth(
   payload: Payload,
@@ -70,6 +71,8 @@ export const createUnit: Endpoint = {
         })
 
       const user = req.user
+      const effectiveRole = getEffectiveRoleFromUser(user)
+
       if (!user) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), {
           status: 401,
@@ -97,7 +100,7 @@ export const createUnit: Endpoint = {
         data.tenant = tenantCheck.userTenant
       }
 
-      if (user.role !== UserRolesEnum.SuperAdmin && !parentOrg) {
+      if (effectiveRole !== UserRolesEnum.SuperAdmin && !parentOrg) {
         return new Response(
           JSON.stringify({ error: 'parentOrg is required for non-super_admin users' }),
           {
@@ -186,7 +189,7 @@ export const updateUnit: Endpoint = {
       }
       const data = await req.json()
       const { id, parentOrg, name, admin } = data
-
+      const effectiveRole = getEffectiveRoleFromUser(user)
       const targetUnit = await req.payload.findByID({
         collection: 'organization',
         id: id,
@@ -214,7 +217,11 @@ export const updateUnit: Endpoint = {
         })
       }
 
-      if (data.tenant && data.tenant !== user.tenant && user.role !== UserRolesEnum.SuperAdmin) {
+      if (
+        data.tenant &&
+        data.tenant !== user.tenant &&
+        effectiveRole !== UserRolesEnum.SuperAdmin
+      ) {
         return new Response(JSON.stringify({ error: 'Cannot change unit tenant' }), {
           status: 403,
           headers: JSON_HEADERS,
@@ -237,7 +244,7 @@ export const updateUnit: Endpoint = {
         }
       }
 
-      if (user.role !== UserRolesEnum.SuperAdmin && !parentOrg) {
+      if (effectiveRole !== UserRolesEnum.SuperAdmin && !parentOrg) {
         return new Response(
           JSON.stringify({ error: 'parentOrg is required for non-super_admin users' }),
           {
@@ -288,7 +295,8 @@ export const disableUnit: Endpoint = {
         throw new EndpointError('Organization not found.', 404)
       }
       const user = req.user
-      if (!user || user.role !== UserRolesEnum.SuperAdmin) {
+      const effectiveRole = getEffectiveRoleFromUser(user)
+      if (!user || effectiveRole !== UserRolesEnum.SuperAdmin) {
         throw new EndpointError('Unauthorized', 401)
       }
       const { id } = req.routeParams

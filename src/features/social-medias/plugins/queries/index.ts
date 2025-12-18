@@ -9,6 +9,7 @@ import {
   getSelectedTenantIdFromCookie,
 } from '@/app/(dashboard)/server-tenant-context'
 import { UserRolesEnum } from '@/shared/constants/user-roles'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export const getAllSocialMediaAccounts = async () => {
   const { payload } = await getPayloadContext()
@@ -28,13 +29,15 @@ export const getAllSocialMediaAccounts = async () => {
       nextPage: null,
     }
   }
+  const effectiveRole = getEffectiveRoleFromUser(user)
 
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
   const userForQueries = await createUserForQueriesFromCookie(user)
   const selectedTenantId = await getSelectedTenantIdFromCookie()
 
   const where: Where = {}
 
-  if (user.role === UserRolesEnum.SuperAdmin && selectedTenantId !== null) {
+  if (isSuperAdmin && selectedTenantId !== null) {
     where.tenant = { equals: selectedTenantId }
   }
 
@@ -43,7 +46,7 @@ export const getAllSocialMediaAccounts = async () => {
     where,
     limit: 0,
     user: userForQueries,
-    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+    overrideAccess: isSuperAdmin,
   })
 
   return socialMedias
@@ -61,8 +64,10 @@ export const getSocialMediaAccountsCount = async (): Promise<number> => {
   const selectedTenantId = await getSelectedTenantIdFromCookie()
 
   const where: Where = {}
+  const effectiveRole = getEffectiveRoleFromUser(user)
 
-  switch (user.role) {
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
+  switch (effectiveRole) {
     case UserRolesEnum.SuperAdmin: {
       if (selectedTenantId !== null) {
         where.tenant = { equals: selectedTenantId }
@@ -95,7 +100,7 @@ export const getSocialMediaAccountsCount = async (): Promise<number> => {
     where,
     limit: 0,
     user: userForQueries,
-    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+    overrideAccess: isSuperAdmin,
   })
 
   return socialMediaAccounts.totalDocs
@@ -143,8 +148,10 @@ export const getSocialMediaAccounts = async ({
       'primaryAdmin.id': { in: primaryAdmin.map(Number) },
     }),
   }
+  const effectiveRole = getEffectiveRoleFromUser(user)
 
-  switch (user.role) {
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
+  switch (effectiveRole) {
     case UserRolesEnum.SuperAdmin: {
       if (selectedTenantId !== null) {
         where.tenant = { equals: selectedTenantId }
@@ -191,7 +198,7 @@ export const getSocialMediaAccounts = async ({
     limit: pageSize,
     page: pageIndex + 1,
     user: userForQueries,
-    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+    overrideAccess: isSuperAdmin,
   })
 }
 

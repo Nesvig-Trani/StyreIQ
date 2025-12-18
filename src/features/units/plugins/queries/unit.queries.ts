@@ -6,6 +6,7 @@ import {
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { UserRolesEnum } from '@/shared/constants/user-roles'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 import { Where } from 'payload'
 
 export const getAllUnits = async () => {
@@ -25,6 +26,7 @@ export const getAllUnits = async () => {
       }
     }
 
+    const effectiveRole = getEffectiveRoleFromUser(user)
     const userForQueries = await createUserForQueriesFromCookie(user)
     const selectedTenantId = await getSelectedTenantIdFromCookie()
 
@@ -32,7 +34,7 @@ export const getAllUnits = async () => {
       or: [{ disabled: { equals: false } }, { disabled: { equals: null } }],
     }
 
-    if (user.role === UserRolesEnum.SuperAdmin && selectedTenantId !== null) {
+    if (effectiveRole === UserRolesEnum.SuperAdmin && selectedTenantId !== null) {
       where.tenant = { equals: selectedTenantId }
     }
 
@@ -49,7 +51,7 @@ export const getAllUnits = async () => {
       },
       where,
       limit: 0,
-      overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+      overrideAccess: effectiveRole === UserRolesEnum.SuperAdmin,
       user: userForQueries,
     })
     return organizations
@@ -88,8 +90,8 @@ export const getUnitsWithFilter = async ({ status, type }: { status?: string; ty
   const disabledFilter = {
     or: [{ disabled: { equals: false } }, { disabled: { equals: null } }],
   }
-
-  if (user?.role === 'super_admin') {
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  if (effectiveRole === 'super_admin') {
     // If the user is a super admin, return all organizations with the specified filte
     const where: Where = {
       ...disabledFilter,

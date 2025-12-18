@@ -7,6 +7,7 @@ import {
   getSelectedTenantIdFromCookie,
 } from '@/app/(dashboard)/server-tenant-context'
 import { UserRolesEnum } from '@/features/users'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 type WithId = { id: number }
 
@@ -55,6 +56,9 @@ export const getAuditLogs = async ({
       nextPage: null,
     }
 
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
+
   const userForQueries = await createUserForQueriesFromCookie(user)
   const selectedTenantId = await getSelectedTenantIdFromCookie()
 
@@ -73,7 +77,7 @@ export const getAuditLogs = async ({
     ...(Object.keys(createdAt).length > 0 && { createdAt }),
   }
 
-  if (user.role === UserRolesEnum.SuperAdmin && selectedTenantId !== null) {
+  if (isSuperAdmin && selectedTenantId !== null) {
     where.tenant = { equals: selectedTenantId }
   }
 
@@ -83,7 +87,7 @@ export const getAuditLogs = async ({
     limit: 0,
     page: pageIndex + 1,
     where,
-    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+    overrideAccess: isSuperAdmin,
     user: userForQueries,
   })
 
@@ -128,6 +132,8 @@ export const getSocialMediaAuditLogs = async ({
 
   if (!user) return { docs: [] }
 
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
   const userForQueries = await createUserForQueriesFromCookie(user)
 
   const createdAt: Record<string, string | Date> = {}
@@ -141,7 +147,7 @@ export const getSocialMediaAuditLogs = async ({
     or: [{ 'current.id': { equals: socialMediaId } }, { 'prev.id': { equals: socialMediaId } }],
   }
 
-  if (user.role === UserRolesEnum.SuperAdmin && selectedTenantId !== null) {
+  if (isSuperAdmin && selectedTenantId !== null) {
     where.tenant = { equals: selectedTenantId }
   }
 
@@ -149,7 +155,7 @@ export const getSocialMediaAuditLogs = async ({
     collection: 'audit_log',
     depth: 1,
     where,
-    overrideAccess: user.role === UserRolesEnum.SuperAdmin,
+    overrideAccess: isSuperAdmin,
     user: userForQueries,
   })
 

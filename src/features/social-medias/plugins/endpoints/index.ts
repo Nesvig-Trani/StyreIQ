@@ -20,10 +20,12 @@ import {
   validateRelatedEntityTenant,
   validateTenantAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+import { getEffectiveRoleFromUser, normalizeRoles } from '@/shared/utils/role-hierarchy'
 
 async function validateSocialMediaCreationPermissions(user: User | null) {
   const rolesWithGrant = [UserRolesEnum.SuperAdmin, UserRolesEnum.UnitAdmin]
-  if (!user || !user.role || !rolesWithGrant.includes(user.role as UserRolesEnum)) {
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  if (!user || !effectiveRole || !rolesWithGrant.includes(effectiveRole as UserRolesEnum)) {
     throw new EndpointError("You don't have permission to perform this action.", 401)
   }
 }
@@ -38,15 +40,22 @@ async function validateAdminsDifferent(primaryAdminId: string, backupAdminId?: s
 }
 
 async function validateAdmin(adminId: number, errorMessage: string) {
-  const user = await getUserById({ id: adminId })
+  try {
+    const user = await getUserById({ id: adminId })
 
-  const allowedRoles = [UserRolesEnum.UnitAdmin, UserRolesEnum.SocialMediaManager]
+    const allowedRoles = [UserRolesEnum.UnitAdmin, UserRolesEnum.SocialMediaManager]
 
-  if (!user.role || !allowedRoles.includes(user.role as UserRolesEnum)) {
-    throw new EndpointError(errorMessage, 409)
+    const userRoles = normalizeRoles(user.roles)
+    const hasAllowedRole = userRoles.some((role) => allowedRoles.includes(role))
+
+    if (!hasAllowedRole) {
+      throw new EndpointError(errorMessage, 409)
+    }
+
+    return user
+  } catch (error) {
+    throw error
   }
-
-  return user
 }
 
 async function validateSocialMediaManagers(req: PayloadRequest, managerIds: string[]) {
@@ -131,6 +140,8 @@ export const createSocialMedia: Endpoint = {
         entityName: 'Organization',
       })
 
+      const effectiveRole = getEffectiveRoleFromUser(user)
+
       if (!orgCheck.valid) {
         throw new EndpointError(orgCheck.error!.message, orgCheck.error!.status)
       }
@@ -141,7 +152,7 @@ export const createSocialMedia: Endpoint = {
 
       await validateAdminsDifferent(dataParsed.primaryAdmin, dataParsed.backupAdmin)
 
-      if (UserRolesEnum.UnitAdmin === (user && (user.role as UserRolesEnum))) {
+      if (UserRolesEnum.UnitAdmin === (user && (effectiveRole as UserRolesEnum))) {
         await validateUnitAdminOrganization(req, user, dataParsed.organization)
       }
 
