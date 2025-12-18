@@ -16,6 +16,8 @@ import { EndpointError } from '@/shared'
 import { useRouter } from 'next/navigation'
 import { platformOptions } from '@/features/social-medias/constants/platformOptions'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { UserRolesEnum } from '@/features/users'
 
 export function useCreateSocialMedia({
   users,
@@ -37,7 +39,18 @@ export function useCreateSocialMedia({
 
       return users
         .filter((user) => {
-          if (!user.role || !roleArray.includes(user.role)) return false
+          const userRoles: UserRolesEnum[] = Array.isArray(user.roles)
+            ? (user.roles as UserRolesEnum[])
+            : user.roles
+              ? [user.roles as UserRolesEnum]
+              : []
+
+          const hasRequiredRole = roleArray.some((requiredRole) =>
+            userRoles.includes(requiredRole as UserRolesEnum),
+          )
+
+          if (!hasRequiredRole) return false
+
           if (!user.organizations || user.organizations.length === 0) return false
 
           return user.organizations.some((org) => {
@@ -276,17 +289,18 @@ export function useCreateSocialMedia({
         },
       ],
       onSubmit: async (submitData) => {
+        const effectiveRole = getEffectiveRoleFromUser(currentUser)
         try {
           const dataToSubmit = {
             ...submitData,
-            ...(currentUser?.role === 'unit_admin' && { status: 'pending' }),
+            ...(effectiveRole === 'unit_admin' && { status: 'pending' }),
             tenant: selectedTenantId,
           }
 
           await createSocialMedia(dataToSubmit)
           form.reset()
           setSelectedOrganizationId(null)
-          if (currentUser?.role === 'unit_admin') {
+          if (effectiveRole === 'unit_admin') {
             toast.success('Social media account created successfully and is pending approval')
           } else {
             toast.success('Social media account created successfully')

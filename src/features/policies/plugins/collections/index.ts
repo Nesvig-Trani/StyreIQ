@@ -11,8 +11,8 @@ import {
   superAdminOnlyDeleteAccess,
   tenantBasedReadAccess,
   extractTenantId,
-  getSelectedTenantFromRequest,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export const Policies: CollectionConfig = {
   slug: PoliciesCollectionSlug,
@@ -28,8 +28,7 @@ export const Policies: CollectionConfig = {
         if (!req.user) return
         if (operation !== 'create') return
 
-        const tenantId =
-          data?.tenant || extractTenantId(req.user) || getSelectedTenantFromRequest(req)
+        const tenantId = data?.tenant || extractTenantId(req.user)
 
         if (tenantId) {
           await req.payload.update({
@@ -104,13 +103,15 @@ export const Acknowledgments: CollectionConfig = {
       const { user, payload } = req
       if (!user) return false
 
-      const { role, id } = user
+      const { id } = user
+      const effectiveRole = getEffectiveRoleFromUser(user)
+      const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
 
-      if (role === UserRolesEnum.SuperAdmin) return true
+      if (isSuperAdmin) return true
       const tenantId = extractTenantId(user)
       if (!tenantId) return false
 
-      switch (role) {
+      switch (effectiveRole) {
         case UserRolesEnum.CentralAdmin: {
           const allUsersInTenant = await payload.find({
             collection: 'users',
