@@ -5,6 +5,7 @@ import {
   forgotPasswordSchema,
   resetPasswordSchema,
   updateUserSchema,
+  UserRolesEnum,
   WelcomeEmailSchema,
 } from '@/features/users'
 import { env } from '@/config/env'
@@ -52,7 +53,7 @@ export const createUser = async (data: z.infer<typeof createUserFormSchema>) => 
       name: data.name,
       email: data.email,
       password: data.password,
-      role: data.role,
+      roles: data.roles,
       status: data.status,
       organizations: data.organizations,
       tenant: data.tenant,
@@ -80,7 +81,8 @@ export const updateUser = async (data: z.infer<typeof updateUserSchema>) => {
       id: data.id,
       name: data.name,
       email: data.email,
-      role: data.role,
+      roles: data.roles,
+      active_role: data.active_role,
       status: data.status,
       organizations: data.organizations,
       passwordUpdatedAt: data.passwordUpdatedAt,
@@ -196,6 +198,22 @@ export const createWelcomeEmail = async (data: WelcomeEmailSchema) => {
       message: 'Failed to create welcome email',
       data: { message: errorResponse.message, details: errorResponse.details },
     }
+  }
+
+  return response.json()
+}
+
+export const switchRoleRequest = async (role: UserRolesEnum) => {
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/switch-role`, {
+    method: 'POST',
+    headers: JSON_HEADERS,
+    credentials: 'include',
+    body: JSON.stringify({ role }),
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}))
+    throw new Error(errorData.error || errorData.message || 'Failed to switch role')
   }
 
   return response.json()

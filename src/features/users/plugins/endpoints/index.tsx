@@ -27,6 +27,7 @@ import {
   validateRelatedEntityTenant,
   validateTenantAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+import { getEffectiveRoleFromUser, getHighestRole } from '@/shared/utils/role-hierarchy'
 
 export const createUser: Endpoint = {
   path: '/',
@@ -47,6 +48,7 @@ export const createUser: Endpoint = {
           headers: JSON_HEADERS,
         })
       }
+      const effectiveRole = getEffectiveRoleFromUser(user)
       const data = await req.json()
 
       const tenantCheck = validateTenantAccess({
@@ -120,12 +122,13 @@ export const createUser: Endpoint = {
           name: dataParsed.name,
           email: dataParsed.email,
           password: dataParsed.password,
-          role: dataParsed.role,
+          roles: dataParsed.roles,
+          active_role: getHighestRole(dataParsed.roles),
           status:
-            user.role === UserRolesEnum.UnitAdmin
+            effectiveRole === UserRolesEnum.UnitAdmin
               ? UserStatusEnum.PendingActivation
-              : dataParsed.status || UserStatusEnum.Active,
-          organizations: dataParsed.organizations?.map((org) => Number(org)),
+              : (dataParsed.status ?? UserStatusEnum.Active),
+          organizations: dataParsed.organizations?.map(Number),
           admin_policy_agreement: false,
           tenant: dataParsed.tenant,
         },
@@ -189,7 +192,8 @@ export const createUser: Endpoint = {
                 id: createUser.id,
                 email: createUser.email,
                 name: createUser.name,
-                role: createUser.role,
+                roles: createUser.roles,
+                active_role: createUser.active_role,
                 status: createUser.status,
                 organizations: createUser.organizations,
               },
@@ -241,6 +245,8 @@ export const updateUser: Endpoint = {
           headers: JSON_HEADERS,
         })
       }
+      const effectiveRole = getEffectiveRoleFromUser(user)
+
       const data = await req.json()
       const dataParsed = parseSearchParamsWithSchema(data, updateUserSchema)
       const userExists = await req.payload.findByID({ collection: 'users', id: dataParsed.id })
@@ -266,7 +272,11 @@ export const updateUser: Endpoint = {
         })
       }
 
-      if (data.tenant && data.tenant !== user.tenant && user.role !== UserRolesEnum.SuperAdmin) {
+      if (
+        data.tenant &&
+        data.tenant !== user.tenant &&
+        effectiveRole !== UserRolesEnum.SuperAdmin
+      ) {
         return new Response(JSON.stringify({ error: 'Cannot change user tenant' }), {
           status: 403,
           headers: JSON_HEADERS,
@@ -297,7 +307,7 @@ export const updateUser: Endpoint = {
 
       if (
         dataParsed.status === UserStatusEnum.Inactive &&
-        dataParsed.role === UserRolesEnum.UnitAdmin
+        dataParsed.roles?.includes(UserRolesEnum.UnitAdmin)
       ) {
         const organizations = userExists.organizations as Organization[]
 
@@ -310,7 +320,7 @@ export const updateUser: Endpoint = {
               where: {
                 and: [
                   { 'organizations.id': { equals: org.id } },
-                  { role: { equals: UserRolesEnum.UnitAdmin } },
+                  { roles: { contains: UserRolesEnum.UnitAdmin } },
                   { id: { not_equals: userExists.id } },
                 ],
               },
@@ -347,7 +357,8 @@ export const updateUser: Endpoint = {
         data: {
           name: dataParsed.name,
           email: dataParsed.email,
-          role: dataParsed.role,
+          roles: dataParsed.roles,
+          active_role: getHighestRole(dataParsed.roles),
           status: dataParsed.status,
           organizations: dataParsed.organizations?.map((org) => Number(org)),
           admin_policy_agreement: false,
@@ -362,7 +373,7 @@ export const updateUser: Endpoint = {
         updatedData: {
           name: dataParsed.name,
           email: dataParsed.email,
-          role: dataParsed.role,
+          roles: dataParsed.roles,
           status: dataParsed.status,
           organizations: userExists.organizations as Organization[],
         },
@@ -470,7 +481,10 @@ export const setUserApprovalStatus: Endpoint = {
           headers: JSON_HEADERS,
         })
       const user = req.user
-      if (!user || user.role !== UserRolesEnum.SuperAdmin) {
+
+      const effectiveRole = getEffectiveRoleFromUser(user)
+
+      if (!user || effectiveRole !== UserRolesEnum.SuperAdmin) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), {
           status: 401,
           headers: JSON_HEADERS,
@@ -541,6 +555,8 @@ export const getOrganizationUsers: Endpoint = {
         })
       }
 
+      const effectiveRole = getEffectiveRoleFromUser(user)
+
       const params = req.searchParams
       const limit = params.get('limit') ? Number(params.get('limit')) : 10
       const page = params.get('page') ? Number(params.get('page')) : 0
@@ -555,7 +571,7 @@ export const getOrganizationUsers: Endpoint = {
       })
 
       const where: Where =
-        orgIds.length === 0 && user.role === UserRolesEnum.SuperAdmin
+        orgIds.length === 0 && effectiveRole === UserRolesEnum.SuperAdmin
           ? {}
           : {
               'organizations.id': {
@@ -826,6 +842,87 @@ export const requestDemo: Endpoint = {
           headers: JSON_HEADERS,
         },
       )
+    }
+  },
+}
+
+export const switchUserRole: Endpoint = {
+  path: '/switch-role',
+  method: 'post',
+  handler: async (req) => {
+    if (!req.json)
+      return new Response(JSON.stringify({ error: 'Missing JSON body' }), {
+        status: 400,
+        headers: JSON_HEADERS,
+      })
+
+    try {
+      const user = req.user
+      if (!user) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      let body: unknown
+      try {
+        body = await req.json()
+      } catch {
+        return new Response(JSON.stringify({ error: 'Invalid JSON body' }), {
+          status: 400,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      const { role } = body as { role?: UserRolesEnum }
+
+      if (!role) {
+        return new Response(JSON.stringify({ error: 'Role is required' }), {
+          status: 400,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      if (!Object.values(UserRolesEnum).includes(role)) {
+        return new Response(JSON.stringify({ error: 'Invalid role' }), {
+          status: 400,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      const userRoles = (user.roles || []) as UserRolesEnum[]
+      if (!userRoles.includes(role)) {
+        return new Response(JSON.stringify({ error: 'You do not have this role' }), {
+          status: 403,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      const updatedUser = await req.payload.update({
+        collection: 'users',
+        id: user.id,
+        data: {
+          active_role: role,
+        },
+        req,
+      })
+
+      return new Response(
+        JSON.stringify({
+          success: true,
+          activeRole: updatedUser.active_role,
+        }),
+        {
+          status: 200,
+          headers: JSON_HEADERS,
+        },
+      )
+    } catch {
+      return new Response(JSON.stringify({ error: 'Failed to switch role' }), {
+        status: 500,
+        headers: JSON_HEADERS,
+      })
     }
   },
 }
