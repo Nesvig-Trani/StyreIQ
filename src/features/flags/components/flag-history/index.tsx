@@ -36,7 +36,7 @@ export function FlagHistoryModal({ flagId }: { flagId: number }) {
   return (
     <div>
       <Dialog open={open} onOpenChange={handleOpenChange}>
-        <DialogTrigger>
+        <DialogTrigger asChild>
           <Button>
             <HistoryIcon className="h-4 w-4" />
           </Button>

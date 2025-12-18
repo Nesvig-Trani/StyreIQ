@@ -20,7 +20,6 @@ import { toast } from 'sonner'
 interface UserFormProps {
   authUserRole?: UserRolesEnum | null
   initialOrganizations: Organization[]
-  topOrgDepth?: number
   selectedTenantId: number | null
 }
 
@@ -70,9 +69,9 @@ export function useCreateUserForm({
           size: 'half',
         },
         {
-          label: 'Role',
-          name: 'role',
-          type: 'select',
+          label: 'Roles',
+          name: 'roles',
+          type: 'multiselect',
           options: allowedRoles.map((role) => ({
             label: roleLabelMap[role],
             value: role,
@@ -99,30 +98,33 @@ export function useCreateUserForm({
             value: org.id.toString(),
             label: org.name,
           })),
-          tree: tree,
+          tree,
           multiple: true,
           dependsOn: {
-            field: 'role',
-            value: Object.values(UserRolesEnum).filter((role) => role !== UserRolesEnum.SuperAdmin),
+            field: 'roles',
+            value: [
+              UserRolesEnum.CentralAdmin,
+              UserRolesEnum.UnitAdmin,
+              UserRolesEnum.SocialMediaManager,
+            ],
           },
           size: 'half',
         },
       ],
       onSubmit: async (submitData) => {
-        const fixed = {
-          ...submitData,
-          tenant: selectedTenantId,
-        }
-
         try {
-          const user = await createUser(fixed)
+          const user = await createUser({
+            ...submitData,
+            tenant: selectedTenantId,
+          })
+
           toast.success('User created successfully')
 
-          if (user.role === UserRolesEnum.SuperAdmin) {
-            router.push('/dashboard/users')
-          } else {
-            router.push(`/dashboard/users/access/${user.id}`)
-          }
+          router.push(
+            user.active_role === UserRolesEnum.SuperAdmin
+              ? '/dashboard/users'
+              : `/dashboard/users/access/${user.id}`,
+          )
         } catch (error) {
           if (isApiError(error)) {
             if (error.data?.message === USER_ALREADY_EXISTS) {
@@ -145,7 +147,7 @@ export function useCreateUserForm({
       defaultValues: {
         email: '',
         name: '',
-        role: undefined,
+        roles: [],
         status: undefined,
         organizations: [],
       },

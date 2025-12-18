@@ -1,13 +1,13 @@
 import React from 'react'
 import Link from 'next/link'
-import { CreateUserForm, UserRolesEnum } from '@/features/users'
-import { Organization } from '@/types/payload-types'
+import { CreateUserForm } from '@/features/users'
 import { checkUserCreateAccess } from '@/shared'
 import { getAccessibleOrganizationsForUser } from '@/shared'
 import { ChevronRight, Home } from 'lucide-react'
 import { Card, CardContent } from '@/shared'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { getServerTenantContext } from '@/app/(dashboard)/server-tenant-context'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export default async function CreateUserPage() {
   const { user, accessDenied, component } = await checkUserCreateAccess()
@@ -22,18 +22,7 @@ export default async function CreateUserPage() {
     user,
     tenantContext.tenantIdForFilter,
   )
-
-  const userOrgs = user?.organizations as Organization[]
-
-  const orgsWithDefinedDepth = userOrgs.filter(
-    (org) => org.depth !== null && org.depth !== undefined,
-  )
-  const orgWithMinDepth =
-    orgsWithDefinedDepth.length > 0
-      ? orgsWithDefinedDepth.reduce((min, current) =>
-          (current.depth ?? Infinity) < (min.depth ?? Infinity) ? current : min,
-        )
-      : undefined
+  const effectiveRole = getEffectiveRoleFromUser(user)
 
   return (
     <div className="min-h-screen bg-gray-50 py-6">
@@ -61,8 +50,7 @@ export default async function CreateUserPage() {
             <div className="max-w-4xl">
               <CreateUserForm
                 initialOrganizations={organizations}
-                authUserRole={user?.role as UserRolesEnum}
-                topOrgDepth={orgWithMinDepth?.depth || undefined}
+                authUserRole={effectiveRole}
                 selectedTenantId={tenantContext.tenantIdForFilter}
               />
             </div>

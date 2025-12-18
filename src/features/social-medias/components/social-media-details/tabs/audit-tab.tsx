@@ -4,7 +4,7 @@ import { Calendar, Clock4Icon, PlusIcon, SquarePenIcon, CheckIcon } from 'lucide
 import { Separator } from '@/shared'
 import type { AuditLog, SocialMedia } from '@/types/payload-types'
 import { InfoCard } from '@/shared/components/ui/info-card'
-
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 interface SocialMediaWithLogs extends SocialMedia {
   auditLogs?: {
     docs: AuditLog[]
@@ -17,7 +17,10 @@ interface AuditTabProps {
 
 export const AuditTab: React.FC<AuditTabProps> = ({ socialMedia }) => {
   const [selectedAudit, setSelectedAudit] = useState<AuditLog | null>(null)
-  console.log(socialMedia)
+
+  const effectiveRole = getEffectiveRoleFromUser(
+    selectedAudit && typeof selectedAudit.user === 'object' ? selectedAudit.user : null,
+  )
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -169,7 +172,7 @@ export const AuditTab: React.FC<AuditTabProps> = ({ socialMedia }) => {
                             ? {
                                 id: selectedAudit.user.id,
                                 name: selectedAudit.user.name,
-                                role: selectedAudit.user.role,
+                                role: effectiveRole,
                               }
                             : {
                                 id: 'Not defined',

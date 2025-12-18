@@ -6,6 +6,7 @@ import { getUnitAccessByUserId } from '@/features/units'
 import { checkUserUpdateAccess } from '@/shared'
 import { getAccessibleOrgIdsForUser } from '@/shared'
 import { UserRolesEnum } from '@/features/users'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 async function UserAccessPage({ params }: { params: Promise<{ userId: string }> }) {
   const { user, accessDenied, component } = await checkUserUpdateAccess()
@@ -20,8 +21,10 @@ async function UserAccessPage({ params }: { params: Promise<{ userId: string }> 
   const userOrgs = await getUnitAccessByUserId({ id: Number(userId) })
 
   let filteredUserOrgs = userOrgs
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
 
-  if (user?.role === UserRolesEnum.UnitAdmin) {
+  if (isSuperAdmin) {
     const accessibleOrgIds = await getAccessibleOrgIdsForUser(user)
 
     filteredUserOrgs = {
@@ -49,9 +52,7 @@ async function UserAccessPage({ params }: { params: Promise<{ userId: string }> 
           <p>
             <b>Email: </b> {userData.email}
           </p>
-          {userData?.role !== UserRolesEnum.SuperAdmin && (
-            <UnitAccessForm initialAccess={filteredUserOrgs.docs} />
-          )}
+          {!isSuperAdmin && <UnitAccessForm initialAccess={filteredUserOrgs.docs} />}
         </CardContent>
       </Card>
     </div>

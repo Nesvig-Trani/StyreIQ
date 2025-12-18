@@ -31,7 +31,7 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
       email: '',
       password: '',
       name: '',
-      role: undefined,
+      roles: [UserRolesEnum.SocialMediaManager],
       status: undefined,
       organizations: [],
     },
@@ -40,7 +40,7 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
   const [organizations, setOrganizations] = useState<Organization[]>(initialOrganizations)
   const [isLoading, setIsLoading] = useState(false)
 
-  const selectedRole = watch('role')
+  const selectedRoles = watch('roles')
   const passwordUpdatedAt = watch('passwordUpdatedAt')
   const tree = createUnitTree(organizations as UnitWithDepth[])
 
@@ -51,9 +51,9 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
   const allowedStatuses =
     authUserRole === UserRolesEnum.UnitAdmin ? [] : [UserStatusEnum.Active, UserStatusEnum.Inactive]
 
-  const handleRoleChange = async (role: UserRolesEnum) => {
-    setValue('role', role)
-    if (authUserRole === UserRolesEnum.UnitAdmin && role === UserRolesEnum.UnitAdmin) {
+  const handleRolesChange = async (roles: UserRolesEnum[]) => {
+    setValue('roles', roles)
+    if (authUserRole === UserRolesEnum.UnitAdmin && roles.includes(UserRolesEnum.UnitAdmin)) {
       try {
         setIsLoading(true)
         const newOrgs = initialOrganizations.filter((org) => org.depth === topOrgDepth)
@@ -86,7 +86,7 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
       const user = await createUser(data)
       toast.success('User created successfully')
       reset()
-      if (user.role === UserRolesEnum.SuperAdmin) {
+      if (user.active_role === UserRolesEnum.SuperAdmin) {
         router.push('/dashboard/users')
       } else {
         router.push(`/dashboard/users/access/${user.id}`)
@@ -111,13 +111,13 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
     organizations,
     allowedRoles,
     allowedStatuses,
-    handleRoleChange,
+    handleRolesChange,
     isLoading: isLoading || isSubmitting,
     register,
     errors,
     watch,
     setValue,
-    selectedRole,
+    selectedRoles,
     tree,
     passwordUpdatedAt,
   }

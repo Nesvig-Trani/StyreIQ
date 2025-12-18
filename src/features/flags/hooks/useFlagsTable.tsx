@@ -18,6 +18,7 @@ import { FlagCommentsModal } from '../components/flag-comments'
 import { flagTypeOptions } from '../constants/flagTypeOptions'
 import { flagStatusOptions } from '../constants/flagStatusOptions'
 import { UnitCell } from '@/features/units/components/unit-cell'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 function useFlagsTable({
   user,
@@ -38,6 +39,8 @@ function useFlagsTable({
   }
 
   const searchParams = useParsedSearchParams(flagsSearchSchema)
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
 
   const columnFiltersDefs: DataTableFilter[] = [
     {
@@ -175,7 +178,7 @@ function useFlagsTable({
             <FlagDetails flag={row.original} />
             <FlagHistoryModal flagId={id} />
             <FlagCommentsModal flagId={id} />
-            {status === FlagStatusEnum.PENDING && user?.role === UserRolesEnum.SuperAdmin && (
+            {status === FlagStatusEnum.PENDING && isSuperAdmin && (
               <Button onClick={() => handleMarkResolved(id)}>
                 <CheckIcon />
               </Button>

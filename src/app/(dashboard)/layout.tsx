@@ -10,7 +10,8 @@ import { Separator } from '@/shared/components/ui/separator'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { TenantBadge } from './tenant-badge'
 import { getServerTenantContext } from './server-tenant-context'
-import { TenantProvider } from '../../features/tenants/contexts/tenant-context'
+import { TenantProvider } from '@/features/tenants/contexts/tenant-context'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export const metadata = {
   description: 'StyreIQ Dashboard',
@@ -35,6 +36,9 @@ export default async function DashboardLayout(props: { children: React.ReactNode
   }
 
   const tenantContext = await getServerTenantContext(user, payload)
+  const effectiveRole = getEffectiveRoleFromUser(user)
+
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
 
   let userTenantData = null
   if (user.tenant) {
@@ -55,14 +59,12 @@ export default async function DashboardLayout(props: { children: React.ReactNode
   const lastVersion = await getLastPolicyVersion()
   let showPolicyModal = false
 
-  if (user.id && user.role !== UserRolesEnum.SuperAdmin && lastVersion) {
+  if (user.id && !isSuperAdmin && lastVersion) {
     const userAcknowledged = await hasUserAcknowledged({
       userId: user.id,
       lastVersionId: lastVersion.id,
     })
-    if (!userAcknowledged) {
-      showPolicyModal = true
-    }
+    showPolicyModal = !userAcknowledged
   }
 
   return (
@@ -84,7 +86,7 @@ export default async function DashboardLayout(props: { children: React.ReactNode
               <TenantBadge
                 tenant={tenantContext.selectedTenant || userTenantData}
                 isViewingAllTenants={tenantContext.isViewingAllTenants}
-                userRole={user.role as UserRolesEnum}
+                userRole={effectiveRole}
               />
             </div>
           </header>

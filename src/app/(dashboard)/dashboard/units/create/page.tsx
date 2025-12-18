@@ -1,7 +1,7 @@
 'use server'
 import React from 'react'
 import { CreateUnitForm } from '@/features/units'
-import { getAllUsers, UserRolesEnum } from '@/features/users'
+import { getAllUsers } from '@/features/users'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 
 import { getAllUnits } from '@/features/units/plugins/queries'
@@ -13,6 +13,7 @@ import { Card, CardContent } from '@/shared'
 import Link from 'next/link'
 import { getServerTenantContext } from '@/app/(dashboard)/server-tenant-context'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export default async function CreateUnit() {
   const { user } = await getAuthUser()
@@ -31,6 +32,7 @@ export default async function CreateUnit() {
 
   const access = new AccessControl(user)
 
+  const effectiveRole = getEffectiveRoleFromUser(user)
   // Ensure StyreIQ organization exists
   await ensureStyreIQOrganization()
 
@@ -84,7 +86,7 @@ export default async function CreateUnit() {
           <CardContent className="p-6">
             <div className="max-w-4xl">
               <CreateUnitForm
-                userRole={user?.role as UserRolesEnum}
+                userRole={effectiveRole}
                 users={users.docs}
                 organizations={organizations.docs}
                 selectedTenantId={tenantContext.tenantIdForFilter}

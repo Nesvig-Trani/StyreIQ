@@ -8,10 +8,11 @@ import { parseSearchParamsWithSchema, type AppPageProps } from '@/shared'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { getSocialMediaAccounts } from '@/features/social-medias/plugins/queries'
 import { getAllUnits } from '@/features/units/plugins/queries'
-import { getAllUsers } from '@/features/users'
+import { getAllUsers, UserRolesEnum } from '@/features/users'
 import { getSocialMediaAuditLogs } from '@/features/audit-log/plugins/queries'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { getServerTenantContext } from '../../server-tenant-context'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export default async function SocialMediasPage(props: AppPageProps) {
   const { user } = await getAuthUser()
@@ -26,7 +27,8 @@ export default async function SocialMediasPage(props: AppPageProps) {
       </div>
     )
   }
-
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
   const searchParams = await props.searchParams
 
   const parsedParams = parseSearchParamsWithSchema(searchParams, socialMediaSearchSchema)
@@ -45,7 +47,7 @@ export default async function SocialMediasPage(props: AppPageProps) {
 
   let socialMediasWithAuditLogs = socialMediaAccounts.docs
 
-  if (user?.role === 'super_admin') {
+  if (isSuperAdmin) {
     socialMediasWithAuditLogs = await Promise.all(
       socialMediaAccounts.docs.map(async (socialMedia) => {
         const auditLogs = await getSocialMediaAuditLogs({

@@ -3,6 +3,7 @@ import type { Payload } from 'payload'
 import type { Tenant, User } from '@/types/payload-types'
 import { UserRolesEnum } from '@/features/users'
 import { SELECTED_TENANT_COOKIE_NAME } from '@/features/tenants/schemas'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export interface ServerTenantContext {
   selectedTenant: Tenant | null
@@ -26,7 +27,8 @@ export async function getServerTenantContext(
     }
   }
 
-  const isSuperAdmin = user.role === UserRolesEnum.SuperAdmin
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
 
   if (!isSuperAdmin) {
     const tenantId = getTenantIdFromUser(user)
@@ -115,7 +117,10 @@ export async function getSelectedTenantIdFromCookie(): Promise<number | null> {
 }
 
 export async function createUserForQueriesFromCookie(user: User): Promise<User> {
-  if (user.role !== UserRolesEnum.SuperAdmin) {
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
+
+  if (!isSuperAdmin) {
     const tenantId = getTenantIdFromUser(user)
     return {
       ...user,

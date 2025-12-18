@@ -19,11 +19,14 @@ import {
   XCircleIcon,
 } from 'lucide-react'
 import { User } from '@/types/payload-types'
+import { normalizeRoles } from '@/shared/utils/role-hierarchy'
 
 const getRoleLabel = (role: UserRolesEnum) => {
   switch (role) {
     case UserRolesEnum.SuperAdmin:
       return 'Super Admin'
+    case UserRolesEnum.CentralAdmin:
+      return 'Central Admin'
     case UserRolesEnum.UnitAdmin:
       return 'Unit Admin'
     case UserRolesEnum.SocialMediaManager:
@@ -67,6 +70,8 @@ const getRoleColor = (role: UserRolesEnum) => {
   switch (role) {
     case UserRolesEnum.SuperAdmin:
       return 'bg-purple-100 text-purple-800 border-purple-200'
+    case UserRolesEnum.CentralAdmin:
+      return 'bg-indigo-100 text-indigo-800 border-indigo-200'
     case UserRolesEnum.UnitAdmin:
       return 'bg-blue-100 text-blue-800 border-blue-200'
     case UserRolesEnum.SocialMediaManager:
@@ -94,6 +99,9 @@ const getTrainingStatusColor = (completed: boolean) => {
 }
 
 export function ViewUser({ user }: { user: User }) {
+  const userRoles = normalizeRoles(user.roles)
+  const activeRole = user.active_role as UserRolesEnum | undefined
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -125,10 +133,13 @@ export function ViewUser({ user }: { user: User }) {
               )}
               {getStatusLabel(user.status as UserStatusEnum)}
             </Badge>
-            <Badge className={getRoleColor(user.role as UserRolesEnum)}>
-              <ShieldIcon className="w-3 h-3 mr-1" />
-              {getRoleLabel(user.role as UserRolesEnum)}
-            </Badge>
+            {userRoles.map((role) => (
+              <Badge key={role} className={getRoleColor(role)}>
+                <ShieldIcon className="w-3 h-3 mr-1" />
+                {getRoleLabel(role)}
+                {activeRole === role && <span className="ml-1 text-xs">(Active)</span>}
+              </Badge>
+            ))}
           </div>
 
           <Separator />

@@ -10,6 +10,8 @@ import Link from 'next/link'
 import { setUserApprovalStatus } from '@/sdk/users'
 import { toast } from 'sonner'
 import { UnitCell } from '@/features/units/components/unit-cell'
+import { normalizeRoles } from '@/shared/utils/role-hierarchy'
+import { Badge } from '@/shared'
 
 function useReviewRequestTable() {
   const router = useRouter()
@@ -33,11 +35,26 @@ function useReviewRequestTable() {
       header: 'Email',
     },
     {
-      accessorKey: 'role',
-      header: 'Role',
+      accessorKey: 'roles',
+      header: 'Roles',
       cell: ({ row }) => {
-        const role = row.original.role
-        return <span>{roleLabelMap[role as UserRolesEnum]}</span>
+        const roles = normalizeRoles(row.original.roles)
+        const activeRole = row.original.active_role as UserRolesEnum | undefined
+
+        return (
+          <div className="flex flex-wrap gap-1">
+            {roles.map((role) => (
+              <Badge
+                key={role}
+                variant={activeRole === role ? 'default' : 'outline'}
+                className="text-xs"
+              >
+                {roleLabelMap[role]}
+                {activeRole === role && ' ★'}
+              </Badge>
+            ))}
+          </div>
+        )
       },
     },
     {

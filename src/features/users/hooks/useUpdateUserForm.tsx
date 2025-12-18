@@ -12,6 +12,7 @@ import { toast } from 'sonner'
 import { Organization } from '@/types/payload-types'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createUnitTree, UnitWithDepth } from '@/features/units'
+import { normalizeActiveRole, normalizeRoles } from '@/shared/utils/role-hierarchy'
 
 function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
   const router = useRouter()
@@ -37,9 +38,9 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
           size: 'half',
         },
         {
-          label: 'Role',
-          name: 'role',
-          type: 'select',
+          label: 'Roles',
+          name: 'roles',
+          type: 'multiselect',
           options: Object.values(UserRolesEnum).map((role) => ({
             label: roleLabelMap[role],
             value: role,
@@ -65,11 +66,15 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
             value: org.id.toString(),
             label: org.name,
           })),
-          tree: tree,
+          tree,
           multiple: true,
           dependsOn: {
-            field: 'role',
-            value: [UserRolesEnum.SocialMediaManager, UserRolesEnum.UnitAdmin],
+            field: 'roles',
+            value: [
+              UserRolesEnum.CentralAdmin,
+              UserRolesEnum.UnitAdmin,
+              UserRolesEnum.SocialMediaManager,
+            ],
           },
           size: 'half',
         },
@@ -111,7 +116,8 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
       defaultValues: {
         email: data.email,
         name: data.name,
-        role: data.role as UserRolesEnum,
+        roles: normalizeRoles(data.roles),
+        active_role: normalizeActiveRole(data.active_role),
         status: data.status as UserStatusEnum,
         organizations: data.organizations?.map((org) => org.toString()),
         passwordUpdatedAt: data.passwordUpdatedAt ? new Date(data.passwordUpdatedAt) : undefined,

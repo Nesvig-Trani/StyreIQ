@@ -12,6 +12,7 @@ import { updateUnit } from '@/sdk/organization'
 import { UserRolesEnum } from '@/features/users'
 import { useRouter } from 'next/navigation'
 import { unitLevelOptions, industryLevelOptions } from '@/features/units/constants/unitTypeOptions'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export const UpdateUnitForm = ({ users, organizations, data, user }: UpdateUnitFormProps) => {
   const router = useRouter()
@@ -52,9 +53,10 @@ export const UpdateUnitForm = ({ users, organizations, data, user }: UpdateUnitF
 
   const childrenDocs = data?.children?.docs ?? []
   const activeChildren = childrenDocs.filter((child) => child.status === 'active')
-  const disabledField = user?.role !== UserRolesEnum.SuperAdmin && activeChildren?.length > 0
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const disabledField = effectiveRole !== UserRolesEnum.SuperAdmin && activeChildren?.length > 0
   const unitTypeOptions =
-    user?.role === UserRolesEnum.SuperAdmin ? industryLevelOptions : unitLevelOptions
+    effectiveRole === UserRolesEnum.SuperAdmin ? industryLevelOptions : unitLevelOptions
 
   return (
     <div>
@@ -91,7 +93,7 @@ export const UpdateUnitForm = ({ users, organizations, data, user }: UpdateUnitF
           </Select>
           {errors.type && <p className="text-sm text-red-500">{errors.type.message}</p>}
         </div>
-        {user?.role === UserRolesEnum.SuperAdmin && (
+        {effectiveRole === UserRolesEnum.SuperAdmin && (
           <div className="space-y-2">
             <Label htmlFor="parent">Parent Unit</Label>
 

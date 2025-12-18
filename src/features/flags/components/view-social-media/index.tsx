@@ -43,7 +43,7 @@ const getStatusBadgeVariant = (status: string) => {
 export function ViewSocialMedia({ account }: { account: SocialMedia }) {
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button variant="outline">
           <EyeIcon className="h-4 w-4 mr-2" />
           View Account
