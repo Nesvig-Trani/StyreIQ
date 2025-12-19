@@ -57,7 +57,7 @@ export default async function RoleRequestsPage(props: {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-              {isSuperAdmin && (
+              {!isSuperAdmin && (
                 <Button size="sm" className="w-full sm:w-auto">
                   <Link
                     className="flex items-center justify-center gap-2"
