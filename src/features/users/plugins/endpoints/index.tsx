@@ -28,6 +28,7 @@ import {
   validateTenantAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 import { getEffectiveRoleFromUser, getHighestRole } from '@/shared/utils/role-hierarchy'
+import { randomBytes } from 'crypto'
 
 export const createUser: Endpoint = {
   path: '/',
@@ -121,7 +122,7 @@ export const createUser: Endpoint = {
         data: {
           name: dataParsed.name,
           email: dataParsed.email,
-          password: dataParsed.password,
+          password: dataParsed.password || randomBytes(32).toString('hex'),
           roles: dataParsed.roles,
           active_role: getHighestRole(dataParsed.roles),
           status:

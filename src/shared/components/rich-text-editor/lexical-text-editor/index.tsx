@@ -92,8 +92,8 @@ export default function LexicalTextEditor({
 
       {readOnly && (
         <p className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
-          <LockKeyholeIcon />
-          Read-only mode - Only the Super Admin can edit
+          <LockKeyholeIcon className="h-3 w-3" />
+          Read-only mode – Only Super Admins and Central Admins can edit policies
         </p>
       )}
     </LexicalComposer>

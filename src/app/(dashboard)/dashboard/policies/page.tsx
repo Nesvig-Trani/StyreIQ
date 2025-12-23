@@ -16,7 +16,8 @@ export default async function PoliciesPage() {
   const { payload } = await getPayloadContext()
   const tenantContext = await getServerTenantContext(user, payload)
   const effectiveRole = getEffectiveRoleFromUser(user)
-  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
+  const canEditPolicies =
+    effectiveRole === UserRolesEnum.SuperAdmin || effectiveRole === UserRolesEnum.CentralAdmin
 
   const isViewingAllTenants = tenantContext.isViewingAllTenants
 
@@ -42,16 +43,16 @@ export default async function PoliciesPage() {
                 <h3 className="text-lg font-semibold">
                   {isViewingAllTenants
                     ? 'Select a tenant to manage policies'
-                    : isSuperAdmin
+                    : canEditPolicies
                       ? 'Keep your rules in one place.'
                       : 'Check current policies and rules.'}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {isViewingAllTenants
                     ? 'Policies are tenant-specific. Please select a tenant from the selector to view or edit their governance policies.'
-                    : isSuperAdmin
+                    : canEditPolicies
                       ? 'Upload and share policies, guidelines, and compliance documents so every unit has the same source of truth. When a new policy is added or updated, users are prompted to attest they&apos;ve read and acknowledged it.'
-                      : 'Here you can view current policies, guidelines, and compliance documents. Only Super Admins can edit and update these policies.'}
+                      : 'Here you can view current policies, guidelines, and compliance documents. Only authorized administrators can edit and update these policies.'}
                 </p>
               </div>
             </div>
@@ -77,7 +78,7 @@ export default async function PoliciesPage() {
         ) : (
           <LexicalEditor
             initialState={initialState}
-            isSuperAdmin={isSuperAdmin}
+            isSuperAdmin={canEditPolicies}
             selectedTenantId={tenantContext.tenantIdForFilter}
           />
         )}

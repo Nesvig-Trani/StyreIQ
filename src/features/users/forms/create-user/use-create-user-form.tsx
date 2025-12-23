@@ -147,6 +147,7 @@ export function useCreateUserForm({
       defaultValues: {
         email: '',
         name: '',
+        password: '',
         roles: [],
         status: undefined,
         organizations: [],

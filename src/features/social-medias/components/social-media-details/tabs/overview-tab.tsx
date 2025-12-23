@@ -23,7 +23,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ socialMedia }) => {
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-600 underline hover:text-blue-800"
+          className="text-blue-600 underline hover:text-blue-800 break-all"
         >
           {value}
         </a>

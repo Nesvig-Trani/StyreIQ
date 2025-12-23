@@ -19,9 +19,12 @@ export default async function CreateSocialMediaPage() {
 
   if (
     !effectiveRole ||
-    ![UserRolesEnum.SuperAdmin, UserRolesEnum.UnitAdmin, UserRolesEnum.SocialMediaManager].includes(
-      effectiveRole,
-    )
+    ![
+      UserRolesEnum.SuperAdmin,
+      UserRolesEnum.CentralAdmin,
+      UserRolesEnum.UnitAdmin,
+      UserRolesEnum.SocialMediaManager,
+    ].includes(effectiveRole)
   ) {
     redirect('/dashboard/social-media-accounts')
   }

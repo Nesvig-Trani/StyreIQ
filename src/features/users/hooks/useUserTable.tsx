@@ -94,16 +94,20 @@ function useUserTable({
 
         const canViewDetails =
           effectiveRole === UserRolesEnum.SuperAdmin ||
+          effectiveRole === UserRolesEnum.CentralAdmin ||
           effectiveRole === UserRolesEnum.UnitAdmin ||
           effectiveRole === UserRolesEnum.SocialMediaManager
 
         const canEdit =
           effectiveRole === UserRolesEnum.SuperAdmin ||
+          effectiveRole === UserRolesEnum.CentralAdmin ||
           effectiveRole === UserRolesEnum.UnitAdmin ||
           (effectiveRole === UserRolesEnum.SocialMediaManager && isOwnRecord)
 
         const canManageAccess =
-          effectiveRole === UserRolesEnum.UnitAdmin || effectiveRole === UserRolesEnum.SuperAdmin
+          effectiveRole === UserRolesEnum.SuperAdmin ||
+          effectiveRole === UserRolesEnum.CentralAdmin ||
+          effectiveRole === UserRolesEnum.UnitAdmin
 
         return (
           <div className="flex gap-2">
