@@ -5,12 +5,14 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { ListPlugin } from '@lexical/react/LexicalListPlugin'
+import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin'
+import { AutoLinkPlugin } from '@lexical/react/LexicalAutoLinkPlugin'
 import Toolbar from '../toolbar'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { HeadingNode } from '@lexical/rich-text'
 import { ListNode, ListItemNode } from '@lexical/list'
-import { LinkNode } from '@lexical/link'
+import { LinkNode, AutoLinkNode } from '@lexical/link'
 import { TableNode, TableCellNode, TableRowNode } from '@lexical/table'
 import { LockKeyholeIcon } from 'lucide-react'
 
@@ -27,11 +29,47 @@ const theme = {
     strikethrough: 'line-through',
   },
   paragraph: 'my-2',
+  link: 'text-blue-600 underline hover:text-blue-800 cursor-pointer',
 }
 
 function onError(error: Error) {
   console.error(error)
 }
+
+const URL_MATCHER =
+  /((https?:\/\/(www\.)?)|(www\.))[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/
+
+const EMAIL_MATCHER =
+  /(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/
+
+const MATCHERS = [
+  (text: string) => {
+    const match = URL_MATCHER.exec(text)
+    if (match === null) {
+      return null
+    }
+    const fullMatch = match[0]
+    return {
+      index: match.index,
+      length: fullMatch.length,
+      text: fullMatch,
+      url: fullMatch.startsWith('http') ? fullMatch : `https://${fullMatch}`,
+    }
+  },
+  (text: string) => {
+    const match = EMAIL_MATCHER.exec(text)
+    if (match === null) {
+      return null
+    }
+    const fullMatch = match[0]
+    return {
+      index: match.index,
+      length: fullMatch.length,
+      text: fullMatch,
+      url: `mailto:${fullMatch}`,
+    }
+  },
+]
 
 interface LexicalTextEditorProps {
   initialState: string
@@ -49,7 +87,16 @@ export default function LexicalTextEditor({
     namespace: 'MyEditor',
     theme,
     onError,
-    nodes: [HeadingNode, ListNode, ListItemNode, LinkNode, TableNode, TableCellNode, TableRowNode],
+    nodes: [
+      HeadingNode,
+      ListNode,
+      ListItemNode,
+      LinkNode,
+      AutoLinkNode,
+      TableNode,
+      TableCellNode,
+      TableRowNode,
+    ],
     editable: !readOnly,
   }
 
@@ -84,7 +131,8 @@ export default function LexicalTextEditor({
             <>
               <HistoryPlugin />
               <ListPlugin />
-              <OnChangePlugin onChange={onChange} />
+              <LinkPlugin />
+              <AutoLinkPlugin matchers={MATCHERS} /> <OnChangePlugin onChange={onChange} />
             </>
           )}
         </div>

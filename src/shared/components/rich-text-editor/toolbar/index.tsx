@@ -10,6 +10,7 @@ import {
   TextFormatType,
   ElementFormatType,
 } from 'lexical'
+import { TOGGLE_LINK_COMMAND } from '@lexical/link'
 import { Button } from '@/shared'
 import {
   AlignCenter,
@@ -24,7 +25,9 @@ import {
   Strikethrough,
   Type,
   Underline,
+  Link as LinkIcon,
 } from 'lucide-react'
+import { useCallback } from 'react'
 
 const Toolbar = () => {
   const [editor] = useLexicalComposerContext()
@@ -54,6 +57,20 @@ const Toolbar = () => {
       }
     })
   }
+
+  const insertLink = useCallback(() => {
+    const selection = $getSelection()
+    if (!$isRangeSelection(selection)) {
+      return
+    }
+
+    const url = prompt('Enter the URL:')
+
+    if (url !== null) {
+      editor.dispatchCommand(TOGGLE_LINK_COMMAND, url)
+    }
+  }, [editor])
+
   return (
     <div className="flex flex-wrap gap-2 p-2 border-b border-gray-200">
       {/* Headers */}
@@ -115,7 +132,13 @@ const Toolbar = () => {
       >
         <Strikethrough />
       </Button>
-
+      <Button
+        onClick={insertLink}
+        className="p-2 bg-gray-100 !text-gray-800 rounded hover:bg-gray-200"
+        title="Insert Link"
+      >
+        <LinkIcon />
+      </Button>
       {/* Alignment */}
       <Button
         onClick={() => formatElement('left')}

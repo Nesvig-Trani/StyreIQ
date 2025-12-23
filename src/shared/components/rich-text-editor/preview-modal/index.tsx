@@ -32,6 +32,10 @@ interface LexicalNode {
   indent?: number
   textFormat?: number
   textStyle?: string
+  url?: string
+  rel?: string
+  target?: string
+  title?: string
 }
 
 function renderLexicalNode(node: LexicalNode, index: number): React.ReactNode {
@@ -76,8 +80,21 @@ function renderLexicalNode(node: LexicalNode, index: number): React.ReactNode {
           {node.text}
         </span>
       )
+    case 'link':
+      return (
+        <a
+          key={index}
+          href={node.url}
+          target={node.target || '_blank'}
+          rel={node.rel || 'noopener noreferrer'}
+          title={node.title}
+          className="text-blue-600 underline hover:text-blue-800 transition-colors"
+        >
+          {node.children?.map((child, i) => renderLexicalNode(child, i))}
+        </a>
+      )
     case 'linebreak':
-      return <br />
+      return <br key={index} />
     default:
       return null
   }
