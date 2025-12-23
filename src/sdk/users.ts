@@ -45,19 +45,21 @@ export const createFirstUser = async (data: z.infer<typeof createFirstUserFormSc
 }
 
 export const createUser = async (data: z.infer<typeof createUserFormSchema>) => {
+  const payload = {
+    name: data.name,
+    email: data.email,
+    roles: data.roles,
+    status: data.status,
+    organizations: data.organizations,
+    tenant: data.tenant,
+    ...(data.password && { password: data.password }),
+  }
+
   const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users`, {
     method: 'POST',
     headers: JSON_HEADERS,
     credentials: 'include',
-    body: JSON.stringify({
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      roles: data.roles,
-      status: data.status,
-      organizations: data.organizations,
-      tenant: data.tenant,
-    }),
+    body: JSON.stringify(payload),
   })
 
   if (!response.ok) {

@@ -65,7 +65,7 @@ const validateUserRoles = (
 
 export const userBaseSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8, 'Password should have at least 8 characters'),
+  password: z.string().min(8, 'Password should have at least 8 characters').optional(),
   name: z.string(),
   status: StatusEnum.optional(),
   organizations: z.array(z.string()).optional(),

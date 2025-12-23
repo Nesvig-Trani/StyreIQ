@@ -78,13 +78,6 @@ function useCreateUnit({
         size: 'half' as const,
       },
       {
-        label: 'Email',
-        name: 'email' as const,
-        type: 'text' as const,
-        size: 'half' as const,
-        placeholder: 'Enter the email',
-      },
-      {
         label: 'Phone',
         name: 'phone' as const,
         type: 'text' as const,
@@ -145,7 +138,6 @@ function useCreateUnit({
         type: UnitTypeEnum.HIGHER_EDUCATION_INSTITUTION,
         parent: defaultParentOrg || '',
         admin: '',
-        email: '',
         phone: '',
         status: 'active',
         description: '',
