@@ -51,7 +51,7 @@ export default async function PoliciesPage() {
                   {isViewingAllTenants
                     ? 'Policies are tenant-specific. Please select a tenant from the selector to view or edit their governance policies.'
                     : canEditPolicies
-                      ? 'Upload and share policies, guidelines, and compliance documents so every unit has the same source of truth. When a new policy is added or updated, users are prompted to attest they&apos;ve read and acknowledged it.'
+                      ? "Upload and share policies, guidelines, and compliance documents so every unit has the same source of truth. When a new policy is added or updated, users are prompted to attest they've read and acknowledged it."
                       : 'Here you can view current policies, guidelines, and compliance documents. Only authorized administrators can edit and update these policies.'}
                 </p>
               </div>
@@ -77,6 +77,7 @@ export default async function PoliciesPage() {
           </div>
         ) : (
           <LexicalEditor
+            key={`policy-editor-${tenantContext.tenantIdForFilter}-${lastPolicy?.id ?? 'new'}`}
             initialState={initialState}
             isSuperAdmin={canEditPolicies}
             selectedTenantId={tenantContext.tenantIdForFilter}

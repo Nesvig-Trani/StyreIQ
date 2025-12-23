@@ -30,6 +30,9 @@ import { DashboardRiskSection } from '@/features/dashboard/components/dashboard-
 import { getServerTenantContext } from '../server-tenant-context'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 const getRiskLevel = (value: number, thresholds: { low: number; medium: number }) => {
   if (value >= thresholds.medium) return 'high'
   if (value >= thresholds.low) return 'medium'

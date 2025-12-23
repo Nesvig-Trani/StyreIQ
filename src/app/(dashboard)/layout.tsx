@@ -13,6 +13,9 @@ import { getServerTenantContext } from './server-tenant-context'
 import { TenantProvider } from '@/features/tenants/contexts/tenant-context'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export const metadata = {
   description: 'StyreIQ Dashboard',
   title: 'StyreIQ Dashboard',
