@@ -8,6 +8,60 @@ import { Badge } from '@/shared/components/ui/badge'
 import { format } from 'date-fns'
 import { DiffView } from '../components/diff-view'
 
+function getActionLabel(action: AuditLogActionEnum): string {
+  const labels: Record<AuditLogActionEnum, string> = {
+    [AuditLogActionEnum.Create]: 'Create',
+    [AuditLogActionEnum.Update]: 'Update',
+    [AuditLogActionEnum.Delete]: 'Delete',
+    [AuditLogActionEnum.Approval]: 'Approval',
+    [AuditLogActionEnum.FlagResolution]: 'Flag Resolution',
+    [AuditLogActionEnum.PolicyAcknowledgement]: 'Policy Acknowledgment',
+    [AuditLogActionEnum.UserCreation]: 'User Creation',
+    [AuditLogActionEnum.PasswordRecovery]: 'Password Recovery',
+    [AuditLogActionEnum.PasswordReset]: 'Password Reset',
+    [AuditLogActionEnum.ComplianceTasksGenerated]: 'Compliance Tasks Generated',
+    [AuditLogActionEnum.TaskEscalation]: 'Task Escalation',
+    [AuditLogActionEnum.RoleRequestApproved]: 'Role Request Approved',
+    [AuditLogActionEnum.RoleRequestRejected]: 'Role Request Rejected',
+    [AuditLogActionEnum.TaskCompleted]: 'Task Completed',
+    [AuditLogActionEnum.TrainingCompleted]: 'Training Completed',
+    [AuditLogActionEnum.PasswordSetupCompleted]: 'Password Setup Completed',
+    [AuditLogActionEnum.RollCallCompleted]: 'Roll Call Completed',
+  }
+  return labels[action] || action
+}
+
+function getActionBadgeVariant(action: string): string {
+  switch (action) {
+    case AuditLogActionEnum.Create:
+    case AuditLogActionEnum.UserCreation:
+    case AuditLogActionEnum.ComplianceTasksGenerated:
+      return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+    case AuditLogActionEnum.Update:
+      return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+    case AuditLogActionEnum.Delete:
+    case AuditLogActionEnum.RoleRequestRejected:
+      return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+    case AuditLogActionEnum.Approval:
+    case AuditLogActionEnum.RoleRequestApproved:
+    case AuditLogActionEnum.TaskCompleted:
+    case AuditLogActionEnum.TrainingCompleted:
+    case AuditLogActionEnum.PasswordSetupCompleted:
+    case AuditLogActionEnum.RollCallCompleted:
+    case AuditLogActionEnum.PolicyAcknowledgement:
+      return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+    case AuditLogActionEnum.FlagResolution:
+      return 'bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200'
+    case AuditLogActionEnum.TaskEscalation:
+      return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200'
+    case AuditLogActionEnum.PasswordRecovery:
+    case AuditLogActionEnum.PasswordReset:
+      return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
+    default:
+      return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+  }
+}
+
 function useAuditLogsTable({ users }: { users: User[] }) {
   const searchParams = useParsedSearchParams(auditLogSearchSchema)
 
@@ -19,14 +73,11 @@ function useAuditLogsTable({ users }: { users: User[] }) {
       allowMultiple: true,
       options: [
         { value: 'users', label: 'Users' },
-        {
-          value: 'organization',
-          label: 'Units',
-        },
-        {
-          value: 'social-medias',
-          label: 'Social Media Accounts',
-        },
+        { value: 'organization', label: 'Units' },
+        { value: 'social-medias', label: 'Social Media Accounts' },
+        { value: 'flags', label: 'Risk Flags' },
+        { value: 'policies', label: 'Policies' },
+        { value: 'compliance_tasks', label: 'Compliance Tasks' },
       ],
     },
     {
@@ -34,11 +85,10 @@ function useAuditLogsTable({ users }: { users: User[] }) {
       title: 'Action',
       type: 'select',
       allowMultiple: true,
-      options: [
-        { value: AuditLogActionEnum.Create, label: 'Create' },
-        { value: AuditLogActionEnum.Update, label: 'Update' },
-        { value: AuditLogActionEnum.Delete, label: 'Delete' },
-      ],
+      options: Object.values(AuditLogActionEnum).map((action) => ({
+        value: action,
+        label: getActionLabel(action),
+      })),
     },
     {
       id: 'user',
@@ -72,20 +122,8 @@ function useAuditLogsTable({ users }: { users: User[] }) {
       header: 'Action',
       enableColumnFilter: true,
       cell: ({ row }) => {
-        const action = row.getValue('action') as string
-        const getColorClass = (action: string) => {
-          switch (action.toLowerCase()) {
-            case AuditLogActionEnum.Create:
-              return 'bg-green-100 text-green-800'
-            case AuditLogActionEnum.Update:
-              return 'bg-yellow-100 text-yellow-800'
-            case AuditLogActionEnum.Delete:
-              return 'bg-red-100 text-red-800'
-            default:
-              return 'bg-gray-100 text-gray-800'
-          }
-        }
-        return <Badge className={getColorClass(action)}>{action}</Badge>
+        const action = row.getValue('action') as AuditLogActionEnum
+        return <Badge className={getActionBadgeVariant(action)}>{getActionLabel(action)}</Badge>
       },
     },
     {
@@ -94,7 +132,7 @@ function useAuditLogsTable({ users }: { users: User[] }) {
       enableColumnFilter: true,
       cell: ({ row }) => {
         const entity = row.getValue('entity') as string
-        return <span>{entity}</span>
+        return <span className="capitalize">{entity.replace(/_/g, ' ')}</span>
       },
     },
     {
@@ -102,7 +140,7 @@ function useAuditLogsTable({ users }: { users: User[] }) {
       header: 'Affected Record',
       cell: ({ row }) => {
         const document = row.getValue('document') as { value: { name: string; flagType: string } }
-        return <span>{document?.value?.name || document?.value?.flagType}</span>
+        return <span>{document?.value?.name || document?.value?.flagType || '-'}</span>
       },
     },
     {

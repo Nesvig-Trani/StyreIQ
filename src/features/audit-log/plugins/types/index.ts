@@ -12,4 +12,8 @@ export enum AuditLogActionEnum {
   TaskEscalation = 'task_escalation',
   RoleRequestApproved = 'role_request_approved',
   RoleRequestRejected = 'role_request_rejected',
+  TaskCompleted = 'task_completed',
+  TrainingCompleted = 'training_completed',
+  PasswordSetupCompleted = 'password_setup_completed',
+  RollCallCompleted = 'roll_call_completed',
 }

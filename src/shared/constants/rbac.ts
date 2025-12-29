@@ -11,6 +11,7 @@ export type Resource =
   | 'DASHBOARD'
   | 'TENANTS'
   | 'ROLE_REQUESTS'
+  | 'COMPLIANCE'
 
 export type ResourceAction = 'create' | 'read' | 'update' | 'delete'
 
@@ -103,6 +104,14 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
         tenantScoped: false,
       },
     },
+    {
+      resource: 'COMPLIANCE',
+      actions: ['create', 'read', 'update', 'delete'],
+      conditions: {
+        childUnitsIncluded: true,
+        tenantScoped: false,
+      },
+    },
   ],
   [UserRolesEnum.CentralAdmin]: [
     {
@@ -182,6 +191,14 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
         tenantScoped: true,
       },
     },
+    {
+      resource: 'COMPLIANCE',
+      actions: ['read', 'update'],
+      conditions: {
+        tenantScoped: true,
+        childUnitsIncluded: true,
+      },
+    },
   ],
   [UserRolesEnum.UnitAdmin]: [
     {
@@ -252,6 +269,15 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
         ownerOnly: true,
       },
     },
+    {
+      resource: 'COMPLIANCE',
+      actions: ['read', 'update'],
+      conditions: {
+        tenantScoped: true,
+        unitOnly: true,
+        childUnitsIncluded: true,
+      },
+    },
   ],
   [UserRolesEnum.SocialMediaManager]: [
     {
@@ -304,6 +330,14 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
     {
       resource: 'ROLE_REQUESTS',
       actions: ['create', 'read'],
+      conditions: {
+        tenantScoped: true,
+        ownerOnly: true,
+      },
+    },
+    {
+      resource: 'COMPLIANCE',
+      actions: ['read', 'update'],
       conditions: {
         tenantScoped: true,
         ownerOnly: true,

@@ -14,4 +14,8 @@ export const actionLabels = {
   [AuditLogActionEnum.TaskEscalation]: 'Task Escalation',
   [AuditLogActionEnum.RoleRequestApproved]: 'Role Request Approved',
   [AuditLogActionEnum.RoleRequestRejected]: 'Role Request Rejected',
+  [AuditLogActionEnum.TaskCompleted]: 'Task Completed',
+  [AuditLogActionEnum.TrainingCompleted]: 'Training Completed',
+  [AuditLogActionEnum.PasswordSetupCompleted]: 'Password Setup Completed',
+  [AuditLogActionEnum.RollCallCompleted]: 'Roll Call Completed',
 }

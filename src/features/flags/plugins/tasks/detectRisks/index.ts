@@ -1,9 +1,14 @@
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { FlagsCollectionSlug } from '../../types'
-import { FlagSourceEnum, FlagStatusEnum, FlagTypeEnum } from '@/features/flags/schemas'
+import {
+  FlagHistoryActionsEnum,
+  FlagSourceEnum,
+  FlagStatusEnum,
+  FlagTypeEnum,
+} from '@/features/flags/schemas'
 import { UserRolesEnum } from '@/features/users'
 import { Payload } from 'payload'
-import { Flag, User } from '@/types/payload-types'
+import { Flag, User, ComplianceTask } from '@/types/payload-types'
 
 const CHECK_TO_FLAG_MAP: Record<string, FlagTypeEnum> = {
   isEnabledTwoFactor: FlagTypeEnum.MISSING_2FA,
@@ -150,6 +155,110 @@ async function processTenant(
   }
 }
 
+async function autoResolveCompletedTaskFlags(payload: Payload) {
+  try {
+    const recentTasks = await getRecentlyCompletedTasks(payload)
+
+    await Promise.all(recentTasks.map((task) => resolveTaskRelatedFlags(payload, task)))
+  } catch (error) {
+    console.error('[autoResolveCompletedTaskFlags] Error:', error)
+  }
+}
+
+async function getRecentlyCompletedTasks(payload: Payload): Promise<ComplianceTask[]> {
+  const TWENTY_FOUR_HOURS_AGO = new Date(Date.now() - 24 * 60 * 60 * 1000)
+
+  const result = await payload.find({
+    collection: 'compliance_tasks',
+    where: {
+      and: [
+        { status: { equals: 'COMPLETED' } },
+        { completedAt: { greater_than: TWENTY_FOUR_HOURS_AGO.toISOString() } },
+      ],
+    },
+    limit: 0,
+  })
+
+  return result.docs
+}
+
+async function resolveTaskRelatedFlags(payload: Payload, task: ComplianceTask) {
+  const flagTypes = getRelatedFlagTypes(task.type)
+  if (flagTypes.length === 0) return
+
+  const userId = typeof task.assignedUser === 'object' ? task.assignedUser.id : task.assignedUser
+  const tenantId = task.tenant && typeof task.tenant === 'object' ? task.tenant.id : task.tenant
+
+  const flags = await getUserUnresolvedFlags(payload, userId, flagTypes)
+
+  await Promise.all(flags.map((flag) => resolveFlag(payload, flag, userId, tenantId)))
+}
+
+async function getUserUnresolvedFlags(
+  payload: Payload,
+  userId: number,
+  flagTypes: string[],
+): Promise<Flag[]> {
+  const result = await payload.find({
+    collection: 'flags',
+    where: {
+      and: [
+        { 'affectedEntity.relationTo': { equals: 'users' } },
+        { 'affectedEntity.value': { equals: userId } },
+        { flagType: { in: flagTypes } },
+        { status: { not_equals: FlagStatusEnum.RESOLVED } },
+      ],
+    },
+    limit: 0,
+  })
+
+  return result.docs
+}
+
+async function resolveFlag(
+  payload: Payload,
+  flag: Flag,
+  userId: number,
+  tenantId: number | undefined,
+) {
+  await payload.update({
+    collection: 'flags',
+    id: flag.id,
+    data: {
+      status: FlagStatusEnum.RESOLVED,
+      lastActivity: new Date().toISOString(),
+    },
+  })
+
+  if (tenantId) {
+    await payload.create({
+      collection: 'flagHistory',
+      data: {
+        flag: flag.id,
+        user: userId,
+        action: FlagHistoryActionsEnum.STATUS_CHANGED,
+        prevStatus: flag.status,
+        newStatus: FlagStatusEnum.RESOLVED,
+        tenant: tenantId,
+      },
+    })
+  }
+}
+
+function getRelatedFlagTypes(taskType: string): string[] {
+  const mapping: Record<string, string[]> = {
+    PASSWORD_SETUP: [
+      FlagTypeEnum.OUTDATED_PASSWORD,
+      FlagTypeEnum.MISSING_2FA,
+      FlagTypeEnum.SECURITY_RISK,
+    ],
+    POLICY_ACKNOWLEDGMENT: [FlagTypeEnum.UNACKNOWLEDGED_POLICIES],
+    TRAINING_COMPLETION: [FlagTypeEnum.INCOMPLETE_TRAINING],
+    USER_ROLL_CALL: [FlagTypeEnum.INACTIVE_ACCOUNT],
+  }
+  return mapping[taskType] || []
+}
+
 export async function findRisksAndCreateFlag() {
   try {
     const { payload } = await getPayloadContext()
@@ -181,6 +290,12 @@ export async function findRisksAndCreateFlag() {
 
     if (summary.failed > 0) {
       console.warn(`[detectRisks] ${summary.failed} tenants failed to process`)
+    }
+
+    try {
+      await autoResolveCompletedTaskFlags(payload)
+    } catch (error) {
+      console.error('[detectRisks] Error auto-resolving flags:', error)
     }
 
     return {

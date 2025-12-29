@@ -184,6 +184,71 @@ export const Acknowledgments: CollectionConfig = {
         }
       },
     ],
+    afterChange: [
+      async ({ doc, operation, req }) => {
+        if (operation !== 'create' || !req.user) {
+          return
+        }
+
+        const user = req.user
+
+        try {
+          const pendingPolicyTasks = await req.payload.find({
+            collection: 'compliance_tasks',
+            where: {
+              and: [
+                { assignedUser: { equals: user.id } },
+                { type: { equals: 'POLICY_ACKNOWLEDGMENT' } },
+                { status: { in: ['PENDING', 'OVERDUE'] } },
+              ],
+            },
+            limit: 0,
+          })
+
+          if (pendingPolicyTasks.docs.length === 0) {
+            return doc
+          }
+
+          const tenantId =
+            user.tenant && typeof user.tenant === 'object' ? user.tenant.id : user.tenant
+
+          await Promise.all(
+            pendingPolicyTasks.docs.map(async (task) => {
+              await req.payload.update({
+                collection: 'compliance_tasks',
+                id: task.id,
+                data: {
+                  status: 'COMPLETED',
+                  completedAt: new Date().toISOString(),
+                },
+              })
+
+              await req.payload.create({
+                collection: 'audit_log',
+                data: {
+                  user: user.id,
+                  action: 'task_completed',
+                  entity: 'compliance_tasks',
+                  metadata: {
+                    taskId: task.id,
+                    taskType: task.type,
+                    completedViaModal: true,
+                    policyId: doc.policy,
+                    acknowledgedLatestVersion: true,
+                  },
+                  organizations: user.organizations || [],
+                  tenant: tenantId,
+                },
+              })
+            }),
+          )
+        } catch (error) {
+          req.payload.logger.error('Error completing policy acknowledgment tasks:', error)
+        }
+
+        return doc
+      },
+    ],
   },
   fields: [
     {
