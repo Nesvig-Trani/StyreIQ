@@ -272,6 +272,14 @@ export const Users: CollectionConfig = {
       type: 'checkbox',
     },
     {
+      name: 'isCompletedTrainingCompliance',
+      type: 'checkbox',
+    },
+    {
+      name: 'isCompletedTrainingGovernance',
+      type: 'checkbox',
+    },
+    {
       name: 'hasKnowledgeStandards',
       type: 'checkbox',
     },

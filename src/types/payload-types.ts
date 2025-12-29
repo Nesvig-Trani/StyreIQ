@@ -218,6 +218,8 @@ export interface User {
   isCompletedTrainingAccessibility?: boolean | null
   isCompletedTrainingRisk?: boolean | null
   isCompletedTrainingBrand?: boolean | null
+  isCompletedTrainingCompliance?: boolean | null
+  isCompletedTrainingGovernance?: boolean | null
   hasKnowledgeStandards?: boolean | null
   passwordUpdatedAt?: string | null
   offboardingCompleted?: boolean | null
@@ -613,6 +615,10 @@ export interface AuditLog {
     | 'task_escalation'
     | 'role_request_approved'
     | 'role_request_rejected'
+    | 'task_completed'
+    | 'training_completed'
+    | 'password_setup_completed'
+    | 'roll_call_completed'
   entity: string
   prev?:
     | {
@@ -1033,6 +1039,8 @@ export interface UsersSelect<T extends boolean = true> {
   isCompletedTrainingAccessibility?: T
   isCompletedTrainingRisk?: T
   isCompletedTrainingBrand?: T
+  isCompletedTrainingCompliance?: T
+  isCompletedTrainingGovernance?: T
   hasKnowledgeStandards?: T
   passwordUpdatedAt?: T
   offboardingCompleted?: T

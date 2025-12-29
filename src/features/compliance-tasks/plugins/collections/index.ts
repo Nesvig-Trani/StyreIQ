@@ -8,6 +8,12 @@ import {
   superAdminOnlyDeleteAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import {
+  completePasswordSetupEndpoint,
+  completeRollCallEndpoint,
+  completeTaskEndpoint,
+  completeTrainingEndpoint,
+} from '../endpoints'
 
 export const ComplianceTasks: CollectionConfig = {
   slug: 'compliance_tasks',
@@ -230,6 +236,12 @@ export const ComplianceTasks: CollectionConfig = {
         beforeChange: [injectTenantHook],
       },
     },
+  ],
+  endpoints: [
+    completeTaskEndpoint,
+    completePasswordSetupEndpoint,
+    completeTrainingEndpoint,
+    completeRollCallEndpoint,
   ],
   timestamps: true,
 }
