@@ -52,12 +52,13 @@ export const ActionsRowSocialMedia: React.FC<ActionsRowSocialMediaProps> = ({
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false)
   const effectiveRole = getEffectiveRoleFromUser(user)
   const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
+  const isCentralAdmin = effectiveRole === UserRolesEnum.CentralAdmin
   const isUnitAdmin = effectiveRole === UserRolesEnum.UnitAdmin
   const isSocialMediaManager = effectiveRole === UserRolesEnum.SocialMediaManager
 
-  const canViewDetails = isSuperAdmin || isUnitAdmin || isSocialMediaManager
-  const canEdit = isSuperAdmin || isUnitAdmin
-  const canApproveActivate = isSuperAdmin || isUnitAdmin
+  const canViewDetails = isSuperAdmin || isCentralAdmin || isUnitAdmin || isSocialMediaManager
+  const canEdit = isSuperAdmin || isCentralAdmin || isUnitAdmin
+  const canApproveActivate = isSuperAdmin || isCentralAdmin || isUnitAdmin
   const canToggleStatus = isSuperAdmin
 
   const renderActionButtons = () => {

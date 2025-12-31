@@ -23,7 +23,11 @@ import {
 import { getEffectiveRoleFromUser, normalizeRoles } from '@/shared/utils/role-hierarchy'
 
 async function validateSocialMediaCreationPermissions(user: User | null) {
-  const rolesWithGrant = [UserRolesEnum.SuperAdmin, UserRolesEnum.UnitAdmin]
+  const rolesWithGrant = [
+    UserRolesEnum.SuperAdmin,
+    UserRolesEnum.UnitAdmin,
+    UserRolesEnum.CentralAdmin,
+  ]
   const effectiveRole = getEffectiveRoleFromUser(user)
   if (!user || !effectiveRole || !rolesWithGrant.includes(effectiveRole as UserRolesEnum)) {
     throw new EndpointError("You don't have permission to perform this action.", 401)
@@ -346,7 +350,6 @@ export const updateSocialMediaStatus: Endpoint = {
         id: socialMediaId,
         data: {
           status: data.status,
-          tenant: data.tenant,
           ...(data.deactivationReason && { deactivationReason: data.deactivationReason }),
         },
         req,
