@@ -83,7 +83,12 @@ export const SocialMedias: CollectionConfig = {
       const tenantId = extractTenantId(user)
       if (!tenantId) return false
 
-      if (data?.tenant && data.tenant !== tenantId) return false
+      if (data?.tenant) {
+        const dataTenantId = typeof data.tenant === 'object' ? data.tenant.id : data.tenant
+        if (dataTenantId !== tenantId) {
+          return false
+        }
+      }
 
       switch (effectiveRole) {
         case UserRolesEnum.CentralAdmin:
@@ -296,15 +301,10 @@ export const SocialMedias: CollectionConfig = {
   ],
   hooks: {
     beforeChange: [
-      async ({ data, req, operation }) => {
+      async ({ data, req, operation, originalDoc }) => {
         if (operation === 'update' && data.tenant) {
-          const existing = await req.payload.findByID({
-            collection: SocialMediasCollectionSlug,
-            id: data.id,
-          })
-
-          if (existing) {
-            const existingTenantId = extractTenantIdFromProperty(existing.tenant)
+          if (originalDoc) {
+            const existingTenantId = extractTenantIdFromProperty(originalDoc.tenant)
             const dataTenantId = extractTenantIdFromProperty(data.tenant)
 
             if (existingTenantId !== dataTenantId) {
