@@ -11,8 +11,11 @@ import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 import {
   completePasswordSetupEndpoint,
   completeRollCallEndpoint,
+  completeSharedPasswordEndpoint,
   completeTaskEndpoint,
   completeTrainingEndpoint,
+  completeTwoFactorEndpoint,
+  completeUserPasswordEndpoint,
 } from '../endpoints'
 
 export const ComplianceTasks: CollectionConfig = {
@@ -114,6 +117,9 @@ export const ComplianceTasks: CollectionConfig = {
       required: true,
       options: [
         { label: 'Password Setup', value: ComplianceTaskType.PASSWORD_SETUP },
+        { label: 'Confirm User Password', value: ComplianceTaskType.CONFIRM_USER_PASSWORD },
+        { label: 'Confirm Shared Password', value: ComplianceTaskType.CONFIRM_SHARED_PASSWORD },
+        { label: 'Confirm 2FA', value: ComplianceTaskType.CONFIRM_2FA },
         { label: 'Policy Acknowledgment', value: ComplianceTaskType.POLICY_ACKNOWLEDGMENT },
         { label: 'Training Completion', value: ComplianceTaskType.TRAINING_COMPLETION },
         { label: 'User Roll Call', value: ComplianceTaskType.USER_ROLL_CALL },
@@ -241,6 +247,9 @@ export const ComplianceTasks: CollectionConfig = {
     completeTaskEndpoint,
     completePasswordSetupEndpoint,
     completeTrainingEndpoint,
+    completeUserPasswordEndpoint,
+    completeSharedPasswordEndpoint,
+    completeTwoFactorEndpoint,
     completeRollCallEndpoint,
   ],
   timestamps: true,

@@ -132,6 +132,9 @@ function getReminderCadence(
     case 'TRAINING_COMPLETION':
       return cadences.trainingEscalationDays.map((d) => d.day)
     case 'PASSWORD_SETUP':
+    case 'CONFIRM_USER_PASSWORD':
+    case 'CONFIRM_SHARED_PASSWORD':
+    case 'CONFIRM_2FA':
     case 'USER_ROLL_CALL':
     default:
       return [3, 7, 14]
@@ -311,6 +314,9 @@ async function createEscalationAuditLog(
 function getTaskTypeLabel(type: string): string {
   const labels: Record<string, string> = {
     PASSWORD_SETUP: 'Password Setup',
+    CONFIRM_USER_PASSWORD: 'Confirm User Password',
+    CONFIRM_SHARED_PASSWORD: 'Confirm Shared Password',
+    CONFIRM_2FA: 'Confirm Two-Factor Authentication',
     POLICY_ACKNOWLEDGMENT: 'Policy Acknowledgment',
     TRAINING_COMPLETION: 'Training Completion',
     USER_ROLL_CALL: 'User Roll Call',

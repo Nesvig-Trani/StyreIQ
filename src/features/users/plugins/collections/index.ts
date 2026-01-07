@@ -325,7 +325,9 @@ export const Users: CollectionConfig = {
                   metadata: {
                     userId: doc.id,
                     tasksGenerated: [
-                      'PASSWORD_SETUP',
+                      'CONFIRM_USER_PASSWORD',
+                      'CONFIRM_2FA',
+                      'CONFIRM_SHARED_PASSWORD',
                       'POLICY_ACKNOWLEDGMENT',
                       'TRAINING_COMPLETION',
                       'USER_ROLL_CALL',

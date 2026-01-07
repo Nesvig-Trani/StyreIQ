@@ -132,6 +132,7 @@ export interface Config {
       flagInactiveAccounts: TaskFlagInactiveAccounts
       detectRisks: TaskDetectRisks
       sendComplianceReminders: TaskSendComplianceReminders
+      createRecurringPasswordTasks: TaskCreateRecurringPasswordTasks
       inline: {
         input: unknown
         output: unknown
@@ -324,6 +325,14 @@ export interface Tenant {
      * Force password change every N days
      */
     passwordRotationDays?: number | null
+    /**
+     * Days between user password confirmation tasks (default: 180)
+     */
+    userPasswordCadenceDays?: number | null
+    /**
+     * Days between shared password confirmation tasks (default: 180)
+     */
+    sharedPasswordCadenceDays?: number | null
   }
   status: 'active' | 'suspended' | 'archived'
   metadata?: {
@@ -416,6 +425,7 @@ export interface SocialMedia {
    */
   inactiveFlag?: boolean | null
   tenant?: (number | null) | Tenant
+  isSharedCredential?: boolean | null
   updatedAt: string
   createdAt: string
 }
@@ -619,6 +629,9 @@ export interface AuditLog {
     | 'training_completed'
     | 'password_setup_completed'
     | 'roll_call_completed'
+    | '2fa_confirmed'
+    | 'shared_password_confirmed'
+    | 'user_password_confirmed'
   entity: string
   prev?:
     | {
@@ -688,7 +701,14 @@ export interface ComplianceTask {
   /**
    * Type of compliance task
    */
-  type: 'PASSWORD_SETUP' | 'POLICY_ACKNOWLEDGMENT' | 'TRAINING_COMPLETION' | 'USER_ROLL_CALL'
+  type:
+    | 'PASSWORD_SETUP'
+    | 'CONFIRM_USER_PASSWORD'
+    | 'CONFIRM_SHARED_PASSWORD'
+    | 'CONFIRM_2FA'
+    | 'POLICY_ACKNOWLEDGMENT'
+    | 'TRAINING_COMPLETION'
+    | 'USER_ROLL_CALL'
   /**
    * User who must complete this task
    */
@@ -791,7 +811,12 @@ export interface PayloadJob {
     | {
         executedAt: string
         completedAt: string
-        taskSlug: 'inline' | 'flagInactiveAccounts' | 'detectRisks' | 'sendComplianceReminders'
+        taskSlug:
+          | 'inline'
+          | 'flagInactiveAccounts'
+          | 'detectRisks'
+          | 'sendComplianceReminders'
+          | 'createRecurringPasswordTasks'
         taskID: string
         input?:
           | {
@@ -824,7 +849,15 @@ export interface PayloadJob {
         id?: string | null
       }[]
     | null
-  taskSlug?: ('inline' | 'flagInactiveAccounts' | 'detectRisks' | 'sendComplianceReminders') | null
+  taskSlug?:
+    | (
+        | 'inline'
+        | 'flagInactiveAccounts'
+        | 'detectRisks'
+        | 'sendComplianceReminders'
+        | 'createRecurringPasswordTasks'
+      )
+    | null
   queue?: string | null
   waitUntil?: string | null
   processing?: boolean | null
@@ -1091,6 +1124,7 @@ export interface SocialMediasSelect<T extends boolean = true> {
   deactivationReason?: T
   inactiveFlag?: T
   tenant?: T
+  isSharedCredential?: T
   updatedAt?: T
   createdAt?: T
 }
@@ -1241,6 +1275,8 @@ export interface TenantsSelect<T extends boolean = true> {
             }
         rollCallFrequency?: T
         passwordRotationDays?: T
+        userPasswordCadenceDays?: T
+        sharedPasswordCadenceDays?: T
       }
   status?: T
   metadata?:
@@ -1374,6 +1410,17 @@ export interface TaskDetectRisks {
  * via the `definition` "TaskSendComplianceReminders".
  */
 export interface TaskSendComplianceReminders {
+  input?: unknown
+  output: {
+    success: boolean
+    message: string
+  }
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskCreateRecurringPasswordTasks".
+ */
+export interface TaskCreateRecurringPasswordTasks {
   input?: unknown
   output: {
     success: boolean

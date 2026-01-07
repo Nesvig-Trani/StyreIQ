@@ -126,6 +126,28 @@ export const Tenants: CollectionConfig = {
             description: 'Force password change every N days',
           },
         },
+        {
+          name: 'userPasswordCadenceDays',
+          type: 'number',
+          label: 'User Password Confirmation Cadence (Days)',
+          defaultValue: 180,
+          min: 30,
+          max: 365,
+          admin: {
+            description: 'Days between user password confirmation tasks (default: 180)',
+          },
+        },
+        {
+          name: 'sharedPasswordCadenceDays',
+          type: 'number',
+          label: 'Shared Password Confirmation Cadence (Days)',
+          defaultValue: 180,
+          min: 30,
+          max: 365,
+          admin: {
+            description: 'Days between shared password confirmation tasks (default: 180)',
+          },
+        },
       ],
     },
     {

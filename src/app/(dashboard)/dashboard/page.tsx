@@ -60,11 +60,10 @@ export default async function DashboardPage() {
     return <div className="text-center text-red-500">Failed to load dashboard data</div>
   }
 
+  const accessManagementRisk = getRiskLevel(flags.accessManagement.count, { low: 0, medium: 2 })
   const securityRisk = getRiskLevel(flags.security.count, { low: 0, medium: 2 })
-  const legalRisk = getRiskLevel(flags.legal.count, { low: 0, medium: 2 })
-  const complianceRisk = getRiskLevel(flags.compliance.count, { low: 0, medium: 2 })
-  const incidentRisk = getRiskLevel(flags.incident.count, { low: 0, medium: 2 })
-  const activityRisk = getRiskLevel(flags.activity.count, { low: 0, medium: 2 })
+  const policiesTrainingRisk = getRiskLevel(flags.policiesTraining.count, { low: 0, medium: 2 })
+  const flaggedIssuesRisk = getRiskLevel(flags.flaggedIssues.count, { low: 0, medium: 2 })
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -127,11 +126,10 @@ export default async function DashboardPage() {
           <HeaderMetricCard
             title="Active Issues"
             value={
+              flags.accessManagement.count +
               flags.security.count +
-              flags.legal.count +
-              flags.compliance.count +
-              flags.incident.count +
-              flags.activity.count
+              flags.policiesTraining.count +
+              flags.flaggedIssues.count
             }
             subtitle="Requiring attention"
             icon={AlertTriangle}
@@ -141,11 +139,10 @@ export default async function DashboardPage() {
           <HeaderMetricCard
             title="High Risk Issues"
             value={
+              (accessManagementRisk === 'high' ? 1 : 0) +
               (securityRisk === 'high' ? 1 : 0) +
-              (legalRisk === 'high' ? 1 : 0) +
-              (complianceRisk === 'high' ? 1 : 0) +
-              (incidentRisk === 'high' ? 1 : 0) +
-              (activityRisk === 'high' ? 1 : 0)
+              (policiesTrainingRisk === 'high' ? 1 : 0) +
+              (flaggedIssuesRisk === 'high' ? 1 : 0)
             }
             subtitle="Require immediate attention"
             icon={ShieldAlert}

@@ -11,4 +11,7 @@ export const flagTypeOptions = [
   { value: FlagTypeEnum.INCIDENT_OPEN, label: 'Incident or Open Alert' },
   { value: FlagTypeEnum.SECURITY_RISK, label: 'Security Risk' },
   { value: FlagTypeEnum.INCOMPLETE_OFFBOARDING, label: 'Incomplete off boarding' },
+  { value: FlagTypeEnum.SECURITY_CONCERN, label: 'Security Concern' },
+  { value: FlagTypeEnum.OPERATIONAL_ISSUE, label: 'Operational Issue' },
+  { value: FlagTypeEnum.OTHER, label: 'Other' },
 ]

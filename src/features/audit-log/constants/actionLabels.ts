@@ -18,4 +18,7 @@ export const actionLabels = {
   [AuditLogActionEnum.TrainingCompleted]: 'Training Completed',
   [AuditLogActionEnum.PasswordSetupCompleted]: 'Password Setup Completed',
   [AuditLogActionEnum.RollCallCompleted]: 'Roll Call Completed',
+  [AuditLogActionEnum.TwoFAConfirmed]: '2FA Confirmed',
+  [AuditLogActionEnum.SharedPasswordConfirmed]: 'Shared Password Confirmed',
+  [AuditLogActionEnum.UserPasswordConfirmed]: 'User Password Confirmed',
 }

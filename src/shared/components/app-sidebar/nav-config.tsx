@@ -105,7 +105,7 @@ export const mainNavigation: NavItem[] = [
     },
   },
   {
-    title: 'Compliance Tasks',
+    title: 'My Tasks',
     url: '/dashboard/compliance',
     icon: ClipboardCheck,
     permission: {

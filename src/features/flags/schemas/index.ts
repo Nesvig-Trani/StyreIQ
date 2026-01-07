@@ -23,6 +23,9 @@ export enum FlagTypeEnum {
   INCIDENT_OPEN = 'incident_open',
   SECURITY_RISK = 'security_risk',
   INCOMPLETE_OFFBOARDING = 'incomplete_offboarding',
+  SECURITY_CONCERN = 'security_concern',
+  OPERATIONAL_ISSUE = 'operational_issue',
+  OTHER = 'other',
 }
 
 export enum FlagSourceEnum {

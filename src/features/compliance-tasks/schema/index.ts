@@ -2,6 +2,9 @@ import { z } from 'zod'
 
 export enum ComplianceTaskType {
   PASSWORD_SETUP = 'PASSWORD_SETUP',
+  CONFIRM_USER_PASSWORD = 'CONFIRM_USER_PASSWORD',
+  CONFIRM_SHARED_PASSWORD = 'CONFIRM_SHARED_PASSWORD',
+  CONFIRM_2FA = 'CONFIRM_2FA',
   POLICY_ACKNOWLEDGMENT = 'POLICY_ACKNOWLEDGMENT',
   TRAINING_COMPLETION = 'TRAINING_COMPLETION',
   USER_ROLL_CALL = 'USER_ROLL_CALL',
@@ -32,3 +35,21 @@ export const trainingSchema = z.object({
 })
 
 export type TrainingFormData = z.infer<typeof trainingSchema>
+
+export const twoFactorSchema = z.object({
+  confirmation: z.boolean().refine((val) => val === true, {
+    message: 'You must confirm 2FA is enabled',
+  }),
+})
+
+export const sharedPasswordSchema = z.object({
+  confirmation: z.boolean().refine((val) => val === true, {
+    message: 'You must confirm shared password update',
+  }),
+})
+
+export const userPasswordSchema = z.object({
+  confirmation: z.boolean().refine((val) => val === true, {
+    message: 'You must confirm password update',
+  }),
+})

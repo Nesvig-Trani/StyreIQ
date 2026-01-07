@@ -3,9 +3,9 @@
 import { useState } from 'react'
 import { RiskCategoryCard } from '@/features/dashboard/components/risk-category-card'
 import { RiskDetailsModal } from '@/features/dashboard/components/risk-details-modal'
-import { Shield, ShieldAlert, ClipboardList, Eye, AlertCircle, LucideIcon } from 'lucide-react'
+import { Shield, ShieldAlert, ClipboardList, LucideIcon, Flag as FlagIcon } from 'lucide-react'
 import { flagTypeLabels } from '@/features/flags/constants/flagTypeLabels'
-import { Flag } from '@/types/payload-types'
+import { ComplianceTask, Flag } from '@/types/payload-types'
 import { FlagTypeEnum } from '@/features/flags/schemas'
 import { getUsersByIds } from '@/features/users'
 
@@ -28,26 +28,10 @@ interface Issue {
 
 interface DashboardRiskSectionProps {
   flags: {
-    security: {
-      count: number
-      data: Flag[]
-    }
-    compliance: {
-      count: number
-      data: Flag[]
-    }
-    activity: {
-      count: number
-      data: Flag[]
-    }
-    legal: {
-      count: number
-      data: Flag[]
-    }
-    incident: {
-      count: number
-      data: Flag[]
-    }
+    accessManagement: { count: number; data: (Flag | ComplianceTask)[] }
+    security: { count: number; data: (Flag | ComplianceTask)[] }
+    policiesTraining: { count: number; data: (Flag | ComplianceTask)[] }
+    flaggedIssues: { count: number; data: (Flag | ComplianceTask)[] }
   }
 }
 export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flags }) => {
@@ -61,8 +45,14 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
     color: 'red' as 'red' | 'yellow' | 'orange' | 'gray',
   })
 
-  const convertFlagsToIssues = async (flagsData: Flag[]): Promise<Issue[]> => {
-    const userIds = flagsData
+  const convertFlagsToIssues = async (data: (Flag | ComplianceTask)[]): Promise<Issue[]> => {
+    const isFlag = (item: Flag | ComplianceTask): item is Flag => {
+      return 'flagType' in item
+    }
+
+    const flagsOnly = data.filter(isFlag)
+
+    const userIds = flagsOnly
       .map((flag) =>
         flag.affectedEntity?.relationTo === 'users' && flag.affectedEntity.value
           ? Number(flag.affectedEntity.value)
@@ -79,30 +69,29 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
       users.forEach((user) => usersMap.set(user.id, user))
     }
 
-    return flagsData.map((flag) => {
-      const { affectedEntity, id, flagType, description, createdAt } = flag
-      let user: Issue['user'] = undefined
-
-      if (affectedEntity?.relationTo === 'users' && affectedEntity.value) {
-        const userData = usersMap.get(Number(affectedEntity.value))
-        if (userData) {
-          user = {
-            id: userData.id,
-            name: userData.name || 'Usuario sin nombre',
-            email: userData.email || 'Email no disponible',
-          }
-        }
-      }
+    const flagIssues: Issue[] = flagsOnly.map((flag) => {
+      const userData =
+        flag.affectedEntity?.relationTo === 'users'
+          ? usersMap.get(Number(flag.affectedEntity.value))
+          : undefined
 
       return {
-        id: id.toString(),
-        title: flagTypeLabels[flagType as FlagTypeEnum],
-        description: description ?? '',
-        severity: getFlagSeverity(flagType as string),
-        dueDate: createdAt,
-        user,
+        id: flag.id.toString(),
+        title: flagTypeLabels[flag.flagType as FlagTypeEnum],
+        description: flag.description ?? '',
+        severity: getFlagSeverity(flag.flagType as string),
+        dueDate: flag.createdAt,
+        user: userData
+          ? {
+              id: userData.id,
+              name: userData.name || 'Usuario sin nombre',
+              email: userData.email || 'Email no disponible',
+            }
+          : undefined,
       }
     })
+
+    return flagIssues
   }
 
   const getFlagSeverity = (flagType: string): 'high' | 'medium' | 'low' => {
@@ -125,25 +114,16 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
     return 'low'
   }
 
-  const createRiskItems = (flagTypes: string[], labels: string[]) => {
-    return flagTypes.map((flagType, index) => ({
-      label: labels[index],
-      severity: getFlagSeverity(flagType),
-    }))
-  }
-
   const getCategoryData = (categoryName: string) => {
     switch (categoryName) {
       case 'Access Management':
-        return flags.incident.data
-      case 'Credential Security':
+        return flags.accessManagement.data
+      case 'Security Requirements':
         return flags.security.data
-      case 'Compliance Oversight':
-        return flags.compliance.data
-      case 'Organizational Visibility':
-        return flags.activity.data
-      case 'Governance Gaps':
-        return flags.legal.data
+      case 'Policies & Training':
+        return flags.policiesTraining.data
+      case 'Flagged Issues':
+        return flags.flaggedIssues.data
       default:
         return []
     }
@@ -178,15 +158,15 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
         <RiskCategoryCard
           title="Access Management"
-          subtitle="Admin assignment gaps, shared credentials"
-          issues={flags.incident.count}
+          subtitle="Review and confirm access to assigned social media accounts"
+          issues={flags.accessManagement.count}
           color="red"
           icon={Shield}
-          items={createRiskItems(['incident_open'], ['Incident Open'])}
+          items={[]}
           onClick={() =>
             openModal(
               'Access Management',
-              'Admin assignment gaps, shared credentials',
+              'Review and confirm access to assigned social media accounts',
               Shield,
               'red',
             )
@@ -194,19 +174,16 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
         />
 
         <RiskCategoryCard
-          title="Credential Security"
-          subtitle="Outdated passwords, missing 2FA/MFA"
+          title="Security Requirements"
+          subtitle="Confirm required security practices for users and accounts"
           issues={flags.security.count}
           color="red"
           icon={ShieldAlert}
-          items={createRiskItems(
-            ['security_risk', 'missing_2fa', 'outdated_password'],
-            ['Security Risk', 'Missing 2FA', 'Outdated Password'],
-          )}
+          items={[]}
           onClick={() =>
             openModal(
-              'Credential Security',
-              'Outdated passwords, missing 2FA/MFA',
+              'Security Requirements',
+              'Confirm required security practices for users and accounts',
               ShieldAlert,
               'red',
             )
@@ -214,19 +191,16 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
         />
 
         <RiskCategoryCard
-          title="Compliance Oversight"
-          subtitle="Missing training, ignored policies"
-          issues={flags.compliance.count}
+          title="Policies & Training"
+          subtitle="Acknowledge required policies and complete required training"
+          issues={flags.policiesTraining.count}
           color="yellow"
           icon={ClipboardList}
-          items={createRiskItems(
-            ['incomplete_training', 'unacknowledged_policies', 'incomplete_offboarding'],
-            ['Incomplete Training', 'Unacknowledged Policies', 'Incomplete Offboarding'],
-          )}
+          items={[]}
           onClick={() =>
             openModal(
-              'Compliance Oversight',
-              'Missing training, ignored policies',
+              'Policies & Training',
+              'Acknowledge required policies and complete required training',
               ClipboardList,
               'yellow',
             )
@@ -234,39 +208,14 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
         />
 
         <RiskCategoryCard
-          title="Organizational Visibility"
-          subtitle="Orphaned accounts, misassigned units"
-          issues={flags.activity.count}
-          color="yellow"
-          icon={Eye}
-          items={createRiskItems(
-            ['inactive_account', 'no_assigned_owner'],
-            ['Inactive Account', 'No Assigned Owner'],
-          )}
+          title="Flagged Issues"
+          subtitle="Resolve manually flagged issues"
+          issues={flags.flaggedIssues.count}
+          color="red"
+          icon={FlagIcon}
+          items={[]}
           onClick={() =>
-            openModal(
-              'Organizational Visibility',
-              'Orphaned accounts, misassigned units',
-              Eye,
-              'yellow',
-            )
-          }
-        />
-
-        <RiskCategoryCard
-          title="Governance Gaps"
-          subtitle="No backup contacts, tools not reviewed"
-          issues={flags.legal.count}
-          color="yellow"
-          icon={AlertCircle}
-          items={createRiskItems(['legal_not_confirmed'], ['Legal Not Confirmed'])}
-          onClick={() =>
-            openModal(
-              'Governance Gaps',
-              'No backup contacts, tools not reviewed',
-              AlertCircle,
-              'yellow',
-            )
+            openModal('Flagged Issues', 'Resolve manually flagged issues', FlagIcon, 'red')
           }
         />
       </div>
