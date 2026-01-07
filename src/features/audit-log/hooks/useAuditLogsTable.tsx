@@ -27,6 +27,9 @@ function getActionLabel(action: AuditLogActionEnum): string {
     [AuditLogActionEnum.TrainingCompleted]: 'Training Completed',
     [AuditLogActionEnum.PasswordSetupCompleted]: 'Password Setup Completed',
     [AuditLogActionEnum.RollCallCompleted]: 'Roll Call Completed',
+    [AuditLogActionEnum.TwoFAConfirmed]: '2FA Confirmed',
+    [AuditLogActionEnum.SharedPasswordConfirmed]: 'Shared Password Confirmed',
+    [AuditLogActionEnum.UserPasswordConfirmed]: 'User Password Confirmed',
   }
   return labels[action] || action
 }
@@ -49,6 +52,9 @@ function getActionBadgeVariant(action: string): string {
     case AuditLogActionEnum.PasswordSetupCompleted:
     case AuditLogActionEnum.RollCallCompleted:
     case AuditLogActionEnum.PolicyAcknowledgement:
+    case AuditLogActionEnum.TwoFAConfirmed:
+    case AuditLogActionEnum.SharedPasswordConfirmed:
+    case AuditLogActionEnum.UserPasswordConfirmed:
       return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
     case AuditLogActionEnum.FlagResolution:
       return 'bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200'

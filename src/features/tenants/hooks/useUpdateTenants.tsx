@@ -26,12 +26,16 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
         ],
         rollCallFrequency: tenant.governanceSettings.rollCallFrequency || 'quarterly',
         passwordRotationDays: tenant.governanceSettings.passwordRotationDays || 90,
+        userPasswordCadenceDays: tenant.governanceSettings.userPasswordCadenceDays || 180,
+        sharedPasswordCadenceDays: tenant.governanceSettings.sharedPasswordCadenceDays || 180,
       }
     : {
         policyReminderDays: [{ day: 3 }, { day: 7 }, { day: 14 }],
         trainingEscalationDays: [{ day: 15 }, { day: 30 }, { day: 45 }],
         rollCallFrequency: 'quarterly' as const,
         passwordRotationDays: 90,
+        userPasswordCadenceDays: 180,
+        sharedPasswordCadenceDays: 180,
       }
 
   const { formComponent, form } = useFormHelper(
@@ -88,6 +92,20 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
           placeholder: 'Enter days (30-365)',
           size: 'half',
         },
+        {
+          name: 'userPasswordCadenceDays',
+          label: 'User Password Confirmation Cadence (Days)',
+          type: 'number',
+          placeholder: 'Enter days (30–365)',
+          size: 'half',
+        },
+        {
+          name: 'sharedPasswordCadenceDays',
+          label: 'Shared Password Confirmation Cadence (Days)',
+          type: 'number',
+          placeholder: 'Enter days (30–365)',
+          size: 'half',
+        },
       ],
       onSubmit: async (data) => {
         await updateGovernanceSettings(tenant.id, data)
@@ -111,12 +129,10 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
       defaultValues: {
         policyReminderDays: currentSettings.policyReminderDays,
         trainingEscalationDays: currentSettings.trainingEscalationDays,
-        rollCallFrequency: currentSettings.rollCallFrequency as
-          | 'monthly'
-          | 'quarterly'
-          | 'semiannual'
-          | 'annual',
+        rollCallFrequency: currentSettings.rollCallFrequency,
         passwordRotationDays: currentSettings.passwordRotationDays,
+        userPasswordCadenceDays: currentSettings.userPasswordCadenceDays,
+        sharedPasswordCadenceDays: currentSettings.sharedPasswordCadenceDays,
       },
     },
   )

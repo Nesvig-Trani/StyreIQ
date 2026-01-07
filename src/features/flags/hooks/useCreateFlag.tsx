@@ -5,7 +5,6 @@ import { createFlag } from '@/sdk/flags'
 import { toast } from 'sonner'
 import { SocialMedia, User } from '@/types/payload-types'
 import { useFormHelper } from '@/shared'
-import { flagTypeOptions } from '../constants/flagTypeOptions'
 import { affectedEntityOptions } from '../constants/affectedEntityOptions'
 
 interface CreateFlagFormProps {
@@ -25,7 +24,11 @@ export function useCreateFlag({ users, socialMedias, selectedTenantId }: CreateF
           label: 'Flag Type',
           name: 'flagType',
           type: 'select',
-          options: flagTypeOptions,
+          options: [
+            { value: 'SECURITY_CONCERN', label: 'Security Concern' },
+            { value: 'OPERATIONAL_ISSUE', label: 'Operational Issue' },
+            { value: 'OTHER', label: 'Other' },
+          ],
           placeholder: 'Risk flag type',
           size: 'half',
         },

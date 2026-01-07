@@ -1,6 +1,24 @@
 import { env } from '@/config/env'
 import { JSON_HEADERS } from '@/shared/constants'
 
+const completeTaskEndpoint = async (taskId: number, endpoint: string, errorMessage: string) => {
+  const response = await fetch(
+    `${env.NEXT_PUBLIC_BASE_URL}/api/compliance_tasks/${taskId}/${endpoint}`,
+    {
+      method: 'PATCH',
+      headers: JSON_HEADERS,
+      credentials: 'include',
+    },
+  )
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}))
+    throw new Error(errorData.error || errorMessage)
+  }
+
+  return response.json()
+}
+
 export const completeComplianceTask = async (taskId: number, notes?: string) => {
   const response = await fetch(
     `${env.NEXT_PUBLIC_BASE_URL}/api/compliance_tasks/${taskId}/complete`,
@@ -20,56 +38,28 @@ export const completeComplianceTask = async (taskId: number, notes?: string) => 
   return response.json()
 }
 
-export const completePasswordSetupTask = async (taskId: number) => {
-  const response = await fetch(
-    `${env.NEXT_PUBLIC_BASE_URL}/api/compliance_tasks/${taskId}/complete-password-setup`,
-    {
-      method: 'PATCH',
-      headers: JSON_HEADERS,
-      credentials: 'include',
-    },
+export const completePasswordSetupTask = (taskId: number) =>
+  completeTaskEndpoint(taskId, 'complete-password-setup', 'Failed to complete password setup')
+
+export const completeTrainingTask = (taskId: number) =>
+  completeTaskEndpoint(taskId, 'complete-training', 'Failed to complete training')
+
+export const completeRollCallTask = (taskId: number) =>
+  completeTaskEndpoint(taskId, 'complete-roll-call', 'Failed to complete roll call')
+
+export const completeUserPasswordTask = (taskId: number) =>
+  completeTaskEndpoint(
+    taskId,
+    'complete-user-password',
+    'Failed to complete user password confirmation',
   )
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}))
-    throw new Error(errorData.error || 'Failed to complete password setup')
-  }
-
-  return response.json()
-}
-
-export const completeTrainingTask = async (taskId: number) => {
-  const response = await fetch(
-    `${env.NEXT_PUBLIC_BASE_URL}/api/compliance_tasks/${taskId}/complete-training`,
-    {
-      method: 'PATCH',
-      headers: JSON_HEADERS,
-      credentials: 'include',
-    },
+export const completeSharedPasswordTask = (taskId: number) =>
+  completeTaskEndpoint(
+    taskId,
+    'complete-shared-password',
+    'Failed to complete shared password confirmation',
   )
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}))
-    throw new Error(errorData.error || 'Failed to complete training')
-  }
-
-  return response.json()
-}
-
-export const completeRollCallTask = async (taskId: number) => {
-  const response = await fetch(
-    `${env.NEXT_PUBLIC_BASE_URL}/api/compliance_tasks/${taskId}/complete-roll-call`,
-    {
-      method: 'PATCH',
-      headers: JSON_HEADERS,
-      credentials: 'include',
-    },
-  )
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}))
-    throw new Error(errorData.error || 'Failed to complete roll call')
-  }
-
-  return response.json()
-}
+export const completeTwoFactorTask = (taskId: number) =>
+  completeTaskEndpoint(taskId, 'complete-2fa', 'Failed to complete 2FA confirmation')

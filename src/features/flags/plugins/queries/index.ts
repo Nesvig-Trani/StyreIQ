@@ -4,7 +4,6 @@ import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { FlagStatusEnum, FlagTypeEnum } from '@/features/flags/schemas'
 import { endOfDay, startOfDay } from 'date-fns'
 import { Where } from 'payload'
-import { Flag } from '@/types/payload-types'
 import { UserRolesEnum } from '@/features/users'
 import { getAccessibleOrgIdsForUser } from '@/shared'
 import { SocialMediasCollectionSlug } from '@/features/social-medias'
@@ -13,6 +12,7 @@ import {
   getSelectedTenantIdFromCookie,
 } from '@/app/(dashboard)/server-tenant-context'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { ComplianceTask, Flag } from '@/types/payload-types'
 
 export const getFlags = async ({
   flagType,
@@ -175,35 +175,110 @@ export const getFlags = async ({
 
 interface CategoryData {
   count: number
-  data: Flag[]
+  data: Flag[] | ComplianceTask[]
 }
 
-interface FlagsData {
+interface DashboardData {
+  accessManagement: CategoryData
   security: CategoryData
-  compliance: CategoryData
-  activity: CategoryData
-  legal: CategoryData
-  incident: CategoryData
+  policiesTraining: CategoryData
+  flaggedIssues: CategoryData
 }
 
-export const getFlagInfoForDashboard = async (): Promise<FlagsData> => {
+export const getFlagInfoForDashboard = async (): Promise<DashboardData> => {
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
 
   if (!user) {
     return {
+      accessManagement: { count: 0, data: [] },
       security: { count: 0, data: [] },
-      compliance: { count: 0, data: [] },
-      activity: { count: 0, data: [] },
-      legal: { count: 0, data: [] },
-      incident: { count: 0, data: [] },
+      policiesTraining: { count: 0, data: [] },
+      flaggedIssues: { count: 0, data: [] },
     }
   }
 
   const selectedTenantId = await getSelectedTenantIdFromCookie()
-
-  let where: Where = {}
   const effectiveRole = getEffectiveRoleFromUser(user)
+
+  let taskWhere: Where = {
+    status: { in: ['PENDING', 'OVERDUE'] },
+  }
+
+  switch (effectiveRole) {
+    case UserRolesEnum.SocialMediaManager:
+      taskWhere = {
+        and: [taskWhere, { assignedUser: { equals: user.id } }],
+      }
+      break
+
+    case UserRolesEnum.UnitAdmin: {
+      const accessibleOrgIds = await getAccessibleOrgIdsForUser(user, selectedTenantId)
+      const usersInOrgs = await payload.find({
+        collection: 'users',
+        where: {
+          organizations: { in: accessibleOrgIds },
+        },
+        limit: 0,
+      })
+      const userIds = usersInOrgs.docs.map((u) => u.id)
+      taskWhere = {
+        and: [taskWhere, { assignedUser: { in: userIds } }],
+      }
+      break
+    }
+
+    case UserRolesEnum.CentralAdmin: {
+      const tenantId = typeof user.tenant === 'object' ? user.tenant?.id : user.tenant
+      if (tenantId) {
+        taskWhere = {
+          and: [taskWhere, { tenant: { equals: tenantId } }],
+        }
+      }
+      break
+    }
+
+    case UserRolesEnum.SuperAdmin:
+      if (selectedTenantId !== null) {
+        taskWhere = {
+          and: [taskWhere, { tenant: { equals: selectedTenantId } }],
+        }
+      }
+      break
+  }
+
+  const complianceTasks = await payload.find({
+    collection: 'compliance_tasks',
+    where: taskWhere,
+    limit: 0,
+    overrideAccess: true,
+  })
+
+  const accessManagementTasks = complianceTasks.docs.filter((t) => t.type === 'USER_ROLL_CALL')
+
+  const securityTasks = complianceTasks.docs.filter(
+    (t) =>
+      t.type === 'CONFIRM_USER_PASSWORD' ||
+      t.type === 'CONFIRM_SHARED_PASSWORD' ||
+      t.type === 'CONFIRM_2FA',
+  )
+
+  const policiesTrainingTasks = complianceTasks.docs.filter(
+    (t) => t.type === 'POLICY_ACKNOWLEDGMENT' || t.type === 'TRAINING_COMPLETION',
+  )
+
+  let flagWhere: Where = {
+    and: [
+      {
+        flagType: {
+          in: [FlagTypeEnum.SECURITY_CONCERN, FlagTypeEnum.OPERATIONAL_ISSUE, FlagTypeEnum.OTHER],
+        },
+      },
+      {
+        status: { not_equals: FlagStatusEnum.RESOLVED },
+      },
+    ],
+  }
 
   switch (effectiveRole) {
     case UserRolesEnum.SocialMediaManager: {
@@ -217,15 +292,20 @@ export const getFlagInfoForDashboard = async (): Promise<FlagsData> => {
 
       const socialMediaIds = socialMedias.docs.map((sm) => sm.id)
 
-      where = {
-        or: [
+      flagWhere = {
+        and: [
+          flagWhere,
           {
-            'affectedEntity.relationTo': { equals: 'social-medias' },
-            'affectedEntity.value': { in: socialMediaIds },
-          },
-          {
-            'affectedEntity.relationTo': { equals: 'users' },
-            'affectedEntity.value': { equals: user.id },
+            or: [
+              {
+                'affectedEntity.relationTo': { equals: 'social-medias' },
+                'affectedEntity.value': { in: socialMediaIds },
+              },
+              {
+                'affectedEntity.relationTo': { equals: 'users' },
+                'affectedEntity.value': { equals: user.id },
+              },
+            ],
           },
         ],
       }
@@ -233,80 +313,57 @@ export const getFlagInfoForDashboard = async (): Promise<FlagsData> => {
     }
     case UserRolesEnum.UnitAdmin: {
       const accessibleOrgIds = await getAccessibleOrgIdsForUser(user, selectedTenantId)
-
-      where = {
-        'organizations.id': { in: accessibleOrgIds },
+      flagWhere = {
+        and: [flagWhere, { 'organizations.id': { in: accessibleOrgIds } }],
       }
       break
     }
     case UserRolesEnum.CentralAdmin: {
       const tenantId = typeof user.tenant === 'object' ? user.tenant?.id : user.tenant
 
-      where = tenantId ? { tenant: { equals: tenantId } } : {}
-
+      if (tenantId) {
+        flagWhere = {
+          and: [flagWhere, { tenant: { equals: tenantId } }],
+        }
+      }
       break
     }
-    case UserRolesEnum.SuperAdmin: {
-      where = selectedTenantId !== null ? { tenant: { equals: selectedTenantId } } : {}
+    case UserRolesEnum.SuperAdmin:
+      if (selectedTenantId !== null) {
+        flagWhere = {
+          and: [flagWhere, { tenant: { equals: selectedTenantId } }],
+        }
+      }
       break
-    }
     default:
-      where = { id: { equals: -1 } }
+      flagWhere = { id: { equals: -1 } }
       break
   }
 
-  const flags = await payload.find({
+  const flaggedIssues = await payload.find({
     collection: FlagsCollectionSlug,
-    where,
+    where: flagWhere,
     depth: 0,
     overrideAccess: true,
-    user,
     limit: 0,
   })
 
-  const securityFlags = flags.docs.filter(
-    (f) =>
-      f.flagType === FlagTypeEnum.SECURITY_RISK ||
-      f.flagType === FlagTypeEnum.MISSING_2FA ||
-      f.flagType === FlagTypeEnum.OUTDATED_PASSWORD,
-  )
-
-  const complianceFlags = flags.docs.filter(
-    (f) =>
-      f.flagType === FlagTypeEnum.INCOMPLETE_TRAINING ||
-      f.flagType === FlagTypeEnum.UNACKNOWLEDGED_POLICIES ||
-      f.flagType === FlagTypeEnum.INCOMPLETE_OFFBOARDING,
-  )
-
-  const activityFlags = flags.docs.filter(
-    (f) =>
-      f.flagType === FlagTypeEnum.INACTIVE_ACCOUNT || f.flagType === FlagTypeEnum.NO_ASSIGNED_OWNER,
-  )
-
-  const legalFlags = flags.docs.filter((f) => f.flagType === FlagTypeEnum.LEGAL_NOT_CONFIRMED)
-
-  const incidentFlags = flags.docs.filter((f) => f.flagType === FlagTypeEnum.INCIDENT_OPEN)
-
   return {
+    accessManagement: {
+      count: accessManagementTasks.length,
+      data: accessManagementTasks,
+    },
     security: {
-      count: securityFlags.length,
-      data: securityFlags,
+      count: securityTasks.length,
+      data: securityTasks,
     },
-    compliance: {
-      count: complianceFlags.length,
-      data: complianceFlags,
+    policiesTraining: {
+      count: policiesTrainingTasks.length,
+      data: policiesTrainingTasks,
     },
-    activity: {
-      count: activityFlags.length,
-      data: activityFlags,
-    },
-    legal: {
-      count: legalFlags.length,
-      data: legalFlags,
-    },
-    incident: {
-      count: incidentFlags.length,
-      data: incidentFlags,
+    flaggedIssues: {
+      count: flaggedIssues.totalDocs,
+      data: flaggedIssues.docs,
     },
   }
 }

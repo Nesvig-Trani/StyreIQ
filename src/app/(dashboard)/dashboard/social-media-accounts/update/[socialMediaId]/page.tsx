@@ -26,7 +26,11 @@ export default async function UpdateSocialMediaPage({
   }
   const { user } = await getAuthUser()
 
-  const users = await getUsersByRoles([UserRolesEnum.SuperAdmin, UserRolesEnum.UnitAdmin])
+  const users = await getUsersByRoles([
+    UserRolesEnum.SuperAdmin,
+    UserRolesEnum.UnitAdmin,
+    UserRolesEnum.SocialMediaManager,
+  ])
 
   const organizations = await getAllUnits()
   return (

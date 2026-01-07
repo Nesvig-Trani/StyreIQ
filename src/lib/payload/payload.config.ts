@@ -22,6 +22,7 @@ import { tenantContextMiddleware } from '@/middleware/tenant-context'
 import { ComplianceTasksPlugin } from '@/features/compliance-tasks/plugins'
 import { sendComplianceRemindersTask } from '@/features/compliance-tasks/task/sendComplianceReminders/def'
 import { RoleRequestsPlugin } from '@/features/role-request/plugins'
+import { createRecurringPasswordTasksTask } from '@/features/compliance-tasks/task/createRecurringPassword/def'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -103,7 +104,12 @@ export default buildConfig({
   cookiePrefix: 'payload',
   email: EmailAdapter(),
   jobs: {
-    tasks: [flagInactiveAccountsTask, detectRisksTask, sendComplianceRemindersTask],
+    tasks: [
+      flagInactiveAccountsTask,
+      detectRisksTask,
+      sendComplianceRemindersTask,
+      createRecurringPasswordTasksTask,
+    ],
     autoRun: [
       {
         //Every sunday at midnight
@@ -116,7 +122,8 @@ export default buildConfig({
       return payload.config.jobs?.tasks?.some(
         (task) =>
           task.slug === flagInactiveAccountsTask.slug ||
-          task.slug === sendComplianceRemindersTask.slug,
+          task.slug === sendComplianceRemindersTask.slug ||
+          task.slug === createRecurringPasswordTasksTask.slug,
       )
     },
   },

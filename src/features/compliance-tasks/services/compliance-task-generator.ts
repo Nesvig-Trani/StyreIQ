@@ -13,7 +13,9 @@ export class ComplianceTaskGenerator {
     }
 
     try {
-      await this.createPasswordSetupTask(user)
+      await this.createUserPasswordTask(user)
+      await this.createTwoFactorTask(user)
+      await this.createSharedPasswordTaskIfNeeded(user)
 
       await this.createPolicyAcknowledgmentTasks(user)
 
@@ -25,24 +27,90 @@ export class ComplianceTaskGenerator {
     }
   }
 
-  private async createPasswordSetupTask(user: User): Promise<void> {
+  private async createUserPasswordTask(user: User): Promise<void> {
     if (!user.tenant) {
       throw new Error('User tenant is required')
     }
 
-    const dueDate = this.addDays(new Date(), 7)
-
     const tenantId = typeof user.tenant === 'object' ? user.tenant.id : user.tenant
+    const dueDate = this.addDays(new Date(), 30)
 
     await this.payload.create({
       collection: 'compliance_tasks',
       data: {
-        type: ComplianceTaskType.PASSWORD_SETUP,
+        type: ComplianceTaskType.CONFIRM_USER_PASSWORD,
         assignedUser: user.id,
         tenant: tenantId,
         status: ComplianceTaskStatus.PENDING,
         dueDate: dueDate.toISOString(),
-        description: 'Configure your initial password and enable two-factor authentication.',
+        description:
+          'Confirm that you have updated your user password according to organizational requirements.',
+        remindersSent: [],
+        escalations: [],
+      },
+    })
+  }
+
+  private async createTwoFactorTask(user: User): Promise<void> {
+    if (!user.tenant) {
+      throw new Error('User tenant is required')
+    }
+
+    const tenantId = typeof user.tenant === 'object' ? user.tenant.id : user.tenant
+    const dueDate = this.addDays(new Date(), 30)
+
+    await this.payload.create({
+      collection: 'compliance_tasks',
+      data: {
+        type: ComplianceTaskType.CONFIRM_2FA,
+        assignedUser: user.id,
+        tenant: tenantId,
+        status: ComplianceTaskStatus.PENDING,
+        dueDate: dueDate.toISOString(),
+        description:
+          'Confirm that two-factor authentication (2FA) is enabled on all assigned social media accounts.',
+        remindersSent: [],
+        escalations: [],
+      },
+    })
+  }
+
+  private async createSharedPasswordTaskIfNeeded(user: User): Promise<void> {
+    if (!user.tenant) {
+      throw new Error('User tenant is required')
+    }
+
+    const tenantId = typeof user.tenant === 'object' ? user.tenant.id : user.tenant
+
+    await this.payload.find({
+      collection: 'social-medias',
+      where: {
+        and: [
+          {
+            or: [
+              { socialMediaManagers: { contains: user.id } },
+              { primaryAdmin: { equals: user.id } },
+              { backupAdmin: { equals: user.id } },
+            ],
+          },
+          { isSharedCredential: { equals: true } },
+        ],
+      },
+      limit: 1,
+    })
+
+    const dueDate = this.addDays(new Date(), 30)
+
+    await this.payload.create({
+      collection: 'compliance_tasks',
+      data: {
+        type: ComplianceTaskType.CONFIRM_SHARED_PASSWORD,
+        assignedUser: user.id,
+        tenant: tenantId,
+        status: ComplianceTaskStatus.PENDING,
+        dueDate: dueDate.toISOString(),
+        description:
+          'Confirm that the shared account password has been changed and redistributed securely.',
         remindersSent: [],
         escalations: [],
       },

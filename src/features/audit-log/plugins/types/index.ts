@@ -16,4 +16,7 @@ export enum AuditLogActionEnum {
   TrainingCompleted = 'training_completed',
   PasswordSetupCompleted = 'password_setup_completed',
   RollCallCompleted = 'roll_call_completed',
+  TwoFAConfirmed = '2fa_confirmed',
+  SharedPasswordConfirmed = 'shared_password_confirmed',
+  UserPasswordConfirmed = 'user_password_confirmed',
 }

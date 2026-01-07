@@ -4,6 +4,9 @@ import { ComplianceTaskType } from '../schema'
 export function getTaskTypeLabel(type: string): string {
   const labels: Record<string, string> = {
     [ComplianceTaskType.PASSWORD_SETUP]: 'Set Up Password & 2FA',
+    [ComplianceTaskType.CONFIRM_USER_PASSWORD]: 'Confirm User Password',
+    [ComplianceTaskType.CONFIRM_SHARED_PASSWORD]: 'Confirm Shared Password',
+    [ComplianceTaskType.CONFIRM_2FA]: 'Confirm Two-Factor Authentication',
     [ComplianceTaskType.POLICY_ACKNOWLEDGMENT]: 'Acknowledge Policy',
     [ComplianceTaskType.TRAINING_COMPLETION]: 'Complete Training',
     [ComplianceTaskType.USER_ROLL_CALL]: 'Confirm Active Account',
@@ -14,6 +17,9 @@ export function getTaskTypeLabel(type: string): string {
 export function getActionUrlForTask(task: ComplianceTask): string {
   const taskTypeMap: Record<string, string> = {
     PASSWORD_SETUP: 'password-setup',
+    CONFIRM_USER_PASSWORD: 'user-password',
+    CONFIRM_SHARED_PASSWORD: 'shared-password',
+    CONFIRM_2FA: '2fa',
     POLICY_ACKNOWLEDGMENT: 'policy',
     TRAINING_COMPLETION: 'training',
     USER_ROLL_CALL: 'roll-call',

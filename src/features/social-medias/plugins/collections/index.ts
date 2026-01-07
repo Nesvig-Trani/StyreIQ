@@ -298,48 +298,174 @@ export const SocialMedias: CollectionConfig = {
         beforeChange: [injectTenantHook],
       },
     },
+    {
+      name: 'isSharedCredential',
+      type: 'checkbox',
+      label: 'Shared Credential Account',
+      defaultValue: false,
+      access: {
+        update: async ({ req }) => {
+          const { user } = req
+          if (!user) return false
+
+          const effectiveRole = getEffectiveRoleFromUser(user)
+          return (
+            effectiveRole === UserRolesEnum.SuperAdmin ||
+            effectiveRole === UserRolesEnum.CentralAdmin ||
+            effectiveRole === UserRolesEnum.UnitAdmin
+          )
+        },
+      },
+    },
   ],
   hooks: {
-    beforeChange: [
-      async ({ data, req, operation, originalDoc }) => {
-        if (operation === 'update' && data.tenant) {
-          if (originalDoc) {
-            const existingTenantId = extractTenantIdFromProperty(originalDoc.tenant)
-            const dataTenantId = extractTenantIdFromProperty(data.tenant)
+    afterChange: [
+      async ({ doc, req, operation }) => {
+        if (operation !== 'create' && operation !== 'update') return
+        if (!doc.isSharedCredential) return
 
-            if (existingTenantId !== dataTenantId) {
-              throw new Error('Cannot change tenant assignment after social media creation')
-            }
-          }
-        }
+        try {
+          const socialMediaManagers = Array.isArray(doc.socialMediaManagers)
+            ? doc.socialMediaManagers
+            : []
+          const primaryAdmin = doc.primaryAdmin
+          const backupAdmin = doc.backupAdmin
 
-        if (data.organization && data.tenant) {
-          const org = await req.payload.findByID({
-            collection: 'organization',
-            id: typeof data.organization === 'object' ? data.organization.id : data.organization,
+          const userIds = new Set<number>()
+
+          socialMediaManagers.forEach((manager: number | { id: number }) => {
+            const id = typeof manager === 'object' ? manager.id : manager
+            if (id) userIds.add(Number(id))
           })
 
-          if (org) {
-            const orgTenantId = extractTenantIdFromProperty(org.tenant)
-            const dataTenantId = extractTenantIdFromProperty(data.tenant)
+          if (primaryAdmin) {
+            const id = typeof primaryAdmin === 'object' ? primaryAdmin.id : primaryAdmin
+            userIds.add(Number(id))
+          }
 
-            if (orgTenantId !== dataTenantId) {
-              throw new Error('Organization must belong to the same tenant')
+          if (backupAdmin) {
+            const id = typeof backupAdmin === 'object' ? backupAdmin.id : backupAdmin
+            userIds.add(Number(id))
+          }
+
+          if (userIds.size === 0) return
+
+          const existingTasks = await req.payload.find({
+            collection: 'compliance_tasks',
+            where: {
+              and: [
+                { assignedUser: { in: Array.from(userIds) } },
+                { type: { equals: 'CONFIRM_SHARED_PASSWORD' } },
+                { status: { in: ['PENDING', 'OVERDUE'] } },
+              ],
+            },
+            limit: 0,
+          })
+
+          const usersWithTask = new Set(
+            existingTasks.docs.map((task) =>
+              typeof task.assignedUser === 'object' ? task.assignedUser.id : task.assignedUser,
+            ),
+          )
+
+          const usersNeedingTask = Array.from(userIds).filter((id) => !usersWithTask.has(id))
+
+          if (usersNeedingTask.length === 0) return
+
+          const users = await req.payload.find({
+            collection: 'users',
+            where: {
+              id: { in: usersNeedingTask },
+            },
+            limit: 0,
+          })
+
+          const dueDate = new Date()
+          dueDate.setDate(dueDate.getDate() + 30)
+
+          const tasksToCreate = users.docs
+            .filter((user) => user.tenant)
+            .map((user) => ({
+              type: 'CONFIRM_SHARED_PASSWORD' as const,
+              assignedUser: user.id,
+              tenant: (user.tenant && typeof user.tenant === 'object'
+                ? user.tenant.id
+                : user.tenant) as number,
+              status: 'PENDING' as const,
+              dueDate: dueDate.toISOString(),
+              description:
+                'Confirm that the shared account password has been changed and redistributed securely.',
+              remindersSent: [],
+              escalations: [],
+            }))
+
+          if (tasksToCreate.length > 0) {
+            await Promise.all(
+              tasksToCreate.map((data) =>
+                req.payload.create({
+                  collection: 'compliance_tasks',
+                  data,
+                }),
+              ),
+            )
+          }
+        } catch (error) {
+          console.error('error in after change hook', error)
+        }
+      },
+    ],
+    beforeChange: [
+      async ({ data, req, operation, originalDoc }) => {
+        try {
+          if (operation === 'create' && data.platform) {
+            const platform = data.platform.toLowerCase()
+            const sharedPlatforms = ['tiktok', 'twitter', 'x']
+
+            if (data.isSharedCredential === false || data.isSharedCredential === undefined) {
+              data.isSharedCredential = sharedPlatforms.includes(platform)
             }
           }
-        }
+          if (operation === 'update' && data.tenant) {
+            if (originalDoc) {
+              const existingTenantId = extractTenantIdFromProperty(originalDoc.tenant)
+              const dataTenantId = extractTenantIdFromProperty(data.tenant)
 
-        if (operation === 'create' && req.user) {
-          const effectiveRole = getEffectiveRoleFromUser(req.user)
-
-          if (effectiveRole === UserRolesEnum.SocialMediaManager) {
-            if (!data.status || data.status !== SocialMediaStatusEnum.PendingApproval) {
-              data.status = SocialMediaStatusEnum.PendingApproval
+              if (existingTenantId !== dataTenantId) {
+                throw new Error('Cannot change tenant assignment after social media creation')
+              }
             }
           }
-        }
 
-        return data
+          if (data.organization && data.tenant) {
+            const org = await req.payload.findByID({
+              collection: 'organization',
+              id: typeof data.organization === 'object' ? data.organization.id : data.organization,
+            })
+
+            if (org) {
+              const orgTenantId = extractTenantIdFromProperty(org.tenant)
+              const dataTenantId = extractTenantIdFromProperty(data.tenant)
+
+              if (orgTenantId !== dataTenantId) {
+                throw new Error('Organization must belong to the same tenant')
+              }
+            }
+          }
+
+          if (operation === 'create' && req.user) {
+            const effectiveRole = getEffectiveRoleFromUser(req.user)
+
+            if (effectiveRole === UserRolesEnum.SocialMediaManager) {
+              if (!data.status || data.status !== SocialMediaStatusEnum.PendingApproval) {
+                data.status = SocialMediaStatusEnum.PendingApproval
+              }
+            }
+          }
+
+          return data
+        } catch (error) {
+          throw error
+        }
       },
     ],
   },
