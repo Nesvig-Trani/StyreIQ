@@ -16,6 +16,8 @@ import {
   completeTrainingEndpoint,
   completeTwoFactorEndpoint,
   completeUserPasswordEndpoint,
+  generateRollCallEndpoint,
+  getRollCallStatusEndpoint,
 } from '../endpoints'
 
 export const ComplianceTasks: CollectionConfig = {
@@ -251,6 +253,8 @@ export const ComplianceTasks: CollectionConfig = {
     completeSharedPasswordEndpoint,
     completeTwoFactorEndpoint,
     completeRollCallEndpoint,
+    generateRollCallEndpoint,
+    getRollCallStatusEndpoint,
   ],
   timestamps: true,
 }

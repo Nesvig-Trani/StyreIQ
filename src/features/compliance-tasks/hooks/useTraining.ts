@@ -16,7 +16,8 @@ export function useTrainingForm(task: ComplianceTask) {
       schema: trainingSchema,
       fields: [
         {
-          label: 'I confirm that I have reviewed and fully understand the training material',
+          label:
+            'I confirm that I have completed this training and understand my responsibilities.',
           name: 'confirmed',
           type: 'checkbox',
           checkboxMode: 'boolean',

@@ -133,6 +133,7 @@ export interface Config {
       detectRisks: TaskDetectRisks
       sendComplianceReminders: TaskSendComplianceReminders
       createRecurringPasswordTasks: TaskCreateRecurringPasswordTasks
+      createRollCallTasks: TaskCreateRollCallTasks
       inline: {
         input: unknown
         output: unknown
@@ -632,6 +633,10 @@ export interface AuditLog {
     | '2fa_confirmed'
     | 'shared_password_confirmed'
     | 'user_password_confirmed'
+    | 'roll_call_triggered'
+    | 'roll_call_auto_generated'
+    | 'roll_call_auto_generation_failed'
+    | 'roll_call_manually_generated'
   entity: string
   prev?:
     | {
@@ -817,6 +822,7 @@ export interface PayloadJob {
           | 'detectRisks'
           | 'sendComplianceReminders'
           | 'createRecurringPasswordTasks'
+          | 'createRollCallTasks'
         taskID: string
         input?:
           | {
@@ -856,6 +862,7 @@ export interface PayloadJob {
         | 'detectRisks'
         | 'sendComplianceReminders'
         | 'createRecurringPasswordTasks'
+        | 'createRollCallTasks'
       )
     | null
   queue?: string | null
@@ -1421,6 +1428,17 @@ export interface TaskSendComplianceReminders {
  * via the `definition` "TaskCreateRecurringPasswordTasks".
  */
 export interface TaskCreateRecurringPasswordTasks {
+  input?: unknown
+  output: {
+    success: boolean
+    message: string
+  }
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskCreateRollCallTasks".
+ */
+export interface TaskCreateRollCallTasks {
   input?: unknown
   output: {
     success: boolean

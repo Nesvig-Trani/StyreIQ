@@ -4,7 +4,8 @@ import { User } from '@/types/payload-types'
 
 import { DataTable } from '@/shared'
 import useUserTable from '@/features/users/hooks/useUserTable'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
+import { useRollCallStatus } from '@/features/compliance-tasks/hooks/roll-call-status'
 
 export function UserTable({
   data,
@@ -22,11 +23,16 @@ export function UserTable({
 }) {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
 
+  const userIds = useMemo(() => data.map((u) => u.id), [data])
+
+  const { statusMap } = useRollCallStatus(userIds)
+
   const { columns } = useUserTable({
     user,
     selectedUserId,
     onOpenDetails: (userId) => setSelectedUserId(userId),
     onCloseDetails: () => setSelectedUserId(null),
+    userRollCallStatus: statusMap,
   })
 
   return (

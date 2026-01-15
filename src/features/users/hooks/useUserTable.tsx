@@ -8,17 +8,29 @@ import { UnitCell } from '@/features/units/components/unit-cell'
 import { Badge } from '@/shared'
 import { UserDetailsDialog } from '../components/details'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { GenerateRollCallButton } from '@/features/compliance-tasks/components/generate-roll-call-button'
+import { RollCallStatus } from '@/features/compliance-tasks/hooks/roll-call-status'
+
+const shouldShowRollCall = (rollCallStatus?: RollCallStatus, cadenceDays = 90): boolean => {
+  if (!rollCallStatus) return true
+
+  const { hasPending, lastCompletedDays } = rollCallStatus
+
+  return !hasPending && (lastCompletedDays === null || lastCompletedDays >= cadenceDays)
+}
 
 function useUserTable({
   user,
   selectedUserId,
   onOpenDetails,
   onCloseDetails,
+  userRollCallStatus,
 }: {
   user: User | null
   selectedUserId: string | null
   onOpenDetails: (userId: string) => void
   onCloseDetails: () => void
+  userRollCallStatus?: Map<number, RollCallStatus>
 }) {
   const columns: ColumnDef<User>[] = [
     {
@@ -109,6 +121,18 @@ function useUserTable({
           effectiveRole === UserRolesEnum.CentralAdmin ||
           effectiveRole === UserRolesEnum.UnitAdmin
 
+        const canManageCompliance =
+          effectiveRole === UserRolesEnum.SuperAdmin || effectiveRole === UserRolesEnum.CentralAdmin
+
+        const tenantId =
+          row.original.tenant && typeof row.original.tenant === 'object'
+            ? row.original.tenant.id
+            : row.original.tenant
+
+        const rollCallStatus = userRollCallStatus?.get(id)
+        const shouldShowRollCallButton =
+          canManageCompliance && !!tenantId && shouldShowRollCall(rollCallStatus)
+
         return (
           <div className="flex gap-2">
             {canViewDetails && (
@@ -127,6 +151,15 @@ function useUserTable({
                     <EyeIcon className="h-4 w-4" />
                   </Button>
                 }
+              />
+            )}
+
+            {shouldShowRollCallButton && (
+              <GenerateRollCallButton
+                userId={id}
+                tenantId={tenantId}
+                userName={row.original.name}
+                variant="icon"
               />
             )}
 

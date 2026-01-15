@@ -17,7 +17,7 @@ export function useUserPasswordForm(task: ComplianceTask) {
       fields: [
         {
           label:
-            'I confirm that I have updated my user password according to organizational requirements.',
+            'I confirm that I updated my personal login passwords per organizational requirements.',
           name: 'confirmation',
           type: 'checkbox',
           checkboxMode: 'boolean',

@@ -1,7 +1,10 @@
 import { notFound } from 'next/navigation'
 
 import { PasswordSetupForm } from '@/features/compliance-tasks/forms/password-setup-form'
-import { getTaskForUser } from '@/features/compliance-tasks/plugins/queries'
+import {
+  getTaskForUser,
+  getTaskForUserWithAccounts,
+} from '@/features/compliance-tasks/plugins/queries'
 import { TrainingForm } from '@/features/compliance-tasks/forms/training'
 import { RollCallForm } from '@/features/compliance-tasks/forms/roll-call'
 
@@ -15,6 +18,12 @@ export default async function CompleteTaskPage({
   params: Promise<{ taskType: string; taskId: string }>
 }) {
   const { taskType, taskId } = await params
+
+  if (taskType === 'roll-call') {
+    const { task, assignedAccounts } = await getTaskForUserWithAccounts(taskId)
+    return <RollCallForm task={task} assignedAccounts={assignedAccounts} />
+  }
+
   const task = await getTaskForUser(taskId)
 
   switch (taskType) {
@@ -32,9 +41,6 @@ export default async function CompleteTaskPage({
 
     case 'training':
       return <TrainingForm task={task} />
-
-    case 'roll-call':
-      return <RollCallForm task={task} />
 
     default:
       notFound()

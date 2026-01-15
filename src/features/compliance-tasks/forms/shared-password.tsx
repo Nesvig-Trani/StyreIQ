@@ -34,7 +34,6 @@ export const SharedPasswordForm = ({ task }: SharedPasswordFormProps) => {
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <p className="text-sm text-muted-foreground mb-4">{task.description}</p>
             <p
               className={`text-sm font-medium ${isOverdue ? 'text-destructive' : 'text-muted-foreground'}`}
             >
@@ -42,6 +41,23 @@ export const SharedPasswordForm = ({ task }: SharedPasswordFormProps) => {
                 ? `⚠️ Overdue - Due date: ${dueDate.toLocaleDateString('en-US')}`
                 : `📅 Due: ${dueDate.toLocaleDateString('en-US')}`}
             </p>
+          </div>
+          <div className="space-y-3 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 p-4 rounded-lg">
+            <p className="text-sm">
+              This task applies only to shared social media accounts where multiple team members
+              access the same credentials (e.g., TikTok, X/Twitter).
+            </p>
+
+            <div className="text-sm">
+              <strong>StyreIQ distinguishes between:</strong>
+              <ul className="mt-2 space-y-1 ml-4 list-disc">
+                <li>
+                  Personal credentials used to access platforms tied to an individual user (e.g.,
+                  Meta)
+                </li>
+                <li>Shared credentials used by teams to access a single account (e.g., TikTok)</li>
+              </ul>
+            </div>
           </div>
 
           <div className="bg-muted p-6 rounded-lg space-y-4">
@@ -51,40 +67,41 @@ export const SharedPasswordForm = ({ task }: SharedPasswordFormProps) => {
             </div>
 
             <div className="space-y-3">
-              <p className="text-sm">
-                For shared credential accounts (e.g., TikTok, X/Twitter), you must:
-              </p>
+              <p className="text-sm">For accounts that use shared credentials, confirm that you:</p>
               <ul className="space-y-2 text-sm">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 shrink-0" />
-                  <span>Update the shared account password</span>
+                  <span>
+                    Updated the shared password (or confirmed it was updated by the owner)
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 shrink-0" />
-                  <span>Use a strong, unique password (minimum 12 characters)</span>
+                  <span>Used a strong, unique password (16+ characters recommended)</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 shrink-0" />
-                  <span>Securely distribute the new password to authorized team members only</span>
+                  <span>Shared access only through your organization&apos;s approved method</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 shrink-0" />
-                  <span>Document the change in your password management system</span>
+                  <span>
+                    Stored/updated the credential in the approved password manager (if applicable)
+                  </span>
                 </li>
               </ul>
 
               <div className="bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 p-3 rounded mt-4">
                 <p className="text-sm">
-                  <strong>⚠️ Important:</strong> Never share passwords via email or unencrypted
-                  channels. Use your organization&apos;s approved password sharing method.
+                  <strong>Important:</strong> Do not share passwords by email or unsecured channels.
+                  Use your organization&apos;s approved sharing method.
                 </p>
               </div>
 
               <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 p-3 rounded mt-4">
                 <p className="text-sm">
-                  <strong>💡 Best Practice:</strong> Store shared passwords in an enterprise
-                  password manager (e.g., 1Password Teams, LastPass Enterprise) and share access
-                  through the platform.
+                  <strong>Best practice:</strong> Use an enterprise password manager to share access
+                  without exposing the password in messages.
                 </p>
               </div>
             </div>

@@ -314,7 +314,7 @@ export const Users: CollectionConfig = {
           setTimeout(async () => {
             try {
               const generator = new ComplianceTaskGenerator(req.payload)
-              await generator.generateTasksForNewUser(doc)
+              await generator.generateTasksForNewUserExceptRollCall(doc)
 
               await req.payload.create({
                 collection: 'audit_log',
@@ -330,7 +330,6 @@ export const Users: CollectionConfig = {
                       'CONFIRM_SHARED_PASSWORD',
                       'POLICY_ACKNOWLEDGMENT',
                       'TRAINING_COMPLETION',
-                      'USER_ROLL_CALL',
                     ],
                   },
                   tenant: doc.tenant,
