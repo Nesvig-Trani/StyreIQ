@@ -98,7 +98,7 @@ export default async function DashboardLayout(props: { children: React.ReactNode
 
           {lastVersion?.text && (
             <LexicalContentModal
-              title="Usage and Governance Policies"
+              title="Your organization has updated this policy/guidelines. Please review and acknowledge."
               open={showPolicyModal}
               lexicalData={lastVersion.text}
               showActions

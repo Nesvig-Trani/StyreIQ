@@ -3,7 +3,7 @@ import { Where } from 'payload'
 import { ComplianceTaskStatus } from '../../schema'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { notFound, redirect } from 'next/navigation'
-import { ComplianceTask } from '@/types/payload-types'
+import { ComplianceTask, SocialMedia } from '@/types/payload-types'
 
 export const getComplianceTasksForUser = async (userId: number) => {
   const { payload } = await getPayloadContext()
@@ -49,7 +49,7 @@ export function getTrainingInfo(trainingId: string) {
       ],
     },
     'training-risk': {
-      title: 'Social Media Risk Management Training',
+      title: 'Social Media Risk Mitigation Training',
       topics: [
         'Identifying sensitive or risky content',
         'Crisis management protocols for social media',
@@ -58,9 +58,40 @@ export function getTrainingInfo(trainingId: string) {
         'Account security and hack prevention',
       ],
       objectives: [
-        'Identify and mitigate potential risks',
-        'Respond appropriately to crisis situations',
-        'Protect organizational reputation',
+        'Safeguard accounts from hacking, phishing, and unauthorized access',
+        'Keep messaging and behavior consistent across platforms',
+        'Use proactive strategies for emergencies and misinformation',
+        'Follow legal, ethical, and accessibility standards',
+      ],
+    },
+    'training-governance': {
+      title: 'Social Media Governance Essentials: Accessibility, Compliance & Risk',
+      topics: [
+        'Social media governance structure',
+        'Accessibility standards across platforms',
+        'Common compliance risks',
+        'Organizational standards and values',
+      ],
+      objectives: [
+        'Learn how social media policies apply to your role',
+        'Create content that meets accessibility standards',
+        'Recognize common compliance risks and how to avoid them',
+        'Align social media activity with organizational standards',
+      ],
+    },
+    'training-leadership': {
+      title: 'A Leadership Guide to Social Media Crisis Management',
+      topics: [
+        'Leadership responsibilities during incidents',
+        'Aligning communications and legal roles',
+        'Structured approaches for timely responses',
+        'Reducing confusion and reputational harm',
+      ],
+      objectives: [
+        'Understand leadership responsibilities during social media incidents',
+        'Align communications, legal, and leadership roles during escalation',
+        'Use structured approaches to guide timely, effective responses',
+        'Reduce confusion, delays, and reputational harm during crises',
       ],
     },
     'training-brand': {
@@ -91,21 +122,6 @@ export function getTrainingInfo(trainingId: string) {
         'Understand legal obligations',
         'Avoid regulatory violations',
         'Protect personal and confidential data',
-      ],
-    },
-    'training-governance': {
-      title: 'Governance and Organizational Policies',
-      topics: [
-        'Social media governance structure',
-        'Roles and responsibilities',
-        'Acceptable use policies',
-        'Escalation processes',
-        'Compliance audits and reporting',
-      ],
-      objectives: [
-        'Understand governance structure',
-        'Know your specific responsibilities',
-        'Follow established processes',
       ],
     },
   }
@@ -140,4 +156,69 @@ export async function getTaskForUser(taskId: string): Promise<ComplianceTask> {
   }
 
   return result.docs[0]
+}
+
+export async function getTaskForUserWithAccounts(taskId: string): Promise<{
+  task: ComplianceTask
+  assignedAccounts: SocialMedia[]
+}> {
+  const { payload } = await getPayloadContext()
+  const { user } = await getAuthUser()
+
+  if (!user) {
+    redirect('/login')
+  }
+
+  const result = await payload.find({
+    collection: 'compliance_tasks',
+    where: {
+      and: [{ id: { equals: Number(taskId) } }, { assignedUser: { equals: user.id } }],
+    },
+    limit: 1,
+  })
+
+  if (result.docs.length === 0) {
+    notFound()
+  }
+
+  const task = result.docs[0]
+
+  let assignedAccounts: SocialMedia[] = []
+
+  if (task.type === 'USER_ROLL_CALL') {
+    try {
+      const userTenantId =
+        user.tenant && typeof user.tenant === 'object' ? user.tenant.id : user.tenant
+
+      if (userTenantId) {
+        const accountsResult = await payload.find({
+          collection: 'social-medias',
+          where: {
+            and: [
+              { tenant: { equals: userTenantId } },
+              {
+                or: [
+                  { socialMediaManagers: { contains: user.id } },
+                  { primaryAdmin: { equals: user.id } },
+                  { backupAdmin: { equals: user.id } },
+                ],
+              },
+            ],
+          },
+          limit: 0,
+          sort: 'name',
+        })
+
+        assignedAccounts = accountsResult.docs
+      }
+    } catch (error) {
+      console.error('error fetching assigned accounts for roll call:', error)
+      assignedAccounts = []
+    }
+  }
+
+  return {
+    task,
+    assignedAccounts,
+  }
 }

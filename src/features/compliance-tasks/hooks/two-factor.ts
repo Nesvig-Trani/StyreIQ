@@ -17,7 +17,7 @@ export function useTwoFactorForm(task: ComplianceTask) {
       fields: [
         {
           label:
-            'I confirm that two-factor authentication (2FA) is enabled on all social media accounts I manage.',
+            'I confirm that two-factor authentication (2FA) is enabled on all applicable social media accounts.',
           name: 'confirmation',
           type: 'checkbox',
           checkboxMode: 'boolean',

@@ -29,12 +29,11 @@ export const UserPasswordForm = ({ task }: UserPasswordFormProps) => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Key className="h-6 w-6" />
-            Confirm User Password Update
+            Confirm Personal Password Update
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <p className="text-sm text-muted-foreground mb-4">{task.description}</p>
             <p
               className={`text-sm font-medium ${isOverdue ? 'text-destructive' : 'text-muted-foreground'}`}
             >
@@ -42,6 +41,25 @@ export const UserPasswordForm = ({ task }: UserPasswordFormProps) => {
                 ? `⚠️ Overdue - Due date: ${dueDate.toLocaleDateString('en-US')}`
                 : `📅 Due: ${dueDate.toLocaleDateString('en-US')}`}
             </p>
+          </div>
+
+          <div className="space-y-3 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 p-4 rounded-lg">
+            <p className="text-sm">
+              Confirm you updated your personal login password according to your organization&apos;s
+              requirements. This applies to accounts you access using an individual user login (your
+              own account credentials).
+            </p>
+
+            <div className="text-sm">
+              <strong>StyreIQ distinguishes between:</strong>
+              <ul className="mt-2 space-y-1 ml-4 list-disc">
+                <li>
+                  Personal credentials used to access platforms tied to an individual user (e.g.,
+                  Meta)
+                </li>
+                <li>Shared credentials used by teams to access a single account (e.g., TikTok)</li>
+              </ul>
+            </div>
           </div>
 
           <div className="bg-muted p-6 rounded-lg space-y-4">
@@ -55,19 +73,19 @@ export const UserPasswordForm = ({ task }: UserPasswordFormProps) => {
               <ul className="space-y-2 text-sm">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 shrink-0" />
-                  <span>Minimum 12 characters in length</span>
+                  <span>Strong and unique (16+ characters recommended)</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 shrink-0" />
-                  <span>Combination of uppercase and lowercase letters</span>
+                  <span>Not reused across services</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 shrink-0" />
-                  <span>At least one number</span>
+                  <span>Updated on schedule required by your organization</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 shrink-0" />
-                  <span>At least one special character (!@#$%^&*)</span>
+                  <span>Stored in your approved password manager (recommended)</span>
                 </li>
               </ul>
 

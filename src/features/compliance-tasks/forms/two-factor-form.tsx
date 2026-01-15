@@ -34,7 +34,6 @@ export const TwoFactorForm = ({ task }: TwoFactorFormProps) => {
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <p className="text-sm text-muted-foreground mb-4">{task.description}</p>
             <p
               className={`text-sm font-medium ${isOverdue ? 'text-destructive' : 'text-muted-foreground'}`}
             >
@@ -52,10 +51,36 @@ export const TwoFactorForm = ({ task }: TwoFactorFormProps) => {
 
             <div className="space-y-3">
               <p className="text-sm">
-                You must enable 2FA on all social media accounts you manage:
+                Two-factor authentication (2FA), sometimes referred to as multi-factor
+                authentication (MFA), adds an additional layer of security beyond a password.
+              </p>
+              <p className="text-sm">
+                This task confirms that 2FA is enabled wherever the social media platform supports
+                it.
               </p>
 
-              <div className="space-y-3">
+              <div className="mt-4">
+                <h4 className="font-medium text-sm mb-2">What you&apos;re confirming</h4>
+                <ul className="space-y-2 text-sm ml-4">
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary mt-0.5">•</span>
+                    <span>2FA is enabled on applicable accounts</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary mt-0.5">•</span>
+                    <span>
+                      Authentication methods follow your organization&apos;s security standards
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary mt-0.5">•</span>
+                    <span>Backup or recovery options are stored securely</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="space-y-3 mt-4">
+                <p className="text-sm font-medium">Platform-specific instructions:</p>
                 <div className="border-l-4 border-blue-500 pl-4 py-2">
                   <p className="font-medium text-sm">Facebook/Instagram</p>
                   <p className="text-xs text-muted-foreground">

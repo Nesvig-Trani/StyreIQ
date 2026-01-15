@@ -17,7 +17,7 @@ export function useSharedPasswordForm(task: ComplianceTask) {
       fields: [
         {
           label:
-            'I confirm that the shared account password has been changed and redistributed securely to authorized team members.',
+            'I confirm the shared credential was updated and shared securely with authorized team members.',
           name: 'confirmation',
           type: 'checkbox',
           checkboxMode: 'boolean',

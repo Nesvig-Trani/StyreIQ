@@ -19,6 +19,26 @@ const completeTaskEndpoint = async (taskId: number, endpoint: string, errorMessa
   return response.json()
 }
 
+const postComplianceTaskAction = async <T>(
+  endpoint: string,
+  body: unknown,
+  errorMessage: string,
+): Promise<T> => {
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/compliance_tasks/${endpoint}`, {
+    method: 'POST',
+    headers: JSON_HEADERS,
+    credentials: 'include',
+    body: JSON.stringify(body),
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}))
+    throw new Error(errorData.error || errorMessage)
+  }
+
+  return response.json()
+}
+
 export const completeComplianceTask = async (taskId: number, notes?: string) => {
   const response = await fetch(
     `${env.NEXT_PUBLIC_BASE_URL}/api/compliance_tasks/${taskId}/complete`,
@@ -63,3 +83,13 @@ export const completeSharedPasswordTask = (taskId: number) =>
 
 export const completeTwoFactorTask = (taskId: number) =>
   completeTaskEndpoint(taskId, 'complete-2fa', 'Failed to complete 2FA confirmation')
+
+export const generateRollCallForUser = (userId: number, tenantId: number) =>
+  postComplianceTaskAction(
+    'generate-roll-call',
+    { userId, tenantId },
+    'Failed to generate Roll Call',
+  )
+
+export const getRollCallStatus = (userIds: number[]) =>
+  postComplianceTaskAction('roll-call-status', { userIds }, 'Failed to get Roll Call status')

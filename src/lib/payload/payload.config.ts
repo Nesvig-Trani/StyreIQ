@@ -23,6 +23,7 @@ import { ComplianceTasksPlugin } from '@/features/compliance-tasks/plugins'
 import { sendComplianceRemindersTask } from '@/features/compliance-tasks/task/sendComplianceReminders/def'
 import { RoleRequestsPlugin } from '@/features/role-request/plugins'
 import { createRecurringPasswordTasksTask } from '@/features/compliance-tasks/task/createRecurringPassword/def'
+import { createRollCallTasksTask } from '@/features/compliance-tasks/task/createRollCallTasks/def'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -109,6 +110,7 @@ export default buildConfig({
       detectRisksTask,
       sendComplianceRemindersTask,
       createRecurringPasswordTasksTask,
+      createRollCallTasksTask,
     ],
     autoRun: [
       {
@@ -123,7 +125,8 @@ export default buildConfig({
         (task) =>
           task.slug === flagInactiveAccountsTask.slug ||
           task.slug === sendComplianceRemindersTask.slug ||
-          task.slug === createRecurringPasswordTasksTask.slug,
+          task.slug === createRecurringPasswordTasksTask.slug ||
+          task.slug === createRollCallTasksTask.slug,
       )
     },
   },

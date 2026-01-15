@@ -45,8 +45,8 @@ export default async function ComplianceTasksPage() {
                     Complete your required actions to maintain compliance.
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    These are tasks you must complete to maintain regulatory compliance. Click on
-                    any task to take action and mark it as completed.
+                    Click Take Action to review the requirement and submit your confirmation. If
+                    something looks incorrect, contact your Unit Admin.
                     {overdueTasks.length > 0 && (
                       <strong className="text-destructive">
                         {' '}
