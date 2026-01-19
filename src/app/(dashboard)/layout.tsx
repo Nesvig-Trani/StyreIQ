@@ -5,7 +5,10 @@ import { serverAuthGuard } from '@/features/auth/hooks/serverAuthGuard'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { getLastPolicyVersion, hasUserAcknowledged } from '@/features/policies/plugins/queries'
 import { UserRolesEnum } from '@/features/users'
-import { LexicalContentModal } from '@/shared/components/rich-text-editor/preview-modal'
+import {
+  LexicalContentModal,
+  LexicalData,
+} from '@/shared/components/rich-text-editor/preview-modal'
 import { Separator } from '@/shared/components/ui/separator'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { TenantBadge } from './tenant-badge'
@@ -100,7 +103,7 @@ export default async function DashboardLayout(props: { children: React.ReactNode
             <LexicalContentModal
               title="Your organization has updated this policy/guidelines. Please review and acknowledge."
               open={showPolicyModal}
-              lexicalData={lastVersion.text}
+              lexicalData={lastVersion.text as unknown as LexicalData}
               showActions
               triggerButton={false}
               policy={lastVersion.id}

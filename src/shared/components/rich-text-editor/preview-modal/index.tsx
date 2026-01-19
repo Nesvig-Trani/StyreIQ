@@ -39,7 +39,22 @@ interface LexicalNode {
 }
 
 function renderLexicalNode(node: LexicalNode, index: number): React.ReactNode {
-  if (!node) return
+  if (!node) return null
+
+  if (node.url && (node.type === 'link' || node.type === 'autolink')) {
+    return (
+      <a
+        key={index}
+        href={node.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        title={node.title}
+        className="text-blue-600 underline hover:text-blue-800 transition-colors"
+      >
+        {node.children?.map((child, i) => renderLexicalNode(child, i)) || node.text || node.url}
+      </a>
+    )
+  }
 
   switch (node.type) {
     case 'root':
@@ -80,22 +95,14 @@ function renderLexicalNode(node: LexicalNode, index: number): React.ReactNode {
           {node.text}
         </span>
       )
-    case 'link':
-      return (
-        <a
-          key={index}
-          href={node.url}
-          target={node.target || '_blank'}
-          rel={node.rel || 'noopener noreferrer'}
-          title={node.title}
-          className="text-blue-600 underline hover:text-blue-800 transition-colors"
-        >
-          {node.children?.map((child, i) => renderLexicalNode(child, i))}
-        </a>
-      )
     case 'linebreak':
       return <br key={index} />
     default:
+      if (node.children && node.children.length > 0) {
+        return (
+          <span key={index}>{node.children.map((child, i) => renderLexicalNode(child, i))}</span>
+        )
+      }
       return null
   }
 }
