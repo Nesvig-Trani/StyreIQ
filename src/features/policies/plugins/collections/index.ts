@@ -71,7 +71,7 @@ export const Policies: CollectionConfig = {
     },
     {
       name: 'text',
-      type: 'richText',
+      type: 'json',
     },
     {
       name: 'author',

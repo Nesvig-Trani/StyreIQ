@@ -12,7 +12,10 @@ import {
   DialogTrigger,
 } from '@/shared/components/ui/dialog'
 import { Policy } from '@/types/payload-types'
-import { LexicalContentModal } from '@/shared/components/rich-text-editor/preview-modal'
+import {
+  LexicalContentModal,
+  LexicalData,
+} from '@/shared/components/rich-text-editor/preview-modal'
 
 export default function PolicyHistory({ policies }: { policies: Policy[] }) {
   return (
@@ -70,7 +73,7 @@ export default function PolicyHistory({ policies }: { policies: Policy[] }) {
                         triggerButton
                         triggerText="View"
                         title=""
-                        lexicalData={policy.text}
+                        lexicalData={policy.text as unknown as LexicalData}
                       />
                     </div>
                   </div>

@@ -16,6 +16,26 @@ import { LinkNode, AutoLinkNode } from '@lexical/link'
 import { TableNode, TableCellNode, TableRowNode } from '@lexical/table'
 import { LockKeyholeIcon } from 'lucide-react'
 
+const DEFAULT_EMPTY_STATE = JSON.stringify({
+  root: {
+    children: [
+      {
+        children: [],
+        direction: null,
+        format: '',
+        indent: 0,
+        type: 'paragraph',
+        version: 1,
+      },
+    ],
+    direction: null,
+    format: '',
+    indent: 0,
+    type: 'root',
+    version: 1,
+  },
+})
+
 const theme = {
   heading: {
     h1: 'text-3xl font-bold my-4',
@@ -54,6 +74,7 @@ const MATCHERS = [
       length: fullMatch.length,
       text: fullMatch,
       url: fullMatch.startsWith('http') ? fullMatch : `https://${fullMatch}`,
+      attributes: { rel: 'noopener noreferrer', target: '_blank' },
     }
   },
   (text: string) => {
@@ -82,8 +103,27 @@ export default function LexicalTextEditor({
   onChange,
   readOnly = false,
 }: LexicalTextEditorProps) {
+  const sanitizedInitialState = (() => {
+    if (!initialState || initialState.trim() === '') {
+      return DEFAULT_EMPTY_STATE
+    }
+
+    try {
+      const parsed = JSON.parse(initialState)
+
+      if (!parsed.root || typeof parsed.root !== 'object') {
+        return DEFAULT_EMPTY_STATE
+      }
+
+      return initialState
+    } catch (error) {
+      console.warn('[LexicalTextEditor] Failed to parse initialState, using default:', error)
+      return DEFAULT_EMPTY_STATE
+    }
+  })()
+
   const initialConfig = {
-    editorState: initialState,
+    editorState: sanitizedInitialState,
     namespace: 'MyEditor',
     theme,
     onError,
@@ -132,7 +172,8 @@ export default function LexicalTextEditor({
               <HistoryPlugin />
               <ListPlugin />
               <LinkPlugin />
-              <AutoLinkPlugin matchers={MATCHERS} /> <OnChangePlugin onChange={onChange} />
+              <AutoLinkPlugin matchers={MATCHERS} />
+              <OnChangePlugin onChange={onChange} />
             </>
           )}
         </div>
