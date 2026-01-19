@@ -125,6 +125,10 @@ export const AuditLogs: CollectionConfig = {
           label: 'Roll Call Manually Generated',
           value: AuditLogActionEnum.RollCallManuallyGenerated,
         },
+        {
+          label: 'Flag Resolved',
+          value: AuditLogActionEnum.FlagResolved,
+        },
       ],
       required: true,
     },

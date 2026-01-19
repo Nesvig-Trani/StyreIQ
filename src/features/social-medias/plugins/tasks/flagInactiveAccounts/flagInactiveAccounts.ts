@@ -48,6 +48,7 @@ export async function flagInactiveAccounts() {
           organizations: [account.organization],
           status: FlagStatusEnum.PENDING,
           detectionDate: new Date().toISOString(),
+          lastActivity: account.updatedAt,
           source: FlagSourceEnum.AUTOMATED_SYSTEM,
           description: `Account has been inactive for 30+ days`,
           suggestedAction: 'Review account activity and consider archiving if no longer in use',

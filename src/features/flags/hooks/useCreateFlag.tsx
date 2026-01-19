@@ -3,17 +3,23 @@ import { useRouter } from 'next/navigation'
 import { createFlagSchema } from '../schemas'
 import { createFlag } from '@/sdk/flags'
 import { toast } from 'sonner'
-import { SocialMedia, User } from '@/types/payload-types'
+import { SocialMedia, User, Organization } from '@/types/payload-types'
 import { useFormHelper } from '@/shared'
 import { affectedEntityOptions } from '../constants/affectedEntityOptions'
 
 interface CreateFlagFormProps {
   users: User[]
   socialMedias: SocialMedia[]
+  organizations: Organization[]
   selectedTenantId: number | null
 }
 
-export function useCreateFlag({ users, socialMedias, selectedTenantId }: CreateFlagFormProps) {
+export function useCreateFlag({
+  users,
+  socialMedias,
+  organizations,
+  selectedTenantId,
+}: CreateFlagFormProps) {
   const router = useRouter()
 
   const { formComponent, form } = useFormHelper(
@@ -25,11 +31,11 @@ export function useCreateFlag({ users, socialMedias, selectedTenantId }: CreateF
           name: 'flagType',
           type: 'select',
           options: [
-            { value: 'SECURITY_CONCERN', label: 'Security Concern' },
-            { value: 'OPERATIONAL_ISSUE', label: 'Operational Issue' },
-            { value: 'OTHER', label: 'Other' },
+            { value: 'security_concern', label: 'Security Concern' },
+            { value: 'operational_issue', label: 'Operational Issue' },
+            { value: 'other', label: 'Other' },
           ],
-          placeholder: 'Risk flag type',
+          placeholder: 'Select flag type',
           size: 'half',
         },
         {
@@ -37,31 +43,16 @@ export function useCreateFlag({ users, socialMedias, selectedTenantId }: CreateF
           name: 'affectedEntityType',
           type: 'select',
           options: affectedEntityOptions,
-          placeholder: 'Select unit type',
+          placeholder: 'Select entity type',
           size: 'half',
-        },
-        {
-          label: 'Affected User',
-          name: 'affectedEntity',
-          type: 'select',
-          options: users.map((user) => ({
-            value: user.id.toString(),
-            label: user.name || user.email,
-          })),
-          placeholder: 'Select affected user',
-          size: 'half',
-          dependsOn: {
-            field: 'affectedEntityType',
-            value: 'users',
-          },
         },
         {
           label: 'Affected Social Media Account',
           name: 'affectedEntity',
           type: 'select',
-          options: socialMedias.map((socialMedia) => ({
-            value: socialMedia.id.toString(),
-            label: socialMedia.name,
+          options: socialMedias.map((sm) => ({
+            value: sm.id.toString(),
+            label: sm.name,
           })),
           placeholder: 'Select affected social media account',
           size: 'half',
@@ -69,6 +60,39 @@ export function useCreateFlag({ users, socialMedias, selectedTenantId }: CreateF
             field: 'affectedEntityType',
             value: 'social-medias',
           },
+        },
+        {
+          label: 'Affected Organizational Unit',
+          name: 'affectedEntity',
+          type: 'select',
+          options: organizations.map((org) => ({
+            value: org.id.toString(),
+            label: org.name,
+          })),
+          placeholder: 'Select affected organizational unit',
+          size: 'half',
+          dependsOn: {
+            field: 'affectedEntityType',
+            value: 'organization',
+          },
+        },
+        {
+          label: 'Assigned To',
+          name: 'assignedTo',
+          type: 'select',
+          options: users.map((user) => ({
+            value: user.id.toString(),
+            label: user.name || user.email,
+          })),
+          placeholder: 'Select person responsible for reviewing this flag',
+          size: 'half',
+        },
+        {
+          label: 'Due Date',
+          name: 'dueDate',
+          type: 'date',
+          placeholder: 'Select due date',
+          size: 'half',
         },
         {
           label: 'Risk Description',
@@ -104,6 +128,8 @@ export function useCreateFlag({ users, socialMedias, selectedTenantId }: CreateF
         flagType: undefined,
         affectedEntityType: undefined,
         affectedEntity: '',
+        assignedTo: '',
+        dueDate: '',
         description: '',
         suggestedAction: '',
       },

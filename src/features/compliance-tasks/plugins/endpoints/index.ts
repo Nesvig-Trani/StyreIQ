@@ -7,6 +7,7 @@ import { ComplianceTask, User } from '@/types/payload-types'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 import { UserRolesEnum } from '@/features/users'
 import { ComplianceTaskGenerator } from '../../services/compliance-task-generator'
+import { FlagStatusEnum } from '@/features/flags/schemas'
 
 const validateAndGetTask = async (
   req: PayloadRequest,
@@ -511,6 +512,57 @@ export const getRollCallStatusEndpoint: Endpoint = {
         `Failed to get Roll Call status: ${error instanceof Error ? error.message : 'Unknown error'}`,
         500,
       )
+    }
+  },
+}
+
+export const completeFlagResolutionEndpoint: Endpoint = {
+  path: '/:id/complete-flag-resolution',
+  method: 'patch',
+  handler: async (req) => {
+    const taskId = req.routeParams?.id as string
+
+    try {
+      if (!req.json) {
+        throw new EndpointError('Missing JSON body', 400)
+      }
+
+      const body = await req.json()
+      const { resolutionSummary = '' } = body
+
+      const { task, user } = await validateAndGetTask(req, taskId)
+
+      if (!task.relatedFlag) {
+        throw new EndpointError('Task has no related flag', 400)
+      }
+
+      const flagId = typeof task.relatedFlag === 'object' ? task.relatedFlag.id : task.relatedFlag
+
+      await req.payload.update({
+        collection: 'flags',
+        id: flagId,
+        data: {
+          status: FlagStatusEnum.RESOLVED,
+          lastActivity: new Date().toISOString(),
+        },
+      })
+
+      const updatedTask = await completeTask(req, taskId)
+
+      await createAuditLog(req, user, AuditLogActionEnum.FlagResolved, {
+        taskId,
+        flagId,
+        resolutionSummary,
+        taskType: task.type,
+      })
+
+      return new Response(JSON.stringify({ success: true, task: updatedTask }), {
+        status: 200,
+        headers: JSON_HEADERS,
+      })
+    } catch (error) {
+      if (error instanceof EndpointError) throw error
+      throw new EndpointError('Failed to complete flag resolution', 500)
     }
   },
 }

@@ -23,6 +23,7 @@ import {
   validateTenantAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { FlagTaskGenerator } from '@/features/compliance-tasks/services/flag-task-generator'
 
 export const createFlag: Endpoint = {
   path: '/',
@@ -101,6 +102,9 @@ export const createFlag: Endpoint = {
             relationTo: dataParsed.affectedEntityType,
             value: Number(dataParsed.affectedEntity),
           },
+          assignedTo: Number(dataParsed.assignedTo),
+          dueDate: dataParsed.dueDate,
+          createdBy: user.id,
           organizations,
           detectionDate: new Date().toISOString(),
           source: FlagSourceEnum.MANUAL_FLAG,
@@ -117,6 +121,13 @@ export const createFlag: Endpoint = {
           action: FlagHistoryActionsEnum.CREATED,
         },
       })
+
+      try {
+        const flagTaskGenerator = new FlagTaskGenerator(req.payload)
+        await flagTaskGenerator.createTaskForFlag(flag, user)
+      } catch (error) {
+        console.error('[createFlag] Failed to create task for flag:', error)
+      }
 
       return new Response(JSON.stringify(flag), {
         status: 201,

@@ -5,11 +5,13 @@ export enum FlagStatusEnum {
   PENDING = 'pending',
   RESOLVED = 'resolved',
   NOT_APPLICABLE = 'not_applicable',
+  IN_PROGRESS = 'in_progress',
 }
 
 export enum AffectedEntityTypeEnum {
   USER = 'users',
   SOCIAL_MEDIA = 'social-medias',
+  ORGANIZATION = 'organization',
 }
 
 export enum FlagTypeEnum {
@@ -53,6 +55,8 @@ export const createFlagSchema = z.object({
   description: z.string(),
   suggestedAction: z.string(),
   tenant: z.number().nullable().optional(),
+  assignedTo: z.string().min(1, 'Assigned To is required'),
+  dueDate: z.coerce.string().min(1, 'Due Date is required'),
 })
 
 export const createFlagCommentSchema = z.object({

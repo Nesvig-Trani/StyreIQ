@@ -8,6 +8,7 @@ export enum ComplianceTaskType {
   POLICY_ACKNOWLEDGMENT = 'POLICY_ACKNOWLEDGMENT',
   TRAINING_COMPLETION = 'TRAINING_COMPLETION',
   USER_ROLL_CALL = 'USER_ROLL_CALL',
+  REVIEW_FLAG = 'REVIEW_FLAG',
 }
 
 export enum ComplianceTaskStatus {
@@ -53,3 +54,12 @@ export const userPasswordSchema = z.object({
     message: 'You must confirm password update',
   }),
 })
+
+export const flagResolutionSchema = z.object({
+  resolutionSummary: z.string().min(10, 'Please provide a detailed resolution summary'),
+  confirmed: z.boolean().refine((val) => val === true, {
+    message: 'You must confirm that you have reviewed this risk flag',
+  }),
+})
+
+export type FlagResolutionFormData = z.infer<typeof flagResolutionSchema>

@@ -11,6 +11,8 @@ export const createFlag = async (data: CreateFlagFormSchema) => {
       flagType: data.flagType,
       affectedEntityType: data.affectedEntityType,
       affectedEntity: data.affectedEntity,
+      assignedTo: data.assignedTo,
+      dueDate: data.dueDate,
       description: data.description,
       suggestedAction: data.suggestedAction,
       tenant: data.tenant,

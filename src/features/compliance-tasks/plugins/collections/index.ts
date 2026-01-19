@@ -9,6 +9,7 @@ import {
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 import {
+  completeFlagResolutionEndpoint,
   completePasswordSetupEndpoint,
   completeRollCallEndpoint,
   completeSharedPasswordEndpoint,
@@ -125,6 +126,7 @@ export const ComplianceTasks: CollectionConfig = {
         { label: 'Policy Acknowledgment', value: ComplianceTaskType.POLICY_ACKNOWLEDGMENT },
         { label: 'Training Completion', value: ComplianceTaskType.TRAINING_COMPLETION },
         { label: 'User Roll Call', value: ComplianceTaskType.USER_ROLL_CALL },
+        { label: 'Review flag', value: ComplianceTaskType.REVIEW_FLAG },
       ],
       admin: {
         description: 'Type of compliance task',
@@ -188,6 +190,14 @@ export const ComplianceTasks: CollectionConfig = {
       admin: {
         description: 'For TRAINING_COMPLETION tasks',
         condition: (data) => data.type === ComplianceTaskType.TRAINING_COMPLETION,
+      },
+    },
+    {
+      name: 'relatedFlag',
+      type: 'relationship',
+      relationTo: 'flags',
+      admin: {
+        condition: (data) => data.type === ComplianceTaskType.REVIEW_FLAG,
       },
     },
     {
@@ -255,6 +265,7 @@ export const ComplianceTasks: CollectionConfig = {
     completeRollCallEndpoint,
     generateRollCallEndpoint,
     getRollCallStatusEndpoint,
+    completeFlagResolutionEndpoint,
   ],
   timestamps: true,
 }
