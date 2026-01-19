@@ -3,9 +3,16 @@ import { User } from '@/types/payload-types'
 import { UserRolesEnum } from '@/features/users'
 import { ComplianceTaskStatus, ComplianceTaskType } from '../schema'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { ComplianceEmailService } from './email-service'
 
 export class ComplianceTaskGenerator {
-  constructor(private payload: Payload) {}
+  private payload: Payload
+  private emailService: ComplianceEmailService
+
+  constructor(payload: Payload) {
+    this.payload = payload
+    this.emailService = new ComplianceEmailService(payload)
+  }
 
   async generateTasksForNewUserExceptRollCall(user: User): Promise<void> {
     if (!user.tenant) {
@@ -83,7 +90,7 @@ export class ComplianceTaskGenerator {
 
     const dueDate = this.addDays(new Date(), 30)
 
-    await this.payload.create({
+    const task = await this.payload.create({
       collection: 'compliance_tasks',
       data: {
         type: ComplianceTaskType.CONFIRM_USER_PASSWORD,
@@ -97,6 +104,12 @@ export class ComplianceTaskGenerator {
         escalations: [],
       },
     })
+
+    try {
+      await this.emailService.sendTaskCreatedEmail(task, user)
+    } catch (error) {
+      console.error('createUserPasswordTask failed to send email but task was created', error)
+    }
   }
 
   private async createTwoFactorTask(user: User): Promise<void> {
@@ -124,7 +137,7 @@ export class ComplianceTaskGenerator {
 
     const dueDate = this.addDays(new Date(), 30)
 
-    await this.payload.create({
+    const task = await this.payload.create({
       collection: 'compliance_tasks',
       data: {
         type: ComplianceTaskType.CONFIRM_2FA,
@@ -138,6 +151,12 @@ export class ComplianceTaskGenerator {
         escalations: [],
       },
     })
+
+    try {
+      await this.emailService.sendTaskCreatedEmail(task, user)
+    } catch (error) {
+      console.error('createTwoFactorTask failed to send email but task was created', error)
+    }
   }
 
   private async createSharedPasswordTaskIfNeeded(user: User): Promise<void> {
@@ -185,7 +204,7 @@ export class ComplianceTaskGenerator {
 
     const dueDate = this.addDays(new Date(), 30)
 
-    await this.payload.create({
+    const task = await this.payload.create({
       collection: 'compliance_tasks',
       data: {
         type: ComplianceTaskType.CONFIRM_SHARED_PASSWORD,
@@ -199,6 +218,15 @@ export class ComplianceTaskGenerator {
         escalations: [],
       },
     })
+
+    try {
+      await this.emailService.sendTaskCreatedEmail(task, user)
+    } catch (error) {
+      console.error(
+        'createSharedPasswordTaskIfNeeded failed to send email but task was created',
+        error,
+      )
+    }
   }
 
   private async createPolicyAcknowledgmentTasks(user: User): Promise<void> {
@@ -208,17 +236,20 @@ export class ComplianceTaskGenerator {
 
     const tenantId = typeof user.tenant === 'object' ? user.tenant.id : user.tenant
 
-    const activePolicies = await this.payload.find({
+    const allPolicies = await this.payload.find({
       collection: 'policies',
       where: {
         tenant: { equals: tenantId },
       },
-      limit: 0,
+      sort: '-version',
+      limit: 1,
     })
 
-    if (activePolicies.docs.length === 0) return
+    if (allPolicies.docs.length === 0) {
+      return
+    }
 
-    const dueDate = this.addDays(new Date(), 14)
+    const latestPolicy = allPolicies.docs[0]
 
     const existingTasks = await this.payload.find({
       collection: 'compliance_tasks',
@@ -227,45 +258,44 @@ export class ComplianceTaskGenerator {
           { assignedUser: { equals: user.id } },
           { type: { equals: ComplianceTaskType.POLICY_ACKNOWLEDGMENT } },
           { status: { in: ['PENDING', 'OVERDUE'] } },
+          { relatedPolicy: { equals: latestPolicy.id } },
         ],
       },
-      limit: 0,
+      limit: 1,
     })
 
-    const existingPolicyIds = new Set(
-      existingTasks.docs.map((task) =>
-        task.relatedPolicy && typeof task.relatedPolicy === 'object'
-          ? task.relatedPolicy.id
-          : task.relatedPolicy,
-      ),
-    )
+    if (existingTasks.totalDocs > 0) {
+      return
+    }
 
-    const policiesNeedingTasks = activePolicies.docs.filter(
-      (policy) => !existingPolicyIds.has(policy.id),
-    )
+    const dueDate = this.addDays(new Date(), 14)
 
-    if (policiesNeedingTasks.length === 0) return
-
-    const tasksData = policiesNeedingTasks.map((policy) => ({
+    const taskData = {
       type: ComplianceTaskType.POLICY_ACKNOWLEDGMENT,
       assignedUser: user.id,
       tenant: tenantId,
       status: ComplianceTaskStatus.PENDING,
       dueDate: dueDate.toISOString(),
-      description: `Review and acknowledge policy version ${policy.version}`,
-      relatedPolicy: policy.id,
+      description: `Review and acknowledge policy version ${latestPolicy.version}`,
+      relatedPolicy: latestPolicy.id,
       remindersSent: [],
       escalations: [],
-    }))
+    }
 
-    await Promise.all(
-      tasksData.map((data) =>
-        this.payload.create({
-          collection: 'compliance_tasks',
-          data,
-        }),
-      ),
-    )
+    const createdTask = await this.payload.create({
+      collection: 'compliance_tasks',
+      data: taskData,
+    })
+
+    try {
+      await this.emailService.sendTaskCreatedEmail(createdTask, user)
+    } catch (error) {
+      console.error(
+        'createPolicyAcknowledgmentTasks failed to send email for task',
+        createdTask.id,
+        error,
+      )
+    }
   }
 
   private async createTrainingTasks(user: User): Promise<void> {
@@ -355,7 +385,7 @@ export class ComplianceTaskGenerator {
 
     const dueDate = await this.getNextRollCallDate(tenantId)
 
-    await this.payload.create({
+    const task = await this.payload.create({
       collection: 'compliance_tasks',
       data: {
         type: ComplianceTaskType.USER_ROLL_CALL,
@@ -369,6 +399,12 @@ export class ComplianceTaskGenerator {
         escalations: [],
       },
     })
+
+    try {
+      await this.emailService.sendTaskCreatedEmail(task, user)
+    } catch (error) {
+      console.error('createRollCallTask failed to send email but task was created', error)
+    }
   }
 
   private addDays(date: Date, days: number): Date {
@@ -395,23 +431,56 @@ export class ComplianceTaskGenerator {
     return this.addDays(new Date(), daysMap[frequency])
   }
 
-  private getRequiredTrainingsForRole(role: UserRolesEnum): Array<{ id: string; name: string }> {
-    const trainingsByRole: Record<UserRolesEnum, Array<{ id: string; name: string }>> = {
-      [UserRolesEnum.SocialMediaManager]: [
-        { id: 'training-accessibility', name: 'Accessibility Training' },
-        { id: 'training-risk', name: 'Social Media Risk Mitigation' },
-        { id: 'training-brand', name: 'Brand Guidelines Training' },
-      ],
-      [UserRolesEnum.UnitAdmin]: [
-        { id: 'training-compliance', name: 'Compliance Management Training' },
-        { id: 'training-risk', name: 'Social Media Risk Mitigation' },
-      ],
-      [UserRolesEnum.CentralAdmin]: [
-        { id: 'training-governance', name: 'Social Media Governance Essentials' },
-      ],
-      [UserRolesEnum.SuperAdmin]: [],
+  private async getRequiredTrainingsForUser(
+    user: User,
+  ): Promise<Array<{ id: string; name: string }>> {
+    if (!user.tenant) {
+      return []
     }
 
-    return trainingsByRole[role] || []
+    const tenantId = typeof user.tenant === 'object' ? user.tenant.id : user.tenant
+
+    const tenant = await this.payload.findByID({
+      collection: 'tenants',
+      id: tenantId,
+    })
+
+    const effectiveRole = getEffectiveRoleFromUser(user)
+    if (!effectiveRole) {
+      return []
+    }
+
+    const roleMapping: Record<UserRolesEnum, string> = {
+      [UserRolesEnum.SocialMediaManager]: 'social_media_manager',
+      [UserRolesEnum.UnitAdmin]: 'unit_admin',
+      [UserRolesEnum.CentralAdmin]: 'central_admin',
+      [UserRolesEnum.SuperAdmin]: 'super_admin',
+    }
+
+    const mappedRole = roleMapping[effectiveRole]
+
+    const enabledTrainings = (tenant.enabledTrainings || []) as Array<{
+      trainingId: string
+      assignedRoles: string[]
+    }>
+
+    const userTrainings = enabledTrainings
+      .filter((training) => training.assignedRoles.includes(mappedRole))
+      .map((training) => ({
+        id: training.trainingId,
+        name: this.getTrainingNameById(training.trainingId),
+      }))
+
+    return userTrainings
+  }
+
+  private getTrainingNameById(trainingId: string): string {
+    const trainingNames: Record<string, string> = {
+      'training-governance': 'Social Media Governance Essentials: Accessibility, Compliance & Risk',
+      'training-risk': 'Social Media Risk Mitigation',
+      'training-leadership': 'A Leadership Guide to Social Media Crisis Management',
+    }
+
+    return trainingNames[trainingId] || 'Required Training'
   }
 }

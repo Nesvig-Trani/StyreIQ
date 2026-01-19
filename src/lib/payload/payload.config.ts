@@ -124,6 +124,7 @@ export default buildConfig({
       return payload.config.jobs?.tasks?.some(
         (task) =>
           task.slug === flagInactiveAccountsTask.slug ||
+          task.slug === detectRisksTask.slug ||
           task.slug === sendComplianceRemindersTask.slug ||
           task.slug === createRecurringPasswordTasksTask.slug ||
           task.slug === createRollCallTasksTask.slug,

@@ -39,24 +39,37 @@ const postComplianceTaskAction = async <T>(
   return response.json()
 }
 
-export const completeComplianceTask = async (taskId: number, notes?: string) => {
+const completeComplianceTaskAction = async <T>(
+  taskId: number,
+  endpoint: string,
+  body: unknown,
+  errorMessage: string,
+): Promise<T> => {
   const response = await fetch(
-    `${env.NEXT_PUBLIC_BASE_URL}/api/compliance_tasks/${taskId}/complete`,
+    `${env.NEXT_PUBLIC_BASE_URL}/api/compliance_tasks/${taskId}/${endpoint}`,
     {
       method: 'PATCH',
       headers: JSON_HEADERS,
       credentials: 'include',
-      body: JSON.stringify({ notes: notes || '' }),
+      body: JSON.stringify(body),
     },
   )
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}))
-    throw new Error(errorData.error || 'Failed to complete task')
+    throw new Error(errorData.error || errorMessage)
   }
 
   return response.json()
 }
+
+export const completeComplianceTask = (taskId: number, notes?: string) =>
+  completeComplianceTaskAction(
+    taskId,
+    'complete',
+    { notes: notes || '' },
+    'Failed to complete task',
+  )
 
 export const completePasswordSetupTask = (taskId: number) =>
   completeTaskEndpoint(taskId, 'complete-password-setup', 'Failed to complete password setup')
@@ -93,3 +106,11 @@ export const generateRollCallForUser = (userId: number, tenantId: number) =>
 
 export const getRollCallStatus = (userIds: number[]) =>
   postComplianceTaskAction('roll-call-status', { userIds }, 'Failed to get Roll Call status')
+
+export const completeFlagResolutionTask = (taskId: number, resolutionSummary: string) =>
+  completeComplianceTaskAction(
+    taskId,
+    'complete-flag-resolution',
+    { resolutionSummary },
+    'Failed to complete flag resolution',
+  )

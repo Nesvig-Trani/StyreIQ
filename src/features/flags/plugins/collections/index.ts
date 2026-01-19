@@ -1,14 +1,10 @@
-import type { CollectionConfig } from 'payload'
+import { CollectionConfig } from 'payload'
+import { FlagHistoryActionsEnum, FlagSourceEnum, FlagStatusEnum } from '../../schemas'
 import {
   FlagCommentsCollectionSlug,
   FlagHistoryCollectionSlug,
   FlagsCollectionSlug,
 } from '../types'
-import { createComment, createFlag, markAsResolved } from '../endpoints'
-import { FlagHistoryActionsEnum, FlagSourceEnum } from '@/features/flags/schemas'
-import { flagStatusOptions } from '@/features/flags/constants/flagStatusOptions'
-import { injectTenantHook } from '@/features/tenants/hooks/inject-tenant'
-
 import {
   authenticatedCreateAccess,
   immutableUpdateAccess,
@@ -19,6 +15,9 @@ import {
   superAdminOnlyDeleteAccess,
   tenantBasedReadAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
+import { injectTenantHook } from '@/features/tenants/hooks/inject-tenant'
+import { createComment, createFlag, markAsResolved } from '../endpoints'
+import { flagStatusOptions } from '../../constants/flagStatusOptions'
 
 export const Flags: CollectionConfig = {
   slug: FlagsCollectionSlug,
@@ -36,7 +35,7 @@ export const Flags: CollectionConfig = {
     {
       name: 'affectedEntity',
       type: 'relationship',
-      relationTo: ['users', 'social-medias'],
+      relationTo: ['users', 'social-medias', 'organization'],
     },
     {
       name: 'organizations',
@@ -45,9 +44,19 @@ export const Flags: CollectionConfig = {
       hasMany: true,
     },
     {
+      name: 'assignedTo',
+      type: 'relationship',
+      relationTo: 'users',
+    },
+    {
+      name: 'dueDate',
+      type: 'date',
+    },
+    {
       name: 'status',
       type: 'select',
       options: flagStatusOptions,
+      defaultValue: FlagStatusEnum.PENDING,
     },
     {
       name: 'detectionDate',
@@ -78,6 +87,11 @@ export const Flags: CollectionConfig = {
     {
       name: 'suggestedAction',
       type: 'textarea',
+    },
+    {
+      name: 'createdBy',
+      type: 'relationship',
+      relationTo: 'users',
     },
     {
       name: 'tenant',

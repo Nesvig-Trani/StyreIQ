@@ -3,6 +3,7 @@ import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { CreateFlagForm } from '@/features/flags/forms/create-flag-form'
 import { getAllSocialMediaAccounts } from '@/features/social-medias/plugins/queries'
 import { getAllUsers } from '@/features/users'
+import { getAllUnits } from '@/features/units/plugins/queries'
 import { Card, CardContent } from '@/shared'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { ChevronRight, Home } from 'lucide-react'
@@ -15,6 +16,7 @@ export default async function CreateFlagPage() {
 
   const users = await getAllUsers()
   const socialMedias = await getAllSocialMediaAccounts()
+  const organizations = await getAllUnits()
   return (
     <div className="min-h-screen bg-gray-50 py-6">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -41,6 +43,7 @@ export default async function CreateFlagPage() {
               <CreateFlagForm
                 users={users.docs}
                 socialMedias={socialMedias.docs}
+                organizations={organizations.docs}
                 selectedTenantId={tenantContext.tenantIdForFilter}
               />
             </div>

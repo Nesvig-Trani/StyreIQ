@@ -10,6 +10,7 @@ export function getTaskTypeLabel(type: string): string {
     [ComplianceTaskType.POLICY_ACKNOWLEDGMENT]: 'Acknowledge Policy',
     [ComplianceTaskType.TRAINING_COMPLETION]: 'Complete Required Training',
     [ComplianceTaskType.USER_ROLL_CALL]: 'Confirm Your Role and Assigned Accounts',
+    [ComplianceTaskType.REVIEW_FLAG]: 'Review Risk Flag',
   }
   return labels[type] || type
 }
@@ -23,6 +24,7 @@ export function getActionUrlForTask(task: ComplianceTask): string {
     POLICY_ACKNOWLEDGMENT: 'policy',
     TRAINING_COMPLETION: 'training',
     USER_ROLL_CALL: 'roll-call',
+    REVIEW_FLAG: 'review-flag',
   }
 
   const taskType = taskTypeMap[task.type]

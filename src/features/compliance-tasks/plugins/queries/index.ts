@@ -3,7 +3,7 @@ import { Where } from 'payload'
 import { ComplianceTaskStatus } from '../../schema'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { notFound, redirect } from 'next/navigation'
-import { ComplianceTask, SocialMedia } from '@/types/payload-types'
+import { ComplianceTask, SocialMedia, Flag } from '@/types/payload-types'
 
 export const getComplianceTasksForUser = async (userId: number) => {
   const { payload } = await getPayloadContext()
@@ -220,5 +220,53 @@ export async function getTaskForUserWithAccounts(taskId: string): Promise<{
   return {
     task,
     assignedAccounts,
+  }
+}
+
+export async function getTaskForUserWithFlag(taskId: string): Promise<{
+  task: ComplianceTask
+  flag: Flag
+}> {
+  const { payload } = await getPayloadContext()
+  const { user } = await getAuthUser()
+
+  if (!user) {
+    redirect('/login')
+  }
+
+  const result = await payload.find({
+    collection: 'compliance_tasks',
+    where: {
+      and: [{ id: { equals: Number(taskId) } }, { assignedUser: { equals: user.id } }],
+    },
+    limit: 1,
+    depth: 3,
+  })
+
+  if (result.docs.length === 0) {
+    notFound()
+  }
+
+  const task = result.docs[0]
+
+  if (!task.relatedFlag) {
+    notFound()
+  }
+
+  const flagId = typeof task.relatedFlag === 'object' ? task.relatedFlag.id : task.relatedFlag
+
+  const flag = await payload.findByID({
+    collection: 'flags',
+    id: flagId,
+    depth: 2,
+  })
+
+  if (!flag) {
+    notFound()
+  }
+
+  return {
+    task,
+    flag,
   }
 }
