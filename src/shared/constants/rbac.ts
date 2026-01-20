@@ -12,6 +12,7 @@ export type Resource =
   | 'TENANTS'
   | 'ROLE_REQUESTS'
   | 'COMPLIANCE'
+  | 'TRAINING_RESOURCES'
 
 export type ResourceAction = 'create' | 'read' | 'update' | 'delete'
 
@@ -112,6 +113,13 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
         tenantScoped: false,
       },
     },
+    {
+      resource: 'TRAINING_RESOURCES',
+      actions: ['read'],
+      conditions: {
+        tenantScoped: false,
+      },
+    },
   ],
   [UserRolesEnum.CentralAdmin]: [
     {
@@ -199,6 +207,13 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
         childUnitsIncluded: true,
       },
     },
+    {
+      resource: 'TRAINING_RESOURCES',
+      actions: ['read'],
+      conditions: {
+        tenantScoped: true,
+      },
+    },
   ],
   [UserRolesEnum.UnitAdmin]: [
     {
@@ -278,6 +293,13 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
         childUnitsIncluded: true,
       },
     },
+    {
+      resource: 'TRAINING_RESOURCES',
+      actions: ['read'],
+      conditions: {
+        tenantScoped: true,
+      },
+    },
   ],
   [UserRolesEnum.SocialMediaManager]: [
     {
@@ -338,6 +360,14 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
     {
       resource: 'COMPLIANCE',
       actions: ['read', 'update'],
+      conditions: {
+        tenantScoped: true,
+        ownerOnly: true,
+      },
+    },
+    {
+      resource: 'TRAINING_RESOURCES',
+      actions: ['read'],
       conditions: {
         tenantScoped: true,
         ownerOnly: true,

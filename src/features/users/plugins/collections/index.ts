@@ -23,6 +23,7 @@ import {
   getEffectiveRoleFromUser,
   validateRoleCompatibility,
 } from '@/shared/utils/role-hierarchy'
+import { AuditLogActionEnum } from '@/features/audit-log/plugins/types'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -306,10 +307,14 @@ export const Users: CollectionConfig = {
         beforeChange: [injectTenantHook],
       },
     },
+    {
+      name: 'isCompletedTrainingLeadership',
+      type: 'checkbox',
+    },
   ],
   hooks: {
     afterChange: [
-      async ({ doc, req, operation }) => {
+      async ({ doc, req, operation, previousDoc }) => {
         if (operation === 'create') {
           setTimeout(async () => {
             try {
@@ -337,6 +342,123 @@ export const Users: CollectionConfig = {
               })
             } catch (error) {
               console.error('Error generating compliance tasks:', error)
+            }
+          }, 1000)
+        }
+
+        if (operation === 'update' && doc.roles && previousDoc?.roles) {
+          const oldRoles = new Set<string>(previousDoc.roles as string[])
+          const newRoles = new Set<string>(doc.roles as string[])
+
+          const addedRoles: string[] = [...newRoles].filter((role) => !oldRoles.has(role))
+
+          if (addedRoles.length === 0) return
+
+          setTimeout(async () => {
+            try {
+              const tenantId = typeof doc.tenant === 'object' ? doc.tenant.id : doc.tenant
+
+              if (!tenantId) return
+
+              const tenant = await req.payload.findByID({
+                collection: 'tenants',
+                id: tenantId,
+              })
+
+              const roleMapping: Record<string, string> = {
+                social_media_manager: 'social_media_manager',
+                unit_admin: 'unit_admin',
+                central_admin: 'central_admin',
+                super_admin: 'super_admin',
+              }
+
+              const mappedAddedRoles = addedRoles.map((role) => roleMapping[role]).filter(Boolean)
+
+              const enabledTrainings = (tenant.enabledTrainings || []) as Array<{
+                trainingId: string
+                assignedRoles: string[]
+              }>
+
+              const newTrainings = enabledTrainings.filter((training) =>
+                training.assignedRoles.some((role) => mappedAddedRoles.includes(role)),
+              )
+
+              if (newTrainings.length === 0) return
+
+              const existingTasks = await req.payload.find({
+                collection: 'compliance_tasks',
+                where: {
+                  and: [
+                    { assignedUser: { equals: doc.id } },
+                    { type: { equals: 'TRAINING_COMPLETION' } },
+                    { status: { in: ['PENDING', 'OVERDUE'] } },
+                  ],
+                },
+                limit: 0,
+              })
+
+              const existingTrainingIds = new Set(
+                existingTasks.docs.map((task) => task.relatedTraining).filter(Boolean) as string[],
+              )
+
+              const trainingsToCreate = newTrainings.filter(
+                (training) => !existingTrainingIds.has(training.trainingId),
+              )
+
+              if (trainingsToCreate.length === 0) return
+
+              const trainingWindow =
+                tenant.governanceSettings &&
+                Array.isArray(tenant.governanceSettings.trainingEscalationDays) &&
+                tenant.governanceSettings.trainingEscalationDays[1]
+                  ? (tenant.governanceSettings.trainingEscalationDays[1] as { day: number }).day
+                  : 30
+
+              const dueDate = new Date()
+              dueDate.setDate(dueDate.getDate() + trainingWindow)
+
+              const trainingNames: Record<string, string> = {
+                'training-governance':
+                  'Social Media Governance Essentials: Accessibility, Compliance & Risk',
+                'training-risk': 'Social Media Risk Mitigation',
+                'training-leadership': 'A Leadership Guide to Social Media Crisis Management',
+              }
+
+              await Promise.all(
+                trainingsToCreate.map((training) =>
+                  req.payload.create({
+                    collection: 'compliance_tasks',
+                    data: {
+                      type: 'TRAINING_COMPLETION',
+                      assignedUser: doc.id,
+                      tenant: tenantId,
+                      status: 'PENDING',
+                      dueDate: dueDate.toISOString(),
+                      description: `Complete: ${trainingNames[training.trainingId] || 'Required Training'}`,
+                      relatedTraining: training.trainingId,
+                      remindersSent: [],
+                      escalations: [],
+                    },
+                  }),
+                ),
+              )
+
+              await req.payload.create({
+                collection: 'audit_log',
+                data: {
+                  user: req.user?.id || doc.id,
+                  action: AuditLogActionEnum.TrainingTasksGeneratedForNewRoles,
+                  entity: 'users',
+                  metadata: {
+                    userId: doc.id,
+                    addedRoles,
+                    trainingsCreated: trainingsToCreate.map((t) => t.trainingId),
+                  },
+                  tenant: tenantId,
+                },
+              })
+            } catch (error) {
+              console.error('Error generating training tasks for new roles:', error)
             }
           }, 1000)
         }

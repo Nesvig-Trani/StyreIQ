@@ -129,6 +129,10 @@ export const AuditLogs: CollectionConfig = {
           label: 'Flag Resolved',
           value: AuditLogActionEnum.FlagResolved,
         },
+        {
+          label: 'Training Tasks Generated For New Roles',
+          value: AuditLogActionEnum.TrainingTasksGeneratedForNewRoles,
+        },
       ],
       required: true,
     },

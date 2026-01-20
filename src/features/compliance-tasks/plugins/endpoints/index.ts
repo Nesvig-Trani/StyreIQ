@@ -257,11 +257,9 @@ export const completeTrainingEndpoint: Endpoint = {
       }
 
       const trainingFieldMap: Record<string, string> = {
-        'training-accessibility': 'isCompletedTrainingAccessibility',
-        'training-risk': 'isCompletedTrainingRisk',
-        'training-brand': 'isCompletedTrainingBrand',
-        'training-compliance': 'isCompletedTrainingCompliance',
         'training-governance': 'isCompletedTrainingGovernance',
+        'training-risk': 'isCompletedTrainingRisk',
+        'training-leadership': 'isCompletedTrainingLeadership',
       }
 
       if (task.relatedTraining && trainingFieldMap[task.relatedTraining]) {

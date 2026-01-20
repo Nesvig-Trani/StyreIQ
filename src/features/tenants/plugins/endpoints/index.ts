@@ -67,6 +67,7 @@ export const createTenant: Endpoint = {
           rollCallFrequency: 'quarterly',
           passwordRotationDays: 90,
         },
+        enabledTrainings: dataParsed.enabledTrainings,
       },
     })
 

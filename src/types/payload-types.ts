@@ -226,6 +226,7 @@ export interface User {
   passwordUpdatedAt?: string | null
   offboardingCompleted?: boolean | null
   tenant?: (number | null) | Tenant
+  isCompletedTrainingLeadership?: boolean | null
   updatedAt: string
   createdAt: string
   email: string
@@ -302,6 +303,19 @@ export interface Tenant {
    * Main unit created automatically for this tenant
    */
   primaryUnit?: (number | null) | Organization
+  /**
+   * Configure which trainings are enabled for this tenant based on their contract
+   */
+  enabledTrainings?:
+    | {
+        trainingId: 'training-governance' | 'training-risk' | 'training-leadership'
+        /**
+         * Roles that should automatically receive this training
+         */
+        assignedRoles: ('social_media_manager' | 'unit_admin' | 'central_admin')[]
+        id?: string | null
+      }[]
+    | null
   governanceSettings?: {
     /**
      * Days after policy assignment to send reminders
@@ -513,21 +527,15 @@ export interface SocialMediaPost {
 export interface Policy {
   id: number
   version?: number | null
-  text?: {
-    root: {
-      type: string
-      children: {
-        type: string
-        version: number
+  text?:
+    | {
         [k: string]: unknown
-      }[]
-      direction: ('ltr' | 'rtl') | null
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | ''
-      indent: number
-      version: number
-    }
-    [k: string]: unknown
-  } | null
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null
   author?: (number | null) | User
   tenant?: (number | null) | Tenant
   updatedAt: string
@@ -561,8 +569,14 @@ export interface Flag {
         relationTo: 'social-medias'
         value: number | SocialMedia
       } | null)
+    | ({
+        relationTo: 'organization'
+        value: number | Organization
+      } | null)
   organizations?: (number | Organization)[] | null
-  status?: ('resolved' | 'pending' | 'not_applicable') | null
+  assignedTo?: (number | null) | User
+  dueDate?: string | null
+  status?: ('resolved' | 'pending' | 'not_applicable' | 'in_progress') | null
   detectionDate?: string | null
   source?: ('automated' | 'manual') | null
   lastActivity?: string | null
@@ -573,6 +587,7 @@ export interface Flag {
   }
   description?: string | null
   suggestedAction?: string | null
+  createdBy?: (number | null) | User
   tenant?: (number | null) | Tenant
   updatedAt: string
   createdAt: string
@@ -586,8 +601,8 @@ export interface FlagHistory {
   flag?: (number | null) | Flag
   user?: (number | null) | User
   action?: ('created' | 'status_changed' | 'comment') | null
-  prevStatus?: ('resolved' | 'pending' | 'not_applicable') | null
-  newStatus?: ('resolved' | 'pending' | 'not_applicable') | null
+  prevStatus?: ('resolved' | 'pending' | 'not_applicable' | 'in_progress') | null
+  newStatus?: ('resolved' | 'pending' | 'not_applicable' | 'in_progress') | null
   tenant?: (number | null) | Tenant
   updatedAt: string
   createdAt: string
@@ -637,6 +652,8 @@ export interface AuditLog {
     | 'roll_call_auto_generated'
     | 'roll_call_auto_generation_failed'
     | 'roll_call_manually_generated'
+    | 'flag_resolved'
+    | 'training_task_generated_for_new_roles'
   entity: string
   prev?:
     | {
@@ -714,6 +731,7 @@ export interface ComplianceTask {
     | 'POLICY_ACKNOWLEDGMENT'
     | 'TRAINING_COMPLETION'
     | 'USER_ROLL_CALL'
+    | 'REVIEW_FLAG'
   /**
    * User who must complete this task
    */
@@ -739,6 +757,7 @@ export interface ComplianceTask {
    * For TRAINING_COMPLETION tasks
    */
   relatedTraining?: string | null
+  relatedFlag?: (number | null) | Flag
   /**
    * Log of reminders sent for this task
    */
@@ -1085,6 +1104,7 @@ export interface UsersSelect<T extends boolean = true> {
   passwordUpdatedAt?: T
   offboardingCompleted?: T
   tenant?: T
+  isCompletedTrainingLeadership?: T
   updatedAt?: T
   createdAt?: T
   email?: T
@@ -1202,6 +1222,8 @@ export interface FlagsSelect<T extends boolean = true> {
   flagType?: T
   affectedEntity?: T
   organizations?: T
+  assignedTo?: T
+  dueDate?: T
   status?: T
   detectionDate?: T
   source?: T
@@ -1209,6 +1231,7 @@ export interface FlagsSelect<T extends boolean = true> {
   history?: T
   description?: T
   suggestedAction?: T
+  createdBy?: T
   tenant?: T
   updatedAt?: T
   createdAt?: T
@@ -1265,6 +1288,13 @@ export interface TenantsSelect<T extends boolean = true> {
   domain?: T
   adminContact?: T
   primaryUnit?: T
+  enabledTrainings?:
+    | T
+    | {
+        trainingId?: T
+        assignedRoles?: T
+        id?: T
+      }
   governanceSettings?:
     | T
     | {
@@ -1308,6 +1338,7 @@ export interface ComplianceTasksSelect<T extends boolean = true> {
   description?: T
   relatedPolicy?: T
   relatedTraining?: T
+  relatedFlag?: T
   remindersSent?:
     | T
     | {
