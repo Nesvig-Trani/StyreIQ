@@ -21,6 +21,27 @@ export const createTenantSchema = z.object({
     .enum(['America/New_York', 'America/Chicago', 'America/Denver', 'America/Los_Angeles'])
     .default('America/New_York'),
   notes: z.string().optional(),
+  enabledTrainings: z
+    .array(
+      z.object({
+        trainingId: z.enum(['training-governance', 'training-risk', 'training-leadership']),
+        assignedRoles: z.array(z.enum(['social_media_manager', 'unit_admin', 'central_admin'])),
+      }),
+    )
+    .default([
+      {
+        trainingId: 'training-governance',
+        assignedRoles: ['social_media_manager', 'unit_admin'],
+      },
+      {
+        trainingId: 'training-risk',
+        assignedRoles: ['social_media_manager', 'unit_admin'],
+      },
+      {
+        trainingId: 'training-leadership',
+        assignedRoles: ['unit_admin'],
+      },
+    ]),
 })
 
 export type CreateTenantFormSchema = z.infer<typeof createTenantSchema>

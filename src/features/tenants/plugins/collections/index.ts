@@ -62,6 +62,66 @@ export const Tenants: CollectionConfig = {
       },
     },
     {
+      name: 'enabledTrainings',
+      type: 'array',
+      label: 'Enabled Trainings',
+      admin: {
+        description:
+          'Configure which trainings are enabled for this tenant based on their contract',
+      },
+      defaultValue: [
+        {
+          trainingId: 'training-governance',
+          assignedRoles: ['social_media_manager', 'unit_admin'],
+        },
+        {
+          trainingId: 'training-risk',
+          assignedRoles: ['social_media_manager', 'unit_admin'],
+        },
+        {
+          trainingId: 'training-leadership',
+          assignedRoles: ['unit_admin'],
+        },
+      ],
+      fields: [
+        {
+          name: 'trainingId',
+          type: 'select',
+          required: true,
+          label: 'Training',
+          options: [
+            {
+              label: 'Social Media Governance Essentials: Accessibility, Compliance & Risk',
+              value: 'training-governance',
+            },
+            {
+              label: 'Social Media Risk Mitigation',
+              value: 'training-risk',
+            },
+            {
+              label: 'A Leadership Guide to Social Media Crisis Management',
+              value: 'training-leadership',
+            },
+          ],
+        },
+        {
+          name: 'assignedRoles',
+          type: 'select',
+          hasMany: true,
+          required: true,
+          label: 'Assigned Roles',
+          admin: {
+            description: 'Roles that should automatically receive this training',
+          },
+          options: [
+            { label: 'Social Media Manager', value: 'social_media_manager' },
+            { label: 'Unit Admin', value: 'unit_admin' },
+            { label: 'Central Admin', value: 'central_admin' },
+          ],
+        },
+      ],
+    },
+    {
       name: 'governanceSettings',
       type: 'group',
       label: 'Governance Settings',

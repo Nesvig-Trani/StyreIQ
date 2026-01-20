@@ -23,6 +23,7 @@ export const createTenant = async (data: CreateTenantFormSchema) => {
         rollCallFrequency: 'quarterly',
         passwordRotationDays: 90,
       },
+      enabledTrainings: data.enabledTrainings,
     }),
   })
 

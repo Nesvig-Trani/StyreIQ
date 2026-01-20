@@ -2,7 +2,6 @@ import { Payload } from 'payload'
 import { User } from '@/types/payload-types'
 import { UserRolesEnum } from '@/features/users'
 import { ComplianceTaskStatus, ComplianceTaskType } from '../schema'
-import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 import { ComplianceEmailService } from './email-service'
 
 export class ComplianceTaskGenerator {
@@ -303,9 +302,6 @@ export class ComplianceTaskGenerator {
       throw new Error('User tenant is required')
     }
 
-    const effectiveRole = getEffectiveRoleFromUser(user)
-    if (!effectiveRole) return
-
     const tenantId = typeof user.tenant === 'object' ? user.tenant.id : user.tenant
 
     const tenant = await this.payload.findByID({
@@ -322,9 +318,11 @@ export class ComplianceTaskGenerator {
 
     const dueDate = this.addDays(new Date(), trainingWindow)
 
-    const requiredTrainings = this.getRequiredTrainingsForRole(effectiveRole)
+    const requiredTrainings = await this.getRequiredTrainingsForUser(user)
 
-    if (requiredTrainings.length === 0) return
+    if (requiredTrainings.length === 0) {
+      return
+    }
 
     const existingTasks = await this.payload.find({
       collection: 'compliance_tasks',
@@ -353,7 +351,9 @@ export class ComplianceTaskGenerator {
       (training) => !existingTrainingIds.has(training.id),
     )
 
-    if (trainingsNeedingTasks.length === 0) return
+    if (trainingsNeedingTasks.length === 0) {
+      return
+    }
 
     const tasksData = trainingsNeedingTasks.map((training) => ({
       type: ComplianceTaskType.TRAINING_COMPLETION,
@@ -367,14 +367,28 @@ export class ComplianceTaskGenerator {
       escalations: [],
     }))
 
-    await Promise.all(
-      tasksData.map((data) =>
-        this.payload.create({
-          collection: 'compliance_tasks',
-          data,
+    try {
+      const createdTasks = await Promise.all(
+        tasksData.map((data) =>
+          this.payload.create({
+            collection: 'compliance_tasks',
+            data,
+          }),
+        ),
+      )
+
+      await Promise.allSettled(
+        createdTasks.map(async (task) => {
+          try {
+            await this.emailService.sendTaskCreatedEmail(task, user)
+          } catch (error) {
+            console.error('createTrainingTasks failed to send email for task', task.id, error)
+          }
         }),
-      ),
-    )
+      )
+    } catch (error) {
+      throw error
+    }
   }
 
   private async createRollCallTask(user: User): Promise<void> {
@@ -445,8 +459,9 @@ export class ComplianceTaskGenerator {
       id: tenantId,
     })
 
-    const effectiveRole = getEffectiveRoleFromUser(user)
-    if (!effectiveRole) {
+    const userRoles = user.roles || []
+
+    if (userRoles.length === 0) {
       return []
     }
 
@@ -457,7 +472,7 @@ export class ComplianceTaskGenerator {
       [UserRolesEnum.SuperAdmin]: 'super_admin',
     }
 
-    const mappedRole = roleMapping[effectiveRole]
+    const mappedRoles = userRoles.map((role) => roleMapping[role as UserRolesEnum]).filter(Boolean)
 
     const enabledTrainings = (tenant.enabledTrainings || []) as Array<{
       trainingId: string
@@ -465,13 +480,15 @@ export class ComplianceTaskGenerator {
     }>
 
     const userTrainings = enabledTrainings
-      .filter((training) => training.assignedRoles.includes(mappedRole))
+      .filter((training) => training.assignedRoles.some((role) => mappedRoles.includes(role)))
       .map((training) => ({
         id: training.trainingId,
         name: this.getTrainingNameById(training.trainingId),
       }))
 
-    return userTrainings
+    const uniqueTrainings = Array.from(new Map(userTrainings.map((t) => [t.id, t])).values())
+
+    return uniqueTrainings
   }
 
   private getTrainingNameById(trainingId: string): string {

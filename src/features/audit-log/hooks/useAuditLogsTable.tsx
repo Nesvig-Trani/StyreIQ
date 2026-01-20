@@ -35,6 +35,8 @@ function getActionLabel(action: AuditLogActionEnum): string {
     [AuditLogActionEnum.RollCallAutoGenerationFailed]: 'Roll Call Auto Generation Failed',
     [AuditLogActionEnum.RollCallManuallyGenerated]: 'Roll Call Manually Generated',
     [AuditLogActionEnum.FlagResolved]: 'Flag Resolved',
+    [AuditLogActionEnum.TrainingTasksGeneratedForNewRoles]:
+      'Training Tasks Generated For New Roles',
   }
   return labels[action] || action
 }

@@ -24,4 +24,5 @@ export enum AuditLogActionEnum {
   RollCallAutoGenerationFailed = 'roll_call_auto_generation_failed',
   RollCallManuallyGenerated = 'roll_call_manually_generated',
   FlagResolved = 'flag_resolved',
+  TrainingTasksGeneratedForNewRoles = 'training_task_generated_for_new_roles',
 }

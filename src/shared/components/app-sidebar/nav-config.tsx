@@ -1,6 +1,7 @@
 import { Resource, ResourceAction } from '@/shared/constants/rbac'
 import {
   BadgePlus,
+  BookOpen,
   Building2Icon,
   ClipboardCheck,
   FlagIcon,
@@ -110,6 +111,15 @@ export const mainNavigation: NavItem[] = [
     icon: ClipboardCheck,
     permission: {
       resource: 'COMPLIANCE',
+      action: 'read',
+    },
+  },
+  {
+    title: 'Training Resources',
+    url: '/dashboard/resources',
+    icon: BookOpen,
+    permission: {
+      resource: 'TRAINING_RESOURCES',
       action: 'read',
     },
   },
