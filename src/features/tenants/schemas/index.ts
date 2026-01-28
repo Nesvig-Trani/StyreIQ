@@ -67,8 +67,7 @@ export const tenantGovernanceSettingsSchema = z.object({
 
   rollCallFrequency: z.enum(['monthly', 'quarterly', 'semiannual', 'annual']),
   passwordRotationDays: z.coerce.number().min(30).max(365),
-  userPasswordCadenceDays: z.coerce.number().min(30).max(365),
-  sharedPasswordCadenceDays: z.coerce.number().min(30).max(365),
+  passwordConfirmationCadenceDays: z.coerce.number().min(30).max(365),
 })
 
 export type TenantGovernanceSettingsSchema = z.infer<typeof tenantGovernanceSettingsSchema>
