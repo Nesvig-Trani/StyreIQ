@@ -11,7 +11,8 @@ export const createTenant = async (data: CreateTenantFormSchema) => {
     body: JSON.stringify({
       name: data.name,
       domain: data.domain,
-      adminContact: data.adminContact,
+      adminContactName: data.adminContactName,
+      adminContactEmail: data.adminContactEmail,
       status: 'active',
       metadata: {
         timezone: data.timezone,

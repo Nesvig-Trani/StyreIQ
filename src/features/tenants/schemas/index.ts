@@ -16,7 +16,8 @@ export const createTenantSchema = z.object({
       /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,}$/,
       'Invalid domain format (e.g., example.edu)',
     ),
-  adminContact: z.string().email('Invalid email address'),
+  adminContactName: z.string().min(1, 'Admin contact name is required'),
+  adminContactEmail: z.string().email('Invalid email address'),
   timezone: z
     .enum(['America/New_York', 'America/Chicago', 'America/Denver', 'America/Los_Angeles'])
     .default('America/New_York'),

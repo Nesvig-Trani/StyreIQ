@@ -298,7 +298,11 @@ export interface Tenant {
   /**
    * Primary contact for this organization
    */
-  adminContact: string
+  adminContactName: string
+  /**
+   * Primary contact for this organization
+   */
+  adminContactEmail: string
   /**
    * Main unit created automatically for this tenant
    */
@@ -1286,7 +1290,8 @@ export interface AuditLogSelect<T extends boolean = true> {
 export interface TenantsSelect<T extends boolean = true> {
   name?: T
   domain?: T
-  adminContact?: T
+  adminContactName?: T
+  adminContactEmail?: T
   primaryUnit?: T
   enabledTrainings?:
     | T
