@@ -30,10 +30,23 @@ export function useCreateUserForm({
 }: UserFormProps) {
   const router = useRouter()
 
-  const allowedRoles =
-    authUserRole === UserRolesEnum.UnitAdmin
-      ? [UserRolesEnum.UnitAdmin, UserRolesEnum.SocialMediaManager]
-      : Object.values(UserRolesEnum)
+  const allowedRoles = useMemo(() => {
+    switch (authUserRole) {
+      case UserRolesEnum.SuperAdmin:
+        return Object.values(UserRolesEnum)
+      case UserRolesEnum.CentralAdmin:
+        return [
+          UserRolesEnum.CentralAdmin,
+          UserRolesEnum.UnitAdmin,
+          UserRolesEnum.SocialMediaManager,
+        ]
+      case UserRolesEnum.UnitAdmin:
+        return [UserRolesEnum.UnitAdmin, UserRolesEnum.SocialMediaManager]
+
+      default:
+        return []
+    }
+  }, [authUserRole])
 
   const allowedStatuses =
     authUserRole === UserRolesEnum.UnitAdmin ? [] : [UserStatusEnum.Active, UserStatusEnum.Inactive]
