@@ -106,12 +106,9 @@ export const Unit: CollectionConfig = {
       hasMany: true,
     },
     {
-      name: 'email',
-      type: 'email',
-    },
-    {
-      name: 'phone',
+      name: 'websiteUrl',
       type: 'text',
+      label: 'Website URL',
     },
     {
       name: 'status',

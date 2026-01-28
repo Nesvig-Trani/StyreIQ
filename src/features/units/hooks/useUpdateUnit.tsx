@@ -51,13 +51,8 @@ function useUpdateUnit({ users, data, organizations }: UpdateUnitFormProps) {
           })),
         },
         {
-          label: 'Email',
-          name: 'email',
-          type: 'text',
-        },
-        {
-          label: 'Phone',
-          name: 'phone',
+          label: 'Website URL',
+          name: 'websiteUrl',
           type: 'text',
         },
         {
@@ -101,8 +96,7 @@ function useUpdateUnit({ users, data, organizations }: UpdateUnitFormProps) {
         type: data?.type as UnitTypeEnum,
         parent: data?.parentOrg?.toString(),
         admin: data?.admin.id?.toString() || '',
-        email: data?.email || '',
-        phone: data?.phone || '',
+        websiteUrl: data?.websiteUrl || '',
         status: data?.status || 'active',
         description: data?.description || '',
         delegatedPermissions: data?.delegatedPermissions || false,

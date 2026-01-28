@@ -78,11 +78,11 @@ function useCreateUnit({
         size: 'half' as const,
       },
       {
-        label: 'Phone',
-        name: 'phone' as const,
+        label: 'Website URL',
+        name: 'websiteUrl' as const,
         type: 'text' as const,
         size: 'half' as const,
-        placeholder: 'Enter the phone',
+        placeholder: 'Enter the website URL',
       },
       {
         label: 'Status',
@@ -138,7 +138,7 @@ function useCreateUnit({
         type: UnitTypeEnum.HIGHER_EDUCATION_INSTITUTION,
         parent: defaultParentOrg || '',
         admin: '',
-        phone: '',
+        websiteUrl: '',
         status: 'active',
         description: '',
         delegatedPermissions: false,
