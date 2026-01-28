@@ -182,7 +182,6 @@ export const Tenants: CollectionConfig = {
             { label: 'Annual', value: 'annual' },
           ],
         },
-
         {
           name: 'passwordRotationDays',
           type: 'number',
@@ -195,25 +194,15 @@ export const Tenants: CollectionConfig = {
           },
         },
         {
-          name: 'userPasswordCadenceDays',
+          name: 'passwordConfirmationCadenceDays',
           type: 'number',
-          label: 'User Password Confirmation Cadence (Days)',
+          label: 'Password Confirmation Cadence (Days)',
           defaultValue: 180,
           min: 30,
           max: 365,
           admin: {
-            description: 'Days between user password confirmation tasks (default: 180)',
-          },
-        },
-        {
-          name: 'sharedPasswordCadenceDays',
-          type: 'number',
-          label: 'Shared Password Confirmation Cadence (Days)',
-          defaultValue: 180,
-          min: 30,
-          max: 365,
-          admin: {
-            description: 'Days between shared password confirmation tasks (default: 180)',
+            description:
+              'Days between password confirmation tasks for both user and shared accounts (default: 180)',
           },
         },
       ],
