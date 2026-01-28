@@ -50,17 +50,45 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
       return 'flagType' in item
     }
 
-    const flagsOnly = data.filter(isFlag)
+    const isTask = (item: Flag | ComplianceTask): item is ComplianceTask => {
+      return 'type' in item && !('flagType' in item)
+    }
 
-    const userIds = flagsOnly
-      .map((flag) =>
-        flag.affectedEntity?.relationTo === 'users' && flag.affectedEntity.value
-          ? Number(flag.affectedEntity.value)
-          : null,
-      )
+    const flagsOnly = data.filter(isFlag)
+    const tasksOnly = data.filter(isTask)
+
+    const userIdsFromFlags = flagsOnly
+      .map((flag) => {
+        if (!flag.affectedEntity || typeof flag.affectedEntity !== 'object') {
+          return null
+        }
+
+        const { relationTo, value } = flag.affectedEntity as {
+          relationTo: string
+          value: number | { id: number }
+        }
+
+        if (relationTo !== 'users') {
+          return null
+        }
+
+        const userId = typeof value === 'number' ? value : value?.id
+        return userId ? Number(userId) : null
+      })
       .filter((id): id is number => id !== null)
 
-    const uniqueUserIds = [...new Set(userIds)]
+    const userIdsFromTasks = tasksOnly
+      .map((task) => {
+        const userId =
+          typeof task.assignedUser === 'number'
+            ? task.assignedUser
+            : (task.assignedUser as { id: number } | undefined)?.id
+        return userId ? Number(userId) : null
+      })
+      .filter((id): id is number => id !== null)
+
+    const allUserIds = [...userIdsFromFlags, ...userIdsFromTasks]
+    const uniqueUserIds = [...new Set(allUserIds)]
 
     const usersMap = new Map<number, { id: number; name?: string; email?: string }>()
 
@@ -70,17 +98,36 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
     }
 
     const flagIssues: Issue[] = flagsOnly.map((flag) => {
-      const userData =
-        flag.affectedEntity?.relationTo === 'users'
-          ? usersMap.get(Number(flag.affectedEntity.value))
-          : undefined
+      let userData: { id: number; name?: string; email?: string } | undefined
+
+      if (flag.affectedEntity && typeof flag.affectedEntity === 'object') {
+        const { relationTo, value } = flag.affectedEntity as {
+          relationTo: string
+          value: number | { id: number }
+        }
+
+        if (relationTo === 'users') {
+          const userId = typeof value === 'number' ? value : value?.id
+          if (userId) {
+            userData = usersMap.get(Number(userId))
+          }
+        }
+      }
+
+      const assignedToId =
+        typeof flag.assignedTo === 'number'
+          ? flag.assignedTo
+          : (flag.assignedTo as { id: number } | undefined)?.id
+
+      const assignedToUser = assignedToId ? usersMap.get(Number(assignedToId)) : undefined
 
       return {
         id: flag.id.toString(),
-        title: flagTypeLabels[flag.flagType as FlagTypeEnum],
-        description: flag.description ?? '',
+        title: flagTypeLabels[flag.flagType as FlagTypeEnum] || flag.flagType || 'Unknown Flag',
+        description: flag.description ?? 'No description provided',
         severity: getFlagSeverity(flag.flagType as string),
-        dueDate: flag.createdAt,
+        dueDate: flag.dueDate || flag.createdAt,
+        assignedTo: assignedToUser ? `${assignedToUser.name || assignedToUser.email}` : undefined,
         user: userData
           ? {
               id: userData.id,
@@ -91,7 +138,51 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
       }
     })
 
-    return flagIssues
+    const taskIssues: Issue[] = tasksOnly.map((task) => {
+      const assignedUserId =
+        typeof task.assignedUser === 'number'
+          ? task.assignedUser
+          : (task.assignedUser as { id: number } | undefined)?.id
+
+      const assignedUser = assignedUserId ? usersMap.get(Number(assignedUserId)) : undefined
+
+      return {
+        id: task.id.toString(),
+        title: getTaskTypeLabel(task.type),
+        description: task.description ?? 'No description provided',
+        severity: getTaskSeverity(task.status),
+        dueDate: task.dueDate,
+        assignedTo: assignedUser ? `${assignedUser.name || assignedUser.email}` : undefined,
+        user: assignedUser
+          ? {
+              id: assignedUser.id,
+              name: assignedUser.name || 'Usuario sin nombre',
+              email: assignedUser.email || 'Email no disponible',
+            }
+          : undefined,
+      }
+    })
+
+    return [...flagIssues, ...taskIssues]
+  }
+
+  const getTaskTypeLabel = (type: string): string => {
+    const labels: Record<string, string> = {
+      USER_ROLL_CALL: 'User Roll Call',
+      CONFIRM_USER_PASSWORD: 'Confirm User Password',
+      CONFIRM_SHARED_PASSWORD: 'Confirm Shared Password',
+      CONFIRM_2FA: 'Confirm 2FA',
+      POLICY_ACKNOWLEDGMENT: 'Policy Acknowledgment',
+      TRAINING_COMPLETION: 'Training Completion',
+      REVIEW_FLAG: 'Review Flag',
+    }
+    return labels[type] || type
+  }
+
+  const getTaskSeverity = (status: string): 'high' | 'medium' | 'low' => {
+    if (status === 'OVERDUE') return 'high'
+    if (status === 'PENDING') return 'medium'
+    return 'low'
   }
 
   const getFlagSeverity = (flagType: string): 'high' | 'medium' | 'low' => {
