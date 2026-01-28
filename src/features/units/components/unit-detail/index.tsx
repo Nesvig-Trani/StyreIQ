@@ -3,7 +3,7 @@ import { UnitWithDepth } from '@/features/units/schemas'
 import { Organization, User } from '@/types/payload-types'
 import { Badge, Card, CardHeader, CardTitle, CardContent, Separator } from '@/shared'
 import { Avatar, AvatarFallback } from '@/shared/components/ui/avatar'
-import { Building, Mail, Phone } from 'lucide-react'
+import { Building, Globe } from 'lucide-react'
 
 export function UnitDetail({ organization }: { organization: UnitWithDepth }) {
   const admin = organization.admin as User
@@ -51,21 +51,21 @@ export function UnitDetail({ organization }: { organization: UnitWithDepth }) {
               </div>
             )}
 
-            <div>
-              {organization.email && (
+            {organization.websiteUrl && (
+              <div>
                 <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-muted-foreground" />
-                  <span>{organization.email}</span>
+                  <Globe className="h-4 w-4 text-muted-foreground" />
+                  <a
+                    href={organization.websiteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    {organization.websiteUrl}
+                  </a>
                 </div>
-              )}
-
-              {organization.phone && (
-                <div className="flex items-center gap-2">
-                  <Phone className="h-4 w-4 text-muted-foreground" />
-                  <span>{organization.phone}</span>
-                </div>
-              )}
-            </div>
+              </div>
+            )}
 
             <Separator />
 

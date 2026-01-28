@@ -2,7 +2,6 @@
 import React from 'react'
 import { createUnitTree, UnitTypeEnum, UpdateUnitFormProps } from '@/features/units'
 import { Button, Input, Label, MultiSelect, TreeSelect } from '@/shared'
-import PhoneInput from 'react-phone-number-input'
 import { FieldValues, useForm } from 'react-hook-form'
 import { Select, SelectValue, SelectTrigger, SelectContent, SelectItem } from '@/shared'
 import { CreateUnit, StatusType } from '@/features/units/schemas'
@@ -29,8 +28,7 @@ export const UpdateUnitForm = ({ users, organizations, data, user }: UpdateUnitF
       type: data?.type as UnitTypeEnum,
       parent: data?.parentOrg?.id?.toString(),
       admin: data?.admin.id?.toString() || '',
-      email: data?.email || '',
-      phone: data?.phone || '',
+      websiteUrl: data?.websiteUrl || '',
       status: data?.status || 'active',
       description: data?.description || '',
       delegatedPermissions: data?.delegatedPermissions || false,
@@ -141,36 +139,15 @@ export const UpdateUnitForm = ({ users, organizations, data, user }: UpdateUnitF
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="websiteUrl">Website URL</Label>
           <Input
-            id="email"
-            type="email"
-            placeholder="Enter unit email"
+            id="websiteUrl"
+            type="url"
+            placeholder="https://example.com"
             disabled={disabledField}
-            {...register('email', {
-              required: 'Email is required',
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: 'Invalid email address',
-              },
-            })}
+            {...register('websiteUrl')}
           />
-          {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="phone">Phone</Label>
-          <PhoneInput
-            id="phone"
-            placeholder="Enter unit phone"
-            value={watch('phone')}
-            onChange={(value) => setValue('phone', value || '')}
-            disabled={disabledField}
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-            international
-            defaultCountry="US"
-          />
-          {errors.phone && <p className="text-sm text-red-500">{errors.phone.message}</p>}
+          {errors.websiteUrl && <p className="text-sm text-red-500">{errors.websiteUrl.message}</p>}
         </div>
 
         <div className="space-y-2">

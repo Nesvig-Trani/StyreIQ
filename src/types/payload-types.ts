@@ -261,8 +261,7 @@ export interface Organization {
   parentOrg?: (number | null) | Organization
   admin?: (number | null) | User
   backupAdmins?: (number | User)[] | null
-  email?: string | null
-  phone?: string | null
+  websiteUrl?: string | null
   status?: ('active' | 'inactive' | 'pending_review') | null
   description?: string | null
   delegatedPermissions?: boolean | null
@@ -1033,8 +1032,7 @@ export interface OrganizationSelect<T extends boolean = true> {
   parentOrg?: T
   admin?: T
   backupAdmins?: T
-  email?: T
-  phone?: T
+  websiteUrl?: T
   status?: T
   description?: T
   delegatedPermissions?: T
