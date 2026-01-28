@@ -344,13 +344,9 @@ export interface Tenant {
      */
     passwordRotationDays?: number | null
     /**
-     * Days between user password confirmation tasks (default: 180)
+     * Days between password confirmation tasks for both user and shared accounts (default: 180)
      */
-    userPasswordCadenceDays?: number | null
-    /**
-     * Days between shared password confirmation tasks (default: 180)
-     */
-    sharedPasswordCadenceDays?: number | null
+    passwordConfirmationCadenceDays?: number | null
   }
   status: 'active' | 'suspended' | 'archived'
   metadata?: {
@@ -1315,8 +1311,7 @@ export interface TenantsSelect<T extends boolean = true> {
             }
         rollCallFrequency?: T
         passwordRotationDays?: T
-        userPasswordCadenceDays?: T
-        sharedPasswordCadenceDays?: T
+        passwordConfirmationCadenceDays?: T
       }
   status?: T
   metadata?:

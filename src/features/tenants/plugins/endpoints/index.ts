@@ -291,8 +291,7 @@ export const updateGovernanceSettings: Endpoint = {
           ],
           rollCallFrequency: data.rollCallFrequency || 'quarterly',
           passwordRotationDays: data.passwordRotationDays || 90,
-          userPasswordCadenceDays: data.userPasswordCadenceDays || 180,
-          sharedPasswordCadenceDays: data.sharedPasswordCadenceDays || 180,
+          passwordConfirmationCadenceDays: data.passwordConfirmationCadenceDays || 180,
         },
       },
     })

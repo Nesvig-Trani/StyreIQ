@@ -23,8 +23,7 @@ export async function createRecurringPasswordTasks() {
 }
 
 async function processTenantRecurringTasks(payload: Payload, tenant: Tenant): Promise<void> {
-  const userPasswordCadence = tenant.governanceSettings?.userPasswordCadenceDays || 180
-  const sharedPasswordCadence = tenant.governanceSettings?.sharedPasswordCadenceDays || 180
+  const passwordCadence = tenant.governanceSettings?.passwordConfirmationCadenceDays || 180
 
   const users = await payload.find({
     collection: 'users',
@@ -37,10 +36,7 @@ async function processTenantRecurringTasks(payload: Payload, tenant: Tenant): Pr
   await Promise.all(
     users.docs.map(async (user) => {
       try {
-        await processUserRecurringTasks(payload, user, tenant, {
-          userPasswordCadence,
-          sharedPasswordCadence,
-        })
+        await processUserRecurringTasks(payload, user, tenant, passwordCadence)
       } catch (error) {
         console.error(`Failed to process user ${user.id}:`, error)
       }
@@ -52,7 +48,7 @@ async function processUserRecurringTasks(
   payload: Payload,
   user: User,
   tenant: Tenant,
-  cadences: { userPasswordCadence: number; sharedPasswordCadence: number },
+  passwordCadence: number,
 ): Promise<void> {
   const now = new Date()
 
@@ -62,7 +58,7 @@ async function processUserRecurringTasks(
       user,
       tenant,
       'CONFIRM_USER_PASSWORD' as ComplianceTask['type'],
-      cadences.userPasswordCadence,
+      passwordCadence,
       now,
       'Confirm that you have updated your user password according to organizational requirements.',
     ),
@@ -71,11 +67,11 @@ async function processUserRecurringTasks(
       user,
       tenant,
       'CONFIRM_2FA' as ComplianceTask['type'],
-      cadences.userPasswordCadence,
+      passwordCadence,
       now,
       'Confirm that two-factor authentication (2FA) is enabled on all assigned social media accounts.',
     ),
-    checkAndCreateSharedPasswordTask(payload, user, tenant, cadences.sharedPasswordCadence, now),
+    checkAndCreateSharedPasswordTask(payload, user, tenant, passwordCadence, now),
   ])
 }
 
