@@ -79,44 +79,6 @@ export const TwoFactorForm = ({ task }: TwoFactorFormProps) => {
                 </ul>
               </div>
 
-              <div className="space-y-3 mt-4">
-                <p className="text-sm font-medium">Platform-specific instructions:</p>
-                <div className="border-l-4 border-blue-500 pl-4 py-2">
-                  <p className="font-medium text-sm">Facebook/Instagram</p>
-                  <p className="text-xs text-muted-foreground">
-                    Settings → Security → Two-step verification
-                  </p>
-                </div>
-
-                <div className="border-l-4 border-sky-500 pl-4 py-2">
-                  <p className="font-medium text-sm">Twitter/X</p>
-                  <p className="text-xs text-muted-foreground">
-                    Settings → Security → Two-factor authentication
-                  </p>
-                </div>
-
-                <div className="border-l-4 border-red-500 pl-4 py-2">
-                  <p className="font-medium text-sm">LinkedIn</p>
-                  <p className="text-xs text-muted-foreground">
-                    Settings → Account → Two-step verification
-                  </p>
-                </div>
-
-                <div className="border-l-4 border-red-600 pl-4 py-2">
-                  <p className="font-medium text-sm">TikTok</p>
-                  <p className="text-xs text-muted-foreground">
-                    Settings → Security → 2-step verification
-                  </p>
-                </div>
-
-                <div className="border-l-4 border-red-700 pl-4 py-2">
-                  <p className="font-medium text-sm">YouTube</p>
-                  <p className="text-xs text-muted-foreground">
-                    Google Account → Security → 2-Step Verification
-                  </p>
-                </div>
-              </div>
-
               <div className="bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 p-3 rounded mt-4">
                 <p className="text-sm">
                   <strong>⚠️ Important:</strong> Use an authenticator app (Google Authenticator,

@@ -377,15 +377,13 @@ export class ComplianceTaskGenerator {
         ),
       )
 
-      await Promise.allSettled(
-        createdTasks.map(async (task) => {
-          try {
-            await this.emailService.sendTaskCreatedEmail(task, user)
-          } catch (error) {
-            console.error('createTrainingTasks failed to send email for task', task.id, error)
-          }
-        }),
-      )
+      if (createdTasks.length > 0) {
+        try {
+          await this.emailService.sendMultipleTrainingsEmail(createdTasks, user)
+        } catch (error) {
+          console.error('createTrainingTasks failed to send email', error)
+        }
+      }
     } catch (error) {
       throw error
     }
