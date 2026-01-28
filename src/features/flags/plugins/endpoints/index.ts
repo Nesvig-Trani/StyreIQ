@@ -54,10 +54,21 @@ export const createFlag: Endpoint = {
         throw new EndpointError(tenantCheck.error!.message, tenantCheck.error!.status)
       }
 
+      const entityId = Number(dataParsed.affectedEntity)
+
+      if (
+        !dataParsed.affectedEntity ||
+        dataParsed.affectedEntity === '' ||
+        isNaN(entityId) ||
+        entityId <= 0
+      ) {
+        throw new EndpointError('Please select an affected entity', 400)
+      }
+
       const entityCheck = await validateRelatedEntityTenant({
         req,
         collection: dataParsed.affectedEntityType,
-        entityId: Number(dataParsed.affectedEntity),
+        entityId: entityId,
         entityName: 'Affected entity',
       })
 

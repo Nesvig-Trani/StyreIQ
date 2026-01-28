@@ -47,6 +47,21 @@ export function useCreateFlag({
           size: 'half',
         },
         {
+          label: 'Affected User',
+          name: 'affectedEntity',
+          type: 'select',
+          options: users.map((user) => ({
+            value: user.id.toString(),
+            label: user.name || user.email,
+          })),
+          placeholder: 'Select affected user',
+          size: 'half',
+          dependsOn: {
+            field: 'affectedEntityType',
+            value: 'users',
+          },
+        },
+        {
           label: 'Affected Social Media Account',
           name: 'affectedEntity',
           type: 'select',

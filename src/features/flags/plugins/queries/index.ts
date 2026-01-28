@@ -393,7 +393,7 @@ export const getFlagInfoForDashboard = async (): Promise<DashboardData> => {
   const flaggedIssues = await payload.find({
     collection: FlagsCollectionSlug,
     where: flagWhere,
-    depth: 0,
+    depth: 1,
     overrideAccess: true,
     limit: 0,
   })

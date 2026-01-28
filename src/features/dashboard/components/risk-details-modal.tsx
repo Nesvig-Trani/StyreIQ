@@ -95,41 +95,52 @@ export const RiskDetailsModal: React.FC<RiskDetailsModalProps> = ({
             </div>
           </div>
 
-          <div className="space-y-4">
-            {issues.map((issue) => (
-              <div
-                key={issue.id}
-                className={`bg-white rounded-lg border border-gray-100 ${getSeverityBorderColor(issue.severity)} border-l-4 p-4 shadow-sm`}
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <h3 className="text-base font-medium text-gray-900 leading-tight flex-1 pr-2">
-                    {issue.title}
-                  </h3>
-                  <div className="flex items-center space-x-1 text-sm text-gray-400 flex-shrink-0">
-                    <Calendar size={12} />
-                    <span>{formatDate(issue.dueDate)}</span>
+          {issues.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-base font-medium text-gray-900 mb-1">No issues found</p>
+              <p className="text-sm text-gray-500">
+                There are currently no {title.toLowerCase()} requiring attention.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {issues.map((issue) => (
+                <div
+                  key={issue.id}
+                  className={`bg-white rounded-lg border border-gray-100 ${getSeverityBorderColor(issue.severity)} border-l-4 p-4 shadow-sm`}
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <h3 className="text-base font-medium text-gray-900 leading-tight flex-1 pr-2">
+                      {issue.title}
+                    </h3>
+                    <div className="flex items-center space-x-1 text-sm text-gray-400 flex-shrink-0">
+                      <Calendar size={12} />
+                      <span>{formatDate(issue.dueDate)}</span>
+                    </div>
                   </div>
+
+                  <p className="text-sm text-gray-600 mb-4 leading-relaxed">{issue.description}</p>
+
+                  {issue.user && (
+                    <div className="mb-3 p-2 bg-gray-50 rounded-md">
+                      <div className="flex items-center space-x-2 text-sm min-w-0">
+                        <User size={14} className="text-gray-500 flex-shrink-0" />
+                        <span className="font-medium text-gray-700 truncate">
+                          {issue.user.name}
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-2 text-sm mt-1 min-w-0">
+                        <Mail size={14} className="text-gray-500 flex-shrink-0" />
+                        <span className="text-gray-600 truncate" title={issue.user.email}>
+                          {issue.user.email}
+                        </span>
+                      </div>
+                    </div>
+                  )}
                 </div>
-
-                <p className="text-sm text-gray-600 mb-4 leading-relaxed">{issue.description}</p>
-
-                {issue.user && (
-                  <div className="mb-3 p-2 bg-gray-50 rounded-md">
-                    <div className="flex items-center space-x-2 text-sm min-w-0">
-                      <User size={14} className="text-gray-500 flex-shrink-0" />
-                      <span className="font-medium text-gray-700 truncate">{issue.user.name}</span>
-                    </div>
-                    <div className="flex items-center space-x-2 text-sm mt-1 min-w-0">
-                      <Mail size={14} className="text-gray-500 flex-shrink-0" />
-                      <span className="text-gray-600 truncate" title={issue.user.email}>
-                        {issue.user.email}
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>
