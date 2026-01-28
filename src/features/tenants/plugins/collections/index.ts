@@ -41,9 +41,17 @@ export const Tenants: CollectionConfig = {
         description: 'e.g., unc.edu, vcu.edu',
       },
     },
-
     {
-      name: 'adminContact',
+      name: 'adminContactName',
+      type: 'text',
+      required: true,
+      label: 'Admin Contact Name',
+      admin: {
+        description: 'Primary contact for this organization',
+      },
+    },
+    {
+      name: 'adminContactEmail',
       type: 'email',
       required: true,
       label: 'Admin Contact Email',

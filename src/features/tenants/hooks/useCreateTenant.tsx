@@ -27,8 +27,15 @@ export function useCreateTenant() {
           size: 'half',
         },
         {
+          label: 'Admin Contact Name',
+          name: 'adminContactName',
+          type: 'text',
+          placeholder: 'e.g., name of admin contact',
+          size: 'half',
+        },
+        {
           label: 'Admin Contact Email',
-          name: 'adminContact',
+          name: 'adminContactEmail',
           type: 'text',
           placeholder: 'e.g., admin@uva.edu',
           size: 'half',
@@ -98,7 +105,8 @@ export function useCreateTenant() {
       defaultValues: {
         name: '',
         domain: '',
-        adminContact: '',
+        adminContactName: '',
+        adminContactEmail: '',
         timezone: 'America/New_York',
         notes: '',
         enabledTrainings: [

@@ -55,7 +55,8 @@ export const createTenant: Endpoint = {
       data: {
         name: dataParsed.name,
         domain: dataParsed.domain,
-        adminContact: dataParsed.adminContact,
+        adminContactName: dataParsed.adminContactName,
+        adminContactEmail: dataParsed.adminContactEmail,
         status: 'active',
         metadata: {
           timezone: dataParsed.timezone || 'America/New_York',
