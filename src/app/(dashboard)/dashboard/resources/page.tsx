@@ -92,17 +92,17 @@ export default async function ResourcesPage() {
             <CardTitle>Training Resources</CardTitle>
           </div>
           <p className="text-sm text-muted-foreground mt-2">
-            Access your assigned training materials and resources. You can review completed
-            trainings at any time.
+            Review trainings you&apos;ve completed. Assigned trainings appear in My Tasks until
+            they&apos;re completed.
           </p>
         </CardHeader>
         <CardContent>
           {availableTrainings.length === 0 ? (
             <div className="text-center py-12">
               <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-lg font-semibold">No trainings assigned yet</p>
+              <p className="text-lg font-semibold">No completed trainings yet</p>
               <p className="text-muted-foreground">
-                Training materials will appear here once they are assigned to you.
+                When you complete a training from My Tasks, it will appear here for easy reference.
               </p>
             </div>
           ) : (
@@ -143,8 +143,8 @@ export default async function ResourcesPage() {
 
           <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg">
             <p className="text-sm">
-              <strong>💡 Note:</strong> These training links remain accessible even after
-              completion. You can return here anytime to review the material.
+              <strong>Note:</strong> Training links stay available here after completion so you can
+              revisit the material anytime. To start an assigned training, go to My Tasks.
             </p>
           </div>
 

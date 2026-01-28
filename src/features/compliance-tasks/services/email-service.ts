@@ -4,44 +4,112 @@ import { ComplianceTask, User } from '@/types/payload-types'
 export class ComplianceEmailService {
   constructor(private payload: Payload) {}
 
+  async sendMultipleTrainingsEmail(tasks: ComplianceTask[], user: User): Promise<void> {
+    const taskUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/compliance`
+    const dueDate = new Date(tasks[0].dueDate).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+
+    const trainingsListHtml = tasks
+      .map(
+        (task) => `
+        <li style="margin: 15px 0; padding: 10px; background: #f9fafb; border-radius: 4px;">
+          <strong style="color: #374151;">${task.description}</strong>
+        </li>
+      `,
+      )
+      .join('')
+
+    await this.payload.sendEmail({
+      to: user.email,
+      subject: `Action Required: Complete ${tasks.length} Required Training${tasks.length > 1 ? 's' : ''}`,
+      html: `
+      <html>
+        <head>
+          <meta charset="utf-8">
+        </head>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0;">
+          <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="background: #2563eb; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+              <h2 style="margin: 0;">Training${tasks.length > 1 ? 's' : ''} Required</h2>
+            </div>
+            <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 8px 8px;">
+              <p>Hi ${user.name},</p>
+              <p>You have been assigned ${tasks.length} required training${tasks.length > 1 ? 's' : ''} in StyreIQ:</p>
+              
+              <div style="background: white; padding: 20px; border-radius: 6px; margin: 20px 0;">
+                <h3 style="margin-top: 0; color: #2563eb;">Required Training${tasks.length > 1 ? 's' : ''}:</h3>
+                <ul style="list-style: none; padding: 0;">
+                  ${trainingsListHtml}
+                </ul>
+                <p style="margin-top: 20px;"><strong>Due Date:</strong> ${dueDate}</p>
+              </div>
+
+              <a href="${taskUrl}" style="display: inline-block; background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0;">View My Tasks</a>
+
+              <p>Please complete ${tasks.length > 1 ? 'these trainings' : 'this training'} by the due date to maintain compliance.</p>
+
+              <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; font-size: 12px; color: #6b7280;">
+                <p>This is an automated notification from StyreIQ.</p>
+              </div>
+            </div>
+          </div>
+        </body>
+      </html>
+    `,
+    })
+  }
+
   async sendTaskCreatedEmail(task: ComplianceTask, user: User): Promise<void> {
-    const taskUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/compliance/${this.getTaskRoute(task.type)}/${task.id}`
+    const isPolicyTask = task.type === 'POLICY_ACKNOWLEDGMENT'
+    const taskUrl = isPolicyTask
+      ? `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard`
+      : `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/compliance/${this.getTaskRoute(task.type)}/${task.id}`
     const dueDate = new Date(task.dueDate).toLocaleDateString('en-US')
 
     await this.payload.sendEmail({
       to: user.email,
       subject: `New Action Required: ${this.getTaskTitle(task.type)}`,
       html: `
-        <html>
-          <head>
-            <meta charset="utf-8">
-          </head>
-          <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0;">
-            <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-              <div style="background: #2563eb; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
-                <h2 style="margin: 0;">Action Required</h2>
+      <html>
+        <head>
+          <meta charset="utf-8">
+        </head>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0;">
+          <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="background: #2563eb; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+              <h2 style="margin: 0;">Action Required</h2>
+            </div>
+            <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 8px 8px;">
+              <p>Hi ${user.name},</p>
+              <p>A new action has been assigned to you in StyreIQ:</p>
+              
+              <div style="background: white; padding: 20px; border-radius: 6px; margin: 20px 0;">
+                <h3 style="margin-top: 0; color: #2563eb;">${this.getTaskTitle(task.type)}</h3>
+                <p><strong>Due Date:</strong> ${dueDate}</p>
               </div>
-              <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 8px 8px;">
-                <p>Hi ${user.name},</p>
-                <p>A new action has been assigned to you in StyreIQ:</p>
-                
-                <div style="background: white; padding: 20px; border-radius: 6px; margin: 20px 0;">
-                  <h3 style="margin-top: 0; color: #2563eb;">${this.getTaskTitle(task.type)}</h3>
-                  <p><strong>Due Date:</strong> ${dueDate}</p>
-                </div>
 
+              ${
+                isPolicyTask
+                  ? `
+                <p>When you log in to your dashboard, a modal will appear prompting you to review and acknowledge the policy.</p>
+                <a href="${taskUrl}" style="display: inline-block; background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0;">Go to Dashboard</a>
+              `
+                  : `
                 <a href="${taskUrl}" style="display: inline-block; background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0;">Take Action</a>
+              `
+              }
 
-                <p>Because StyreIQ isn't a system people log into daily, this email is sent to drive action.</p>
-                
-                <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; font-size: 12px; color: #6b7280;">
-                  <p>This is an automated message from StyreIQ. Please do not reply to this email.</p>
-                </div>
+              <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; font-size: 12px; color: #6b7280;">
+                <p>This is an automated notification from StyreIQ.</p>
               </div>
             </div>
-          </body>
-        </html>
-      `,
+          </div>
+        </body>
+      </html>
+    `,
     })
   }
 
@@ -79,11 +147,11 @@ export class ComplianceEmailService {
                 <p style="color: #ef4444; font-weight: bold; margin: 10px 0;">Due Date: ${dueDate}</p>
               </div>
 
-              <p>You will be notified when this flag is resolved. You can coordinate with ${assignedUser.name || assignedUser.email} by replying to notification emails.</p>
+              <p>You will be notified when this flag is resolved. If you need to coordinate, please contact ${assignedUser.name || assignedUser.email} directly.</p>
               
               <a href="${taskUrl}" style="display: inline-block; background-color: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0;">View Flag Status</a>
 
-              <p style="color: #6b7280; font-size: 14px; margin-top: 30px;">This is an automated message from StyreIQ. Please do not reply to this email.</p>
+              <p style="color: #6b7280; font-size: 14px; margin-top: 30px;">This is an automated notification from StyreIQ.</p>
             </div>
           </body>
         </html>
