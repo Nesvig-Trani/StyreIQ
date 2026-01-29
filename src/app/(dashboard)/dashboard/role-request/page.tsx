@@ -6,15 +6,20 @@ import { UserRolesEnum } from '@/features/users'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 import { serverAuthGuard } from '@/features/auth/hooks/serverAuthGuard'
 import { getRoleRequests } from '@/features/role-request/plugins/queries'
-import { Badge, Button, Card, CardContent } from '@/shared'
+import { Badge, Button, Card, CardContent, parseSearchParamsWithSchema } from '@/shared'
 import RoleRequestsTable from '@/features/role-request/components/RoleRequestsTable'
-import { RoleRequestStatus } from '@/features/role-request/schemas'
+import { roleRequestSearchSchema, RoleRequestStatus } from '@/features/role-request/schemas'
+import { getPayloadContext } from '@/shared/utils/getPayloadContext'
+import { getServerTenantContext } from '../../server-tenant-context'
+import { Tenant } from '@/types/payload-types'
 
 export default async function RoleRequestsPage(props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
   await serverAuthGuard()
   const { user } = await getAuthUser()
+  const { payload } = await getPayloadContext()
+  const tenantContext = await getServerTenantContext(user, payload)
   const effectiveRole = getEffectiveRoleFromUser(user)
 
   const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
@@ -22,16 +27,24 @@ export default async function RoleRequestsPage(props: {
   const canApprove = isSuperAdmin || isCentralAdmin
 
   const searchParams = await props.searchParams
-
-  const pageSize = searchParams?.pageSize ? Number(searchParams.pageSize) : 10
-  const pageIndex = searchParams?.page ? Number(searchParams.page) : 0
-  const status = searchParams?.status as RoleRequestStatus | undefined
+  const parsedParams = parseSearchParamsWithSchema(searchParams, roleRequestSearchSchema)
 
   const requests = await getRoleRequests({
-    status,
-    pageSize,
-    pageIndex,
+    status: parsedParams.status?.[0] as RoleRequestStatus,
+    tenant: parsedParams.tenant?.map((t) => Number(t)),
+    pageSize: parsedParams.pagination.pageSize,
+    pageIndex: parsedParams.pagination.pageIndex,
   })
+
+  let tenants: Tenant[] = []
+  if (isSuperAdmin && tenantContext.isViewingAllTenants) {
+    const tenantsResult = await payload.find({
+      collection: 'tenants',
+      limit: 0,
+      depth: 0,
+    })
+    tenants = tenantsResult.docs
+  }
 
   const pageContent = {
     title: canApprove ? 'Role Requests' : 'My Role Requests',
@@ -57,7 +70,7 @@ export default async function RoleRequestsPage(props: {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-              {!isSuperAdmin && (
+              {!isSuperAdmin && !tenantContext.isViewingAllTenants && (
                 <Button size="sm" className="w-full sm:w-auto">
                   <Link
                     className="flex items-center justify-center gap-2"
@@ -76,6 +89,8 @@ export default async function RoleRequestsPage(props: {
         <RoleRequestsTable
           data={requests.docs}
           userRole={effectiveRole}
+          tenants={tenants}
+          isViewingAllTenants={tenantContext.isViewingAllTenants}
           pagination={{
             pageSize: requests.limit,
             pageIndex: requests.page ? requests.page - 1 : 0,

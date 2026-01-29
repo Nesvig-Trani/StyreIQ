@@ -18,6 +18,7 @@ import { UserRolesEnum } from '@/features/users/schemas'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { getServerTenantContext } from '../../server-tenant-context'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { Tenant } from '@/types/payload-types'
 
 export default async function UsersPage(props: {
   searchParams?: Promise<{
@@ -43,7 +44,18 @@ export default async function UsersPage(props: {
   const users = await getUsers({
     pageIndex: parsedParams.pagination.pageIndex + 1,
     pageSize: parsedParams.pagination.pageSize,
+    tenant: parsedParams.tenant,
   })
+
+  let tenants: Tenant[] = []
+  if (isSuperAdmin && tenantContext.isViewingAllTenants) {
+    const tenantsResult = await payload.find({
+      collection: 'tenants',
+      limit: 0,
+      depth: 0,
+    })
+    tenants = tenantsResult.docs
+  }
 
   const welcomeEmail = await getLastWelcomeEmail()
   const access = new AccessControl(user!)
@@ -138,6 +150,8 @@ export default async function UsersPage(props: {
             pageCount: users.totalPages,
           }}
           user={user}
+          tenants={tenants}
+          isViewingAllTenants={tenantContext.isViewingAllTenants}
         />
       </CardContent>
     </Card>

@@ -1,19 +1,30 @@
 'use client'
 
 import { ColumnDef } from '@tanstack/table-core'
-import { Button } from '@/shared'
+import { Button, DataTableFilter, useParsedSearchParams } from '@/shared'
 import { CheckCircle, XCircle } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { Badge } from '@/shared/components/ui/badge'
 
 import { roleLabelMap, UserRolesEnum } from '@/features/users/schemas'
 import { approveRoleRequest } from '@/sdk/request-role'
-import { RoleRequest } from '@/types/payload-types'
+import { RoleRequest, Tenant } from '@/types/payload-types'
+import { roleRequestSearchSchema } from '../schemas'
 
-function useRoleRequestsTable(userRole: UserRolesEnum | null) {
+function useRoleRequestsTable({
+  userRole,
+  tenants,
+  isViewingAllTenants,
+}: {
+  userRole: UserRolesEnum | null
+  tenants?: Tenant[]
+  isViewingAllTenants?: boolean
+}) {
   const router = useRouter()
   const [loading, setLoading] = useState<number | null>(null)
+  const searchParams = useParsedSearchParams(roleRequestSearchSchema)
 
   const canApprove =
     userRole === UserRolesEnum.SuperAdmin || userRole === UserRolesEnum.CentralAdmin
@@ -33,6 +44,33 @@ function useRoleRequestsTable(userRole: UserRolesEnum | null) {
     } finally {
       setLoading(null)
     }
+  }
+
+  const columnFiltersDefs: DataTableFilter[] = [
+    {
+      id: 'status',
+      title: 'Status',
+      type: 'select',
+      allowMultiple: true,
+      options: [
+        { value: 'pending', label: 'Pending' },
+        { value: 'approved', label: 'Approved' },
+        { value: 'rejected', label: 'Rejected' },
+      ],
+    },
+  ]
+
+  if (isViewingAllTenants && tenants && tenants.length > 0) {
+    columnFiltersDefs.push({
+      id: 'tenant',
+      title: 'Tenant',
+      type: 'select',
+      allowMultiple: true,
+      options: tenants.map((tenant) => ({
+        label: tenant.name,
+        value: tenant.id.toString(),
+      })),
+    })
   }
 
   const columns: ColumnDef<RoleRequest>[] = [
@@ -74,6 +112,7 @@ function useRoleRequestsTable(userRole: UserRolesEnum | null) {
     {
       accessorKey: 'status',
       header: 'Status',
+      enableColumnFilter: true,
       cell: ({ row }) => {
         const status = row.original.status
         const colors = {
@@ -98,51 +137,73 @@ function useRoleRequestsTable(userRole: UserRolesEnum | null) {
         return date.toLocaleDateString()
       },
     },
-    ...(canApprove
-      ? [
-          {
-            accessorKey: 'actions',
-            header: 'Actions',
-            cell: ({ row }: { row: { original: RoleRequest } }) => {
-              const { id, status } = row.original
-
-              if (status !== 'pending') {
-                return <span className="text-sm text-gray-500">Processed</span>
-              }
-
-              const isLoading = loading === id
-
-              return (
-                <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="default"
-                    onClick={() => handleRoleRequestAction(id, true)}
-                    disabled={isLoading}
-                    className="bg-green-600 hover:bg-green-700"
-                  >
-                    <CheckCircle className="h-4 w-4 mr-1" />
-                    Approve
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => handleRoleRequestAction(id, false)}
-                    disabled={isLoading}
-                  >
-                    <XCircle className="h-4 w-4 mr-1" />
-                    Reject
-                  </Button>
-                </div>
-              )
-            },
-          } as ColumnDef<RoleRequest>,
-        ]
-      : []),
   ]
+
+  if (isViewingAllTenants) {
+    columns.push({
+      accessorKey: 'tenant',
+      header: 'Tenant',
+      enableColumnFilter: true,
+      cell: ({ row }) => {
+        const tenant = row.original.tenant
+
+        if (tenant && typeof tenant === 'object' && 'name' in tenant) {
+          return (
+            <Badge variant="outline" className="text-xs">
+              {tenant.name}
+            </Badge>
+          )
+        }
+
+        return <span className="text-gray-400">-</span>
+      },
+    })
+  }
+
+  if (canApprove) {
+    columns.push({
+      accessorKey: 'actions',
+      header: 'Actions',
+      cell: ({ row }) => {
+        const { id, status } = row.original
+
+        if (status !== 'pending') {
+          return <span className="text-sm text-gray-500">Processed</span>
+        }
+
+        const isLoading = loading === id
+
+        return (
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              variant="default"
+              onClick={() => handleRoleRequestAction(id, true)}
+              disabled={isLoading}
+              className="bg-green-600 hover:bg-green-700"
+            >
+              <CheckCircle className="h-4 w-4 mr-1" />
+              Approve
+            </Button>
+            <Button
+              size="sm"
+              variant="destructive"
+              onClick={() => handleRoleRequestAction(id, false)}
+              disabled={isLoading}
+            >
+              <XCircle className="h-4 w-4 mr-1" />
+              Reject
+            </Button>
+          </div>
+        )
+      },
+    })
+  }
 
   return {
     columns,
+    columnFiltersDefs,
+    searchParams,
   }
 }
 

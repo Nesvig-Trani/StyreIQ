@@ -9,6 +9,9 @@ import { CirclePlus } from 'lucide-react'
 import { getAllUnits } from '@/features/units/plugins/queries'
 import { getServerTenantContext } from '../../server-tenant-context'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { UserRolesEnum } from '@/features/users'
+import { Tenant } from '@/types/payload-types'
 
 export default async function FlagsPage(props: {
   searchParams?: Promise<{ [key: string]: string }>
@@ -19,6 +22,8 @@ export default async function FlagsPage(props: {
   const searchParams = await props.searchParams
 
   const parsedParams = parseSearchParamsWithSchema(searchParams, flagsSearchSchema)
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
 
   const flags = await getFlags({
     flagType: parsedParams.flagType,
@@ -28,11 +33,22 @@ export default async function FlagsPage(props: {
     detectionDateFrom: parsedParams.detectionDate.from,
     detectionDateTo: parsedParams.detectionDate.to,
     organizations: parsedParams.organizations?.map((org) => Number(org)),
+    tenant: parsedParams.tenant?.map((t) => Number(t)),
     pageSize: parsedParams.pagination.pageSize,
     pageIndex: parsedParams.pagination.pageIndex,
   })
 
   const organizations = await getAllUnits()
+
+  let tenants: Tenant[] = []
+  if (isSuperAdmin && tenantContext.isViewingAllTenants) {
+    const tenantsResult = await payload.find({
+      collection: 'tenants',
+      limit: 0,
+      depth: 0,
+    })
+    tenants = tenantsResult.docs
+  }
 
   return (
     <Card>
@@ -76,6 +92,8 @@ export default async function FlagsPage(props: {
           user={user}
           data={flags.docs}
           organizations={organizations.docs}
+          tenants={tenants}
+          isViewingAllTenants={tenantContext.isViewingAllTenants}
           pagination={{
             pageSize: flags.limit,
             pageIndex: flags.page ? flags.page - 1 : 0,

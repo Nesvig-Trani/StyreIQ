@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import type { Organization, SocialMedia, User } from '@/types/payload-types'
+import type { Organization, SocialMedia, Tenant, User } from '@/types/payload-types'
 import { DataTable } from '@/shared'
 import { useSocialMediasTable } from '@/features/social-medias'
 
@@ -15,6 +15,8 @@ export type SocialMediasTableProps = {
     total: number
     pageCount: number
   }
+  tenants?: Tenant[]
+  isViewingAllTenants?: boolean
 }
 
 export const SocialMediasTable: React.FC<SocialMediasTableProps> = ({
@@ -23,11 +25,15 @@ export const SocialMediasTable: React.FC<SocialMediasTableProps> = ({
   organizations,
   users,
   pagination,
+  tenants,
+  isViewingAllTenants,
 }) => {
   const { columns, columnFiltersDefs, searchParams } = useSocialMediasTable({
     user,
     organizations,
     users,
+    tenants,
+    isViewingAllTenants,
   })
 
   return (

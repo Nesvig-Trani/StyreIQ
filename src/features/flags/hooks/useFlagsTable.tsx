@@ -1,5 +1,5 @@
 'use client'
-import { User, Flag, Organization } from '@/types/payload-types'
+import { User, Flag, Organization, Tenant } from '@/types/payload-types'
 import { ColumnDef } from '@tanstack/table-core'
 import { FlagSourceEnum, flagsSearchSchema, FlagStatusEnum, FlagTypeEnum } from '../schemas'
 import { flagTypeLabels } from '../constants/flagTypeLabels'
@@ -23,9 +23,13 @@ import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 function useFlagsTable({
   user,
   organizations,
+  tenants,
+  isViewingAllTenants,
 }: {
   user: User | null
   organizations: Organization[]
+  tenants?: Tenant[]
+  isViewingAllTenants?: boolean
 }) {
   const router = useRouter()
   const handleMarkResolved = async (id: number) => {
@@ -80,6 +84,19 @@ function useFlagsTable({
       disabledDays: 'future',
     },
   ]
+
+  if (isViewingAllTenants && tenants && tenants.length > 0) {
+    columnFiltersDefs.push({
+      id: 'tenant',
+      title: 'Tenant',
+      type: 'select',
+      allowMultiple: true,
+      options: tenants.map((tenant) => ({
+        label: tenant.name,
+        value: tenant.id.toString(),
+      })),
+    })
+  }
 
   const columns: ColumnDef<Flag>[] = [
     {
@@ -168,26 +185,48 @@ function useFlagsTable({
         )
       },
     },
-    {
-      accessorKey: 'actions',
-      header: 'Actions',
-      cell: ({ row }) => {
-        const { id, status } = row.original
-        return (
-          <div className="flex gap-2 items-center">
-            <FlagDetails flag={row.original} />
-            <FlagHistoryModal flagId={id} />
-            <FlagCommentsModal flagId={id} />
-            {status === FlagStatusEnum.PENDING && isSuperAdmin && (
-              <Button onClick={() => handleMarkResolved(id)}>
-                <CheckIcon />
-              </Button>
-            )}
-          </div>
-        )
-      },
-    },
   ]
+
+  if (isViewingAllTenants) {
+    columns.push({
+      accessorKey: 'tenant',
+      header: 'Tenant',
+      enableColumnFilter: true,
+      cell: ({ row }) => {
+        const tenant = row.original.tenant
+
+        if (tenant && typeof tenant === 'object' && 'name' in tenant) {
+          return (
+            <Badge variant="outline" className="text-xs">
+              {tenant.name}
+            </Badge>
+          )
+        }
+
+        return <span className="text-gray-400">-</span>
+      },
+    })
+  }
+
+  columns.push({
+    accessorKey: 'actions',
+    header: 'Actions',
+    cell: ({ row }) => {
+      const { id, status } = row.original
+      return (
+        <div className="flex gap-2 items-center">
+          <FlagDetails flag={row.original} />
+          <FlagHistoryModal flagId={id} />
+          <FlagCommentsModal flagId={id} />
+          {status === FlagStatusEnum.PENDING && isSuperAdmin && (
+            <Button onClick={() => handleMarkResolved(id)}>
+              <CheckIcon />
+            </Button>
+          )}
+        </div>
+      )
+    },
+  })
 
   return {
     columns,

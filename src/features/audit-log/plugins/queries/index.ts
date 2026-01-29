@@ -26,6 +26,7 @@ export const getAuditLogs = async ({
   userDocumentId,
   organizationDocumentId,
   socialMediaDocumentId,
+  tenant,
   pageSize,
   pageIndex,
 }: {
@@ -37,6 +38,7 @@ export const getAuditLogs = async ({
   userDocumentId?: number
   organizationDocumentId?: number
   socialMediaDocumentId?: number
+  tenant?: number[]
   pageSize: number
   pageIndex: number
 }) => {
@@ -79,6 +81,10 @@ export const getAuditLogs = async ({
 
   if (isSuperAdmin && selectedTenantId !== null) {
     where.tenant = { equals: selectedTenantId }
+  }
+
+  if (tenant && tenant.length > 0) {
+    where.tenant = { in: tenant }
   }
 
   const baseLogs = await payload.find({
