@@ -350,7 +350,7 @@ export function useUpdateSocialMedia({
         socialMediaManagers:
           data.socialMediaManagers?.map(getUserId).filter((id): id is string => id !== null) || [],
         primaryAdmin: getUserId(data.primaryAdmin) || '',
-        backupAdmin: getUserId(data.backupAdmin) || '',
+        backupAdmin: data.backupAdmin ? (getUserId(data.backupAdmin) ?? '') : '',
         businessId: data.businessId || '',
         creationDate:
           data.creationDate && typeof data.creationDate === 'string'

@@ -244,7 +244,7 @@ export const SocialMedias: CollectionConfig = {
       name: 'backupAdmin',
       type: 'relationship',
       relationTo: 'users',
-      required: true,
+      required: false,
     },
     {
       name: 'status',

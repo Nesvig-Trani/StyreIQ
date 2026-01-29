@@ -160,7 +160,7 @@ export default function LexicalTextEditor({
               />
             }
             placeholder={
-              <div className="absolute top-4 left-4 text-gray-400 pointer-events-none">
+              <div className="absolute top-20 left-4 text-gray-400 pointer-events-none">
                 {placeholder}
               </div>
             }

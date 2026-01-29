@@ -35,7 +35,10 @@ const baseSocialMediaSchema = z.object({
 })
 
 export const createSocialMediaFormSchema = baseSocialMediaSchema.refine(
-  (data) => data.primaryAdmin !== data.backupAdmin,
+  (data) => {
+    if (!data.backupAdmin) return true
+    return data.primaryAdmin !== data.backupAdmin
+  },
   {
     message: "Fields 'Administrator' and 'Backup Administrator' must be different.",
     path: ['backupAdmin'],

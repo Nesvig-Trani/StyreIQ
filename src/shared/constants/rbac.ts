@@ -13,6 +13,7 @@ export type Resource =
   | 'ROLE_REQUESTS'
   | 'COMPLIANCE'
   | 'TRAINING_RESOURCES'
+  | 'WELCOME_EMAIL'
 
 export type ResourceAction = 'create' | 'read' | 'update' | 'delete'
 
@@ -120,6 +121,13 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
         tenantScoped: false,
       },
     },
+    {
+      resource: 'WELCOME_EMAIL',
+      actions: ['create', 'read', 'update'],
+      conditions: {
+        tenantScoped: false,
+      },
+    },
   ],
   [UserRolesEnum.CentralAdmin]: [
     {
@@ -210,6 +218,13 @@ export const rolePermissions: Record<UserRolesEnum, Permission[]> = {
     {
       resource: 'TRAINING_RESOURCES',
       actions: ['read'],
+      conditions: {
+        tenantScoped: true,
+      },
+    },
+    {
+      resource: 'WELCOME_EMAIL',
+      actions: ['create', 'read', 'update'],
       conditions: {
         tenantScoped: true,
       },

@@ -113,7 +113,9 @@ function useUserTable({
         const canEdit =
           effectiveRole === UserRolesEnum.SuperAdmin ||
           effectiveRole === UserRolesEnum.CentralAdmin ||
-          effectiveRole === UserRolesEnum.UnitAdmin ||
+          (effectiveRole === UserRolesEnum.UnitAdmin &&
+            getEffectiveRoleFromUser(row.original) !== UserRolesEnum.CentralAdmin &&
+            getEffectiveRoleFromUser(row.original) !== UserRolesEnum.SuperAdmin) ||
           (effectiveRole === UserRolesEnum.SocialMediaManager && isOwnRecord)
 
         const canManageAccess =

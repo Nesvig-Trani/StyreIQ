@@ -431,7 +431,7 @@ export interface SocialMedia {
   organization: number | Organization
   socialMediaManagers: (number | User)[]
   primaryAdmin: number | User
-  backupAdmin: number | User
+  backupAdmin?: (number | null) | User
   status: 'active' | 'inactive' | 'in_transition' | 'pending_approval'
   deactivationReason?: string | null
   /**

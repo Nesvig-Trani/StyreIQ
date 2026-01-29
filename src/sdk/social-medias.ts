@@ -21,7 +21,7 @@ export const createSocialMedia = async (data: z.infer<typeof createSocialMediaFo
     body: JSON.stringify({
       contactEmail: data.contactEmail,
       contactPhone: data.contactPhone,
-      backupAdmin: data.backupAdmin,
+      backupAdmin: data.backupAdmin || undefined,
       passwordManagementPractice: data.passwordManagementPractice,
       ...data,
     }),
@@ -51,7 +51,7 @@ export const updateSocialMedia = async (data: z.infer<typeof updateSocialMediaFo
     body: JSON.stringify({
       contactEmail: data.contactEmail,
       contactPhone: data.contactPhone,
-      backupAdmin: data.backupAdmin,
+      backupAdmin: data.backupAdmin || undefined,
       passwordManagementPractice: data.passwordManagementPractice,
       ...data,
     }),
