@@ -1,15 +1,16 @@
 import { ColumnDef } from '@tanstack/table-core'
-import { Organization, User } from '@/types/payload-types'
+import { Organization, Tenant, User } from '@/types/payload-types'
 import { roleLabelMap, statusLabelMap, UserRolesEnum, UserStatusEnum } from '@/features/users'
 import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
 import { EyeIcon, FileLock2, PencilIcon } from 'lucide-react'
 import { UnitCell } from '@/features/units/components/unit-cell'
-import { Badge } from '@/shared'
+import { Badge, DataTableFilter, useParsedSearchParams } from '@/shared'
 import { UserDetailsDialog } from '../components/details'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 import { GenerateRollCallButton } from '@/features/compliance-tasks/components/generate-roll-call-button'
 import { RollCallStatus } from '@/features/compliance-tasks/hooks/roll-call-status'
+import { userSearchSchema } from '../schemas'
 
 const shouldShowRollCall = (rollCallStatus?: RollCallStatus, cadenceDays = 90): boolean => {
   if (!rollCallStatus) return true
@@ -25,14 +26,58 @@ function useUserTable({
   onOpenDetails,
   onCloseDetails,
   userRollCallStatus,
+  tenants,
+  isViewingAllTenants,
 }: {
   user: User | null
   selectedUserId: string | null
   onOpenDetails: (userId: string) => void
   onCloseDetails: () => void
   userRollCallStatus?: Map<number, RollCallStatus>
+  tenants?: Tenant[]
+  isViewingAllTenants?: boolean
 }) {
-  const columns: ColumnDef<User>[] = [
+  const searchParams = useParsedSearchParams(userSearchSchema)
+
+  const columnFiltersDefs: DataTableFilter[] = []
+
+  if (isViewingAllTenants && tenants && tenants.length > 0) {
+    columnFiltersDefs.push({
+      id: 'tenant',
+      title: 'Tenant',
+      type: 'select',
+      allowMultiple: false,
+      options: tenants.map((tenant) => ({
+        label: tenant.name,
+        value: tenant.id.toString(),
+      })),
+    })
+  }
+
+  const columns: ColumnDef<User>[] = []
+
+  if (isViewingAllTenants) {
+    columns.push({
+      accessorKey: 'tenant',
+      header: 'Tenant',
+      enableColumnFilter: true,
+      cell: ({ row }) => {
+        const tenant = row.original.tenant
+
+        if (tenant && typeof tenant === 'object' && 'name' in tenant) {
+          return (
+            <Badge variant="outline" className="text-xs">
+              {tenant.name}
+            </Badge>
+          )
+        }
+
+        return <span className="text-gray-400">-</span>
+      },
+    })
+  }
+
+  columns.push(
     {
       accessorKey: 'name',
       header: 'Name',
@@ -184,10 +229,12 @@ function useUserTable({
         )
       },
     },
-  ]
+  )
 
   return {
     columns,
+    columnFiltersDefs,
+    searchParams,
   }
 }
 

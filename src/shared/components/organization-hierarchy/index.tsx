@@ -22,6 +22,7 @@ import { unitTypeOptions } from '@/features/units/constants/unitTypeOptions'
 import { DisableUnitButton } from '@/features/units/components/disable-unit'
 import { UserRolesEnum } from '@/features/users'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { Tenant } from '@/types/payload-types'
 
 export default function UnitHierarchy({
   organizations,
@@ -29,7 +30,12 @@ export default function UnitHierarchy({
   pagination,
   users,
   user,
-}: UnitHierarchyProps) {
+  tenants = [],
+  isViewingAllTenants = false,
+}: UnitHierarchyProps & {
+  tenants?: Tenant[]
+  isViewingAllTenants?: boolean
+}) {
   const {
     searchTerm,
     handleSearchChange,
@@ -37,6 +43,8 @@ export default function UnitHierarchy({
     handleStatusChange,
     typeFilter,
     handleTypeChange,
+    tenantFilter,
+    handleTenantChange,
     renderFilteredResults,
     handlePageChange,
     selectedOrg,
@@ -90,6 +98,22 @@ export default function UnitHierarchy({
                   ))}
                 </SelectContent>
               </Select>
+
+              {isViewingAllTenants && tenants.length > 0 && (
+                <Select value={tenantFilter} onValueChange={handleTenantChange}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="All Tenants" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Tenants</SelectItem>
+                    {tenants.map((tenant) => (
+                      <SelectItem value={tenant.id.toString()} key={tenant.id}>
+                        {tenant.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
             </div>
           </div>
         </div>

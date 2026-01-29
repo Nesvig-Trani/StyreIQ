@@ -14,4 +14,5 @@ export const auditLogSearchSchema = paginationSchema.extend({
   userDocumentId: z.number().optional(),
   organizationDocumentId: z.number().optional(),
   socialMediaDocumentId: z.number().optional(),
+  tenant: z.array(z.string()).optional(),
 })

@@ -1,6 +1,6 @@
 'use client'
 
-import { AuditLog, User } from '@/types/payload-types'
+import { AuditLog, User, Tenant } from '@/types/payload-types'
 import { DataTable } from '@/shared'
 import useAuditLogsTable from '../../hooks/useAuditLogsTable'
 import { CustomFilters } from './customFilters'
@@ -8,10 +8,14 @@ import { CustomFilters } from './customFilters'
 export const AuditLogsTable = ({
   data,
   users,
+  tenants = [],
+  isViewingAllTenants = false,
   pagination,
 }: {
   data: AuditLog[]
   users: User[]
+  tenants?: Tenant[]
+  isViewingAllTenants?: boolean
   pagination: {
     pageSize: number
     pageIndex: number
@@ -19,7 +23,11 @@ export const AuditLogsTable = ({
     pageCount: number
   }
 }) => {
-  const { columns, columnFiltersDefs, searchParams } = useAuditLogsTable({ users })
+  const { columns, columnFiltersDefs, searchParams } = useAuditLogsTable({
+    users,
+    tenants,
+    isViewingAllTenants,
+  })
   return (
     <div>
       <CustomFilters audilogs={data} searchParams={searchParams} />
@@ -36,6 +44,7 @@ export const AuditLogsTable = ({
           action: searchParams.action,
           user: searchParams.user,
           createdAt: searchParams.createdAt,
+          tenant: searchParams.tenant,
         }}
       />
     </div>

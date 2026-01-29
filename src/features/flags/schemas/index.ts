@@ -83,4 +83,5 @@ export const flagsSearchSchema = paginationSchema.extend({
       to: z.string().catch(''),
     })
     .catch({ from: '', to: '' }),
+  tenant: z.array(z.string()).optional(),
 })

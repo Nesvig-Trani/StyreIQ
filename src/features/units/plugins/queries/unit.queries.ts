@@ -68,7 +68,15 @@ export const getAllUnits = async () => {
   }
 }
 
-export const getUnitsWithFilter = async ({ status, type }: { status?: string; type?: string }) => {
+export const getUnitsWithFilter = async ({
+  status,
+  type,
+  tenant,
+}: {
+  status?: string
+  type?: string
+  tenant?: string[]
+}) => {
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
 
@@ -101,6 +109,10 @@ export const getUnitsWithFilter = async ({ status, type }: { status?: string; ty
 
     if (selectedTenantId !== null) {
       where.tenant = { equals: selectedTenantId }
+    }
+
+    if (tenant && tenant.length > 0) {
+      where.tenant = { in: tenant.map(Number) }
     }
 
     return payload.find({

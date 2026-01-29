@@ -22,6 +22,7 @@ export const getFlags = async ({
   lastActivityTo,
   detectionDateFrom,
   detectionDateTo,
+  tenant,
   pageSize,
   pageIndex,
 }: {
@@ -32,6 +33,7 @@ export const getFlags = async ({
   lastActivityTo: string
   detectionDateFrom: string
   detectionDateTo: string
+  tenant?: number[]
   pageSize: number
   pageIndex: number
 }) => {
@@ -93,6 +95,10 @@ export const getFlags = async ({
     }
   } else if (selectedTenantId !== null) {
     where.tenant = { equals: selectedTenantId }
+  }
+
+  if (tenant && tenant.length > 0) {
+    where.tenant = { in: tenant }
   }
 
   switch (effectiveRole) {

@@ -2,13 +2,15 @@
 
 import { DataTable } from '@/shared'
 import useRoleRequestsTable from '../hooks/useRoleRequestsTable'
-import { RoleRequest } from '@/types/payload-types'
+import { RoleRequest, Tenant } from '@/types/payload-types'
 import { UserRolesEnum } from '@/features/users'
 
 export default function RoleRequestsTable({
   data,
   pagination,
   userRole,
+  tenants = [],
+  isViewingAllTenants = false,
 }: {
   data: RoleRequest[]
   pagination: {
@@ -18,8 +20,15 @@ export default function RoleRequestsTable({
     pageCount: number
   }
   userRole: UserRolesEnum | null
+  tenants?: Tenant[]
+  isViewingAllTenants?: boolean
 }) {
-  const { columns } = useRoleRequestsTable(userRole)
+  const { columns, columnFiltersDefs, searchParams } = useRoleRequestsTable({
+    userRole,
+    tenants,
+    isViewingAllTenants,
+  })
+
   return (
     <DataTable
       columns={columns}
@@ -27,6 +36,11 @@ export default function RoleRequestsTable({
       pagination={pagination}
       pageSizeOptions={[5, 10, 20]}
       pageCount={pagination.pageCount}
+      columnFiltersDefs={columnFiltersDefs}
+      columnFilters={{
+        status: searchParams.status,
+        tenant: searchParams.tenant,
+      }}
     />
   )
 }
