@@ -49,7 +49,7 @@ export const AccessTab: React.FC<AccessTabProps> = ({ socialMedia }) => {
             badgeClasses="bg-green-100 text-green-700"
           />
           <AccessItem
-            name={getName(socialMedia.backupAdmin)}
+            name={socialMedia.backupAdmin ? getName(socialMedia.backupAdmin) : 'Not assigned'}
             roleLabel="Backup Unit Admin"
             roleBadge="Admin"
             badgeClasses="bg-blue-100 text-blue-700"

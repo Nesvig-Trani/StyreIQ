@@ -35,7 +35,7 @@ async function validateSocialMediaCreationPermissions(user: User | null) {
 }
 
 async function validateAdminsDifferent(primaryAdminId: string, backupAdminId?: string) {
-  if (primaryAdminId === backupAdminId) {
+  if (backupAdminId && primaryAdminId === backupAdminId) {
     throw new EndpointError(
       "Fields 'Administrator' and 'Backup Administrator' must be differents.",
       409,
@@ -164,10 +164,13 @@ export const createSocialMedia: Endpoint = {
         Number(dataParsed.primaryAdmin),
         'Administrator user selected is not valid.',
       )
-      const selectedBackupAdmin = await validateAdmin(
-        Number(dataParsed.backupAdmin),
-        'Backup administrator user selected is not valid.',
-      )
+
+      const selectedBackupAdmin = dataParsed.backupAdmin
+        ? await validateAdmin(
+            Number(dataParsed.backupAdmin),
+            'Backup administrator user selected is not valid.',
+          )
+        : undefined
 
       const socialMedia = await req.payload.create({
         collection: SocialMediasCollectionSlug,
@@ -268,7 +271,7 @@ export const patchSocialMedia: Endpoint = {
         data: {
           ...data,
           primaryAdmin: Number(data.primaryAdmin),
-          backupAdmin: Number(data.backupAdmin),
+          backupAdmin: data.backupAdmin ? Number(data.backupAdmin) : undefined,
           organization: Number(data.organization),
           status: SocialMediaStatusEnum.PendingApproval,
           platform: data.platform as PlatformEnum,

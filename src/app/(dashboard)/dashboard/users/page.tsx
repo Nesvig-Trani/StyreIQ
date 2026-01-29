@@ -28,6 +28,7 @@ export default async function UsersPage(props: {
   const effectiveRole = getEffectiveRoleFromUser(user)
   const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
   const isUnitAdmin = effectiveRole === UserRolesEnum.UnitAdmin
+  const isCentralAdmin = effectiveRole === UserRolesEnum.CentralAdmin
   if (accessDenied) {
     return component
   }
@@ -47,6 +48,8 @@ export default async function UsersPage(props: {
   const welcomeEmail = await getLastWelcomeEmail()
   const access = new AccessControl(user!)
 
+  const canManageWelcomeEmail =
+    access.can('update', 'WELCOME_EMAIL') && (isSuperAdmin || isCentralAdmin)
   return (
     <Card>
       <CardContent>
@@ -100,7 +103,9 @@ export default async function UsersPage(props: {
             <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
               {access.can('create', 'USERS') && (
                 <>
-                  <WelcomeEmailModal email={welcomeEmail as WelcomeEmailSchema} />
+                  {canManageWelcomeEmail && (
+                    <WelcomeEmailModal email={welcomeEmail as WelcomeEmailSchema} />
+                  )}
                   <Button size="sm" variant="outline" className="w-full sm:w-auto">
                     <Link href={'/dashboard/review-requests'} prefetch>
                       Review user requests
