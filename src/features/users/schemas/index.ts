@@ -113,7 +113,9 @@ export const resetPasswordSchema = z.object({
 
 export const updateUserSchema = z.intersection(updateUserFormSchema, z.object({ id: z.number() }))
 
-export const userSearchSchema = paginationSchema.extend({})
+export const userSearchSchema = paginationSchema.extend({
+  tenant: z.coerce.string().optional(),
+})
 
 const responsibilitySchema = z.object({ responsibility: z.string() })
 const policySchema = z.object({

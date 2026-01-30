@@ -10,13 +10,55 @@ import {
   getTaskStatusColor,
 } from '@/features/compliance-tasks/constants/taskHelpers'
 import Link from 'next/link'
-import { Clock, AlertTriangle, CheckCircle } from 'lucide-react'
+import { Clock, AlertTriangle, CheckCircle, Info } from 'lucide-react'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { UserRolesEnum } from '@/features/users'
 
 export default async function ComplianceTasksPage() {
   const { user } = await getAuthUser()
 
   if (!user) {
     redirect('/login')
+  }
+
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
+
+  if (isSuperAdmin) {
+    return (
+      <div className="container mx-auto py-6 space-y-6">
+        <Card>
+          <CardContent className="pt-6">
+            <div className="mb-6">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <h2 className="text-2xl font-bold">My Compliance Tasks</h2>
+                  </div>
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-semibold">
+                      Manage compliance across your organization.
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      As a Super Admin, you oversee compliance tasks for all organizations.
+                      Individual compliance tasks are assigned to Central Admins, Unit Admins, and
+                      Social Media Managers based on their roles and responsibilities.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center py-12 space-y-6">
+              <Info className="h-16 w-16 text-blue-500 mx-auto" />
+              <div className="space-y-2">
+                <p className="text-lg font-semibold">Administrative View</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
   }
 
   const tasks = await getComplianceTasksForUser(user.id)

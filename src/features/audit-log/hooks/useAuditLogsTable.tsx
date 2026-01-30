@@ -2,7 +2,7 @@ import { useParsedSearchParams } from '@/shared/utils/searchParams'
 import { auditLogSearchSchema } from '@/features/audit-log/schemas'
 import { DataTableFilter } from '@/shared/components/data-table'
 import { AuditLogActionEnum } from '@/features/audit-log/plugins/types'
-import { AuditLog, User } from '@/types/payload-types'
+import { AuditLog, User, Tenant } from '@/types/payload-types'
 import { ColumnDef } from '@tanstack/table-core'
 import { Badge } from '@/shared/components/ui/badge'
 import { format } from 'date-fns'
@@ -75,7 +75,15 @@ function getActionBadgeVariant(action: string): string {
   }
 }
 
-function useAuditLogsTable({ users }: { users: User[] }) {
+function useAuditLogsTable({
+  users,
+  tenants,
+  isViewingAllTenants,
+}: {
+  users: User[]
+  tenants?: Tenant[]
+  isViewingAllTenants?: boolean
+}) {
   const searchParams = useParsedSearchParams(auditLogSearchSchema)
 
   const columnFiltersDefs: DataTableFilter[] = [
@@ -119,6 +127,19 @@ function useAuditLogsTable({ users }: { users: User[] }) {
       disabledDays: 'future',
     },
   ]
+
+  if (isViewingAllTenants && tenants && tenants.length > 0) {
+    columnFiltersDefs.push({
+      id: 'tenant',
+      title: 'Tenant',
+      type: 'select',
+      allowMultiple: true,
+      options: tenants.map((tenant) => ({
+        label: tenant.name,
+        value: tenant.id.toString(),
+      })),
+    })
+  }
 
   const columns: ColumnDef<AuditLog>[] = [
     {
@@ -165,15 +186,37 @@ function useAuditLogsTable({ users }: { users: User[] }) {
         return <span>{format(new Date(createdAt), 'LLL dd, y')}</span>
       },
     },
-    {
-      accessorKey: 'details',
-      header: 'Details',
-      cell: ({ row }) => {
-        const log = row.original as AuditLog
-        return <DiffView log={log} />
-      },
-    },
   ]
+
+  if (isViewingAllTenants) {
+    columns.push({
+      accessorKey: 'tenant',
+      header: 'Tenant',
+      enableColumnFilter: true,
+      cell: ({ row }) => {
+        const tenant = row.original.tenant
+
+        if (tenant && typeof tenant === 'object' && 'name' in tenant) {
+          return (
+            <Badge variant="outline" className="text-xs">
+              {tenant.name}
+            </Badge>
+          )
+        }
+
+        return <span className="text-gray-400">-</span>
+      },
+    })
+  }
+
+  columns.push({
+    accessorKey: 'details',
+    header: 'Details',
+    cell: ({ row }) => {
+      const log = row.original as AuditLog
+      return <DiffView log={log} />
+    },
+  })
 
   return {
     columns,

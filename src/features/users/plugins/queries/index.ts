@@ -381,9 +381,11 @@ export const getUsersInfoForDashboard = async (): Promise<DashboardData> => {
 export const getUsers = async ({
   pageSize,
   pageIndex,
+  tenant,
 }: {
   pageSize: number
   pageIndex: number
+  tenant?: string
 }) => {
   const { user } = await getAuthUser()
   const { payload } = await getPayloadContext()
@@ -428,6 +430,10 @@ export const getUsers = async ({
 
       if (selectedTenantId !== null) {
         where.tenant = { equals: selectedTenantId }
+      }
+
+      if (tenant) {
+        where.tenant = { equals: Number(tenant) }
       }
 
       const users = await payload.find({

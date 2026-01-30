@@ -4,17 +4,27 @@ import { AuditLogsTable } from '@/features/audit-log'
 import { parseSearchParamsWithSchema } from '@/shared/utils/parseParamsServer'
 import { auditLogSearchSchema } from '@/features/audit-log/schemas'
 import { getAuditLogs } from '@/features/audit-log/plugins/queries'
-import { getAllUsers } from '@/features/users'
+import { getAllUsers, UserRolesEnum } from '@/features/users'
 import { Badge } from '@/shared/components/ui/badge'
+import { getAuthUser } from '@/features/auth/utils/getAuthUser'
+import { getPayloadContext } from '@/shared/utils/getPayloadContext'
+import { getServerTenantContext } from '../../server-tenant-context'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { Tenant } from '@/types/payload-types'
 
 export default async function AuditLogsPage(props: {
   searchParams?: Promise<{
     [key: string]: string
   }>
 }) {
+  const { user } = await getAuthUser()
+  const { payload } = await getPayloadContext()
+  const tenantContext = await getServerTenantContext(user, payload)
   const searchParams = await props.searchParams
 
   const parsedParams = parseSearchParamsWithSchema(searchParams, auditLogSearchSchema)
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
 
   const auditLogs = await getAuditLogs({
     entity: parsedParams.entity,
@@ -29,11 +39,22 @@ export default async function AuditLogsPage(props: {
     socialMediaDocumentId: parsedParams.socialMediaDocumentId
       ? Number(parsedParams.socialMediaDocumentId)
       : undefined,
+    tenant: parsedParams.tenant?.map((t) => Number(t)),
     pageSize: parsedParams.pagination.pageSize,
     pageIndex: parsedParams.pagination.pageIndex,
   })
 
   const users = await getAllUsers()
+
+  let tenants: Tenant[] = []
+  if (isSuperAdmin && tenantContext.isViewingAllTenants) {
+    const tenantsResult = await payload.find({
+      collection: 'tenants',
+      limit: 0,
+      depth: 0,
+    })
+    tenants = tenantsResult.docs
+  }
 
   return (
     <Card>
@@ -63,6 +84,8 @@ export default async function AuditLogsPage(props: {
         <AuditLogsTable
           data={auditLogs.docs}
           users={users.docs}
+          tenants={tenants}
+          isViewingAllTenants={tenantContext.isViewingAllTenants}
           pagination={{
             pageSize: auditLogs.limit,
             pageIndex: auditLogs.page ? auditLogs.page - 1 : 0,

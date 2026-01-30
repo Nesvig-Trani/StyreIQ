@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { UserRolesEnum } from '@/features/users/schemas'
+import { paginationSchema } from '@/shared/schemas/pagination'
 
 export const createRoleRequestFormSchema = z.object({
   requestedRole: z.nativeEnum(UserRolesEnum),
@@ -15,12 +16,9 @@ export type CreateRoleRequestFormInput = z.infer<typeof createRoleRequestFormSch
 export const roleRequestStatusEnum = z.enum(['pending', 'approved', 'rejected'])
 export type RoleRequestStatus = z.infer<typeof roleRequestStatusEnum>
 
-export const roleRequestSearchSchema = z.object({
-  status: roleRequestStatusEnum.optional(),
-  pagination: z.object({
-    pageSize: z.number().default(10),
-    pageIndex: z.number().default(0),
-  }),
+export const roleRequestSearchSchema = paginationSchema.extend({
+  status: z.array(roleRequestStatusEnum).optional(),
+  tenant: z.array(z.string()).optional(),
 })
 
 export type RoleRequestSearchSchema = z.infer<typeof roleRequestSearchSchema>

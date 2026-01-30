@@ -9,6 +9,7 @@ import { RoleRequestStatus } from '../../schemas'
 
 export const getRoleRequests = async (params?: {
   status?: RoleRequestStatus
+  tenant?: number[]
   pageSize?: number
   pageIndex?: number
 }) => {
@@ -57,6 +58,10 @@ export const getRoleRequests = async (params?: {
     default:
       throw new Error('User does not have permission to view role requests')
       break
+  }
+
+  if (params?.tenant && params.tenant.length > 0) {
+    where.tenant = { in: params.tenant }
   }
 
   if (params?.status) {

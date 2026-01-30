@@ -113,6 +113,7 @@ export const getSocialMediaAccounts = async ({
   platform,
   organization,
   primaryAdmin,
+  tenant,
 }: {
   pageSize: number
   pageIndex: number
@@ -120,6 +121,7 @@ export const getSocialMediaAccounts = async ({
   platform?: string[]
   organization?: string[]
   primaryAdmin?: string[]
+  tenant?: string[]
 }) => {
   const { user } = await getAuthUser()
   const { payload } = await getPayloadContext()
@@ -156,6 +158,11 @@ export const getSocialMediaAccounts = async ({
       if (selectedTenantId !== null) {
         where.tenant = { equals: selectedTenantId }
       }
+
+      if (tenant && tenant.length > 0) {
+        where.tenant = { in: tenant.map(Number) }
+      }
+
       if (organization?.length) {
         where['organization.id'] = { in: organization.map(Number) }
       }

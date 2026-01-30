@@ -20,6 +20,7 @@ export const useUnitHierarchy = ({ originalData, organizations }: UnitHierarchyP
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState<StatusType | 'all'>('all')
   const [typeFilter, setTypeFilter] = useState<UnitType | 'all'>('all')
+  const [tenantFilter, setTenantFilter] = useState<string>('all')
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [isDisableModalOpen, setIsDisableModalOpen] = useState<boolean>(false)
   const router = useRouter()
@@ -82,6 +83,17 @@ export const useUnitHierarchy = ({ originalData, organizations }: UnitHierarchyP
     setTypeFilter(value)
     updateSearchParams({ type: value === 'all' ? null : value })
   }
+
+  const handleTenantChange = (value: string) => {
+    setTenantFilter(value)
+
+    if (value === 'all') {
+      updateSearchParams({ tenant: null })
+    } else {
+      updateSearchParams({ tenant: value })
+    }
+  }
+
   const handleConfirmDisable = async () => {
     try {
       if (!selectedOrg?.id) return
@@ -196,6 +208,8 @@ export const useUnitHierarchy = ({ originalData, organizations }: UnitHierarchyP
     handleStatusChange,
     typeFilter,
     handleTypeChange,
+    tenantFilter,
+    handleTenantChange,
     renderFilteredResults,
     handlePageChange,
     selectedOrg,

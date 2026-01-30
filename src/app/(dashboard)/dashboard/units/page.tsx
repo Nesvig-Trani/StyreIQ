@@ -5,7 +5,7 @@ import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
 import { parseSearchParamsWithSchema } from '@/shared/utils/parseParamsServer'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
-import { getAllUsers } from '@/features/users'
+import { getAllUsers, UserRolesEnum } from '@/features/users'
 import UnitHierarchy from '@/shared/components/organization-hierarchy'
 import { getUnitsWithFilter } from '@/features/units/plugins/queries'
 import { treePaginationAndFilter } from '@/features/units/utils/treePaginationAndFilter'
@@ -14,6 +14,8 @@ import { Badge } from '@/shared/components/ui/badge'
 import { AccessControl } from '@/shared/utils/rbac'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { getServerTenantContext } from '../../server-tenant-context'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { Tenant } from '@/types/payload-types'
 
 export default async function UnitsPage(props: {
   searchParams?: Promise<{
@@ -38,13 +40,26 @@ export default async function UnitsPage(props: {
 
   const access = new AccessControl(user)
   const parsedParams = parseSearchParamsWithSchema(searchParams, unitSearchSchema)
+  const effectiveRole = getEffectiveRoleFromUser(user)
+  const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
 
   const organizations = await getUnitsWithFilter({
     status: parsedParams.status,
     type: parsedParams.type,
+    tenant: parsedParams.tenant ? [parsedParams.tenant] : undefined,
   })
 
   const users = await getAllUsers()
+
+  let tenants: Tenant[] = []
+  if (isSuperAdmin && tenantContext.isViewingAllTenants) {
+    const tenantsResult = await payload.find({
+      collection: 'tenants',
+      limit: 0,
+      depth: 0,
+    })
+    tenants = tenantsResult.docs
+  }
 
   const { pageIndex, pageSize } = parsedParams.pagination
 
@@ -102,6 +117,8 @@ export default async function UnitsPage(props: {
             originalData={organizations.docs as UnitWithDepth[]}
             users={users.docs}
             user={user}
+            tenants={tenants}
+            isViewingAllTenants={tenantContext.isViewingAllTenants}
             pagination={{
               pageSize: result.limit,
               pageIndex: result.page ? result.page - 1 : 0,

@@ -1,6 +1,6 @@
 'use client'
 
-import { User } from '@/types/payload-types'
+import { Tenant, User } from '@/types/payload-types'
 
 import { DataTable } from '@/shared'
 import useUserTable from '@/features/users/hooks/useUserTable'
@@ -11,6 +11,8 @@ export function UserTable({
   data,
   pagination,
   user,
+  tenants = [],
+  isViewingAllTenants = false,
 }: {
   data: User[]
   pagination: {
@@ -20,6 +22,8 @@ export function UserTable({
     pageCount: number
   }
   user: User | null
+  tenants?: Tenant[]
+  isViewingAllTenants?: boolean
 }) {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
 
@@ -27,12 +31,14 @@ export function UserTable({
 
   const { statusMap } = useRollCallStatus(userIds)
 
-  const { columns } = useUserTable({
+  const { columns, columnFiltersDefs, searchParams } = useUserTable({
     user,
     selectedUserId,
     onOpenDetails: (userId) => setSelectedUserId(userId),
     onCloseDetails: () => setSelectedUserId(null),
     userRollCallStatus: statusMap,
+    tenants,
+    isViewingAllTenants,
   })
 
   return (
@@ -42,6 +48,10 @@ export function UserTable({
       pagination={pagination}
       pageSizeOptions={[5, 10, 20]}
       pageCount={pagination.pageCount}
+      columnFiltersDefs={columnFiltersDefs}
+      columnFilters={{
+        tenant: searchParams.tenant,
+      }}
     />
   )
 }

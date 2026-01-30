@@ -203,6 +203,7 @@ export const socialMediaSearchSchema = paginationSchema.extend({
   primaryAdmin: z.array(z.string()).optional(),
   hasSecurePassword: z.boolean().optional(),
   hasTwoFactor: z.boolean().optional(),
+  tenant: z.array(z.string()).optional(),
 })
 
 export type UpdateSocialMedia = z.infer<typeof createSocialMediaFormSchema>

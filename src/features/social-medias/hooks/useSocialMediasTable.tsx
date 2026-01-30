@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table'
-import type { Organization, SocialMedia, User } from '@/types/payload-types'
+import type { Organization, SocialMedia, User, Tenant } from '@/types/payload-types'
 import { Badge, DataTableFilter, useParsedSearchParams } from '@/shared'
 import {
   ActionsRowSocialMedia,
@@ -18,10 +18,14 @@ export function useSocialMediasTable({
   user,
   organizations,
   users,
+  tenants,
+  isViewingAllTenants,
 }: {
   user: User | null
   organizations: Organization[]
   users: User[]
+  tenants?: Tenant[]
+  isViewingAllTenants?: boolean
 }) {
   const searchParams = useParsedSearchParams(socialMediaSearchSchema)
 
@@ -61,6 +65,20 @@ export function useSocialMediasTable({
       })),
     },
   ]
+
+  if (isViewingAllTenants && tenants && tenants.length > 0) {
+    columnFiltersDefs.push({
+      id: 'tenant',
+      title: 'Tenant',
+      type: 'select',
+      allowMultiple: true,
+      options: tenants.map((tenant) => ({
+        label: tenant.name,
+        value: tenant.id.toString(),
+      })),
+    })
+  }
+
   const columns: ColumnDef<SocialMedia>[] = [
     {
       accessorKey: 'name',
@@ -107,6 +125,27 @@ export function useSocialMediasTable({
       },
     },
   ]
+
+  if (isViewingAllTenants) {
+    columns.push({
+      accessorKey: 'tenant',
+      header: 'Tenant',
+      enableColumnFilter: true,
+      cell: ({ row }) => {
+        const tenant = row.original.tenant
+
+        if (tenant && typeof tenant === 'object' && 'name' in tenant) {
+          return (
+            <Badge variant="outline" className="text-xs">
+              {tenant.name}
+            </Badge>
+          )
+        }
+
+        return <span className="text-gray-400">-</span>
+      },
+    })
+  }
 
   columns.push({
     accessorKey: 'actions',

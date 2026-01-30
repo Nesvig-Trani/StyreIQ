@@ -81,6 +81,7 @@ export const unitSearchSchema = paginationSchema.extend({
   search: z.string().optional(),
   status: z.enum(['active', 'inactive', 'pending_review']).optional(),
   type: z.enum(['university', 'faculty', 'department', 'office', 'project']).optional(),
+  tenant: z.coerce.string().optional(),
 })
 
 export type StatusType = keyof typeof statusConfig

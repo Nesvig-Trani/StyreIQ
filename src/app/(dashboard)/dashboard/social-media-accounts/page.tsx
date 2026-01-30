@@ -13,6 +13,7 @@ import { getSocialMediaAuditLogs } from '@/features/audit-log/plugins/queries'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { getServerTenantContext } from '../../server-tenant-context'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { Tenant } from '@/types/payload-types'
 
 export default async function SocialMediasPage(props: AppPageProps) {
   const { user } = await getAuthUser()
@@ -40,10 +41,21 @@ export default async function SocialMediasPage(props: AppPageProps) {
     platform: parsedParams.platform,
     organization: parsedParams.organization,
     primaryAdmin: parsedParams.primaryAdmin,
+    tenant: parsedParams.tenant,
   })
 
   const organizations = await getAllUnits()
   const users = await getAllUsers()
+
+  let tenants: Tenant[] = []
+  if (isSuperAdmin && tenantContext.isViewingAllTenants) {
+    const tenantsResult = await payload.find({
+      collection: 'tenants',
+      limit: 0,
+      depth: 0,
+    })
+    tenants = tenantsResult.docs
+  }
 
   let socialMediasWithAuditLogs = socialMediaAccounts.docs
 
@@ -71,6 +83,7 @@ export default async function SocialMediasPage(props: AppPageProps) {
       }}
       organizations={organizations.docs}
       users={users.docs}
+      tenants={tenants}
       isViewingAllTenants={tenantContext.isViewingAllTenants}
     />
   )

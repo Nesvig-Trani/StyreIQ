@@ -11,7 +11,7 @@ import { Badge } from '@/shared/components/ui/badge'
 
 //Interfaces and types
 import type { PaginatedDocs } from 'payload'
-import type { AuditLog, Organization, SocialMedia, User } from '@/types/payload-types'
+import type { AuditLog, Organization, SocialMedia, User, Tenant } from '@/types/payload-types'
 
 import { useAccess } from '@/shared/hooks/use-access'
 
@@ -28,6 +28,7 @@ export type DashboardSocialMediasProps = {
   socialMedias: SocialMediasPaginated
   organizations: Organization[]
   users: User[]
+  tenants?: Tenant[]
   isViewingAllTenants?: boolean
 }
 
@@ -36,6 +37,7 @@ export const DashboardSocialMedias: React.FC<DashboardSocialMediasProps> = ({
   socialMedias,
   organizations,
   users,
+  tenants = [],
   isViewingAllTenants = false,
 }) => {
   const { can } = useAccess(user)
@@ -85,6 +87,8 @@ export const DashboardSocialMedias: React.FC<DashboardSocialMediasProps> = ({
           data={socialMedias.docs}
           organizations={organizations}
           users={users}
+          tenants={tenants}
+          isViewingAllTenants={isViewingAllTenants}
           pagination={{
             pageSize: socialMedias.limit,
             pageIndex: socialMedias.page ? socialMedias.page - 1 : 0,
