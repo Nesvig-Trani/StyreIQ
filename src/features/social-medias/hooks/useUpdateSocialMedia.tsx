@@ -118,6 +118,7 @@ export function useUpdateSocialMedia({
           type: 'text',
           placeholder: 'Enter account name',
           size: 'half',
+          required: true,
         },
         {
           label: 'Platform',
@@ -126,6 +127,7 @@ export function useUpdateSocialMedia({
           options: platformOptions,
           placeholder: 'Select Platform',
           size: 'half',
+          required: true,
         },
         // Account Details - Row 2
         {
@@ -141,6 +143,7 @@ export function useUpdateSocialMedia({
           type: 'text',
           placeholder: 'https://platform.com/username',
           size: 'half',
+          required: true,
         },
         // Account Details - Row 3
         {
@@ -150,6 +153,7 @@ export function useUpdateSocialMedia({
           placeholder: 'dd/mm/yyyy',
           disabled: true,
           size: 'half',
+          required: true,
         },
         {
           label: 'Assigned Unit',
@@ -162,6 +166,7 @@ export function useUpdateSocialMedia({
           tree: tree,
           placeholder: 'Select Unit',
           size: 'half',
+          required: true,
         },
         // Separator 1
         {
@@ -182,6 +187,7 @@ export function useUpdateSocialMedia({
             value: selectedOrganizationId || '',
           },
           size: 'half',
+          required: true,
         },
         {
           label: 'Backup Unit Admin',
@@ -207,6 +213,7 @@ export function useUpdateSocialMedia({
             value: selectedOrganizationId || '',
           },
           size: 'half',
+          required: true,
         },
         // Third Party Management - Row 6
         {
@@ -216,6 +223,7 @@ export function useUpdateSocialMedia({
           options: thirdPartyManagementOptions,
           placeholder: 'Select management type',
           size: 'full',
+          required: true,
         },
         // Third Party Management - Row 7 (conditional)
         {
@@ -228,6 +236,7 @@ export function useUpdateSocialMedia({
             field: 'thirdPartyManagement',
             value: 'yes',
           },
+          required: true,
         },
         {
           name: 'thirdPartyContact',
@@ -239,6 +248,7 @@ export function useUpdateSocialMedia({
             field: 'thirdPartyManagement',
             value: 'yes',
           },
+          required: true,
         },
         // Separator 2
         {
@@ -255,6 +265,7 @@ export function useUpdateSocialMedia({
           placeholder: 'Select Management Type',
           options: passwordManagementPracticeOptions,
           size: 'half',
+          required: true,
         },
         {
           name: 'verificationStatus',
@@ -282,6 +293,7 @@ export function useUpdateSocialMedia({
           })),
           placeholder: 'Select admin emails',
           size: 'half',
+          required: true,
         },
         // Platform Governance - Row 10
         {

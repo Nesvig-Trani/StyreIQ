@@ -17,7 +17,7 @@ import { normalizeActiveRole, normalizeRoles } from '@/shared/utils/role-hierarc
 function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const returnTo = searchParams.get('returnTo') || `/dashboard/users/access/${id}`
+  const returnTo = searchParams.get('returnTo') || `/dashboard/users`
   const tree = createUnitTree(organizations as UnitWithDepth[])
   const { formComponent } = useFormHelper(
     {
@@ -29,6 +29,7 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
           type: 'text',
           placeholder: 'Enter your email',
           size: 'half',
+          required: true,
         },
         {
           label: 'Name',
@@ -36,6 +37,7 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
           type: 'text',
           placeholder: 'Enter your name',
           size: 'half',
+          required: true,
         },
         {
           label: 'Roles',
@@ -46,6 +48,7 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
             value: role,
           })),
           size: 'half',
+          required: true,
         },
         {
           label: 'Status',
@@ -57,6 +60,7 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
           })),
           placeholder: 'Select status',
           size: 'half',
+          required: true,
         },
         {
           label: 'Organization',
@@ -77,6 +81,7 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
             ],
           },
           size: 'half',
+          required: true,
         },
         {
           label: 'Recent Password Update',

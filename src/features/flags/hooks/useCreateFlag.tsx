@@ -37,6 +37,7 @@ export function useCreateFlag({
           ],
           placeholder: 'Select flag type',
           size: 'half',
+          required: true,
         },
         {
           label: 'Affected Entity Type',
@@ -45,6 +46,7 @@ export function useCreateFlag({
           options: affectedEntityOptions,
           placeholder: 'Select entity type',
           size: 'half',
+          required: true,
         },
         {
           label: 'Affected User',
@@ -60,6 +62,7 @@ export function useCreateFlag({
             field: 'affectedEntityType',
             value: 'users',
           },
+          required: true,
         },
         {
           label: 'Affected Social Media Account',
@@ -75,6 +78,7 @@ export function useCreateFlag({
             field: 'affectedEntityType',
             value: 'social-medias',
           },
+          required: true,
         },
         {
           label: 'Affected Organizational Unit',
@@ -90,6 +94,7 @@ export function useCreateFlag({
             field: 'affectedEntityType',
             value: 'organization',
           },
+          required: true,
         },
         {
           label: 'Assigned To',
@@ -101,6 +106,7 @@ export function useCreateFlag({
           })),
           placeholder: 'Select person responsible for reviewing this flag',
           size: 'half',
+          required: true,
         },
         {
           label: 'Due Date',
@@ -108,6 +114,7 @@ export function useCreateFlag({
           type: 'date',
           placeholder: 'Select due date',
           size: 'half',
+          required: true,
         },
         {
           label: 'Risk Description',

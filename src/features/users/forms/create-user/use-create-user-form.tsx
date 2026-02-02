@@ -66,6 +66,7 @@ export function useCreateUserForm({
           type: 'text',
           placeholder: 'Enter the new user’s organizational email',
           size: 'half',
+          required: true,
         },
         {
           label: 'Name',
@@ -73,6 +74,7 @@ export function useCreateUserForm({
           type: 'text',
           placeholder: 'Enter the new user’s full name',
           size: 'half',
+          required: true,
         },
         {
           label: 'Password',
@@ -90,6 +92,7 @@ export function useCreateUserForm({
             value: role,
           })),
           size: 'half',
+          required: true,
         },
         {
           name: 'status',
@@ -102,6 +105,7 @@ export function useCreateUserForm({
           placeholder: 'Select status',
           size: 'half',
           hidden: authUserRole === UserRolesEnum.UnitAdmin,
+          required: true,
         },
         {
           label: 'Organization',
@@ -122,22 +126,19 @@ export function useCreateUserForm({
             ],
           },
           size: 'half',
+          required: true,
         },
       ],
       onSubmit: async (submitData) => {
         try {
-          const user = await createUser({
+          await createUser({
             ...submitData,
             tenant: selectedTenantId,
           })
 
           toast.success('User created successfully')
 
-          router.push(
-            user.active_role === UserRolesEnum.SuperAdmin
-              ? '/dashboard/users'
-              : `/dashboard/users/access/${user.id}`,
-          )
+          router.push('/dashboard/users')
         } catch (error) {
           if (isApiError(error)) {
             if (error.data?.message === USER_ALREADY_EXISTS) {
