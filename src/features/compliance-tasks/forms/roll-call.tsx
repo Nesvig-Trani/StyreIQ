@@ -90,20 +90,24 @@ export const RollCallForm = ({ task, assignedAccounts = [] }: RollCallFormProps)
             <h4 className="font-semibold">Assigned Social Media Accounts</h4>
 
             {hasAccounts ? (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {assignedAccounts.map((account) => (
                   <div
                     key={account.id}
-                    className="flex items-center gap-3 text-sm border-b pb-2 last:border-0"
+                    className="flex items-center justify-between gap-4 bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-300 transition-colors"
                   >
-                    <div className="flex-1">
-                      <p className="font-medium">{account.name}</p>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <span>{account.platform}</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-base text-gray-900 dark:text-gray-100 truncate">
+                        {account.name}
+                      </p>
+                      <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        <span className="capitalize font-medium">{account.platform}</span>
                         {account.accountHandle && (
                           <>
-                            <span>•</span>
-                            <span>@{account.accountHandle}</span>
+                            <span className="text-gray-400">•</span>
+                            <span className="text-gray-700 dark:text-gray-300">
+                              @{account.accountHandle}
+                            </span>
                           </>
                         )}
                       </div>
@@ -113,7 +117,7 @@ export const RollCallForm = ({ task, assignedAccounts = [] }: RollCallFormProps)
                         href={account.profileUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs text-primary hover:underline"
+                        className="text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline whitespace-nowrap flex-shrink-0"
                       >
                         View Profile
                       </a>
@@ -122,8 +126,8 @@ export const RollCallForm = ({ task, assignedAccounts = [] }: RollCallFormProps)
                 ))}
               </div>
             ) : (
-              <div className="text-sm text-muted-foreground bg-gray-100 dark:bg-gray-800 p-3 rounded border border-dashed">
-                No accounts are currently assigned to you in StyreIQ.
+              <div className="text-sm text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800 p-5 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center">
+                <p className="font-medium">No accounts are currently assigned to you in StyreIQ.</p>
               </div>
             )}
           </div>
