@@ -25,7 +25,7 @@ const baseSocialMediaSchema = z.object({
   thirdPartyManagement: z.string().min(1, 'Third party management is required'),
   thirdPartyProvider: z.string().optional(),
   thirdPartyContact: z.string().optional(),
-  passwordManagementPractice: z.string().optional(),
+  passwordManagementPractice: z.string().min(1, 'Password management practice is required'),
   linkedTools: z.array(z.string()).optional(),
   verificationStatus: z.string().optional(),
   platformSupportDetails: z.string().optional(),

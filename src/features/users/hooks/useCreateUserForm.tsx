@@ -83,14 +83,11 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
       return
     }
     try {
-      const user = await createUser(data)
+      await createUser(data)
       toast.success('User created successfully')
       reset()
-      if (user.active_role === UserRolesEnum.SuperAdmin) {
-        router.push('/dashboard/users')
-      } else {
-        router.push(`/dashboard/users/access/${user.id}`)
-      }
+
+      router.push('/dashboard/users')
     } catch (error) {
       if (isApiError(error)) {
         if (error.data?.message === USER_ALREADY_EXISTS) {

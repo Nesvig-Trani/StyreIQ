@@ -20,6 +20,7 @@ export function useCreateTenant() {
           type: 'text',
           placeholder: 'e.g., University of Virginia',
           size: 'full',
+          required: true,
         },
         {
           label: 'Domain',
@@ -27,6 +28,7 @@ export function useCreateTenant() {
           type: 'text',
           placeholder: 'e.g., uva.edu',
           size: 'half',
+          required: true,
         },
         {
           label: 'Admin Contact Name',
@@ -34,6 +36,7 @@ export function useCreateTenant() {
           type: 'text',
           placeholder: 'e.g., name of admin contact',
           size: 'half',
+          required: true,
         },
         {
           label: 'Admin Contact Email',
@@ -41,6 +44,7 @@ export function useCreateTenant() {
           type: 'text',
           placeholder: 'e.g., admin@uva.edu',
           size: 'half',
+          required: true,
         },
         {
           label: 'Timezone',
@@ -54,6 +58,7 @@ export function useCreateTenant() {
           ],
           placeholder: 'Select timezone',
           size: 'half',
+          required: true,
         },
         {
           label: 'Enabled Trainings',

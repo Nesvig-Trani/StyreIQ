@@ -13,7 +13,7 @@ import {
 import { SocialMediasCollectionSlug } from '../collections'
 import { UserRolesEnum } from '@/features/users/schemas'
 import { JSON_HEADERS } from '@/shared/constants'
-import { Organization, User } from '@/types/payload-types'
+import { Organization, SocialMedia, User } from '@/types/payload-types'
 import { getUserById } from '@/features/users'
 import {
   extractTenantIdFromProperty,
@@ -172,31 +172,44 @@ export const createSocialMedia: Endpoint = {
           )
         : undefined
 
+      const socialMediaData: Omit<SocialMedia, 'id' | 'updatedAt' | 'createdAt'> = {
+        name: dataParsed.name,
+        profileUrl: dataParsed.profileUrl,
+        platform: dataParsed.platform as PlatformEnum,
+        accountHandle: dataParsed.accountHandle,
+        businessId: dataParsed.businessId,
+        creationDate: dataParsed.creationDate,
+        organization: Number(dataParsed.organization),
+        primaryAdmin: selectedPrimaryAdmin,
+        status: SocialMediaStatusEnum.PendingApproval,
+        thirdPartyManagement: dataParsed.thirdPartyManagement as
+          | ThirdPartyManagementEnum
+          | undefined,
+        thirdPartyProvider: dataParsed.thirdPartyProvider,
+        thirdPartyContact: dataParsed.thirdPartyContact,
+        passwordManagementPractice: dataParsed.passwordManagementPractice as
+          | PasswordManagementPracticeEnum
+          | undefined,
+        verificationStatus: dataParsed.verificationStatus as VerificationStatusEnum | undefined,
+        linkedTools: dataParsed.linkedTools as LinkedToolsEnum[] | undefined,
+        platformSupportDetails: dataParsed.platformSupportDetails,
+        adminContactEmails: Array.isArray(dataParsed.adminContactEmails)
+          ? dataParsed.adminContactEmails.map((email) => ({ email }))
+          : [],
+        socialMediaManagers: Array.isArray(dataParsed.socialMediaManagers)
+          ? dataParsed.socialMediaManagers.map(Number)
+          : [],
+        notes: dataParsed.notes,
+        tenant: dataParsed.tenant,
+      }
+
+      if (selectedBackupAdmin !== undefined && selectedBackupAdmin !== null) {
+        socialMediaData.backupAdmin = selectedBackupAdmin
+      }
+
       const socialMedia = await req.payload.create({
         collection: SocialMediasCollectionSlug,
-        data: {
-          ...dataParsed,
-          organization: Number(dataParsed.organization),
-          primaryAdmin: selectedPrimaryAdmin,
-          backupAdmin: selectedBackupAdmin,
-          status: SocialMediaStatusEnum.PendingApproval,
-          platform: dataParsed.platform as PlatformEnum,
-          thirdPartyManagement: dataParsed.thirdPartyManagement as
-            | ThirdPartyManagementEnum
-            | undefined,
-          passwordManagementPractice: dataParsed.passwordManagementPractice as
-            | PasswordManagementPracticeEnum
-            | undefined,
-          verificationStatus: dataParsed.verificationStatus as VerificationStatusEnum | undefined,
-          linkedTools: dataParsed.linkedTools as LinkedToolsEnum[] | undefined,
-          adminContactEmails: Array.isArray(dataParsed.adminContactEmails)
-            ? dataParsed.adminContactEmails.map((email) => ({ email }))
-            : [],
-          socialMediaManagers: Array.isArray(dataParsed.socialMediaManagers)
-            ? dataParsed.socialMediaManagers.map(Number)
-            : [],
-          tenant: dataParsed.tenant,
-        },
+        data: socialMediaData,
         req,
       })
       return new Response(JSON.stringify(socialMedia), {
@@ -244,7 +257,14 @@ export const patchSocialMedia: Endpoint = {
 
       const data = await req.json()
 
-      if (data.status && !Object.values(SocialMediaStatusEnum).includes(data.status)) {
+      const statusMap: Record<string, SocialMediaStatusEnum> = {
+        pending: SocialMediaStatusEnum.PendingApproval,
+      }
+
+      const normalizedStatus =
+        typeof data.status === 'string' ? (statusMap[data.status] ?? data.status) : data.status
+
+      if (normalizedStatus && !Object.values(SocialMediaStatusEnum).includes(normalizedStatus)) {
         throw new EndpointError('Status is not valid.', 400)
       }
 
@@ -348,13 +368,16 @@ export const updateSocialMediaStatus: Endpoint = {
       if (!Object.values(SocialMediaStatusEnum).includes(data.status)) {
         throw new EndpointError('Status is not valid.', 400)
       }
+
+      const updateData = {
+        status: data.status,
+        ...(data.deactivationReason && { deactivationReason: data.deactivationReason }),
+      }
+
       await req.payload.update({
         collection: SocialMediasCollectionSlug,
         id: socialMediaId,
-        data: {
-          status: data.status,
-          ...(data.deactivationReason && { deactivationReason: data.deactivationReason }),
-        },
+        data: updateData,
         req,
       })
 

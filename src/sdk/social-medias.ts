@@ -22,7 +22,6 @@ export const createSocialMedia = async (data: z.infer<typeof createSocialMediaFo
       contactEmail: data.contactEmail,
       contactPhone: data.contactPhone,
       backupAdmin: data.backupAdmin || undefined,
-      passwordManagementPractice: data.passwordManagementPractice,
       ...data,
     }),
   })
@@ -52,7 +51,6 @@ export const updateSocialMedia = async (data: z.infer<typeof updateSocialMediaFo
       contactEmail: data.contactEmail,
       contactPhone: data.contactPhone,
       backupAdmin: data.backupAdmin || undefined,
-      passwordManagementPractice: data.passwordManagementPractice,
       ...data,
     }),
   })

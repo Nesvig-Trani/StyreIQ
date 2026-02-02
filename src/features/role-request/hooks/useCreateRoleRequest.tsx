@@ -45,6 +45,7 @@ export function useCreateRoleRequest({ currentUser, organizations }: UseCreateRo
           options: roleOptions,
           placeholder: 'Select a role',
           size: 'half',
+          required: true,
         },
         {
           label: 'Unit',
@@ -58,6 +59,7 @@ export function useCreateRoleRequest({ currentUser, organizations }: UseCreateRo
           multiple: false,
           placeholder: 'Select organization',
           size: 'half',
+          required: true,
         },
         {
           label: 'Justification',
@@ -65,6 +67,7 @@ export function useCreateRoleRequest({ currentUser, organizations }: UseCreateRo
           type: 'textarea',
           placeholder: 'Explain why you need this additional role... (minimum 20 characters)',
           size: 'full',
+          required: true,
         },
       ],
       onSubmit: async (submitData) => {

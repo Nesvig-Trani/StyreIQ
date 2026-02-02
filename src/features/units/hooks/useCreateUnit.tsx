@@ -38,6 +38,7 @@ function useCreateUnit({
         type: 'text' as const,
         size: 'half' as const,
         placeholder: 'Enter the name',
+        required: true,
       },
       {
         label: 'Type',
@@ -45,6 +46,7 @@ function useCreateUnit({
         type: 'select' as const,
         options: typeOptions,
         size: 'half' as const,
+        required: true,
       },
       {
         label: 'Parent',
@@ -56,6 +58,7 @@ function useCreateUnit({
         })),
         tree: tree,
         size: 'half' as const,
+        required: true,
       },
       {
         label: 'Admin',
@@ -66,6 +69,7 @@ function useCreateUnit({
           label: user.name,
         })),
         size: 'half' as const,
+        required: true,
       },
       {
         label: 'Backup Admins',
@@ -83,6 +87,7 @@ function useCreateUnit({
         type: 'text' as const,
         size: 'half' as const,
         placeholder: 'Enter the website URL',
+        required: true,
       },
       {
         label: 'Status',
@@ -94,6 +99,7 @@ function useCreateUnit({
           { value: 'pending_review', label: 'Pending Review' },
         ],
         size: 'half' as const,
+        required: true,
       },
       {
         label: 'Description',
