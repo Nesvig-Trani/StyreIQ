@@ -4,9 +4,11 @@ import { toast } from 'sonner'
 import { useFormHelper } from '@/shared'
 import { createTenantSchema } from '../schemas'
 import { createTenant } from '@/sdk/tenants'
+import { useTenant } from '../contexts/tenant-context'
 
 export function useCreateTenant() {
   const router = useRouter()
+  const { refetchTenants } = useTenant()
 
   const { formComponent, form } = useFormHelper(
     {
@@ -94,6 +96,7 @@ export function useCreateTenant() {
       onSubmit: async (submitData) => {
         await createTenant(submitData)
         form.reset()
+        await refetchTenants()
         toast.success('Tenant created successfully')
         router.push('/dashboard/tenants')
       },

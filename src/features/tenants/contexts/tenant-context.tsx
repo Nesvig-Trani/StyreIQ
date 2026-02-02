@@ -13,6 +13,7 @@ export interface TenantContextType {
   availableTenants: Tenant[]
   isLoading: boolean
   selectTenant: (tenantId: number | null) => Promise<void>
+  refetchTenants: () => Promise<void>
   canSwitchTenants: boolean
   error: string | null
   isViewingAllTenants: boolean
@@ -37,7 +38,7 @@ export const TenantProvider: FC<TenantProviderProps> = ({
   const router = useRouter()
 
   const [selectedTenant, setSelectedTenant] = useState<Tenant | null>(initialSelectedTenant)
-  const [availableTenants] = useState<Tenant[]>(initialAvailableTenants)
+  const [availableTenants, setAvailableTenants] = useState<Tenant[]>(initialAvailableTenants)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -49,8 +50,29 @@ export const TenantProvider: FC<TenantProviderProps> = ({
 
   useEffect(() => {
     setSelectedTenant(initialSelectedTenant)
+    setAvailableTenants(initialAvailableTenants)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialSelectedTenant?.id])
+  }, [initialSelectedTenant?.id, initialAvailableTenants.length])
+
+  const refetchTenants = useCallback(async () => {
+    if (!isSuperAdmin) return
+
+    try {
+      const response = await fetch('/api/tenants/available', {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+        },
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setAvailableTenants(data.tenants || [])
+      }
+    } catch (err) {
+      console.error('Failed to refetch tenants:', err)
+    }
+  }, [isSuperAdmin])
 
   const selectTenant = useCallback(
     async (tenantId: number | null): Promise<void> => {
@@ -88,6 +110,7 @@ export const TenantProvider: FC<TenantProviderProps> = ({
       availableTenants,
       isLoading,
       selectTenant,
+      refetchTenants,
       canSwitchTenants,
       error,
       isViewingAllTenants,
@@ -98,6 +121,7 @@ export const TenantProvider: FC<TenantProviderProps> = ({
       availableTenants,
       isLoading,
       selectTenant,
+      refetchTenants,
       canSwitchTenants,
       error,
       isViewingAllTenants,
