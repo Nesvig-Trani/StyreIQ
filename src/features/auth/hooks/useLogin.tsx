@@ -1,6 +1,5 @@
 'use client'
 import { ChangeEvent, FormEvent, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { env } from '@/config/env'
 import { toast } from 'sonner'
 import { JSON_HEADERS } from '@/shared/constants'
@@ -11,7 +10,6 @@ export function useLogin() {
     email: '',
     password: '',
   })
-  const router = useRouter()
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target
@@ -27,6 +25,7 @@ export function useLogin() {
         credentials: 'include',
         headers: JSON_HEADERS,
         body: JSON.stringify(loginFields),
+        cache: 'no-store',
       })
 
       if (!res.ok) {
@@ -61,7 +60,7 @@ export function useLogin() {
         throw new Error('Failed to login')
       }
 
-      router.push('/dashboard')
+      window.location.href = '/dashboard'
     } catch {
       toast.error('Invalid credentials')
     }
