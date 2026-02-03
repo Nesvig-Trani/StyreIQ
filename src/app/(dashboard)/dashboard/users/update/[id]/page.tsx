@@ -5,6 +5,7 @@ import { getAccessibleOrganizationsForUser } from '@/shared'
 import { ChevronRight, Home } from 'lucide-react'
 import { Card, CardContent } from '@/shared'
 import Link from 'next/link'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
 export default async function UpdateUser({ params }: { params: Promise<{ id: string }> }) {
   const { user, accessDenied, component } = await checkUserUpdateAccess()
@@ -25,7 +26,7 @@ export default async function UpdateUser({ params }: { params: Promise<{ id: str
     )
 
   const organizations = await getAccessibleOrganizationsForUser(user)
-
+  const effectiveRole = getEffectiveRoleFromUser(user)
   return (
     <div className="min-h-screen bg-gray-50 py-6">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -52,7 +53,12 @@ export default async function UpdateUser({ params }: { params: Promise<{ id: str
         <Card className="shadow-lg border-0">
           <CardContent className="p-6">
             <div className="max-w-4xl">
-              <UpdateUserForm organizations={organizations} data={data} id={id} />
+              <UpdateUserForm
+                organizations={organizations}
+                data={data}
+                id={id}
+                authUserRole={effectiveRole}
+              />
             </div>
           </CardContent>
         </Card>

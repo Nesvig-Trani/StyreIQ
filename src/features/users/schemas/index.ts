@@ -142,4 +142,5 @@ export type UpdateUserFormProps = {
   id: string
   organizations: Organization[]
   data: User
+  authUserRole?: UserRolesEnum | null
 }

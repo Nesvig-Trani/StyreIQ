@@ -88,7 +88,7 @@ export default async function CreateUnit() {
                 </Card>
 
                 <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                  <Button asChild size="lg">
+                  <Button asChild size="lg" variant="secondary">
                     <Link href="/dashboard/users/create">
                       <UserPlus className="h-4 w-4 mr-2" />
                       Create User
