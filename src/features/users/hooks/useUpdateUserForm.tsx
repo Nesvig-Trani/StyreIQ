@@ -13,12 +13,33 @@ import { Organization } from '@/types/payload-types'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createUnitTree, UnitWithDepth } from '@/features/units'
 import { normalizeActiveRole, normalizeRoles } from '@/shared/utils/role-hierarchy'
+import { useMemo } from 'react'
 
-function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
+function useUpdateUserForm({ organizations, id, data, authUserRole }: UpdateUserFormProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const returnTo = searchParams.get('returnTo') || `/dashboard/users`
   const tree = createUnitTree(organizations as UnitWithDepth[])
+
+  const allowedRoles = useMemo(() => {
+    switch (authUserRole) {
+      case UserRolesEnum.SuperAdmin:
+        return Object.values(UserRolesEnum)
+      case UserRolesEnum.CentralAdmin:
+        return [
+          UserRolesEnum.CentralAdmin,
+          UserRolesEnum.UnitAdmin,
+          UserRolesEnum.SocialMediaManager,
+        ]
+      case UserRolesEnum.UnitAdmin:
+        return [UserRolesEnum.UnitAdmin, UserRolesEnum.SocialMediaManager]
+      case UserRolesEnum.SocialMediaManager:
+        return [UserRolesEnum.SocialMediaManager]
+      default:
+        return []
+    }
+  }, [authUserRole])
+
   const { formComponent } = useFormHelper(
     {
       schema: updateUserFormSchema,
@@ -43,7 +64,7 @@ function useUpdateUserForm({ organizations, id, data }: UpdateUserFormProps) {
           label: 'Roles',
           name: 'roles',
           type: 'multiselect',
-          options: Object.values(UserRolesEnum).map((role) => ({
+          options: allowedRoles.map((role) => ({
             label: roleLabelMap[role],
             value: role,
           })),
