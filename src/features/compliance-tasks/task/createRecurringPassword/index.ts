@@ -23,7 +23,7 @@ export async function createRecurringPasswordTasks() {
 }
 
 async function processTenantRecurringTasks(payload: Payload, tenant: Tenant): Promise<void> {
-  const passwordCadence = tenant.governanceSettings?.passwordConfirmationCadenceDays || 180
+  const passwordCadence = tenant.governanceSettings?.passwordUpdateCadenceDays || 180
 
   const users = await payload.find({
     collection: 'users',

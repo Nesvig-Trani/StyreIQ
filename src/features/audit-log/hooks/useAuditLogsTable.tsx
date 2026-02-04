@@ -37,6 +37,7 @@ function getActionLabel(action: AuditLogActionEnum): string {
     [AuditLogActionEnum.FlagResolved]: 'Flag Resolved',
     [AuditLogActionEnum.TrainingTasksGeneratedForNewRoles]:
       'Training Tasks Generated For New Roles',
+    [AuditLogActionEnum.ReminderSent]: 'Reminder Sent',
   }
   return labels[action] || action
 }
@@ -70,6 +71,8 @@ function getActionBadgeVariant(action: string): string {
     case AuditLogActionEnum.PasswordRecovery:
     case AuditLogActionEnum.PasswordReset:
       return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
+    case AuditLogActionEnum.ReminderSent:
+      return 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200'
     default:
       return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
   }

@@ -19,10 +19,10 @@ export const createTenant = async (data: CreateTenantFormSchema) => {
         notes: data.notes,
       },
       governanceSettings: {
-        policyReminderDays: [{ day: 3 }, { day: 7 }, { day: 14 }],
-        trainingEscalationDays: [{ day: 15 }, { day: 30 }, { day: 45 }],
+        reminderSchedule: [{ day: 3 }, { day: 7 }, { day: 14 }],
+        escalationDays: [{ day: 15 }, { day: 30 }, { day: 45 }],
         rollCallFrequency: 'quarterly',
-        passwordRotationDays: 90,
+        passwordUpdateCadenceDays: 180,
       },
       enabledTrainings: data.enabledTrainings,
     }),

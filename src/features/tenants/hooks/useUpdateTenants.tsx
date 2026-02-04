@@ -14,27 +14,24 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
 
   const currentSettings = tenant.governanceSettings
     ? {
-        policyReminderDays: tenant.governanceSettings.policyReminderDays || [
+        reminderSchedule: tenant.governanceSettings.reminderSchedule || [
           { day: 3 },
           { day: 7 },
           { day: 14 },
         ],
-        trainingEscalationDays: tenant.governanceSettings.trainingEscalationDays || [
+        escalationDays: tenant.governanceSettings.escalationDays || [
           { day: 15 },
           { day: 30 },
           { day: 45 },
         ],
         rollCallFrequency: tenant.governanceSettings.rollCallFrequency || 'quarterly',
-        passwordRotationDays: tenant.governanceSettings.passwordRotationDays || 90,
-        passwordConfirmationCadenceDays:
-          tenant.governanceSettings.passwordConfirmationCadenceDays || 180,
+        passwordUpdateCadenceDays: tenant.governanceSettings.passwordUpdateCadenceDays || 180,
       }
     : {
-        policyReminderDays: [{ day: 3 }, { day: 7 }, { day: 14 }],
-        trainingEscalationDays: [{ day: 15 }, { day: 30 }, { day: 45 }],
+        reminderSchedule: [{ day: 3 }, { day: 7 }, { day: 14 }],
+        escalationDays: [{ day: 15 }, { day: 30 }, { day: 45 }],
         rollCallFrequency: 'quarterly' as const,
-        passwordRotationDays: 90,
-        passwordConfirmationCadenceDays: 180,
+        passwordUpdateCadenceDays: 180,
       }
 
   const { formComponent, form } = useFormHelper(
@@ -42,8 +39,8 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
       schema: tenantGovernanceSettingsSchema,
       fields: [
         {
-          name: 'policyReminderDays',
-          label: 'Policy Reminder Days',
+          name: 'reminderSchedule',
+          label: 'Reminder Schedule',
           type: 'array',
           children: [
             {
@@ -57,8 +54,8 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
           size: 'full',
         },
         {
-          name: 'trainingEscalationDays',
-          label: 'Training Escalation Days',
+          name: 'escalationDays',
+          label: 'Escalation Days',
           type: 'array',
           children: [
             {
@@ -85,15 +82,8 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
           size: 'half',
         },
         {
-          name: 'passwordRotationDays',
-          label: 'Password Rotation Days',
-          type: 'number',
-          placeholder: 'Enter days (30-365)',
-          size: 'half',
-        },
-        {
-          name: 'passwordConfirmationCadenceDays',
-          label: 'Password Confirmation Cadence (Days)',
+          name: 'passwordUpdateCadenceDays',
+          label: 'Password Update Cadence (Days)',
           type: 'number',
           placeholder: 'Enter days (30-365)',
           size: 'half',
@@ -105,12 +95,7 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
         router.refresh()
       },
       onCancel: () => {
-        form.reset({
-          policyReminderDays: currentSettings.policyReminderDays,
-          trainingEscalationDays: currentSettings.trainingEscalationDays,
-          rollCallFrequency: currentSettings.rollCallFrequency,
-          passwordRotationDays: currentSettings.passwordRotationDays,
-        })
+        form.reset(currentSettings)
         toast.info('Changes discarded')
       },
       showCancel: true,
@@ -118,13 +103,7 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
       submitContent: 'Save Changes',
     },
     {
-      defaultValues: {
-        policyReminderDays: currentSettings.policyReminderDays,
-        trainingEscalationDays: currentSettings.trainingEscalationDays,
-        rollCallFrequency: currentSettings.rollCallFrequency,
-        passwordRotationDays: currentSettings.passwordRotationDays,
-        passwordConfirmationCadenceDays: currentSettings.passwordConfirmationCadenceDays,
-      },
+      defaultValues: currentSettings,
     },
   )
 

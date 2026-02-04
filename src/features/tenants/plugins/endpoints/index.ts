@@ -63,10 +63,10 @@ export const createTenant: Endpoint = {
           notes: dataParsed.notes || '',
         },
         governanceSettings: {
-          policyReminderDays: [{ day: 3 }, { day: 7 }, { day: 14 }],
-          trainingEscalationDays: [{ day: 15 }, { day: 30 }, { day: 45 }],
+          reminderSchedule: [{ day: 3 }, { day: 7 }, { day: 14 }],
+          escalationDays: [{ day: 15 }, { day: 30 }, { day: 45 }],
           rollCallFrequency: 'quarterly',
-          passwordRotationDays: 90,
+          passwordUpdateCadenceDays: 180,
         },
         enabledTrainings: dataParsed.enabledTrainings,
       },
@@ -283,15 +283,10 @@ export const updateGovernanceSettings: Endpoint = {
       id: targetTenantId,
       data: {
         governanceSettings: {
-          policyReminderDays: data.policyReminderDays || [{ day: 3 }, { day: 7 }, { day: 14 }],
-          trainingEscalationDays: data.trainingEscalationDays || [
-            { day: 15 },
-            { day: 30 },
-            { day: 45 },
-          ],
+          reminderSchedule: data.reminderSchedule || [{ day: 3 }, { day: 7 }, { day: 14 }],
+          escalationDays: data.escalationDays || [{ day: 15 }, { day: 30 }, { day: 45 }],
           rollCallFrequency: data.rollCallFrequency || 'quarterly',
-          passwordRotationDays: data.passwordRotationDays || 90,
-          passwordConfirmationCadenceDays: data.passwordConfirmationCadenceDays || 180,
+          passwordUpdateCadenceDays: data.passwordUpdateCadenceDays || 180,
         },
       },
     })

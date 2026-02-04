@@ -321,32 +321,31 @@ export interface Tenant {
     | null
   governanceSettings?: {
     /**
-     * Days after policy assignment to send reminders
+     * Choose the day offsets when StyreIQ sends reminders to the assigned user for any open compliance task. These reminders help prevent tasks from becoming overdue.
      */
-    policyReminderDays?:
+    reminderSchedule?:
       | {
           day: number
           id?: string | null
         }[]
       | null
     /**
-     * Days after training assignment to escalate
+     * If a task remains incomplete, escalation increases visibility beyond the assignee. If a task becomes overdue, StyreIQ notifies additional roles (Unit Admins and ultimately Central Admins) based on the schedule you set here.
      */
-    trainingEscalationDays?:
+    escalationDays?:
       | {
           day: number
           id?: string | null
         }[]
       | null
+    /**
+     * How often users must confirm which social media accounts they are connected to (ex: quarterly).
+     */
     rollCallFrequency?: ('monthly' | 'quarterly' | 'semiannual' | 'annual') | null
     /**
-     * Force password change every N days
+     * How often users will be asked to update passwords used to access their assigned social media accounts, whether through individual login access or shared credentials.
      */
-    passwordRotationDays?: number | null
-    /**
-     * Days between password confirmation tasks for both user and shared accounts (default: 180)
-     */
-    passwordConfirmationCadenceDays?: number | null
+    passwordUpdateCadenceDays?: number | null
   }
   status: 'active' | 'suspended' | 'archived'
   metadata?: {
@@ -588,6 +587,10 @@ export interface Flag {
   suggestedAction?: string | null
   createdBy?: (number | null) | User
   tenant?: (number | null) | Tenant
+  /**
+   * The compliance task that triggered this flag (if applicable)
+   */
+  relatedComplianceTask?: (number | null) | ComplianceTask
   updatedAt: string
   createdAt: string
 }
@@ -603,111 +606,6 @@ export interface FlagHistory {
   prevStatus?: ('resolved' | 'pending' | 'not_applicable' | 'in_progress') | null
   newStatus?: ('resolved' | 'pending' | 'not_applicable' | 'in_progress') | null
   tenant?: (number | null) | Tenant
-  updatedAt: string
-  createdAt: string
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "flagComments".
- */
-export interface FlagComment {
-  id: number
-  flag?: (number | null) | Flag
-  user?: (number | null) | User
-  comment?: string | null
-  tenant?: (number | null) | Tenant
-  updatedAt: string
-  createdAt: string
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "audit_log".
- */
-export interface AuditLog {
-  id: number
-  user: number | User
-  action:
-    | 'create'
-    | 'update'
-    | 'delete'
-    | 'approval'
-    | 'flag_resolution'
-    | 'policy_acknowledgment'
-    | 'user_creation'
-    | 'password_recovery'
-    | 'password_reset'
-    | 'compliance_task_generated'
-    | 'task_escalation'
-    | 'role_request_approved'
-    | 'role_request_rejected'
-    | 'task_completed'
-    | 'training_completed'
-    | 'password_setup_completed'
-    | 'roll_call_completed'
-    | '2fa_confirmed'
-    | 'shared_password_confirmed'
-    | 'user_password_confirmed'
-    | 'roll_call_triggered'
-    | 'roll_call_auto_generated'
-    | 'roll_call_auto_generation_failed'
-    | 'roll_call_manually_generated'
-    | 'flag_resolved'
-    | 'training_task_generated_for_new_roles'
-  entity: string
-  prev?:
-    | {
-        [k: string]: unknown
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null
-  current?:
-    | {
-        [k: string]: unknown
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null
-  organizations?: (number | Organization)[] | null
-  metadata?:
-    | {
-        [k: string]: unknown
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null
-  tenant?: (number | null) | Tenant
-  document?:
-    | ({
-        relationTo: 'users'
-        value: number | User
-      } | null)
-    | ({
-        relationTo: 'organization'
-        value: number | Organization
-      } | null)
-    | ({
-        relationTo: 'social-medias'
-        value: number | SocialMedia
-      } | null)
-    | ({
-        relationTo: 'organization_access'
-        value: number | OrganizationAccess
-      } | null)
-    | ({
-        relationTo: 'flags'
-        value: number | Flag
-      } | null)
-    | ({
-        relationTo: 'flagComments'
-        value: number | FlagComment
-      } | null)
   updatedAt: string
   createdAt: string
 }
@@ -779,6 +677,112 @@ export interface ComplianceTask {
       }[]
     | null
   tenant: number | Tenant
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "flagComments".
+ */
+export interface FlagComment {
+  id: number
+  flag?: (number | null) | Flag
+  user?: (number | null) | User
+  comment?: string | null
+  tenant?: (number | null) | Tenant
+  updatedAt: string
+  createdAt: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "audit_log".
+ */
+export interface AuditLog {
+  id: number
+  user: number | User
+  action:
+    | 'create'
+    | 'update'
+    | 'delete'
+    | 'approval'
+    | 'flag_resolution'
+    | 'policy_acknowledgment'
+    | 'user_creation'
+    | 'password_recovery'
+    | 'password_reset'
+    | 'compliance_task_generated'
+    | 'task_escalation'
+    | 'role_request_approved'
+    | 'role_request_rejected'
+    | 'task_completed'
+    | 'training_completed'
+    | 'password_setup_completed'
+    | 'roll_call_completed'
+    | '2fa_confirmed'
+    | 'shared_password_confirmed'
+    | 'user_password_confirmed'
+    | 'roll_call_triggered'
+    | 'roll_call_auto_generated'
+    | 'roll_call_auto_generation_failed'
+    | 'roll_call_manually_generated'
+    | 'flag_resolved'
+    | 'training_task_generated_for_new_roles'
+    | 'reminder_sent'
+  entity: string
+  prev?:
+    | {
+        [k: string]: unknown
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null
+  current?:
+    | {
+        [k: string]: unknown
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null
+  organizations?: (number | Organization)[] | null
+  metadata?:
+    | {
+        [k: string]: unknown
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null
+  tenant?: (number | null) | Tenant
+  document?:
+    | ({
+        relationTo: 'users'
+        value: number | User
+      } | null)
+    | ({
+        relationTo: 'organization'
+        value: number | Organization
+      } | null)
+    | ({
+        relationTo: 'social-medias'
+        value: number | SocialMedia
+      } | null)
+    | ({
+        relationTo: 'organization_access'
+        value: number | OrganizationAccess
+      } | null)
+    | ({
+        relationTo: 'flags'
+        value: number | Flag
+      } | null)
+    | ({
+        relationTo: 'flagComments'
+        value: number | FlagComment
+      } | null)
   updatedAt: string
   createdAt: string
 }
@@ -1231,6 +1235,7 @@ export interface FlagsSelect<T extends boolean = true> {
   suggestedAction?: T
   createdBy?: T
   tenant?: T
+  relatedComplianceTask?: T
   updatedAt?: T
   createdAt?: T
 }
@@ -1297,21 +1302,20 @@ export interface TenantsSelect<T extends boolean = true> {
   governanceSettings?:
     | T
     | {
-        policyReminderDays?:
+        reminderSchedule?:
           | T
           | {
               day?: T
               id?: T
             }
-        trainingEscalationDays?:
+        escalationDays?:
           | T
           | {
               day?: T
               id?: T
             }
         rollCallFrequency?: T
-        passwordRotationDays?: T
-        passwordConfirmationCadenceDays?: T
+        passwordUpdateCadenceDays?: T
       }
   status?: T
   metadata?:

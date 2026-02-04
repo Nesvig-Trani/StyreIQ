@@ -327,7 +327,13 @@ export const getFlagInfoForDashboard = async (): Promise<DashboardData> => {
     and: [
       {
         flagType: {
-          in: [FlagTypeEnum.SECURITY_CONCERN, FlagTypeEnum.OPERATIONAL_ISSUE, FlagTypeEnum.OTHER],
+          in: [
+            FlagTypeEnum.SECURITY_CONCERN,
+            FlagTypeEnum.OPERATIONAL_ISSUE,
+            FlagTypeEnum.OTHER,
+            'OVERDUE_COMPLIANCE_TASK',
+            'OVERDUE_SECURITY_TASK',
+          ],
         },
       },
       {

@@ -28,11 +28,11 @@ export async function sendComplianceReminders() {
 }
 
 async function processTenantReminders(payload: Payload, tenant: Tenant): Promise<void> {
-  const policyReminderDays: ReminderCadence[] = (tenant.governanceSettings
-    ?.policyReminderDays as ReminderCadence[]) || [{ day: 3 }, { day: 7 }, { day: 14 }]
+  const reminderSchedule: ReminderCadence[] = (tenant.governanceSettings
+    ?.reminderSchedule as ReminderCadence[]) || [{ day: 3 }, { day: 7 }, { day: 14 }]
 
-  const trainingEscalationDays: ReminderCadence[] = (tenant.governanceSettings
-    ?.trainingEscalationDays as ReminderCadence[]) || [{ day: 15 }, { day: 30 }, { day: 45 }]
+  const escalationDays: ReminderCadence[] = (tenant.governanceSettings
+    ?.escalationDays as ReminderCadence[]) || [{ day: 15 }, { day: 30 }, { day: 45 }]
 
   const pendingTasks = await payload.find({
     collection: 'compliance_tasks',
@@ -45,8 +45,8 @@ async function processTenantReminders(payload: Payload, tenant: Tenant): Promise
   for (const task of pendingTasks.docs) {
     try {
       await processTask(payload, task, tenant, {
-        policyReminderDays,
-        trainingEscalationDays,
+        reminderSchedule,
+        escalationDays,
       })
     } catch (error) {
       console.error(`Failed to process task ${task.id} for tenant ${tenant.id}:`, error)
@@ -59,17 +59,17 @@ async function processTask(
   task: ComplianceTask,
   tenant: Tenant,
   cadences: {
-    policyReminderDays: ReminderCadence[]
-    trainingEscalationDays: ReminderCadence[]
+    reminderSchedule: ReminderCadence[]
+    escalationDays: ReminderCadence[]
   },
 ): Promise<{ reminderSent: boolean; escalated: boolean }> {
   const now = new Date()
   const dueDate = new Date(task.dueDate)
   const daysSinceDue = Math.floor((now.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24))
 
-  const reminderCadence = getReminderCadence(task.type, cadences)
+  const reminderDays = cadences.reminderSchedule.map((d) => d.day)
 
-  const shouldSendReminder = reminderCadence.includes(daysSinceDue)
+  const shouldSendReminder = reminderDays.includes(daysSinceDue)
 
   if (!shouldSendReminder) {
     return { reminderSent: false, escalated: false }
@@ -108,8 +108,27 @@ async function processTask(
     },
   })
 
-  const lastReminderDay = reminderCadence[reminderCadence.length - 1]
-  const shouldEscalate = daysSinceDue === lastReminderDay
+  await payload.create({
+    collection: 'audit_log',
+    data: {
+      user: user.id,
+      action: 'reminder_sent',
+      entity: 'compliance_tasks',
+      metadata: {
+        taskId: task.id,
+        taskType: task.type,
+        daysSinceDue: daysSinceDue,
+        reminderNumber: (task.remindersSent?.length || 0) + 1,
+        dueDate: task.dueDate,
+      },
+      organizations: user.organizations || [],
+      tenant: tenant.id,
+    },
+  })
+
+  const escalationSchedule = cadences.escalationDays.map((d) => d.day)
+  const lastEscalationDay = escalationSchedule[escalationSchedule.length - 1]
+  const shouldEscalate = daysSinceDue === lastEscalationDay
 
   if (shouldEscalate) {
     await escalateTask(payload, task, user, tenant, daysSinceDue)
@@ -117,28 +136,6 @@ async function processTask(
   }
 
   return { reminderSent: true, escalated: false }
-}
-
-function getReminderCadence(
-  taskType: string,
-  cadences: {
-    policyReminderDays: ReminderCadence[]
-    trainingEscalationDays: ReminderCadence[]
-  },
-): number[] {
-  switch (taskType) {
-    case 'POLICY_ACKNOWLEDGMENT':
-      return cadences.policyReminderDays.map((d) => d.day)
-    case 'TRAINING_COMPLETION':
-      return cadences.trainingEscalationDays.map((d) => d.day)
-    case 'PASSWORD_SETUP':
-    case 'CONFIRM_USER_PASSWORD':
-    case 'CONFIRM_SHARED_PASSWORD':
-    case 'CONFIRM_2FA':
-    case 'USER_ROLL_CALL':
-    default:
-      return [3, 7, 14]
-  }
 }
 
 async function sendReminderEmail(
@@ -171,6 +168,7 @@ async function escalateTask(
   const escalationTarget = await findEscalationTarget(payload, user, tenant)
 
   if (!escalationTarget) {
+    console.warn(`No escalation target found for user ${user.id} in tenant ${tenant.id}`)
     return
   }
 
@@ -190,9 +188,84 @@ async function escalateTask(
     },
   })
 
+  await createOrUpdateRiskFlag(payload, task, user, tenant, daysSinceDue)
+
   await sendEscalationEmail(payload, task, user, escalationTarget, daysSinceDue)
 
   await createEscalationAuditLog(payload, task, user, escalationTarget, tenant, daysSinceDue)
+}
+
+async function createOrUpdateRiskFlag(
+  payload: Payload,
+  task: ComplianceTask,
+  user: User,
+  tenant: Tenant,
+  daysSinceDue: number,
+): Promise<void> {
+  const userOrgs = user.organizations || []
+
+  if (userOrgs.length === 0) {
+    console.warn(`User ${user.id} has no organizations, cannot create risk flag`)
+    return
+  }
+
+  const primaryOrg = userOrgs[0]
+  const primaryOrgId = typeof primaryOrg === 'object' ? (primaryOrg as Organization).id : primaryOrg
+
+  let flagType = 'OVERDUE_COMPLIANCE_TASK'
+
+  if (
+    task.type === 'CONFIRM_USER_PASSWORD' ||
+    task.type === 'CONFIRM_SHARED_PASSWORD' ||
+    task.type === 'CONFIRM_2FA'
+  ) {
+    flagType = 'OVERDUE_SECURITY_TASK'
+  }
+
+  const existingFlags = await payload.find({
+    collection: 'flags',
+    where: {
+      and: [{ relatedComplianceTask: { equals: task.id } }, { status: { not_equals: 'resolved' } }],
+    },
+    limit: 1,
+  })
+
+  if (existingFlags.totalDocs > 0) {
+    const flag = existingFlags.docs[0]
+    await payload.update({
+      collection: 'flags',
+      id: flag.id,
+      data: {
+        description: `${flag.description || ''}\n\n[Update] Task escalated after ${daysSinceDue} days overdue.`,
+        lastActivity: new Date().toISOString(),
+      },
+    })
+  } else {
+    try {
+      await payload.create({
+        collection: 'flags',
+        data: {
+          flagType: flagType,
+          description: `Compliance task "${task.description || getTaskTypeLabel(task.type)}" is ${daysSinceDue} days overdue and has been escalated. Immediate action required.`,
+          status: 'pending',
+          assignedTo: user.id,
+          organizations: [primaryOrgId],
+          tenant: typeof tenant === 'object' ? tenant.id : tenant,
+          detectionDate: new Date().toISOString(),
+          lastActivity: new Date().toISOString(),
+          source: 'automated',
+          affectedEntity: {
+            relationTo: 'users',
+            value: user.id,
+          },
+          dueDate: task.dueDate,
+        },
+      })
+    } catch (error) {
+      console.error(`Failed to create risk flag for task ${task.id}:`, error)
+      throw new Error('Risk flag creation failed')
+    }
+  }
 }
 
 async function findEscalationTarget(
@@ -304,6 +377,7 @@ async function createEscalationAuditLog(
         escalatedFrom: fromUser.id,
         escalatedTo: toUser.id,
         daysSinceDue: daysSinceDue,
+        reason: 'Task overdue - escalated after final reminder',
       },
       organizations: fromUser.organizations || [],
       tenant: tenant.id,
@@ -320,6 +394,7 @@ function getTaskTypeLabel(type: string): string {
     POLICY_ACKNOWLEDGMENT: 'Policy Acknowledgment',
     TRAINING_COMPLETION: 'Training Completion',
     USER_ROLL_CALL: 'User Roll Call',
+    REVIEW_FLAG: 'Review Risk Flag',
   }
   return labels[type] || type
 }
