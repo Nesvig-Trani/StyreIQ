@@ -48,7 +48,7 @@ export const createTenantSchema = z.object({
 export type CreateTenantFormSchema = z.infer<typeof createTenantSchema>
 
 export const tenantGovernanceSettingsSchema = z.object({
-  policyReminderDays: z
+  reminderSchedule: z
     .array(
       z.object({
         day: z.coerce.number().min(1).max(90),
@@ -56,7 +56,7 @@ export const tenantGovernanceSettingsSchema = z.object({
     )
     .min(1)
     .max(5),
-  trainingEscalationDays: z
+  escalationDays: z
     .array(
       z.object({
         day: z.coerce.number().min(1).max(180),
@@ -64,10 +64,8 @@ export const tenantGovernanceSettingsSchema = z.object({
     )
     .min(1)
     .max(5),
-
   rollCallFrequency: z.enum(['monthly', 'quarterly', 'semiannual', 'annual']),
-  passwordRotationDays: z.coerce.number().min(30).max(365),
-  passwordConfirmationCadenceDays: z.coerce.number().min(30).max(365),
+  passwordUpdateCadenceDays: z.coerce.number().min(30).max(365),
 })
 
 export type TenantGovernanceSettingsSchema = z.infer<typeof tenantGovernanceSettingsSchema>

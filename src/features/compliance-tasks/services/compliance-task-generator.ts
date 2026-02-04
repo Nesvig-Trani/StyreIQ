@@ -311,9 +311,9 @@ export class ComplianceTaskGenerator {
 
     const trainingWindow =
       tenant.governanceSettings &&
-      Array.isArray(tenant.governanceSettings.trainingEscalationDays) &&
-      tenant.governanceSettings.trainingEscalationDays[1]
-        ? (tenant.governanceSettings.trainingEscalationDays[1] as { day: number }).day
+      Array.isArray(tenant.governanceSettings.escalationDays) &&
+      tenant.governanceSettings.escalationDays[1]
+        ? (tenant.governanceSettings.escalationDays[1] as { day: number }).day
         : 30
 
     const dueDate = this.addDays(new Date(), trainingWindow)

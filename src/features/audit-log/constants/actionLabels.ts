@@ -27,4 +27,5 @@ export const actionLabels = {
   [AuditLogActionEnum.RollCallManuallyGenerated]: 'Roll Call Manually Generated',
   [AuditLogActionEnum.FlagResolved]: 'Flag Resolved',
   [AuditLogActionEnum.TrainingTasksGeneratedForNewRoles]: 'Training Tasks Generated For New Roles',
+  [AuditLogActionEnum.ReminderSent]: 'Reminder Sent',
 }

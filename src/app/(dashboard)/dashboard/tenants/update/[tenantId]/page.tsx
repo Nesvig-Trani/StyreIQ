@@ -39,9 +39,10 @@ export default async function UpdateTenantPage({
         </nav>
 
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Update Governance Settings</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Governance Settings</h1>
           <p className="text-lg text-gray-600">
-            Configure automated compliance cycles for your organization
+            Configure when compliance tasks are created, when assignees are reminded, and what
+            happens when tasks become overdue.
           </p>
         </div>
 

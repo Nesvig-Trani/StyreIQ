@@ -108,6 +108,15 @@ export const Flags: CollectionConfig = {
         beforeChange: [injectTenantHook],
       },
     },
+    {
+      name: 'relatedComplianceTask',
+      type: 'relationship',
+      relationTo: 'compliance_tasks',
+      label: 'Related Compliance Task',
+      admin: {
+        description: 'The compliance task that triggered this flag (if applicable)',
+      },
+    },
   ],
   endpoints: [createFlag, markAsResolved],
 }

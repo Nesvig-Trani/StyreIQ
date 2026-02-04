@@ -133,6 +133,10 @@ export const AuditLogs: CollectionConfig = {
           label: 'Training Tasks Generated For New Roles',
           value: AuditLogActionEnum.TrainingTasksGeneratedForNewRoles,
         },
+        {
+          label: 'Reminder Sent',
+          value: AuditLogActionEnum.ReminderSent,
+        },
       ],
       required: true,
     },

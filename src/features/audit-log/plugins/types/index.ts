@@ -25,4 +25,5 @@ export enum AuditLogActionEnum {
   RollCallManuallyGenerated = 'roll_call_manually_generated',
   FlagResolved = 'flag_resolved',
   TrainingTasksGeneratedForNewRoles = 'training_task_generated_for_new_roles',
+  ReminderSent = 'reminder_sent',
 }

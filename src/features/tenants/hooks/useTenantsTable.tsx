@@ -5,7 +5,7 @@ import { ColumnDef } from '@tanstack/table-core'
 import { tenantSearchSchema } from '../schemas'
 import { Button, useParsedSearchParams } from '@/shared'
 import Link from 'next/link'
-import { PencilIcon } from 'lucide-react'
+import { Settings } from 'lucide-react'
 
 function useTenantsTable({ canEdit }: { canEdit: boolean }) {
   const searchParams = useParsedSearchParams(tenantSearchSchema)
@@ -29,9 +29,14 @@ function useTenantsTable({ canEdit }: { canEdit: boolean }) {
       header: 'Actions',
       cell: ({ row }) => {
         return (
-          <Button className="!text-white" asChild size="icon" aria-label="Edit social media">
+          <Button
+            className="text-white!"
+            asChild
+            size="icon"
+            aria-label="Configure governance settings"
+          >
             <Link href={`/dashboard/tenants/update/${row.original.id}`}>
-              <PencilIcon className="h-4 w-4" />
+              <Settings className="h-4 w-4" />
             </Link>
           </Button>
         )

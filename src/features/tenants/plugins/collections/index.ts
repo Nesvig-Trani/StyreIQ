@@ -135,12 +135,13 @@ export const Tenants: CollectionConfig = {
       label: 'Governance Settings',
       fields: [
         {
-          name: 'policyReminderDays',
+          name: 'reminderSchedule',
           type: 'array',
-          label: 'Policy Reminder Cadence (Days)',
+          label: 'Reminder Schedule',
           defaultValue: [{ day: 3 }, { day: 7 }, { day: 14 }],
           admin: {
-            description: 'Days after policy assignment to send reminders',
+            description:
+              'Choose the day offsets when StyreIQ sends reminders to the assigned user for any open compliance task. These reminders help prevent tasks from becoming overdue.',
           },
           fields: [
             {
@@ -148,17 +149,19 @@ export const Tenants: CollectionConfig = {
               type: 'number',
               required: true,
               min: 1,
+              max: 90,
             },
           ],
         },
 
         {
-          name: 'trainingEscalationDays',
+          name: 'escalationDays',
           type: 'array',
-          label: 'Training Escalation Cadence (Days)',
+          label: 'Escalation Days',
           defaultValue: [{ day: 15 }, { day: 30 }, { day: 45 }],
           admin: {
-            description: 'Days after training assignment to escalate',
+            description:
+              'If a task remains incomplete, escalation increases visibility beyond the assignee. If a task becomes overdue, StyreIQ notifies additional roles (Unit Admins and ultimately Central Admins) based on the schedule you set here.',
           },
           fields: [
             {
@@ -166,6 +169,7 @@ export const Tenants: CollectionConfig = {
               type: 'number',
               required: true,
               min: 1,
+              max: 180,
             },
           ],
         },
@@ -175,6 +179,10 @@ export const Tenants: CollectionConfig = {
           type: 'select',
           label: 'Roll Call Frequency',
           defaultValue: 'quarterly',
+          admin: {
+            description:
+              'How often users must confirm which social media accounts they are connected to (ex: quarterly).',
+          },
           options: [
             { label: 'Monthly', value: 'monthly' },
             { label: 'Quarterly', value: 'quarterly' },
@@ -183,26 +191,15 @@ export const Tenants: CollectionConfig = {
           ],
         },
         {
-          name: 'passwordRotationDays',
+          name: 'passwordUpdateCadenceDays',
           type: 'number',
-          label: 'Password Rotation (Days)',
-          defaultValue: 90,
-          min: 30,
-          max: 365,
-          admin: {
-            description: 'Force password change every N days',
-          },
-        },
-        {
-          name: 'passwordConfirmationCadenceDays',
-          type: 'number',
-          label: 'Password Confirmation Cadence (Days)',
+          label: 'Password Update Cadence (Days)',
           defaultValue: 180,
           min: 30,
           max: 365,
           admin: {
             description:
-              'Days between password confirmation tasks for both user and shared accounts (default: 180)',
+              'How often users will be asked to update passwords used to access their assigned social media accounts, whether through individual login access or shared credentials.',
           },
         },
       ],
