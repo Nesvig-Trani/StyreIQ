@@ -728,6 +728,10 @@ export interface AuditLog {
     | 'flag_resolved'
     | 'training_task_generated_for_new_roles'
     | 'reminder_sent'
+    | 'email_sent'
+    | 'email_failed'
+    | 'task_creation_failed'
+    | 'critical_error'
   entity: string
   prev?:
     | {

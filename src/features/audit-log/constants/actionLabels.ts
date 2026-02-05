@@ -28,4 +28,8 @@ export const actionLabels = {
   [AuditLogActionEnum.FlagResolved]: 'Flag Resolved',
   [AuditLogActionEnum.TrainingTasksGeneratedForNewRoles]: 'Training Tasks Generated For New Roles',
   [AuditLogActionEnum.ReminderSent]: 'Reminder Sent',
+  [AuditLogActionEnum.EmailSent]: 'Email Sent',
+  [AuditLogActionEnum.EmailFailed]: 'Email Failed',
+  [AuditLogActionEnum.TaskCreationFailed]: 'Task Creation Failed',
+  [AuditLogActionEnum.CriticalError]: 'Critical Error',
 }

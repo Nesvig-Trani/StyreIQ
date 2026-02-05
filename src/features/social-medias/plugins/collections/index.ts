@@ -22,6 +22,7 @@ import {
   tenantValidatedUpdateAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { ComplianceEmailService } from '@/features/compliance-tasks/services/email-service'
 
 export const SocialMediasCollectionSlug = 'social-medias'
 
@@ -383,34 +384,116 @@ export const SocialMedias: CollectionConfig = {
           const dueDate = new Date()
           dueDate.setDate(dueDate.getDate() + 30)
 
-          const tasksToCreate = users.docs
-            .filter((user) => user.tenant)
-            .map((user) => ({
-              type: 'CONFIRM_SHARED_PASSWORD' as const,
-              assignedUser: user.id,
-              tenant: (user.tenant && typeof user.tenant === 'object'
-                ? user.tenant.id
-                : user.tenant) as number,
-              status: 'PENDING' as const,
-              dueDate: dueDate.toISOString(),
-              description:
-                'Confirm that the shared account password has been changed and redistributed securely.',
-              remindersSent: [],
-              escalations: [],
-            }))
+          const emailService = new ComplianceEmailService(req.payload)
 
-          if (tasksToCreate.length > 0) {
-            await Promise.all(
-              tasksToCreate.map((data) =>
-                req.payload.create({
-                  collection: 'compliance_tasks',
-                  data,
+          if (users.docs.length > 0) {
+            const results = await Promise.allSettled(
+              users.docs
+                .filter((user) => user.tenant)
+                .map(async (user) => {
+                  const task = await req.payload.create({
+                    collection: 'compliance_tasks',
+                    data: {
+                      type: 'CONFIRM_SHARED_PASSWORD' as const,
+                      assignedUser: user.id,
+                      tenant: (user.tenant && typeof user.tenant === 'object'
+                        ? user.tenant.id
+                        : user.tenant) as number,
+                      status: 'PENDING' as const,
+                      dueDate: dueDate.toISOString(),
+                      description:
+                        'Confirm that the shared account password has been changed and redistributed securely.',
+                      remindersSent: [],
+                      escalations: [],
+                    },
+                  })
+
+                  if (user.email) {
+                    try {
+                      await emailService.sendTaskCreatedEmail(task, user)
+
+                      await req.payload.create({
+                        collection: 'audit_log',
+                        data: {
+                          user: user.id,
+                          action: 'email_sent',
+                          entity: 'compliance_tasks',
+                          metadata: {
+                            taskId: task.id,
+                            taskType: task.type,
+                            emailType: 'task_created',
+                            recipient: user.email,
+                            success: true,
+                          },
+                          tenant: typeof doc.tenant === 'object' ? doc.tenant.id : doc.tenant,
+                        },
+                      })
+                    } catch (emailError) {
+                      await req.payload.create({
+                        collection: 'audit_log',
+                        data: {
+                          user: user.id,
+                          action: 'email_failed',
+                          entity: 'compliance_tasks',
+                          metadata: {
+                            taskId: task.id,
+                            taskType: task.type,
+                            emailType: 'task_created',
+                            recipient: user.email,
+                            success: false,
+                            error:
+                              emailError instanceof Error ? emailError.message : String(emailError),
+                          },
+                          tenant: typeof doc.tenant === 'object' ? doc.tenant.id : doc.tenant,
+                        },
+                      })
+                    }
+                  }
+
+                  return { success: true }
                 }),
-              ),
             )
+
+            const failed = results.filter((r) => r.status === 'rejected')
+            if (failed.length > 0 && req.user?.id) {
+              await req.payload.create({
+                collection: 'audit_log',
+                data: {
+                  user: req.user.id,
+                  action: 'task_creation_failed',
+                  entity: 'social-medias',
+                  metadata: {
+                    socialMediaId: doc.id,
+                    socialMediaName: doc.name,
+                    totalUsers: users.docs.length,
+                    failedCount: failed.length,
+                    errors: failed.map((f) => {
+                      const reason = (f as PromiseRejectedResult).reason
+                      return reason instanceof Error ? reason.message : String(reason)
+                    }),
+                  },
+                  tenant: typeof doc.tenant === 'object' ? doc.tenant.id : doc.tenant,
+                },
+              })
+            }
           }
         } catch (error) {
-          console.error('error in after change hook', error)
+          if (req.user?.id) {
+            await req.payload.create({
+              collection: 'audit_log',
+              data: {
+                user: req.user.id,
+                action: 'critical_error',
+                entity: 'social-medias',
+                metadata: {
+                  socialMediaId: doc.id,
+                  error: error instanceof Error ? error.message : String(error),
+                  context: 'shared_password_task_creation',
+                },
+                tenant: typeof doc.tenant === 'object' ? doc.tenant.id : doc.tenant,
+              },
+            })
+          }
         }
       },
     ],

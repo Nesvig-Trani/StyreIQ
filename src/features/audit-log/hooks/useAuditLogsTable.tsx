@@ -38,6 +38,10 @@ function getActionLabel(action: AuditLogActionEnum): string {
     [AuditLogActionEnum.TrainingTasksGeneratedForNewRoles]:
       'Training Tasks Generated For New Roles',
     [AuditLogActionEnum.ReminderSent]: 'Reminder Sent',
+    [AuditLogActionEnum.EmailSent]: 'Email Sent',
+    [AuditLogActionEnum.EmailFailed]: 'Email Failed',
+    [AuditLogActionEnum.TaskCreationFailed]: 'Task Creation Failed',
+    [AuditLogActionEnum.CriticalError]: 'Critical Error',
   }
   return labels[action] || action
 }
@@ -47,11 +51,15 @@ function getActionBadgeVariant(action: string): string {
     case AuditLogActionEnum.Create:
     case AuditLogActionEnum.UserCreation:
     case AuditLogActionEnum.ComplianceTasksGenerated:
+    case AuditLogActionEnum.EmailSent:
       return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
     case AuditLogActionEnum.Update:
       return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
     case AuditLogActionEnum.Delete:
     case AuditLogActionEnum.RoleRequestRejected:
+    case AuditLogActionEnum.EmailFailed:
+    case AuditLogActionEnum.TaskCreationFailed:
+    case AuditLogActionEnum.CriticalError:
       return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
     case AuditLogActionEnum.Approval:
     case AuditLogActionEnum.RoleRequestApproved:

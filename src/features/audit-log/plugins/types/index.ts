@@ -26,4 +26,8 @@ export enum AuditLogActionEnum {
   FlagResolved = 'flag_resolved',
   TrainingTasksGeneratedForNewRoles = 'training_task_generated_for_new_roles',
   ReminderSent = 'reminder_sent',
+  EmailSent = 'email_sent',
+  EmailFailed = 'email_failed',
+  TaskCreationFailed = 'task_creation_failed',
+  CriticalError = 'critical_error',
 }
