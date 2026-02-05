@@ -22,6 +22,7 @@ import {
   tenantValidatedUpdateAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { ComplianceEmailService } from '@/features/compliance-tasks/services/email-service'
 
 export const SocialMediasCollectionSlug = 'social-medias'
 
@@ -383,30 +384,48 @@ export const SocialMedias: CollectionConfig = {
           const dueDate = new Date()
           dueDate.setDate(dueDate.getDate() + 30)
 
-          const tasksToCreate = users.docs
-            .filter((user) => user.tenant)
-            .map((user) => ({
-              type: 'CONFIRM_SHARED_PASSWORD' as const,
-              assignedUser: user.id,
-              tenant: (user.tenant && typeof user.tenant === 'object'
-                ? user.tenant.id
-                : user.tenant) as number,
-              status: 'PENDING' as const,
-              dueDate: dueDate.toISOString(),
-              description:
-                'Confirm that the shared account password has been changed and redistributed securely.',
-              remindersSent: [],
-              escalations: [],
-            }))
+          const emailService = new ComplianceEmailService(req.payload)
 
-          if (tasksToCreate.length > 0) {
+          if (users.docs.length > 0) {
             await Promise.all(
-              tasksToCreate.map((data) =>
-                req.payload.create({
-                  collection: 'compliance_tasks',
-                  data,
+              users.docs
+                .filter((user) => user.tenant)
+                .map(async (user) => {
+                  try {
+                    const task = await req.payload.create({
+                      collection: 'compliance_tasks',
+                      data: {
+                        type: 'CONFIRM_SHARED_PASSWORD' as const,
+                        assignedUser: user.id,
+                        tenant: (user.tenant && typeof user.tenant === 'object'
+                          ? user.tenant.id
+                          : user.tenant) as number,
+                        status: 'PENDING' as const,
+                        dueDate: dueDate.toISOString(),
+                        description:
+                          'Confirm that the shared account password has been changed and redistributed securely.',
+                        remindersSent: [],
+                        escalations: [],
+                      },
+                    })
+
+                    if (user.email) {
+                      try {
+                        await emailService.sendTaskCreatedEmail(task, user)
+                      } catch (emailError) {
+                        console.error(
+                          `Failed to send shared password email to user ${user.id}:`,
+                          emailError,
+                        )
+                      }
+                    }
+                  } catch (error) {
+                    console.error(
+                      `Failed to create shared password task for user ${user.id}:`,
+                      error,
+                    )
+                  }
                 }),
-              ),
             )
           }
         } catch (error) {

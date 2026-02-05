@@ -13,6 +13,7 @@ import {
   extractTenantId,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { ComplianceEmailService } from '@/features/compliance-tasks/services/email-service'
 
 export const Policies: CollectionConfig = {
   slug: PoliciesCollectionSlug,
@@ -59,6 +60,81 @@ export const Policies: CollectionConfig = {
           author: req.user.id,
           tenant: tenantId,
         }
+      },
+    ],
+    afterChange: [
+      async ({ doc, operation, req }) => {
+        if (operation !== 'create') return
+
+        setTimeout(async () => {
+          try {
+            const tenantId = typeof doc.tenant === 'object' ? doc.tenant.id : doc.tenant
+
+            if (!tenantId) return
+
+            const users = await req.payload.find({
+              collection: 'users',
+              where: {
+                and: [{ tenant: { equals: tenantId } }, { status: { equals: 'active' } }],
+              },
+              limit: 0,
+            })
+
+            if (users.docs.length === 0) return
+
+            const emailService = new ComplianceEmailService(req.payload)
+            const dueDate = new Date()
+            dueDate.setDate(dueDate.getDate() + 14)
+
+            await Promise.all(
+              users.docs.map(async (user) => {
+                try {
+                  const existingTask = await req.payload.find({
+                    collection: 'compliance_tasks',
+                    where: {
+                      and: [
+                        { assignedUser: { equals: user.id } },
+                        { type: { equals: 'POLICY_ACKNOWLEDGMENT' } },
+                        { status: { in: ['PENDING', 'OVERDUE'] } },
+                        { relatedPolicy: { equals: doc.id } },
+                      ],
+                    },
+                    limit: 1,
+                  })
+
+                  if (existingTask.totalDocs > 0) return
+
+                  const task = await req.payload.create({
+                    collection: 'compliance_tasks',
+                    data: {
+                      type: 'POLICY_ACKNOWLEDGMENT',
+                      assignedUser: user.id,
+                      tenant: tenantId,
+                      status: 'PENDING',
+                      dueDate: dueDate.toISOString(),
+                      description: `Review and acknowledge policy version ${doc.version}`,
+                      relatedPolicy: doc.id,
+                      remindersSent: [],
+                      escalations: [],
+                    },
+                  })
+
+                  if (user.email) {
+                    try {
+                      await emailService.sendTaskCreatedEmail(task, user)
+                    } catch (emailError) {
+                      console.error(`Failed to send policy email to user ${user.id}:`, emailError)
+                    }
+                  }
+                } catch (error) {
+                  console.error(`Failed to create policy task for user ${user.id}:`, error)
+                }
+              }),
+            )
+          } catch (error) {
+            console.error('Error creating policy tasks for existing users:', error)
+          }
+        }, 1000)
       },
     ],
   },
