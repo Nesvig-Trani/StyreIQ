@@ -137,6 +137,22 @@ export const AuditLogs: CollectionConfig = {
           label: 'Reminder Sent',
           value: AuditLogActionEnum.ReminderSent,
         },
+        {
+          label: 'Email Sent',
+          value: AuditLogActionEnum.EmailSent,
+        },
+        {
+          label: 'Email Failed',
+          value: AuditLogActionEnum.EmailFailed,
+        },
+        {
+          label: 'Task Creation Failed',
+          value: AuditLogActionEnum.TaskCreationFailed,
+        },
+        {
+          label: 'Critical Error',
+          value: AuditLogActionEnum.CriticalError,
+        },
       ],
       required: true,
     },
