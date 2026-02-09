@@ -304,18 +304,7 @@ export class ComplianceTaskGenerator {
 
     const tenantId = typeof user.tenant === 'object' ? user.tenant.id : user.tenant
 
-    const tenant = await this.payload.findByID({
-      collection: 'tenants',
-      id: tenantId,
-    })
-
-    const trainingWindow =
-      tenant.governanceSettings &&
-      Array.isArray(tenant.governanceSettings.escalationDays) &&
-      tenant.governanceSettings.escalationDays[1]
-        ? (tenant.governanceSettings.escalationDays[1] as { day: number }).day
-        : 30
-
+    const trainingWindow = 45
     const dueDate = this.addDays(new Date(), trainingWindow)
 
     const requiredTrainings = await this.getRequiredTrainingsForUser(user)
