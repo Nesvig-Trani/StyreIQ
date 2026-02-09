@@ -407,12 +407,7 @@ export const Users: CollectionConfig = {
 
               if (trainingsToCreate.length === 0) return
 
-              const trainingWindow =
-                tenant.governanceSettings &&
-                Array.isArray(tenant.governanceSettings.escalationDays) &&
-                tenant.governanceSettings.escalationDays[1]
-                  ? (tenant.governanceSettings.escalationDays[1] as { day: number }).day
-                  : 30
+              const trainingWindow = 45
 
               const dueDate = new Date()
               dueDate.setDate(dueDate.getDate() + trainingWindow)
