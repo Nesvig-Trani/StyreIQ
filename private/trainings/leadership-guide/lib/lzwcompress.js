@@ -1,263 +1,143 @@
-/*
- * lzwCompress.js
- *
- * Copyright (c) 2012-2016 floydpink
- * Licensed under the MIT license.
- *
- * The MIT License (MIT)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 'use strict'
-
 ;(function () {
-  var root = this
-
-  var lzwCompress = (function (Array, JSON, undefined) {
-    var _self = {},
-      _lzwLoggingEnabled = false,
-      _lzwLog = function (message) {
+  var r = (function (r, e) {
+    var n = {},
+      t = !1,
+      o = function (r) {
         try {
           console.log(
             'lzwCompress: ' +
               new Date().toISOString() +
               ' : ' +
-              (typeof message === 'object' ? JSON.stringify(message) : message),
+              ('object' == typeof r ? e.stringify(r) : r),
           )
-        } catch (e) {}
+        } catch (r) {}
       }
-
-    // KeyOptimize
-    // http://stackoverflow.com/questions/4433402/replace-keys-json-in-javascript
-    ;(function (self, Array, JSON) {
-      var _keys = [],
-        comparer = function (key) {
+    ;(!(function (r, e, n) {
+      var i = [],
+        u = function (r) {
           return function (e) {
-            return e === key
+            return e === r
           }
         },
-        inArray = function (array, comparer) {
-          for (var i = 0; i < array.length; i++) {
-            if (comparer(array[i])) {
-              return true
-            }
-          }
-          return false
+        f = function (r, e, n) {
+          ;(function (r, e) {
+            for (var n = 0; n < r.length; n++) if (e(r[n])) return !0
+            return !1
+          })(r, n) || r.push(e)
         },
-        pushNew = function (array, element, comparer) {
-          if (!inArray(array, comparer)) {
-            array.push(element)
-          }
+        c = function (r) {
+          if ('object' == typeof r) for (var n in r) (e.isArray(r) || f(i, n, u(n)), c(r[n]))
         },
-        _extractKeys = function (obj) {
-          if (typeof obj === 'object') {
-            for (var key in obj) {
-              if (!Array.isArray(obj)) {
-                pushNew(_keys, key, comparer(key))
-              }
-              _extractKeys(obj[key])
-            }
-          }
+        a = function (r) {
+          if ('object' != typeof r) return r
+          for (var n in r)
+            e.isArray(r)
+              ? (r[n] = a(r[n]))
+              : r.hasOwnProperty(n) && ((r[i.indexOf(n)] = a(r[n])), delete r[n])
+          return r
         },
-        _encode = function (obj) {
-          if (typeof obj !== 'object') {
-            return obj
-          }
-          for (var prop in obj) {
-            if (!Array.isArray(obj)) {
-              if (obj.hasOwnProperty(prop)) {
-                obj[_keys.indexOf(prop)] = _encode(obj[prop])
-                delete obj[prop]
-              }
-            } else {
-              obj[prop] = _encode(obj[prop])
-            }
-          }
-          return obj
-        },
-        _decode = function (obj) {
-          if (typeof obj !== 'object') {
-            return obj
-          }
-          for (var prop in obj) {
-            if (!Array.isArray(obj)) {
-              if (obj.hasOwnProperty(prop) && _keys[prop]) {
-                obj[_keys[prop]] = _decode(obj[prop])
-                delete obj[prop]
-              }
-            } else {
-              obj[prop] = _decode(obj[prop])
-            }
-          }
-          return obj
-        },
-        compress = function (json) {
-          _keys = []
-          var jsonObj = JSON.parse(json)
-          _extractKeys(jsonObj)
-          _lzwLoggingEnabled && _lzwLog('keys length : ' + _keys.length)
-          _lzwLoggingEnabled && _lzwLog('keys        : ' + _keys)
-          return JSON.stringify({ __k: _keys, __v: _encode(jsonObj) })
-        },
-        decompress = function (minifiedJson) {
-          var obj = minifiedJson
-          if (typeof obj !== 'object') {
-            return minifiedJson
-          }
-          if (!obj.hasOwnProperty('__k')) {
-            return JSON.stringify(obj)
-          }
-          _keys = obj.__k
-          return _decode(obj.__v)
+        s = function (r) {
+          if ('object' != typeof r) return r
+          for (var n in r)
+            e.isArray(r)
+              ? (r[n] = s(r[n]))
+              : r.hasOwnProperty(n) && i[n] && ((r[i[n]] = s(r[n])), delete r[n])
+          return r
         }
-
-      self.KeyOptimize = {
-        pack: compress,
-        unpack: decompress,
+      r.KeyOptimize = {
+        pack: function (r) {
+          i = []
+          var e = n.parse(r)
+          return (
+            c(e),
+            t && o('keys length : ' + i.length),
+            t && o('keys        : ' + i),
+            n.stringify({ __k: i, __v: a(e) })
+          )
+        },
+        unpack: function (r) {
+          var e = r
+          return 'object' != typeof e
+            ? r
+            : e.hasOwnProperty('__k')
+              ? ((i = e.__k), s(e.__v))
+              : n.stringify(e)
+        },
       }
-    })(_self, Array, JSON)
-
-    // LZWCompress
-    // http://stackoverflow.com/a/2252533/218882
-    // http://rosettacode.org/wiki/LZW_compression#JavaScript
-    ;(function (self, Array) {
-      var compress = function (uncompressed) {
-          if (typeof uncompressed !== 'string') {
-            return uncompressed
-          }
-          var i,
-            dictionary = {},
-            c,
-            wc,
-            w = '',
-            result = [],
-            dictSize = 256
-          for (i = 0; i < 256; i += 1) {
-            dictionary[String.fromCharCode(i)] = i
-          }
-          for (i = 0; i < uncompressed.length; i += 1) {
-            c = uncompressed.charAt(i)
-            wc = w + c
-            if (dictionary[wc]) {
-              w = wc
-            } else {
-              if (dictionary[w] === undefined) {
-                return uncompressed
+    })(n, r, e),
+      (function (r, e) {
+        r.LZWCompress = {
+          pack: function (r) {
+            if ('string' != typeof r) return r
+            var e,
+              n,
+              t,
+              o = {},
+              i = '',
+              u = [],
+              f = 256
+            for (e = 0; e < 256; e += 1) o[String.fromCharCode(e)] = e
+            for (e = 0; e < r.length; e += 1)
+              if (o[(t = i + (n = r.charAt(e)))]) i = t
+              else {
+                if (void 0 === o[i]) return r
+                ;(u.push(o[i]), (o[t] = f++), (i = String(n)))
               }
-              result.push(dictionary[w])
-              dictionary[wc] = dictSize++
-              w = String(c)
-            }
-          }
-          if (w !== '') {
-            result.push(dictionary[w])
-          }
-          return result
-        },
-        decompress = function (compressed) {
-          if (!Array.isArray(compressed)) {
-            return compressed
-          }
-          var i,
-            dictionary = [],
-            w,
-            result,
-            k,
-            entry = '',
-            dictSize = 256
-          for (i = 0; i < 256; i += 1) {
-            dictionary[i] = String.fromCharCode(i)
-          }
-          w = String.fromCharCode(compressed[0])
-          result = w
-          for (i = 1; i < compressed.length; i += 1) {
-            k = compressed[i]
-            if (dictionary[k]) {
-              entry = dictionary[k]
-            } else {
-              if (k === dictSize) {
-                entry = w + w.charAt(0)
-              } else {
-                return null
+            return ('' !== i && u.push(o[i]), u)
+          },
+          unpack: function (r) {
+            if (!e.isArray(r)) return r
+            var n,
+              t,
+              o,
+              i,
+              u = [],
+              f = '',
+              c = 256
+            for (n = 0; n < 256; n += 1) u[n] = String.fromCharCode(n)
+            for (o = t = String.fromCharCode(r[0]), n = 1; n < r.length; n += 1) {
+              if (u[(i = r[n])]) f = u[i]
+              else {
+                if (i !== c) return null
+                f = t + t.charAt(0)
               }
+              ;((o += f), (u[c++] = t + f.charAt(0)), (t = f))
             }
-            result += entry
-            dictionary[dictSize++] = w + entry.charAt(0)
-            w = entry
-          }
-          return result
+            return o
+          },
         }
-
-      self.LZWCompress = {
-        pack: compress,
-        unpack: decompress,
-      }
-    })(_self, Array)
-
-    var _compress = function (obj) {
-        _lzwLoggingEnabled && _lzwLog('original (uncompressed) : ' + obj)
-        if (!obj || obj === true || obj instanceof Date) {
-          return obj
-        }
-        var result = obj
-        if (typeof obj === 'object') {
-          result = _self.KeyOptimize.pack(JSON.stringify(obj))
-          _lzwLoggingEnabled && _lzwLog('key optimized: ' + result)
-        }
-        var packedObj = _self.LZWCompress.pack(result)
-        _lzwLoggingEnabled && _lzwLog('packed   (compressed)   : ' + packedObj)
-        return packedObj
-      },
-      _decompress = function (compressedObj) {
-        _lzwLoggingEnabled && _lzwLog('original (compressed)   : ' + compressedObj)
-        if (!compressedObj || compressedObj === true || compressedObj instanceof Date) {
-          return compressedObj
-        }
-        var probableJSON,
-          result = _self.LZWCompress.unpack(compressedObj)
-        try {
-          probableJSON = JSON.parse(result)
-        } catch (e) {
-          _lzwLoggingEnabled && _lzwLog('unpacked (uncompressed) : ' + result)
-          return result
-        }
-        if (typeof probableJSON === 'object') {
-          result = _self.KeyOptimize.unpack(probableJSON)
-        }
-        _lzwLoggingEnabled && _lzwLog('unpacked (uncompressed) : ' + result)
-        return result
-      },
-      _enableLogging = function (enable) {
-        _lzwLoggingEnabled = enable
-      }
-
+      })(n, r))
     return {
-      pack: _compress,
-      unpack: _decompress,
-      enableLogging: _enableLogging,
+      pack: function (r) {
+        if ((t && o('original (uncompressed) : ' + r), !r || !0 === r || r instanceof Date))
+          return r
+        var i = r
+        'object' == typeof r &&
+          ((i = n.KeyOptimize.pack(e.stringify(r))), t && o('key optimized: ' + i))
+        var u = n.LZWCompress.pack(i)
+        return (t && o('packed   (compressed)   : ' + u), u)
+      },
+      unpack: function (r) {
+        if ((t && o('original (compressed)   : ' + r), !r || !0 === r || r instanceof Date))
+          return r
+        var i,
+          u = n.LZWCompress.unpack(r)
+        try {
+          i = e.parse(u)
+        } catch (r) {
+          return (t && o('unpacked (uncompressed) : ' + u), u)
+        }
+        return (
+          'object' == typeof i && (u = n.KeyOptimize.unpack(i)),
+          t && o('unpacked (uncompressed) : ' + u),
+          u
+        )
+      },
+      enableLogging: function (r) {
+        t = r
+      },
     }
   })(Array, JSON)
-
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = lzwCompress
-  } else {
-    root.lzwCompress = lzwCompress
-  }
+  'undefined' != typeof module && module.exports ? (module.exports = r) : (this.lzwCompress = r)
 }).call(this)
