@@ -2,15 +2,15 @@
 ;(self.wpRiseJsonp = self.wpRiseJsonp || []).push([
   ['recorder'],
   {
-    33949: (t, e, n) => {
-      ;(n.r(e), n.d(e, { startRecording: () => Et }))
-      var o = n(91388),
-        s = n(10144),
-        r = n(78586),
-        i = n(87542),
-        a = n(54203),
-        c = n(62877)
-      const u = {
+    33949: (Ie, z, m) => {
+      ;(m.r(z), m.d(z, { startRecording: () => ye }))
+      var P = m(91388),
+        rt = m(10144),
+        V = m(78586),
+        S = m(87542),
+        l = m(54203),
+        E = m(62877)
+      const I = {
           FullSnapshot: 2,
           IncrementalSnapshot: 3,
           Meta: 4,
@@ -19,8 +19,8 @@
           VisualViewport: 8,
           FrustrationRecord: 9,
         },
-        d = { Document: 0, DocumentType: 1, Element: 2, Text: 3, CDATA: 4, DocumentFragment: 11 },
-        l = {
+        w = { Document: 0, DocumentType: 1, Element: 2, Text: 3, CDATA: 4, DocumentFragment: 11 },
+        g = {
           Mutation: 0,
           MouseMove: 1,
           MouseInteraction: 2,
@@ -31,7 +31,7 @@
           MediaInteraction: 7,
           StyleSheetRule: 8,
         },
-        p = {
+        T = {
           MouseUp: 0,
           MouseDown: 1,
           Click: 2,
@@ -42,303 +42,318 @@
           TouchStart: 7,
           TouchEnd: 9,
         },
-        f = { Play: 0, Pause: 1 }
-      var m = n(38549)
-      function h(t, e) {
-        const n = t.tagName,
+        F = { Play: 0, Pause: 1 }
+      var it = m(38549)
+      function C(t, n) {
+        const e = t.tagName,
           o = t.value
-        if ((0, a.Ie)(t, e)) {
-          const e = t.type
-          return 'INPUT' !== n || ('button' !== e && 'submit' !== e && 'reset' !== e)
-            ? o && 'OPTION' !== n
-              ? a.o
-              : void 0
-            : o
-        }
-        return 'OPTION' === n || 'SELECT' === n
-          ? t.value
-          : 'INPUT' === n || 'TEXTAREA' === n
+        if ((0, l.Ie)(t, n)) {
+          const s = t.type
+          return e === 'INPUT' && (s === 'button' || s === 'submit' || s === 'reset')
             ? o
-            : void 0
+            : !o || e === 'OPTION'
+              ? void 0
+              : l.o
+        }
+        if (e === 'OPTION' || e === 'SELECT') return t.value
+        if (!(e !== 'INPUT' && e !== 'TEXTAREA')) return o
       }
-      const g = /url\((?:(')([^']*)'|(")([^"]*)"|([^)]*))\)/gm,
-        y = /^[A-Za-z]+:|^\/\//,
-        v = /^["']?data:.*,/i
-      function w(t, e) {
-        return t.replace(g, (t, n, o, s, r, i) => {
-          const a = o || r || i
-          if (!e || !a || y.test(a) || v.test(a)) return t
-          const c = n || s || ''
-          return `url(${c}${(function (t, e) {
-            try {
-              return (0, m.c$)(t, e).href
-            } catch {
-              return t
-            }
-          })(a, e)}${c})`
+      const ut = /url\((?:(')([^']*)'|(")([^"]*)"|([^)]*))\)/gm,
+        at = /^[A-Za-z]+:|^\/\//,
+        ct = /^["']?data:.*,/i
+      function dt(t, n) {
+        return t.replace(ut, (e, o, s, r, u, i) => {
+          const a = s || u || i
+          if (!n || !a || at.test(a) || ct.test(a)) return e
+          const c = o || r || ''
+          return `url(${c}${lt(a, n)}${c})`
         })
       }
-      const S = /[^a-z1-6-_]/
-      function I(t) {
+      function lt(t, n) {
+        try {
+          return (0, it.c$)(t, n).href
+        } catch {
+          return t
+        }
+      }
+      const ft = /[^a-z1-6-_]/
+      function pt(t) {
+        const n = t.toLowerCase().trim()
+        return ft.test(n) ? 'div' : n
+      }
+      function k(t) {
         return t.tagName.toLowerCase()
       }
-      function T(t, e) {
-        return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='${t}' height='${e}' style='background-color:silver'%3E%3C/svg%3E`
+      function H(t, n) {
+        return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='${t}' height='${n}' style='background-color:silver'%3E%3C/svg%3E`
       }
-      function x(t) {
-        if (void 0 !== t && 0 !== t.length)
-          return t.map((t) => {
-            const e = t.cssRules || t.rules
+      function $(t) {
+        if (!(t === void 0 || t.length === 0))
+          return t.map((n) => {
+            const e = n.cssRules || n.rules
             return {
-              cssRules: Array.from(e, (t) => t.cssText),
-              disabled: t.disabled || void 0,
-              media: t.media.length > 0 ? Array.from(t.media) : void 0,
+              cssRules: Array.from(e, (r) => r.cssText),
+              disabled: n.disabled || void 0,
+              media: n.media.length > 0 ? Array.from(n.media) : void 0,
             }
           })
       }
-      var E = n(77448)
-      const b = 1e6
-      function N(t, e, n, o) {
-        if (e === a.$m.HIDDEN) return null
-        const s = t.getAttribute(n),
+      var ht = m(77448)
+      const mt = 1e6
+      function B(t, n, e, o) {
+        if (n === l.$m.HIDDEN) return null
+        const s = t.getAttribute(e),
           r = t.tagName
-        if ((0, a.ap)(r, n, s, e, o)) {
-          if ('IMG' === r) {
-            const e = t
-            if (e.naturalWidth > 0) return T(e.naturalWidth, e.naturalHeight)
-            const { width: n, height: o } = t.getBoundingClientRect()
-            return n > 0 || o > 0 ? T(n, o) : a.eT
+        if ((0, l.ap)(r, e, s, n, o)) {
+          if (r === 'IMG') {
+            const u = t
+            if (u.naturalWidth > 0) return H(u.naturalWidth, u.naturalHeight)
+            const { width: i, height: a } = t.getBoundingClientRect()
+            return i > 0 || a > 0 ? H(i, a) : l.eT
           }
-          return 'SOURCE' === r ? a.eT : a.o
+          return r === 'SOURCE' ? l.eT : l.o
         }
-        return s && (0, a.ei)(s, b)
+        return s && (0, l.ei)(s, mt)
       }
-      function R(t, e, n) {
-        if (e === a.$m.HIDDEN) return {}
+      function gt(t, n, e) {
+        return { ...St(t, n, e), ...Tt(t, n, e) }
+      }
+      function St(t, n, e) {
+        if (n === l.$m.HIDDEN) return {}
         const o = {},
-          s = I(t)
-        for (let s = 0; s < t.attributes.length; s += 1) {
-          const r = t.attributes.item(s).name,
-            i = N(t, e, r, n.scope.configuration)
-          null !== i && (o[r] = i)
+          s = k(t)
+        for (let u = 0; u < t.attributes.length; u += 1) {
+          const a = t.attributes.item(u).name,
+            c = B(t, n, a, e.scope.configuration)
+          c !== null && (o[a] = c)
         }
-        if (t.value && ('textarea' === s || 'select' === s || 'option' === s || 'input' === s)) {
-          const n = h(t, e)
-          void 0 !== n && (o.value = n)
+        if (t.value && (s === 'textarea' || s === 'select' || s === 'option' || s === 'input')) {
+          const u = C(t, n)
+          u !== void 0 && (o.value = u)
         }
-        if ('option' === s) {
-          const n = t
-          n.selected && !(0, a.Ie)(n, e) ? (o.selected = '') : delete o.selected
+        if (s === 'option') {
+          const u = t
+          u.selected && !(0, l.Ie)(u, n) ? (o.selected = '') : delete o.selected
         }
         const r = t
         return (
-          'input' === s &&
-            ('radio' === r.type || 'checkbox' === r.type) &&
-            (r.checked && !(0, a.Ie)(r, e) ? (o.checked = '') : delete o.checked),
+          s === 'input' &&
+            (r.type === 'radio' || r.type === 'checkbox') &&
+            (r.checked && !(0, l.Ie)(r, n) ? (o.checked = '') : delete o.checked),
           o
         )
       }
-      function C(t, e, n) {
-        if (e === a.$m.HIDDEN) return {}
+      function Tt(t, n, e) {
+        if (n === l.$m.HIDDEN) return {}
         const o = {},
           s = t.ownerDocument,
-          r = I(t)
-        if ('link' === r) {
-          const e = Array.from(s.styleSheets).find((e) => e.href === t.href),
-            r = M(e)
-          r && e && (n.addMetric('cssText', r.length), (o._cssText = r))
+          r = k(t)
+        if (r === 'link') {
+          const a = Array.from(s.styleSheets).find((d) => d.href === t.href),
+            c = D(a)
+          c && a && (e.addMetric('cssText', c.length), (o._cssText = c))
         }
-        if ('style' === r && t.sheet) {
-          const e = M(t.sheet)
-          e && (n.addMetric('cssText', e.length), (o._cssText = e))
+        if (r === 'style' && t.sheet) {
+          const a = D(t.sheet)
+          a && (e.addMetric('cssText', a.length), (o._cssText = a))
         }
-        if ('audio' === r || 'video' === r) {
-          const e = t
-          o.rr_mediaState = e.paused ? 'paused' : 'played'
+        if (r === 'audio' || r === 'video') {
+          const a = t
+          o.rr_mediaState = a.paused ? 'paused' : 'played'
         }
-        let i, c
-        switch (n.kind) {
+        let u, i
+        switch (e.kind) {
           case 0:
-            ;((i = Math.round(t.scrollTop)),
-              (c = Math.round(t.scrollLeft)),
-              (i || c) && n.scope.elementsScrollPositions.set(t, { scrollTop: i, scrollLeft: c }))
+            ;((u = Math.round(t.scrollTop)),
+              (i = Math.round(t.scrollLeft)),
+              (u || i) && e.scope.elementsScrollPositions.set(t, { scrollTop: u, scrollLeft: i }))
             break
           case 1:
-            n.scope.elementsScrollPositions.has(t) &&
-              ({ scrollTop: i, scrollLeft: c } = n.scope.elementsScrollPositions.get(t))
+            e.scope.elementsScrollPositions.has(t) &&
+              ({ scrollTop: u, scrollLeft: i } = e.scope.elementsScrollPositions.get(t))
+            break
         }
-        return (c && (o.rr_scrollLeft = c), i && (o.rr_scrollTop = i), o)
-      }
-      function M(t) {
-        if (!t) return null
-        let e
-        try {
-          e = t.rules || t.cssRules
-        } catch {}
-        if (!e) return null
-        return w(Array.from(e, (0, E.nr)() ? D : _).join(''), t.href)
+        return (i && (o.rr_scrollLeft = i), u && (o.rr_scrollTop = u), o)
       }
       function D(t) {
-        if (
-          (function (t) {
-            return 'selectorText' in t
-          })(t) &&
-          t.selectorText.includes(':')
-        ) {
-          const e = /(\[[\w-]+[^\\])(:[^\]]+\])/g
-          return t.cssText.replace(e, '$1\\$2')
+        if (!t) return null
+        let n
+        try {
+          n = t.rules || t.cssRules
+        } catch {}
+        if (!n) return null
+        const e = Array.from(n, (0, ht.nr)() ? yt : U).join('')
+        return dt(e, t.href)
+      }
+      function yt(t) {
+        if (Et(t) && t.selectorText.includes(':')) {
+          const n = /(\[[\w-]+[^\\])(:[^\]]+\])/g
+          return t.cssText.replace(n, '$1\\$2')
         }
-        return _(t)
+        return U(t)
       }
-      function _(t) {
-        return (
-          ((function (t) {
-            return 'styleSheet' in t
-          })(t) &&
-            M(t.styleSheet)) ||
-          t.cssText
-        )
+      function U(t) {
+        return (It(t) && D(t.styleSheet)) || t.cssText
       }
-      function L(t, e, n) {
+      function It(t) {
+        return 'styleSheet' in t
+      }
+      function Et(t) {
+        return 'selectorText' in t
+      }
+      function L(t, n, e) {
         switch (t.nodeType) {
           case t.DOCUMENT_NODE:
-            return (function (t, e, n) {
-              return {
-                type: d.Document,
-                id: n.assignId(t),
-                childNodes: O(t, e, n),
-                adoptedStyleSheets: x(t.adoptedStyleSheets),
-              }
-            })(t, e, n)
+            return vt(t, n, e)
           case t.DOCUMENT_FRAGMENT_NODE:
-            return (function (t, e, n) {
-              const o = (0, a.p_)(t)
-              return (
-                o && n.scope.shadowRootsController.addShadowRoot(t, n.scope),
-                {
-                  type: d.DocumentFragment,
-                  id: n.assignId(t),
-                  childNodes: O(t, e, n),
-                  isShadowRoot: o,
-                  adoptedStyleSheets: o ? x(t.adoptedStyleSheets) : void 0,
-                }
-              )
-            })(t, e, n)
+            return Nt(t, n, e)
           case t.DOCUMENT_TYPE_NODE:
-            return (function (t, e) {
-              return {
-                type: d.DocumentType,
-                id: e.assignId(t),
-                name: t.name,
-                publicId: t.publicId,
-                systemId: t.systemId,
-              }
-            })(t, n)
+            return wt(t, e)
           case t.ELEMENT_NODE:
-            return (function (t, e, n) {
-              const o = (function (t) {
-                  const e = t.toLowerCase().trim()
-                  return S.test(e) ? 'div' : e
-                })(t.tagName),
-                s =
-                  (function (t) {
-                    return 'svg' === t.tagName || t instanceof SVGElement
-                  })(t) || void 0,
-                r = (0, a.jR)((0, a.dT)(t), e)
-              if (r === a.$m.HIDDEN) {
-                const { width: e, height: r } = t.getBoundingClientRect()
-                return {
-                  type: d.Element,
-                  id: n.assignId(t),
-                  tagName: o,
-                  attributes: { rr_width: `${e}px`, rr_height: `${r}px`, [a.NT]: a.Wd },
-                  childNodes: [],
-                  isSVG: s,
-                }
-              }
-              if (r === a.$m.IGNORE) return null
-              const i = n.assignId(t),
-                c = (function (t, e, n) {
-                  return { ...R(t, e, n), ...C(t, e, n) }
-                })(t, r, n)
-              let u = []
-              return (
-                (0, a.wR)(t) && 'style' !== o && (u = O(t, r, n)),
-                { type: d.Element, id: i, tagName: o, attributes: c, childNodes: u, isSVG: s }
-              )
-            })(t, e, n)
+            return Mt(t, n, e)
           case t.TEXT_NODE:
-            return (function (t, e, n) {
-              const o = (0, a.rf)(t, e)
-              return void 0 === o ? null : { type: d.Text, id: n.assignId(t), textContent: o }
-            })(t, e, n)
+            return bt(t, n, e)
           case t.CDATA_SECTION_NODE:
-            return (function (t, e) {
-              return { type: d.CDATA, id: e.assignId(t), textContent: '' }
-            })(t, n)
+            return xt(t, e)
           default:
             return null
         }
       }
-      function O(t, e, n) {
+      function O(t, n, e) {
         const o = []
         return (
-          (0, a.wI)(t, (t) => {
-            const s = L(t, e, n)
-            s && o.push(s)
+          (0, l.wI)(t, (s) => {
+            const r = L(s, n, e)
+            r && o.push(r)
           }),
           o
         )
       }
-      function P(t, e) {
-        return L(t, e.scope.configuration.defaultPrivacyLevel, e)
+      function vt(t, n, e) {
+        return {
+          type: w.Document,
+          id: e.assignId(t),
+          childNodes: O(t, n, e),
+          adoptedStyleSheets: $(t.adoptedStyleSheets),
+        }
       }
-      function V(t, e, n) {
-        ;((t[e].count += 1), (t[e].max = Math.max(t[e].max, n)), (t[e].sum += n))
+      function Nt(t, n, e) {
+        const o = (0, l.p_)(t)
+        return (
+          o && e.scope.shadowRootsController.addShadowRoot(t, e.scope),
+          {
+            type: w.DocumentFragment,
+            id: e.assignId(t),
+            childNodes: O(t, n, e),
+            isShadowRoot: o,
+            adoptedStyleSheets: o ? $(t.adoptedStyleSheets) : void 0,
+          }
+        )
       }
-      function k(t, e, n, o, s) {
+      function wt(t, n) {
+        return {
+          type: w.DocumentType,
+          id: n.assignId(t),
+          name: t.name,
+          publicId: t.publicId,
+          systemId: t.systemId,
+        }
+      }
+      function Mt(t, n, e) {
+        const o = pt(t.tagName),
+          s = Rt(t) || void 0,
+          r = (0, l.jR)((0, l.dT)(t), n)
+        if (r === l.$m.HIDDEN) {
+          const { width: c, height: d } = t.getBoundingClientRect()
+          return {
+            type: w.Element,
+            id: e.assignId(t),
+            tagName: o,
+            attributes: { rr_width: `${c}px`, rr_height: `${d}px`, [l.NT]: l.Wd },
+            childNodes: [],
+            isSVG: s,
+          }
+        }
+        if (r === l.$m.IGNORE) return null
+        const u = e.assignId(t),
+          i = gt(t, r, e)
+        let a = []
+        return (
+          (0, l.wR)(t) && o !== 'style' && (a = O(t, r, e)),
+          { type: w.Element, id: u, tagName: o, attributes: i, childNodes: a, isSVG: s }
+        )
+      }
+      function Rt(t) {
+        return t.tagName === 'svg' || t instanceof SVGElement
+      }
+      function bt(t, n, e) {
+        const o = (0, l.rf)(t, n)
+        return o === void 0 ? null : { type: w.Text, id: e.assignId(t), textContent: o }
+      }
+      function xt(t, n) {
+        return { type: w.CDATA, id: n.assignId(t), textContent: '' }
+      }
+      function Ct(t, n) {
+        const e = n.scope.configuration.defaultPrivacyLevel
+        return L(t, e, n)
+      }
+      function G() {
+        return {
+          cssText: { count: 0, max: 0, sum: 0 },
+          serializationDuration: { count: 0, max: 0, sum: 0 },
+        }
+      }
+      function J(t, n, e) {
+        ;((t[n].count += 1), (t[n].max = Math.max(t[n].max, e)), (t[n].sum += e))
+      }
+      function Dt(t, n) {
+        for (const e of ['cssText', 'serializationDuration'])
+          ((t[e].count += n[e].count),
+            (t[e].max = Math.max(t[e].max, n[e].max)),
+            (t[e].sum += n[e].sum))
+      }
+      function X(t, n, e, o, s) {
         const r = [],
+          u = G(),
           i = {
-            cssText: { count: 0, max: 0, sum: 0 },
-            serializationDuration: { count: 0, max: 0, sum: 0 },
-          },
-          a = {
-            add(t) {
-              r.push(t)
+            add(c) {
+              r.push(c)
             },
-            addMetric(t, e) {
-              V(i, t, e)
+            addMetric(c, d) {
+              J(u, c, d)
             },
-            assignId(t) {
-              const e = o.nodeIds.assign(t)
-              return (a.serializedNodeIds && a.serializedNodeIds.add(e), e)
+            assignId(c) {
+              const d = o.nodeIds.assign(c)
+              return (i.serializedNodeIds && i.serializedNodeIds.add(d), d)
             },
             kind: t,
             scope: o,
           },
-          u = (0, c.nx)()
-        ;(s(a), V(i, 'serializationDuration', (0, c.vk)(u, (0, c.nx)())))
-        for (const t of r) e(t)
-        n(i)
+          a = (0, E.nx)()
+        ;(s(i), J(u, 'serializationDuration', (0, E.vk)(a, (0, E.nx)())))
+        for (const c of r) n(c)
+        e(u)
       }
-      const A = (t, e) => {
-          const n = window.visualViewport,
-            o = { layoutViewportX: t, layoutViewportY: e, visualViewportX: t, visualViewportY: e }
-          return n
-            ? (!(function (t) {
-                return (
-                  Math.abs(t.pageTop - t.offsetTop - window.scrollY) > 25 ||
-                  Math.abs(t.pageLeft - t.offsetLeft - window.scrollX) > 25
-                )
-              })(n)
-                ? ((o.visualViewportX = Math.round(t - n.offsetLeft)),
-                  (o.visualViewportY = Math.round(e - n.offsetTop)))
-                : ((o.layoutViewportX = Math.round(t + n.offsetLeft)),
-                  (o.layoutViewportY = Math.round(e + n.offsetTop))),
-              o)
-            : o
+      const _ = 25
+      function Lt(t) {
+        return (
+          Math.abs(t.pageTop - t.offsetTop - window.scrollY) > _ ||
+          Math.abs(t.pageLeft - t.offsetLeft - window.scrollX) > _
+        )
+      }
+      const Ot = (t, n) => {
+          const e = window.visualViewport,
+            o = { layoutViewportX: t, layoutViewportY: n, visualViewportX: t, visualViewportY: n }
+          if (e)
+            Lt(e)
+              ? ((o.layoutViewportX = Math.round(t + e.offsetLeft)),
+                (o.layoutViewportY = Math.round(n + e.offsetTop)))
+              : ((o.visualViewportX = Math.round(t - e.offsetLeft)),
+                (o.visualViewportY = Math.round(n - e.offsetTop)))
+          else return o
+          return o
         },
-        $ = (t) => ({
+        W = (t) => ({
           scale: t.scale,
           offsetLeft: t.offsetLeft,
           offsetTop: t.offsetTop,
@@ -347,55 +362,110 @@
           height: t.height,
           width: t.width,
         })
-      function z(t, e, n, o, s) {
-        k(e, n, o, s, (e) => {
-          const { width: n, height: o } = (0, a.pB)()
-          ;(e.add({
-            data: { height: o, href: window.location.href, width: n },
-            type: u.Meta,
+      function At(t, n, e, o, s) {
+        Y((0, E.nx)(), 0, n, e, s)
+        const { unsubscribe: r } = t.subscribe(2, (u) => {
+          ;(o(), Y(u.startClocks.timeStamp, 1, n, e, s))
+        })
+        return { stop: r }
+      }
+      function Y(t, n, e, o, s) {
+        X(n, e, o, s, (r) => {
+          const { width: u, height: i } = (0, l.pB)()
+          ;(r.add({
+            data: { height: i, href: window.location.href, width: u },
+            type: I.Meta,
             timestamp: t,
           }),
-            e.add({ data: { has_focus: document.hasFocus() }, type: u.Focus, timestamp: t }),
-            e.add({
+            r.add({ data: { has_focus: document.hasFocus() }, type: I.Focus, timestamp: t }),
+            r.add({
               data: {
-                node: P(document, e),
-                initialOffset: { left: (0, a.Gn)(), top: (0, a.zL)() },
+                node: Ct(document, r),
+                initialOffset: { left: (0, l.Gn)(), top: (0, l.zL)() },
               },
-              type: u.FullSnapshot,
+              type: I.FullSnapshot,
               timestamp: t,
             }),
             window.visualViewport &&
-              e.add({ data: $(window.visualViewport), type: u.VisualViewport, timestamp: t }))
+              r.add({ data: W(window.visualViewport), type: I.VisualViewport, timestamp: t }))
         })
       }
-      var F = n(45377),
-        H = n(93642),
-        B = n(91045)
-      function G(t) {
+      function zt() {
+        const t = new WeakMap()
+        let n = 0
+        const e = (o) => t.get(o)
+        return {
+          assign: (o) => {
+            let s = e(o)
+            return (s === void 0 && ((s = n++), t.set(o, s)), s)
+          },
+          get: e,
+          areAssignedForNodeAndAncestors: (o) => {
+            let s = o
+            for (; s; ) {
+              if (e(s) === void 0 && !(0, l.p_)(s)) return !1
+              s = (0, l.$4)(s)
+            }
+            return !0
+          },
+        }
+      }
+      function Ee({ configuration: t } = {}) {
+        const n = [],
+          e = (o) => {
+            n.push(o)
+          }
+        return (doTakeFullSnapshot(timeStampNow(), 0, e, noop, j(t)), n)
+      }
+      function ve(t, { configuration: n } = {}) {
+        let e = null
+        return (
+          serializeInTransaction(0, noop, noop, j(n), (o) => {
+            const s = getNodePrivacyLevel(t, o.scope.configuration.defaultPrivacyLevel)
+            s === NodePrivacyLevel.HIDDEN ||
+              s === NodePrivacyLevel.IGNORE ||
+              (e = serializeNode(t, s, o))
+          }),
+          e
+        )
+      }
+      function j(t) {
+        return createRecordingScope(
+          { defaultPrivacyLevel: NodePrivacyLevel.ALLOW, ...t },
+          createElementsScrollPositions(),
+          createEventIds(),
+          createNodeIds(),
+          { addShadowRoot: noop, removeShadowRoot: noop, flush: noop, stop: noop },
+        )
+      }
+      var Pt = m(45377),
+        x = m(93642),
+        M = m(91045)
+      function K(t) {
         return !!t.changedTouches
       }
-      function J(t) {
-        return !0 === t.composed && (0, a.XS)(t.target) ? t.composedPath()[0] : t.target
+      function R(t) {
+        return t.composed === !0 && (0, l.XS)(t.target) ? t.composedPath()[0] : t.target
       }
-      function U(t, e) {
-        return { data: { source: t, ...e }, type: u.IncrementalSnapshot, timestamp: (0, c.nx)() }
+      function y(t, n) {
+        return { data: { source: t, ...n }, type: I.IncrementalSnapshot, timestamp: (0, E.nx)() }
       }
-      const X = 50
-      function Y(t, e) {
-        const { throttled: n, cancel: o } = (0, i.n)(
-            (n) => {
-              const o = J(n),
-                s = e.nodeIds.get(o)
-              if (void 0 === s) return
-              const r = W(n)
-              if (!r) return
-              const i = { id: s, timeOffset: 0, x: r.x, y: r.y }
-              t(U(G(n) ? l.TouchMove : l.MouseMove, { positions: [i] }))
+      const Vt = 50
+      function Ft(t, n) {
+        const { throttled: e, cancel: o } = (0, S.n)(
+            (r) => {
+              const u = R(r),
+                i = n.nodeIds.get(u)
+              if (i === void 0) return
+              const a = Z(r)
+              if (!a) return
+              const c = { id: i, timeOffset: 0, x: a.x, y: a.y }
+              t(y(K(r) ? g.TouchMove : g.MouseMove, { positions: [c] }))
             },
-            X,
+            Vt,
             { trailing: !1 },
           ),
-          { stop: s } = (0, B.l)(e.configuration, document, ['mousemove', 'touchmove'], n, {
+          { stop: s } = (0, M.l)(n.configuration, document, ['mousemove', 'touchmove'], e, {
             capture: !0,
             passive: !0,
           })
@@ -405,91 +475,86 @@
           },
         }
       }
-      function W(t) {
-        let { clientX: e, clientY: n } = G(t) ? t.changedTouches[0] : t
+      function Z(t) {
+        let { clientX: n, clientY: e } = K(t) ? t.changedTouches[0] : t
         if (window.visualViewport) {
-          const { visualViewportX: t, visualViewportY: o } = A(e, n)
-          ;((e = t), (n = o))
+          const { visualViewportX: o, visualViewportY: s } = Ot(n, e)
+          ;((n = o), (e = s))
         }
-        if (Number.isFinite(e) && Number.isFinite(n)) return { x: e, y: n }
+        if (!(!Number.isFinite(n) || !Number.isFinite(e))) return { x: n, y: e }
       }
-      const q = {
-        pointerup: p.MouseUp,
-        mousedown: p.MouseDown,
-        click: p.Click,
-        contextmenu: p.ContextMenu,
-        dblclick: p.DblClick,
-        focus: p.Focus,
-        blur: p.Blur,
-        touchstart: p.TouchStart,
-        touchend: p.TouchEnd,
+      const Q = {
+        pointerup: T.MouseUp,
+        mousedown: T.MouseDown,
+        click: T.Click,
+        contextmenu: T.ContextMenu,
+        dblclick: T.DblClick,
+        focus: T.Focus,
+        blur: T.Blur,
+        touchstart: T.TouchStart,
+        touchend: T.TouchEnd,
       }
-      function j(t, e) {
-        return (0, B.l)(
-          e.configuration,
-          document,
-          Object.keys(q),
-          (n) => {
-            const o = J(n),
-              s = e.nodeIds.get(o)
-            if (void 0 === s || (0, a.PJ)(o, e.configuration.defaultPrivacyLevel) === a.$m.HIDDEN)
+      function kt(t, n) {
+        const e = (o) => {
+          const s = R(o),
+            r = n.nodeIds.get(s)
+          if (r === void 0 || (0, l.PJ)(s, n.configuration.defaultPrivacyLevel) === l.$m.HIDDEN)
+            return
+          const u = Q[o.type]
+          let i
+          if (u !== T.Blur && u !== T.Focus) {
+            const a = Z(o)
+            if (!a) return
+            i = { id: r, type: u, x: a.x, y: a.y }
+          } else i = { id: r, type: u }
+          t({ id: n.eventIds.getIdForEvent(o), ...y(g.MouseInteraction, i) })
+        }
+        return (0, M.l)(n.configuration, document, Object.keys(Q), e, { capture: !0, passive: !0 })
+      }
+      const Ht = 100
+      function q(t, n, e) {
+        const { throttled: o, cancel: s } = (0, S.n)((u) => {
+            const i = R(u)
+            if (!i) return
+            const a = e.nodeIds.get(i)
+            if (a === void 0 || (0, l.PJ)(i, e.configuration.defaultPrivacyLevel) === l.$m.HIDDEN)
               return
-            const r = q[n.type]
-            let i
-            if (r !== p.Blur && r !== p.Focus) {
-              const t = W(n)
-              if (!t) return
-              i = { id: s, type: r, x: t.x, y: t.y }
-            } else i = { id: s, type: r }
-            t({ id: e.eventIds.getIdForEvent(n), ...U(l.MouseInteraction, i) })
-          },
-          { capture: !0, passive: !0 },
-        )
-      }
-      const K = 100
-      function Z(t, e, n) {
-        const { throttled: o, cancel: s } = (0, i.n)((t) => {
-            const o = J(t)
-            if (!o) return
-            const s = n.nodeIds.get(o)
-            if (void 0 === s || (0, a.PJ)(o, n.configuration.defaultPrivacyLevel) === a.$m.HIDDEN)
-              return
-            const r =
-              o === document
-                ? { scrollTop: (0, a.zL)(), scrollLeft: (0, a.Gn)() }
-                : { scrollTop: Math.round(o.scrollTop), scrollLeft: Math.round(o.scrollLeft) }
-            ;(n.elementsScrollPositions.set(o, r),
-              e(U(l.Scroll, { id: s, x: r.scrollLeft, y: r.scrollTop })))
-          }, K),
-          { stop: r } = (0, B.q)(n.configuration, t, 'scroll', o, { capture: !0, passive: !0 })
+            const c =
+              i === document
+                ? { scrollTop: (0, l.zL)(), scrollLeft: (0, l.Gn)() }
+                : { scrollTop: Math.round(i.scrollTop), scrollLeft: Math.round(i.scrollLeft) }
+            ;(e.elementsScrollPositions.set(i, c),
+              n(y(g.Scroll, { id: a, x: c.scrollLeft, y: c.scrollTop })))
+          }, Ht),
+          { stop: r } = (0, M.q)(e.configuration, t, 'scroll', o, { capture: !0, passive: !0 })
         return {
           stop: () => {
             ;(r(), s())
           },
         }
       }
-      const Q = 200
-      function tt(t, e) {
-        const n = (0, a.g1)(e.configuration).subscribe((e) => {
-          t(U(l.ViewportResize, e))
+      const $t = 200
+      function Bt(t, n) {
+        const e = (0, l.g1)(n.configuration).subscribe((o) => {
+          t(y(g.ViewportResize, o))
         })
         return {
           stop: () => {
-            n.unsubscribe()
+            e.unsubscribe()
           },
         }
       }
-      function et(t, e) {
-        const n = window.visualViewport
-        if (!n) return { stop: i.l }
-        const { throttled: o, cancel: s } = (0, i.n)(
+      function Ut(t, n) {
+        const e = window.visualViewport
+        if (!e) return { stop: S.l }
+        const { throttled: o, cancel: s } = (0, S.n)(
             () => {
-              t({ data: $(n), type: u.VisualViewport, timestamp: (0, c.nx)() })
+              t({ data: W(e), type: I.VisualViewport, timestamp: (0, E.nx)() })
             },
-            Q,
+            $t,
             { trailing: !1 },
           ),
-          { stop: r } = (0, B.l)(e.configuration, n, ['resize', 'scroll'], o, {
+          { stop: r } = (0, M.l)(n.configuration, e, ['resize', 'scroll'], o, {
             capture: !0,
             passive: !0,
           })
@@ -499,100 +564,98 @@
           },
         }
       }
-      function nt(t, e) {
-        return (0, B.l)(
-          e.configuration,
+      function Gt(t, n) {
+        return (0, M.l)(
+          n.configuration,
           document,
           ['play', 'pause'],
-          (n) => {
-            const o = J(n)
+          (e) => {
+            const o = R(e)
             if (!o) return
-            const s = e.nodeIds.get(o)
-            void 0 === s ||
-              (0, a.PJ)(o, e.configuration.defaultPrivacyLevel) === a.$m.HIDDEN ||
-              t(U(l.MediaInteraction, { id: s, type: 'play' === n.type ? f.Play : f.Pause }))
+            const s = n.nodeIds.get(o)
+            s === void 0 ||
+              (0, l.PJ)(o, n.configuration.defaultPrivacyLevel) === l.$m.HIDDEN ||
+              t(y(g.MediaInteraction, { id: s, type: e.type === 'play' ? F.Play : F.Pause }))
           },
           { capture: !0, passive: !0 },
         )
       }
-      var ot = n(89261)
-      function st(t, e) {
-        function n(t, n) {
-          if (!t || !t.ownerNode) return
-          const o = e.nodeIds.get(t.ownerNode)
-          void 0 !== o && n(o)
+      var v = m(89261)
+      function Jt(t, n) {
+        function e(r, u) {
+          if (!r || !r.ownerNode) return
+          const i = n.nodeIds.get(r.ownerNode)
+          i !== void 0 && u(i)
         }
         const o = [
-          (0, ot.H)(CSSStyleSheet.prototype, 'insertRule', ({ target: e, parameters: [o, s] }) => {
-            n(e, (e) => t(U(l.StyleSheetRule, { id: e, adds: [{ rule: o, index: s }] })))
+          (0, v.H)(CSSStyleSheet.prototype, 'insertRule', ({ target: r, parameters: [u, i] }) => {
+            e(r, (a) => t(y(g.StyleSheetRule, { id: a, adds: [{ rule: u, index: i }] })))
           }),
-          (0, ot.H)(CSSStyleSheet.prototype, 'deleteRule', ({ target: e, parameters: [o] }) => {
-            n(e, (e) => t(U(l.StyleSheetRule, { id: e, removes: [{ index: o }] })))
+          (0, v.H)(CSSStyleSheet.prototype, 'deleteRule', ({ target: r, parameters: [u] }) => {
+            e(r, (i) => t(y(g.StyleSheetRule, { id: i, removes: [{ index: u }] })))
           }),
         ]
-        function s(e) {
+        typeof CSSGroupingRule < 'u' ? s(CSSGroupingRule) : (s(CSSMediaRule), s(CSSSupportsRule))
+        function s(r) {
           o.push(
-            (0, ot.H)(e.prototype, 'insertRule', ({ target: e, parameters: [o, s] }) => {
-              n(e.parentStyleSheet, (n) => {
-                const r = rt(e)
-                r &&
-                  (r.push(s || 0), t(U(l.StyleSheetRule, { id: n, adds: [{ rule: o, index: r }] })))
+            (0, v.H)(r.prototype, 'insertRule', ({ target: u, parameters: [i, a] }) => {
+              e(u.parentStyleSheet, (c) => {
+                const d = tt(u)
+                d &&
+                  (d.push(a || 0), t(y(g.StyleSheetRule, { id: c, adds: [{ rule: i, index: d }] })))
               })
             }),
-            (0, ot.H)(e.prototype, 'deleteRule', ({ target: e, parameters: [o] }) => {
-              n(e.parentStyleSheet, (n) => {
-                const s = rt(e)
-                s && (s.push(o), t(U(l.StyleSheetRule, { id: n, removes: [{ index: s }] })))
+            (0, v.H)(r.prototype, 'deleteRule', ({ target: u, parameters: [i] }) => {
+              e(u.parentStyleSheet, (a) => {
+                const c = tt(u)
+                c && (c.push(i), t(y(g.StyleSheetRule, { id: a, removes: [{ index: c }] })))
               })
             }),
           )
         }
-        return (
-          typeof CSSGroupingRule < 'u' ? s(CSSGroupingRule) : (s(CSSMediaRule), s(CSSSupportsRule)),
-          {
-            stop: () => {
-              o.forEach((t) => t.stop())
-            },
-          }
-        )
-      }
-      function rt(t) {
-        const e = []
-        let n = t
-        for (; n.parentRule; ) {
-          const t = Array.from(n.parentRule.cssRules).indexOf(n)
-          ;(e.unshift(t), (n = n.parentRule))
+        return {
+          stop: () => {
+            o.forEach((r) => r.stop())
+          },
         }
-        if (!n.parentStyleSheet) return
-        const o = Array.from(n.parentStyleSheet.cssRules).indexOf(n)
-        return (e.unshift(o), e)
       }
-      function it(t, e) {
-        return (0, B.l)(e.configuration, window, ['focus', 'blur'], () => {
-          t({ data: { has_focus: document.hasFocus() }, type: u.Focus, timestamp: (0, c.nx)() })
+      function tt(t) {
+        const n = []
+        let e = t
+        for (; e.parentRule; ) {
+          const u = Array.from(e.parentRule.cssRules).indexOf(e)
+          ;(n.unshift(u), (e = e.parentRule))
+        }
+        if (!e.parentStyleSheet) return
+        const s = Array.from(e.parentStyleSheet.cssRules).indexOf(e)
+        return (n.unshift(s), n)
+      }
+      function Xt(t, n) {
+        return (0, M.l)(n.configuration, window, ['focus', 'blur'], () => {
+          t({ data: { has_focus: document.hasFocus() }, type: I.Focus, timestamp: (0, E.nx)() })
         })
       }
-      function at(t, e, n) {
-        const o = t.subscribe(12, (t) => {
-          var o, s
-          t.rawRumEvent.type === a.bb.ACTION &&
-            t.rawRumEvent.action.type === a.X2.CLICK &&
-            null !==
-              (s =
-                null === (o = t.rawRumEvent.action.frustration) || void 0 === o
+      function _t(t, n, e) {
+        const o = t.subscribe(12, (s) => {
+          var r, u
+          s.rawRumEvent.type === l.bb.ACTION &&
+            s.rawRumEvent.action.type === l.X2.CLICK &&
+            !(
+              (u =
+                (r = s.rawRumEvent.action.frustration) === null || r === void 0
                   ? void 0
-                  : o.type) &&
-            void 0 !== s &&
-            s.length &&
-            'events' in t.domainContext &&
-            t.domainContext.events &&
-            t.domainContext.events.length &&
-            e({
-              timestamp: t.rawRumEvent.date,
-              type: u.FrustrationRecord,
+                  : r.type) === null || u === void 0
+            ) &&
+            u.length &&
+            'events' in s.domainContext &&
+            s.domainContext.events &&
+            s.domainContext.events.length &&
+            n({
+              timestamp: s.rawRumEvent.date,
+              type: I.FrustrationRecord,
               data: {
-                frustrationTypes: t.rawRumEvent.action.frustration.type,
-                recordIds: t.domainContext.events.map((t) => n.eventIds.getIdForEvent(t)),
+                frustrationTypes: s.rawRumEvent.action.frustration.type,
+                recordIds: s.domainContext.events.map((i) => e.eventIds.getIdForEvent(i)),
               },
             })
         })
@@ -602,9 +665,9 @@
           },
         }
       }
-      function ct(t, e, n) {
+      function Wt(t, n, e) {
         const o = t.subscribe(5, () => {
-          ;(n(), e({ timestamp: (0, c.nx)(), type: u.ViewEnd }))
+          ;(e(), n({ timestamp: (0, E.nx)(), type: I.ViewEnd }))
         })
         return {
           stop: () => {
@@ -612,256 +675,104 @@
           },
         }
       }
-      function ut(t, e, n) {
-        const o = n.configuration.defaultPrivacyLevel,
+      function et(t, n, e) {
+        const o = e.configuration.defaultPrivacyLevel,
           s = new WeakMap(),
           r = t !== document,
-          { stop: c } = (0, B.l)(
-            n.configuration,
+          { stop: u } = (0, M.l)(
+            e.configuration,
             t,
             r ? ['change'] : ['input', 'change'],
-            (t) => {
-              const e = J(t)
-              ;(e instanceof HTMLInputElement ||
-                e instanceof HTMLTextAreaElement ||
-                e instanceof HTMLSelectElement) &&
-                d(e)
+            (d) => {
+              const f = R(d)
+              ;(f instanceof HTMLInputElement ||
+                f instanceof HTMLTextAreaElement ||
+                f instanceof HTMLSelectElement) &&
+                a(f)
             },
             { capture: !0, passive: !0 },
           )
-        let u
-        if (r) u = i.l
+        let i
+        if (r) i = S.l
         else {
-          const t = [
-            (0, ot.t)(HTMLInputElement.prototype, 'value', d),
-            (0, ot.t)(HTMLInputElement.prototype, 'checked', d),
-            (0, ot.t)(HTMLSelectElement.prototype, 'value', d),
-            (0, ot.t)(HTMLTextAreaElement.prototype, 'value', d),
-            (0, ot.t)(HTMLSelectElement.prototype, 'selectedIndex', d),
+          const d = [
+            (0, v.t)(HTMLInputElement.prototype, 'value', a),
+            (0, v.t)(HTMLInputElement.prototype, 'checked', a),
+            (0, v.t)(HTMLSelectElement.prototype, 'value', a),
+            (0, v.t)(HTMLTextAreaElement.prototype, 'value', a),
+            (0, v.t)(HTMLSelectElement.prototype, 'selectedIndex', a),
           ]
-          u = () => {
-            t.forEach((t) => t.stop())
+          i = () => {
+            d.forEach((f) => f.stop())
           }
         }
         return {
           stop: () => {
-            ;(u(), c())
+            ;(i(), u())
           },
         }
-        function d(t) {
-          const e = (0, a.PJ)(t, o)
-          if (e === a.$m.HIDDEN) return
-          const n = t.type
-          let s
-          if ('radio' === n || 'checkbox' === n) {
-            if ((0, a.Ie)(t, e)) return
-            s = { isChecked: t.checked }
+        function a(d) {
+          const f = (0, l.PJ)(d, o)
+          if (f === l.$m.HIDDEN) return
+          const p = d.type
+          let h
+          if (p === 'radio' || p === 'checkbox') {
+            if ((0, l.Ie)(d, f)) return
+            h = { isChecked: d.checked }
           } else {
-            const n = h(t, e)
-            if (void 0 === n) return
-            s = { text: n }
+            const b = C(d, f)
+            if (b === void 0) return
+            h = { text: b }
           }
-          p(t, s)
-          const r = t.name
-          'radio' === n &&
-            r &&
-            t.checked &&
+          c(d, h)
+          const N = d.name
+          p === 'radio' &&
+            N &&
+            d.checked &&
             document
-              .querySelectorAll(`input[type="radio"][name="${CSS.escape(r)}"]`)
-              .forEach((e) => {
-                e !== t && p(e, { isChecked: !1 })
+              .querySelectorAll(`input[type="radio"][name="${CSS.escape(N)}"]`)
+              .forEach((b) => {
+                b !== d && c(b, { isChecked: !1 })
               })
         }
-        function p(t, o) {
-          const r = n.nodeIds.get(t)
-          if (void 0 === r) return
-          const i = s.get(t)
-          ;(!i || i.text !== o.text || i.isChecked !== o.isChecked) &&
-            (s.set(t, o), e(U(l.Input, { id: r, ...o })))
+        function c(d, f) {
+          const p = e.nodeIds.get(d)
+          if (p === void 0) return
+          const h = s.get(d)
+          ;(!h || h.text !== f.text || h.isChecked !== f.isChecked) &&
+            (s.set(d, f), n(y(g.Input, { id: p, ...f })))
         }
       }
-      var dt = n(93195),
-        lt = n(7417)
-      const pt = 100,
-        ft = 16
-      function mt(t, e, n, o) {
-        const s = (0, a.W3)()
-        if (!s) return { stop: i.l, flush: i.l }
-        const r = (function (t) {
-            let e = i.l,
-              n = []
-            function o() {
-              ;(e(), t(n), (n = []))
-            }
-            const { throttled: s, cancel: r } = (0, i.n)(o, ft, { leading: !1 })
-            return {
-              addMutations: (t) => {
-                ;(0 === n.length && (e = (0, lt.BB)(s, { timeout: pt })), n.push(...t))
-              },
-              flush: o,
-              stop: () => {
-                ;(e(), r())
-              },
-            }
-          })((t) => {
-            k(2, e, n, o, (e) =>
-              (function (t, e) {
-                const n = new Map()
-                t.filter((t) => 'childList' === t.type).forEach((t) => {
-                  t.removedNodes.forEach((t) => {
-                    ht(t, e.scope.shadowRootsController.removeShadowRoot)
-                  })
-                })
-                const o = t.filter(
-                    (t) =>
-                      t.target.isConnected &&
-                      e.scope.nodeIds.areAssignedForNodeAndAncestors(t.target) &&
-                      (0, a.PJ)(t.target, e.scope.configuration.defaultPrivacyLevel, n) !==
-                        a.$m.HIDDEN,
-                  ),
-                  {
-                    adds: s,
-                    removes: r,
-                    hasBeenSerialized: i,
-                  } = (function (t, e, n) {
-                    const o = new Set(),
-                      s = new Map()
-                    for (const e of t)
-                      (e.addedNodes.forEach((t) => {
-                        o.add(t)
-                      }),
-                        e.removedNodes.forEach((t) => {
-                          ;(o.has(t) || s.set(t, e.target), o.delete(t))
-                        }))
-                    const r = Array.from(o)
-                    ;((function (t) {
-                      t.sort((t, e) => {
-                        const n = t.compareDocumentPosition(e)
-                        return n & Node.DOCUMENT_POSITION_CONTAINED_BY
-                          ? -1
-                          : n & Node.DOCUMENT_POSITION_CONTAINS ||
-                              n & Node.DOCUMENT_POSITION_FOLLOWING
-                            ? 1
-                            : n & Node.DOCUMENT_POSITION_PRECEDING
-                              ? -1
-                              : 0
-                      })
-                    })(r),
-                      (n.serializedNodeIds = new Set()))
-                    const i = []
-                    for (const t of r) {
-                      if (u(t)) continue
-                      const o = (0, a.PJ)(
-                        t.parentNode,
-                        n.scope.configuration.defaultPrivacyLevel,
-                        e,
-                      )
-                      if (o === a.$m.HIDDEN || o === a.$m.IGNORE) continue
-                      const s = L(t, o, n)
-                      if (!s) continue
-                      const r = (0, a.$4)(t)
-                      i.push({ nextId: d(t), parentId: n.scope.nodeIds.get(r), node: s })
-                    }
-                    const c = []
-                    return (
-                      s.forEach((t, e) => {
-                        const o = n.scope.nodeIds.get(t),
-                          s = n.scope.nodeIds.get(e)
-                        void 0 !== o && void 0 !== s && c.push({ parentId: o, id: s })
-                      }),
-                      { adds: i, removes: c, hasBeenSerialized: u }
-                    )
-                    function u(t) {
-                      var e
-                      const o = n.scope.nodeIds.get(t)
-                      return (
-                        void 0 !== o &&
-                        (null === (e = n.serializedNodeIds) || void 0 === e ? void 0 : e.has(o))
-                      )
-                    }
-                    function d(t) {
-                      let e = t.nextSibling
-                      for (; e; ) {
-                        const t = n.scope.nodeIds.get(e)
-                        if (void 0 !== t) return t
-                        e = e.nextSibling
-                      }
-                      return null
-                    }
-                  })(
-                    o.filter((t) => 'childList' === t.type),
-                    n,
-                    e,
-                  ),
-                  c = (function (t, e, n) {
-                    var o
-                    const s = [],
-                      r = new Set(),
-                      i = t.filter((t) => !r.has(t.target) && (r.add(t.target), !0))
-                    for (const t of i) {
-                      if (t.target.textContent === t.oldValue) continue
-                      const r = n.scope.nodeIds.get(t.target)
-                      if (void 0 === r) continue
-                      const i = (0, a.PJ)(
-                        (0, a.$4)(t.target),
-                        n.scope.configuration.defaultPrivacyLevel,
-                        e,
-                      )
-                      i === a.$m.HIDDEN ||
-                        i === a.$m.IGNORE ||
-                        s.push({
-                          id: r,
-                          value: null !== (o = (0, a.rf)(t.target, i)) && void 0 !== o ? o : null,
-                        })
-                    }
-                    return s
-                  })(
-                    o.filter((t) => 'characterData' === t.type && !i(t.target)),
-                    n,
-                    e,
-                  ),
-                  u = (function (t, e, n) {
-                    const o = [],
-                      s = new Map(),
-                      r = t.filter((t) => {
-                        const e = s.get(t.target)
-                        return (
-                          (!e || !e.has(t.attributeName)) &&
-                          (e ? e.add(t.attributeName) : s.set(t.target, new Set([t.attributeName])),
-                          !0)
-                        )
-                      }),
-                      i = new Map()
-                    for (const t of r) {
-                      if (t.target.getAttribute(t.attributeName) === t.oldValue) continue
-                      const s = n.scope.nodeIds.get(t.target)
-                      if (void 0 === s) continue
-                      const r = (0, a.PJ)(t.target, n.scope.configuration.defaultPrivacyLevel, e),
-                        c = N(t.target, r, t.attributeName, n.scope.configuration)
-                      let u
-                      if ('value' === t.attributeName) {
-                        const e = h(t.target, r)
-                        if (void 0 === e) continue
-                        u = e
-                      } else u = 'string' == typeof c ? c : null
-                      let d = i.get(t.target)
-                      ;(d || ((d = { id: s, attributes: {} }), o.push(d), i.set(t.target, d)),
-                        (d.attributes[t.attributeName] = u))
-                    }
-                    return o
-                  })(
-                    o.filter((t) => 'attributes' === t.type && !i(t.target)),
-                    n,
-                    e,
-                  )
-                ;(!c.length && !u.length && !r.length && !s.length) ||
-                  e.add(U(l.Mutation, { adds: s, removes: r, texts: c, attributes: u }))
-              })(t.concat(c.takeRecords()), e),
-            )
+      var Yt = m(93195),
+        jt = m(7417)
+      const Kt = 100,
+        Zt = 16
+      function Qt(t) {
+        let n = S.l,
+          e = []
+        function o() {
+          ;(n(), t(e), (e = []))
+        }
+        const { throttled: s, cancel: r } = (0, S.n)(o, Zt, { leading: !1 })
+        return {
+          addMutations: (u) => {
+            ;(e.length === 0 && (n = (0, jt.BB)(s, { timeout: Kt })), e.push(...u))
+          },
+          flush: o,
+          stop: () => {
+            ;(n(), r())
+          },
+        }
+      }
+      function nt(t, n, e, o) {
+        const s = (0, l.W3)()
+        if (!s) return { stop: S.l, flush: S.l }
+        const r = Qt((i) => {
+            X(2, n, e, o, (a) => qt(i.concat(u.takeRecords()), a))
           }),
-          c = new s((0, dt.dm)(r.addMutations))
+          u = new s((0, Yt.dm)(r.addMutations))
         return (
-          c.observe(t, {
+          u.observe(t, {
             attributeOldValue: !0,
             attributes: !0,
             characterData: !0,
@@ -871,7 +782,7 @@
           }),
           {
             stop: () => {
-              ;(c.disconnect(), r.stop())
+              ;(u.disconnect(), r.stop())
             },
             flush: () => {
               r.flush()
@@ -879,332 +790,438 @@
           }
         )
       }
-      function ht(t, e) {
-        ;((0, a.XS)(t) && e(t.shadowRoot), (0, a.wI)(t, (t) => ht(t, e)))
+      function qt(t, n) {
+        const e = new Map()
+        t.filter((c) => c.type === 'childList').forEach((c) => {
+          c.removedNodes.forEach((d) => {
+            ot(d, n.scope.shadowRootsController.removeShadowRoot)
+          })
+        })
+        const o = t.filter(
+            (c) =>
+              c.target.isConnected &&
+              n.scope.nodeIds.areAssignedForNodeAndAncestors(c.target) &&
+              (0, l.PJ)(c.target, n.scope.configuration.defaultPrivacyLevel, e) !== l.$m.HIDDEN,
+          ),
+          {
+            adds: s,
+            removes: r,
+            hasBeenSerialized: u,
+          } = te(
+            o.filter((c) => c.type === 'childList'),
+            e,
+            n,
+          ),
+          i = ee(
+            o.filter((c) => c.type === 'characterData' && !u(c.target)),
+            e,
+            n,
+          ),
+          a = ne(
+            o.filter((c) => c.type === 'attributes' && !u(c.target)),
+            e,
+            n,
+          )
+        ;(!i.length && !a.length && !r.length && !s.length) ||
+          n.add(y(g.Mutation, { adds: s, removes: r, texts: i, attributes: a }))
       }
-      const gt = (t, e) => {
-        const n = new Map()
+      function te(t, n, e) {
+        const o = new Set(),
+          s = new Map()
+        for (const d of t)
+          (d.addedNodes.forEach((f) => {
+            o.add(f)
+          }),
+            d.removedNodes.forEach((f) => {
+              ;(o.has(f) || s.set(f, d.target), o.delete(f))
+            }))
+        const r = Array.from(o)
+        ;(oe(r), (e.serializedNodeIds = new Set()))
+        const u = []
+        for (const d of r) {
+          if (a(d)) continue
+          const f = (0, l.PJ)(d.parentNode, e.scope.configuration.defaultPrivacyLevel, n)
+          if (f === l.$m.HIDDEN || f === l.$m.IGNORE) continue
+          const p = L(d, f, e)
+          if (!p) continue
+          const h = (0, l.$4)(d)
+          u.push({ nextId: c(d), parentId: e.scope.nodeIds.get(h), node: p })
+        }
+        const i = []
+        return (
+          s.forEach((d, f) => {
+            const p = e.scope.nodeIds.get(d),
+              h = e.scope.nodeIds.get(f)
+            p !== void 0 && h !== void 0 && i.push({ parentId: p, id: h })
+          }),
+          { adds: u, removes: i, hasBeenSerialized: a }
+        )
+        function a(d) {
+          var f
+          const p = e.scope.nodeIds.get(d)
+          return (
+            p !== void 0 && ((f = e.serializedNodeIds) === null || f === void 0 ? void 0 : f.has(p))
+          )
+        }
+        function c(d) {
+          let f = d.nextSibling
+          for (; f; ) {
+            const p = e.scope.nodeIds.get(f)
+            if (p !== void 0) return p
+            f = f.nextSibling
+          }
+          return null
+        }
+      }
+      function ee(t, n, e) {
+        var o
+        const s = [],
+          r = new Set(),
+          u = t.filter((i) => (r.has(i.target) ? !1 : (r.add(i.target), !0)))
+        for (const i of u) {
+          if (i.target.textContent === i.oldValue) continue
+          const c = e.scope.nodeIds.get(i.target)
+          if (c === void 0) continue
+          const d = (0, l.PJ)((0, l.$4)(i.target), e.scope.configuration.defaultPrivacyLevel, n)
+          d === l.$m.HIDDEN ||
+            d === l.$m.IGNORE ||
+            s.push({
+              id: c,
+              value: (o = (0, l.rf)(i.target, d)) !== null && o !== void 0 ? o : null,
+            })
+        }
+        return s
+      }
+      function ne(t, n, e) {
+        const o = [],
+          s = new Map(),
+          r = t.filter((i) => {
+            const a = s.get(i.target)
+            return a && a.has(i.attributeName)
+              ? !1
+              : (a ? a.add(i.attributeName) : s.set(i.target, new Set([i.attributeName])), !0)
+          }),
+          u = new Map()
+        for (const i of r) {
+          if (i.target.getAttribute(i.attributeName) === i.oldValue) continue
+          const c = e.scope.nodeIds.get(i.target)
+          if (c === void 0) continue
+          const d = (0, l.PJ)(i.target, e.scope.configuration.defaultPrivacyLevel, n),
+            f = B(i.target, d, i.attributeName, e.scope.configuration)
+          let p
+          if (i.attributeName === 'value') {
+            const N = C(i.target, d)
+            if (N === void 0) continue
+            p = N
+          } else typeof f == 'string' ? (p = f) : (p = null)
+          let h = u.get(i.target)
+          ;(h || ((h = { id: c, attributes: {} }), o.push(h), u.set(i.target, h)),
+            (h.attributes[i.attributeName] = p))
+        }
+        return o
+      }
+      function oe(t) {
+        t.sort((n, e) => {
+          const o = n.compareDocumentPosition(e)
+          return o & Node.DOCUMENT_POSITION_CONTAINED_BY
+            ? -1
+            : o & Node.DOCUMENT_POSITION_CONTAINS || o & Node.DOCUMENT_POSITION_FOLLOWING
+              ? 1
+              : o & Node.DOCUMENT_POSITION_PRECEDING
+                ? -1
+                : 0
+        })
+      }
+      function ot(t, n) {
+        ;((0, l.XS)(t) && n(t.shadowRoot), (0, l.wI)(t, (e) => ot(e, n)))
+      }
+      function se() {
+        const t = new WeakMap()
         return {
-          addShadowRoot: (o, s) => {
-            if (n.has(o)) return
-            const r = mt(o, t, e, s),
-              i = ut(o, t, s),
-              a = Z(o, t, s)
-            n.set(o, {
-              flush: () => r.flush(),
+          set(n, e) {
+            ;(n === document && !document.scrollingElement) ||
+              t.set(n === document ? document.scrollingElement : n, e)
+          },
+          get(n) {
+            return t.get(n)
+          },
+          has(n) {
+            return t.has(n)
+          },
+        }
+      }
+      const re = (t, n) => {
+        const e = new Map()
+        return {
+          addShadowRoot: (s, r) => {
+            if (e.has(s)) return
+            const u = nt(s, t, n, r),
+              i = et(s, t, r),
+              a = q(s, t, r)
+            e.set(s, {
+              flush: () => u.flush(),
               stop: () => {
-                ;(r.stop(), i.stop(), a.stop())
+                ;(u.stop(), i.stop(), a.stop())
               },
             })
           },
-          removeShadowRoot: (t) => {
-            const e = n.get(t)
-            e && (e.stop(), n.delete(t))
+          removeShadowRoot: (s) => {
+            const r = e.get(s)
+            r && (r.stop(), e.delete(s))
           },
           stop: () => {
-            n.forEach(({ stop: t }) => t())
+            e.forEach(({ stop: s }) => s())
           },
           flush: () => {
-            n.forEach(({ flush: t }) => t())
+            e.forEach(({ flush: s }) => s())
           },
         }
       }
-      function yt(t) {
-        const { emitRecord: e, emitStats: n, configuration: o, lifeCycle: s } = t
-        if (!e || !n) throw new Error('emit functions are required')
-        const r = (n) => {
-            ;(e(n), (0, F.b)('record', { record: n }))
-            const o = t.viewHistory.findView()
-            H.$1(o.id)
+      function ie() {
+        const t = new WeakMap()
+        let n = 1
+        return {
+          getIdForEvent(e) {
+            return (t.has(e) || t.set(e, n++), t.get(e))
           },
-          i = gt(r, n),
-          u = (function (t, e, n, o, s) {
-            return {
-              configuration: t,
-              elementsScrollPositions: e,
-              eventIds: n,
-              nodeIds: o,
-              shadowRootsController: s,
-            }
-          })(
-            o,
-            (function () {
-              const t = new WeakMap()
-              return {
-                set(e, n) {
-                  ;(e === document && !document.scrollingElement) ||
-                    t.set(e === document ? document.scrollingElement : e, n)
-                },
-                get: (e) => t.get(e),
-                has: (e) => t.has(e),
-              }
-            })(),
-            (function () {
-              const t = new WeakMap()
-              let e = 1
-              return { getIdForEvent: (n) => (t.has(n) || t.set(n, e++), t.get(n)) }
-            })(),
-            (function () {
-              const t = new WeakMap()
-              let e = 0
-              const n = (e) => t.get(e)
-              return {
-                assign: (o) => {
-                  let s = n(o)
-                  return (void 0 === s && ((s = e++), t.set(o, s)), s)
-                },
-                get: n,
-                areAssignedForNodeAndAncestors: (t) => {
-                  let e = t
-                  for (; e; ) {
-                    if (void 0 === n(e) && !(0, a.p_)(e)) return !1
-                    e = (0, a.$4)(e)
-                  }
-                  return !0
-                },
-              }
-            })(),
-            i,
-          ),
-          { stop: d } = (function (t, e, n, o, s) {
-            z((0, c.nx)(), 0, e, n, s)
-            const { unsubscribe: r } = t.subscribe(2, (t) => {
-              ;(o(), z(t.startClocks.timeStamp, 1, e, n, s))
-            })
-            return { stop: r }
-          })(s, r, n, l, u)
-        function l() {
-          ;(i.flush(), p.flush())
         }
-        const p = mt(document, r, n, u),
+      }
+      function ue(t, n, e, o, s) {
+        return {
+          configuration: t,
+          elementsScrollPositions: n,
+          eventIds: e,
+          nodeIds: o,
+          shadowRootsController: s,
+        }
+      }
+      function ae(t) {
+        const { emitRecord: n, emitStats: e, configuration: o, lifeCycle: s } = t
+        if (!n || !e) throw new Error('emit functions are required')
+        const r = (p) => {
+            ;(n(p), (0, Pt.b)('record', { record: p }))
+            const h = t.viewHistory.findView()
+            x.$1(h.id)
+          },
+          u = re(r, e),
+          i = ue(o, se(), ie(), zt(), u),
+          { stop: a } = At(s, r, e, c, i)
+        function c() {
+          ;(u.flush(), d.flush())
+        }
+        const d = nt(document, r, e, i),
           f = [
-            p,
-            Y(r, u),
-            j(r, u),
-            Z(document, r, u),
-            tt(r, u),
-            ut(document, r, u),
-            nt(r, u),
-            st(r, u),
-            it(r, u),
-            et(r, u),
-            at(s, r, u),
-            ct(s, r, l),
+            d,
+            Ft(r, i),
+            kt(r, i),
+            q(document, r, i),
+            Bt(r, i),
+            et(document, r, i),
+            Gt(r, i),
+            Jt(r, i),
+            Xt(r, i),
+            Ut(r, i),
+            _t(s, r, i),
+            Wt(s, r, c),
           ]
         return {
           stop: () => {
-            ;(i.stop(), f.forEach((t) => t.stop()), d())
+            ;(u.stop(), f.forEach((p) => p.stop()), a())
           },
-          flushMutations: l,
-          shadowRootsController: i,
+          flushMutations: c,
+          shadowRootsController: u,
         }
       }
-      var vt = n(70583),
-        wt = n(15320)
-      function St({ context: t, creationReason: e, encoder: n }) {
+      var ce = m(70583),
+        st = m(15320)
+      function de(t, n, e, o) {
+        const s = new FormData()
+        s.append(
+          'segment',
+          new Blob([t], { type: 'application/octet-stream' }),
+          `${n.session.id}-${n.start}`,
+        )
+        const r = { raw_segment_size: o, compressed_segment_size: t.byteLength, ...n },
+          u = JSON.stringify(r)
+        return (
+          s.append('event', new Blob([u], { type: 'application/json' })),
+          {
+            data: s,
+            bytesCount: t.byteLength,
+            cssText: e.cssText,
+            isFullSnapshot: n.index_in_view === 0,
+            rawSize: o,
+            recordCount: n.records_count,
+            serializationDuration: e.serializationDuration,
+          }
+        )
+      }
+      function le({ context: t, creationReason: n, encoder: e }) {
         let o = 0
         const s = t.view.id,
-          r = {
+          r = x.K_(s),
+          u = {
             start: 1 / 0,
             end: -1 / 0,
-            creation_reason: e,
+            creation_reason: n,
             records_count: 0,
             has_full_snapshot: !1,
-            index_in_view: H.K_(s),
+            index_in_view: r,
             source: 'browser',
             ...t,
           },
-          i = {
-            cssText: { count: 0, max: 0, sum: 0 },
-            serializationDuration: { count: 0, max: 0, sum: 0 },
-          }
-        return (
-          H.H5(s),
-          {
-            addRecord: function (t, e) {
-              ;((r.start = Math.min(r.start, t.timestamp)),
-                (r.end = Math.max(r.end, t.timestamp)),
-                (r.records_count += 1),
-                r.has_full_snapshot || (r.has_full_snapshot = t.type === u.FullSnapshot))
-              const s = n.isEmpty ? '{"records":[' : ','
-              n.write(s + JSON.stringify(t), (t) => {
-                ;((o += t), e(o))
-              })
-            },
-            addStats: function (t) {
-              !(function (t, e) {
-                for (const n of ['cssText', 'serializationDuration'])
-                  ((t[n].count += e[n].count),
-                    (t[n].max = Math.max(t[n].max, e[n].max)),
-                    (t[n].sum += e[n].sum))
-              })(i, t)
-            },
-            flush: function (t) {
-              if (n.isEmpty) throw new Error('Empty segment flushed')
-              ;(n.write(`],${JSON.stringify(r).slice(1)}\n`),
-                n.finish((e) => {
-                  ;(H.L7(r.view.id, e.rawBytesCount), t(r, i, e))
-                }))
-            },
-          }
-        )
-      }
-      const It = 5 * c.OY
-      let Tt = 6e4
-      function xt(t, e, n, o, s, r) {
-        return (function (t, e, n, o) {
-          let s = { status: 0, nextSegmentCreationReason: 'init' }
-          const { unsubscribe: r } = t.subscribe(2, () => {
-              a('view_change')
-            }),
-            { unsubscribe: i } = t.subscribe(11, (t) => {
-              a(t.reason)
-            })
-          function a(t) {
-            ;(1 === s.status &&
-              (s.segment.flush((e, o, s) => {
-                const r = (function (t, e, n, o) {
-                  const s = new FormData()
-                  s.append(
-                    'segment',
-                    new Blob([t], { type: 'application/octet-stream' }),
-                    `${e.session.id}-${e.start}`,
-                  )
-                  const r = { raw_segment_size: o, compressed_segment_size: t.byteLength, ...e },
-                    i = JSON.stringify(r)
-                  return (
-                    s.append('event', new Blob([i], { type: 'application/json' })),
-                    {
-                      data: s,
-                      bytesCount: t.byteLength,
-                      cssText: n.cssText,
-                      isFullSnapshot: 0 === e.index_in_view,
-                      rawSize: o,
-                      recordCount: e.records_count,
-                      serializationDuration: n.serializationDuration,
-                    }
-                  )
-                })(s.output, e, o, s.rawBytesCount)
-                ;(0, vt.Kp)(t) ? n.sendOnExit(r) : n.send(r)
-              }),
-              (0, wt.DJ)(s.expirationTimeoutId)),
-              (s = 'stop' !== t ? { status: 0, nextSegmentCreationReason: t } : { status: 2 }))
-          }
-          return {
-            addRecord: (t) => {
-              if (2 !== s.status) {
-                if (0 === s.status) {
-                  const t = e()
-                  if (!t) return
-                  s = {
-                    status: 1,
-                    segment: St({
-                      encoder: o,
-                      context: t,
-                      creationReason: s.nextSegmentCreationReason,
-                    }),
-                    expirationTimeoutId: (0, wt.wg)(() => {
-                      a('segment_duration_limit')
-                    }, It),
-                  }
-                }
-                s.segment.addRecord(t, (t) => {
-                  t > Tt && a('segment_bytes_limit')
-                })
-              }
-            },
-            addStats: (t) => {
-              1 === s.status && s.segment.addStats(t)
-            },
-            stop: () => {
-              ;(a('stop'), r(), i())
-            },
-          }
-        })(
-          t,
-          () =>
-            (function (t, e, n) {
-              const o = e.findTrackedSession(),
-                s = n.findView()
-              if (o && s)
-                return { application: { id: t }, session: { id: o.id }, view: { id: s.id } }
-            })(e.applicationId, n, o),
-          s,
-          r,
-        )
-      }
-      function Et(t, e, n, a, c, u, d) {
-        const l = [],
-          p =
-            d ||
-            (0, s.sA)(
-              [e.sessionReplayEndpointBuilder],
-              (e) => {
-                ;(t.notify(14, { error: e }),
-                  (0, o.A2)('Error reported to customer', { 'error.message': e.message }))
-              },
-              Tt,
-            )
-        let f, m
-        if ((0, r.d0)())
-          (({ addRecord: f } = (function (t) {
-            const e = (0, r.Y9)()
-            return {
-              addRecord: (n) => {
-                const o = t.findView()
-                e.send('record', n, o.id)
-              },
-            }
-          })(a)),
-            (m = i.l))
-        else {
-          const s = xt(t, e, n, a, p, c)
-          ;((f = s.addRecord), (m = s.addStats), l.push(s.stop))
-          const r = (function (t, e) {
-            if (!t.metricsEnabled) return { stop: i.l }
-            const { unsubscribe: n } = e.subscribe((t) => {
-              if (
-                'failure' === t.type ||
-                'queue-full' === t.type ||
-                ('success' === t.type && t.payload.isFullSnapshot)
-              ) {
-                const e = (function (t, e, n) {
-                  return {
-                    cssText: { count: n.cssText.count, max: n.cssText.max, sum: n.cssText.sum },
-                    isFullSnapshot: n.isFullSnapshot,
-                    ongoingRequests: {
-                      count: e.ongoingRequestCount,
-                      totalSize: e.ongoingByteCount,
-                    },
-                    recordCount: n.recordCount,
-                    result: t,
-                    serializationDuration: {
-                      count: n.serializationDuration.count,
-                      max: n.serializationDuration.max,
-                      sum: n.serializationDuration.sum,
-                    },
-                    size: { compressed: n.bytesCount, raw: n.rawSize },
-                  }
-                })(t.type, t.bandwidth, t.payload)
-                ;(0, o.Gk)('Segment network request metrics', { metrics: e })
-              }
-            })
-            return { stop: n }
-          })(u, p.observable)
-          l.push(r.stop)
+          i = G()
+        x.H5(s)
+        function a(f, p) {
+          ;((u.start = Math.min(u.start, f.timestamp)),
+            (u.end = Math.max(u.end, f.timestamp)),
+            (u.records_count += 1),
+            u.has_full_snapshot || (u.has_full_snapshot = f.type === I.FullSnapshot))
+          const h = e.isEmpty ? '{"records":[' : ','
+          e.write(h + JSON.stringify(f), (N) => {
+            ;((o += N), p(o))
+          })
         }
-        const { stop: h } = yt({
-          emitRecord: f,
-          emitStats: m,
-          configuration: e,
+        function c(f) {
+          Dt(i, f)
+        }
+        function d(f) {
+          if (e.isEmpty) throw new Error('Empty segment flushed')
+          ;(e.write(`],${JSON.stringify(u).slice(1)}
+`),
+            e.finish((p) => {
+              ;(x.L7(u.view.id, p.rawBytesCount), f(u, i, p))
+            }))
+        }
+        return { addRecord: a, addStats: c, flush: d }
+      }
+      const fe = 5 * E.OY
+      let A = 6e4
+      function pe(t, n, e, o, s, r) {
+        return he(t, () => me(n.applicationId, e, o), s, r)
+      }
+      function he(t, n, e, o) {
+        let s = { status: 0, nextSegmentCreationReason: 'init' }
+        const { unsubscribe: r } = t.subscribe(2, () => {
+            i('view_change')
+          }),
+          { unsubscribe: u } = t.subscribe(11, (a) => {
+            i(a.reason)
+          })
+        function i(a) {
+          ;(s.status === 1 &&
+            (s.segment.flush((c, d, f) => {
+              const p = de(f.output, c, d, f.rawBytesCount)
+              ;(0, ce.Kp)(a) ? e.sendOnExit(p) : e.send(p)
+            }),
+            (0, st.DJ)(s.expirationTimeoutId)),
+            a !== 'stop' ? (s = { status: 0, nextSegmentCreationReason: a }) : (s = { status: 2 }))
+        }
+        return {
+          addRecord: (a) => {
+            if (s.status !== 2) {
+              if (s.status === 0) {
+                const c = n()
+                if (!c) return
+                s = {
+                  status: 1,
+                  segment: le({
+                    encoder: o,
+                    context: c,
+                    creationReason: s.nextSegmentCreationReason,
+                  }),
+                  expirationTimeoutId: (0, st.wg)(() => {
+                    i('segment_duration_limit')
+                  }, fe),
+                }
+              }
+              s.segment.addRecord(a, (c) => {
+                c > A && i('segment_bytes_limit')
+              })
+            }
+          },
+          addStats: (a) => {
+            s.status === 1 && s.segment.addStats(a)
+          },
+          stop: () => {
+            ;(i('stop'), r(), u())
+          },
+        }
+      }
+      function me(t, n, e) {
+        const o = n.findTrackedSession(),
+          s = e.findView()
+        if (!(!o || !s))
+          return { application: { id: t }, session: { id: o.id }, view: { id: s.id } }
+      }
+      function Ne(t = 6e4) {
+        A = t
+      }
+      function ge(t, n) {
+        if (!t.metricsEnabled) return { stop: S.l }
+        const { unsubscribe: e } = n.subscribe((o) => {
+          if (
+            o.type === 'failure' ||
+            o.type === 'queue-full' ||
+            (o.type === 'success' && o.payload.isFullSnapshot)
+          ) {
+            const s = Se(o.type, o.bandwidth, o.payload)
+            ;(0, P.Gk)('Segment network request metrics', { metrics: s })
+          }
+        })
+        return { stop: e }
+      }
+      function Se(t, n, e) {
+        return {
+          cssText: { count: e.cssText.count, max: e.cssText.max, sum: e.cssText.sum },
+          isFullSnapshot: e.isFullSnapshot,
+          ongoingRequests: { count: n.ongoingRequestCount, totalSize: n.ongoingByteCount },
+          recordCount: e.recordCount,
+          result: t,
+          serializationDuration: {
+            count: e.serializationDuration.count,
+            max: e.serializationDuration.max,
+            sum: e.serializationDuration.sum,
+          },
+          size: { compressed: e.bytesCount, raw: e.rawSize },
+        }
+      }
+      function Te(t) {
+        const n = (0, V.Y9)()
+        return {
+          addRecord: (e) => {
+            const o = t.findView()
+            n.send('record', e, o.id)
+          },
+        }
+      }
+      function ye(t, n, e, o, s, r, u) {
+        const i = [],
+          a = (h) => {
+            ;(t.notify(14, { error: h }),
+              (0, P.A2)('Error reported to customer', { 'error.message': h.message }))
+          },
+          c = u || (0, rt.sA)([n.sessionReplayEndpointBuilder], a, A)
+        let d, f
+        if ((0, V.d0)()) (({ addRecord: d } = Te(o)), (f = S.l))
+        else {
+          const h = pe(t, n, e, o, c, s)
+          ;((d = h.addRecord), (f = h.addStats), i.push(h.stop))
+          const N = ge(r, c.observable)
+          i.push(N.stop)
+        }
+        const { stop: p } = ae({
+          emitRecord: d,
+          emitStats: f,
+          configuration: n,
           lifeCycle: t,
-          viewHistory: a,
+          viewHistory: o,
         })
         return (
-          l.push(h),
+          i.push(p),
           {
             stop: () => {
-              l.forEach((t) => t())
+              i.forEach((h) => h())
             },
           }
         )

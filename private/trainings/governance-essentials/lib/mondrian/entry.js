@@ -29,7 +29,7 @@ var mondrian
       3213: (e, r, t) => {
         var n = {
             './learn-react': () =>
-              Promise.all([t.e(743), t.e(356), t.e(347)]).then(() => () => t(6347)),
+              Promise.all([t.e(743), t.e(356), t.e(315)]).then(() => () => t(1315)),
           },
           o = (e, r) => (
             (t.R = r),
@@ -75,7 +75,7 @@ var mondrian
     (P.f = {}),
     (P.e = (e) => Promise.all(Object.keys(P.f).reduce((r, t) => (P.f[t](e, r), r), []))),
     (P.u = (e) =>
-      ({ 142: '196251cf', 347: 'de2352f0', 356: 'b2ff0c79', 743: 'ad3a3b3a', 761: '09e37aee' })[e] +
+      ({ 142: '196251cf', 315: 'c848a68f', 356: '9efea61d', 743: 'ad3a3b3a', 761: '09e37aee' })[e] +
       '.js'),
     (P.g = (function () {
       if ('object' == typeof globalThis) return globalThis
@@ -344,7 +344,7 @@ var mondrian
       6186: () => y('default', 'react', !1, [1, 19, 2, 0]),
       8350: () => b('default', 'svelte', !1, [1, 5, 0, 0], () => () => P(6366)),
     }),
-    (k = { 347: [4982, 6186, 8350] }),
+    (k = { 315: [4982, 6186, 8350] }),
     (j = {}),
     (P.f.consumes = (e, r) => {
       P.o(k, e) &&

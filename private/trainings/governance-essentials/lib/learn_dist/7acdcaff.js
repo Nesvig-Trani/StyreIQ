@@ -4,7 +4,7 @@
   [170],
   {
     57: (e, t, r) => {
-      ;(r.r(t), r.d(t, { default: () => he }))
+      ;(r.r(t), r.d(t, { default: () => ke }))
       var n = r(149),
         o = r(800),
         s = r(883)
@@ -52,7 +52,55 @@
               i = (e) => (e.done ? n(e.value) : Promise.resolve(e.value).then(s, a))
             i((r = r.apply(e, t)).next())
           })
-      var k = (e, t, r) =>
+      const k = (e, t) =>
+        h(null, null, function* () {
+          const r = e.video && 'captions' in e.video ? e.video.captions : []
+          if (!r) return ''
+          let n = r.find((e) => e.code === t)
+          if ((!n && r.length > 0 && (n = r[0]), !n)) return ''
+          const o = n.key,
+            s = yield ((e) =>
+              h(null, null, function* () {
+                try {
+                  const t = yield fetch(`https://articulateusercontent.com/${e}`, { method: 'GET' })
+                  return t.ok && t.body
+                    ? yield t.text()
+                    : (console.error(`Failed to fetch subtitle from CDN: ${e}`, {
+                        status: t.status,
+                        statusText: t.statusText,
+                      }),
+                      '')
+                } catch (t) {
+                  return (
+                    console.error(`Failed to fetch subtitle from CDN: ${e}`, { error: t }),
+                    ''
+                  )
+                }
+              }))(o)
+          return '' === s
+            ? ''
+            : ((e) => {
+                try {
+                  const { cues: t } = p().parse(e)
+                  return t
+                    .map((e) => {
+                      var t, r
+                      return (
+                        (r = String(null != (t = e.text) ? t : '')),
+                        u()(r, { allowedTags: [], allowedAttributes: {} })
+                          .replace(/\s+/g, ' ')
+                          .trim()
+                      )
+                    })
+                    .filter(Boolean)
+                    .join('\n')
+                    .trim()
+                } catch (e) {
+                  return (console.error('Failed to strip subtitle text', { error: e }), '')
+                }
+              })(s)
+        })
+      var m = (e, t, r) =>
         new Promise((n, o) => {
           var s = (e) => {
               try {
@@ -71,10 +119,10 @@
             i = (e) => (e.done ? n(e.value) : Promise.resolve(e.value).then(s, a))
           i((r = r.apply(e, t)).next())
         })
-      const m = (e) => !l()(e),
-        x = (e) =>
-          u()(e, { allowedTags: [], allowedAttributes: {} }).replace(/([.!?])(?=[A-Z])/g, '$1 '),
+      const x = (e) => !l()(e),
         j = (e) =>
+          u()(e, { allowedTags: [], allowedAttributes: {} }).replace(/([.!?])(?=[A-Z])/g, '$1 '),
+        b = (e) =>
           ('caption' in e && e.caption) ||
           ('description' in e && e.description) ||
           ('heading' in e && e.heading) ||
@@ -82,10 +130,10 @@
           ('type' in e && e.type) ||
           ('value' in e && e.value) ||
           ('id' in e && e.id),
-        b = (e) => e.blockContents.filter(m).length > 0,
-        f = (e) => [x(`Lesson Title: '${e.title}'`)],
-        C = (e, t, ...r) =>
-          k(null, [e, t, ...r], function* (e, t, r = {}) {
+        f = (e) => e.blockContents.filter(x).length > 0,
+        C = (e) => [j(`Lesson Title: '${e.title}'`)],
+        y = (e, t, ...r) =>
+          m(null, [e, t, ...r], function* (e, t, r = {}) {
             const { shouldLabelBlock: n = !0, filters: o = [] } = r,
               s = yield Promise.all(
                 ((e, t) =>
@@ -93,12 +141,12 @@
                   e,
                   o,
                 )
-                  .filter(j)
+                  .filter(b)
                   .map((e) =>
-                    k(null, null, function* () {
-                      return x(
+                    m(null, null, function* () {
+                      return j(
                         yield ((e, t, ...r) =>
-                          k(null, [e, t, ...r], function* (e, t, r = {}) {
+                          m(null, [e, t, ...r], function* (e, t, r = {}) {
                             const { shouldLabelBlock: n = !0 } = r
                             switch (null == e ? void 0 : e.family) {
                               case 'chart':
@@ -274,78 +322,7 @@
                                         ((e, t, r) =>
                                           h(null, null, function* () {
                                             const { caption: e, media: n } = r || {},
-                                              o = yield ((e, t) =>
-                                                h(null, null, function* () {
-                                                  const r =
-                                                    e.video && 'captions' in e.video
-                                                      ? e.video.captions
-                                                      : []
-                                                  if (!r) return ''
-                                                  let n = r.find((e) => e.code === t)
-                                                  if ((!n && r.length > 0 && (n = r[0]), !n))
-                                                    return ''
-                                                  const o = n.key,
-                                                    s = yield ((e) =>
-                                                      h(null, null, function* () {
-                                                        try {
-                                                          const t = yield fetch(
-                                                            `https://articulateusercontent.com/${e}`,
-                                                            { method: 'GET' },
-                                                          )
-                                                          return t.ok && t.body
-                                                            ? yield t.text()
-                                                            : (console.error(
-                                                                `Failed to fetch subtitle from CDN: ${e}`,
-                                                                {
-                                                                  status: t.status,
-                                                                  statusText: t.statusText,
-                                                                },
-                                                              ),
-                                                              '')
-                                                        } catch (t) {
-                                                          return (
-                                                            console.error(
-                                                              `Failed to fetch subtitle from CDN: ${e}`,
-                                                              { error: t },
-                                                            ),
-                                                            ''
-                                                          )
-                                                        }
-                                                      }))(o)
-                                                  return '' === s
-                                                    ? ''
-                                                    : ((e) => {
-                                                        try {
-                                                          const { cues: t } = p().parse(e)
-                                                          return t
-                                                            .map((e) => {
-                                                              var t, r
-                                                              return (
-                                                                (r = String(
-                                                                  null != (t = e.text) ? t : '',
-                                                                )),
-                                                                u()(r, {
-                                                                  allowedTags: [],
-                                                                  allowedAttributes: {},
-                                                                })
-                                                                  .replace(/\s+/g, ' ')
-                                                                  .trim()
-                                                              )
-                                                            })
-                                                            .filter(Boolean)
-                                                            .join('\n')
-                                                            .trim()
-                                                        } catch (e) {
-                                                          return (
-                                                            console.error(
-                                                              'Failed to strip subtitle text',
-                                                              { error: e },
-                                                            ),
-                                                            ''
-                                                          )
-                                                        }
-                                                      })(s)
-                                                }))(n, t)
+                                              o = yield k(n, t)
                                             let s = ''
                                             return (
                                               o && e
@@ -368,18 +345,18 @@
                     }),
                   ),
               )
-            return { context: f(e), blockContents: s, lessonId: e.id }
+            return { context: C(e), blockContents: s, lessonId: e.id }
           }),
-        y = (e) => x(`Course Title: '${e}'`),
-        g = 'https://rise.articulate.com' === window.location.origin,
-        L = (e, t, r, n, o, s, a = !0) => {
+        g = (e) => j(`Course Title: '${e}'`),
+        L = 'https://rise.articulate.com' === window.location.origin,
+        v = (e, t, r, n, o, s, a = !0) => {
           return (
             (i = function* () {
               try {
                 const i = yield fetch('https://api.articulate.com/ai-learner/chat', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${t}` },
-                  credentials: g ? 'include' : 'omit',
+                  credentials: L ? 'include' : 'omit',
                   body: JSON.stringify({
                     prompt: e,
                     courseContext: r,
@@ -387,7 +364,7 @@
                     chatHistory: o,
                   }),
                 })
-                if (g && a && 401 === i.status) return (yield s(), L(e, t, r, n, o, s, !1))
+                if (L && a && 401 === i.status) return (yield s(), v(e, t, r, n, o, s, !1))
                 if (!i.ok || !i.body)
                   throw new Error('Failed to fetch from /api/chat', {
                     cause: { status: i.status, statusText: i.statusText },
@@ -418,7 +395,7 @@
           )
           var i
         }
-      var v = (e, t, r) =>
+      var w = (e, t, r) =>
         new Promise((n, o) => {
           var s = (e) => {
               try {
@@ -437,12 +414,12 @@
             i = (e) => (e.done ? n(e.value) : Promise.resolve(e.value).then(s, a))
           i((r = r.apply(e, t)).next())
         })
-      const w = (e) => {
+      const $ = (e) => {
           if ('' === e) return !1
           const t = e.lastIndexOf('<')
           return -1 === t || -1 !== e.slice(t + 1).indexOf('>')
         },
-        $ = ({ className: e }) =>
+        M = ({ className: e }) =>
           (0, n.jsxs)('svg', {
             className: e,
             width: '90',
@@ -718,22 +695,22 @@
               }),
             ],
           })
-      var M = Object.defineProperty,
-        P = Object.defineProperties,
-        A = Object.getOwnPropertyDescriptors,
-        W = Object.getOwnPropertySymbols,
-        S = Object.prototype.hasOwnProperty,
-        T = Object.prototype.propertyIsEnumerable,
-        O = (e, t, r) =>
+      var P = Object.defineProperty,
+        A = Object.defineProperties,
+        W = Object.getOwnPropertyDescriptors,
+        S = Object.getOwnPropertySymbols,
+        T = Object.prototype.hasOwnProperty,
+        O = Object.prototype.propertyIsEnumerable,
+        _ = (e, t, r) =>
           t in e
-            ? M(e, t, { enumerable: !0, configurable: !0, writable: !0, value: r })
+            ? P(e, t, { enumerable: !0, configurable: !0, writable: !0, value: r })
             : (e[t] = r)
-      function _({ size: e = 'body-sm', variant: t }) {
+      function I({ size: e = 'body-sm', variant: t }) {
         return (0, n.jsxs)(
           s.Arc.p,
           ((r = ((e, t) => {
-            for (var r in t || (t = {})) S.call(t, r) && O(e, r, t[r])
-            if (W) for (var r of W(t)) T.call(t, r) && O(e, r, t[r])
+            for (var r in t || (t = {})) T.call(t, r) && _(e, r, t[r])
+            if (S) for (var r of S(t)) O.call(t, r) && _(e, r, t[r])
             return e
           })({ size: e }, t ? { variant: t } : {})),
           (o = {
@@ -758,36 +735,36 @@
               '.',
             ],
           }),
-          P(r, A(o))),
+          A(r, W(o))),
         )
         var r, o
       }
-      var I = r(842),
-        E = r(685),
-        N = r(656),
-        B = Object.defineProperty,
-        z = Object.getOwnPropertySymbols,
-        F = Object.prototype.hasOwnProperty,
-        D = Object.prototype.propertyIsEnumerable,
-        Z = (e, t, r) =>
+      var E = r(842),
+        N = r(685),
+        B = r(656),
+        z = Object.defineProperty,
+        F = Object.getOwnPropertySymbols,
+        D = Object.prototype.hasOwnProperty,
+        Z = Object.prototype.propertyIsEnumerable,
+        H = (e, t, r) =>
           t in e
-            ? B(e, t, { enumerable: !0, configurable: !0, writable: !0, value: r })
+            ? z(e, t, { enumerable: !0, configurable: !0, writable: !0, value: r })
             : (e[t] = r),
-        H = (e, t) => {
-          for (var r in t || (t = {})) F.call(t, r) && Z(e, r, t[r])
-          if (z) for (var r of z(t)) D.call(t, r) && Z(e, r, t[r])
+        q = (e, t) => {
+          for (var r in t || (t = {})) D.call(t, r) && H(e, r, t[r])
+          if (F) for (var r of F(t)) Z.call(t, r) && H(e, r, t[r])
           return e
         }
-      const q = {
-        'sparkles-solid': E.p7g,
-        lightbulb: N.rC2,
-        'magnifying-glass': N.$UM,
-        list: N.ITF,
-        'arrow-down-left-and-arrow-up-right-to-center': N.hLQ,
-        'pen-to-square': N.LFz,
-        'circle-exclamation': N.lEd,
+      const R = {
+        'sparkles-solid': N.p7g,
+        lightbulb: B.rC2,
+        'magnifying-glass': B.$UM,
+        list: B.ITF,
+        'arrow-down-left-and-arrow-up-right-to-center': B.hLQ,
+        'pen-to-square': B.LFz,
+        'circle-exclamation': B.lEd,
       }
-      function R({
+      function U({
         'aria-label': e,
         className: t,
         classNameIcon: r,
@@ -800,23 +777,23 @@
       }) {
         return (0, n.jsx)('span', {
           className: t,
-          style: H({ color: o }, l),
-          children: (0, n.jsx)(I.g, {
+          style: q({ color: o }, l),
+          children: (0, n.jsx)(E.g, {
             'aria-label': e,
             className: r,
-            icon: q[s],
+            icon: R[s],
             rotation: a,
             spin: i,
             style: c,
           }),
         })
       }
-      const U = [
+      const V = [
           { icon: 'lightbulb', label: 'Explain this in simpler terms' },
           { icon: 'magnifying-glass', label: 'Help me apply this to my job' },
           { icon: 'list', label: 'Summarize this training' },
         ],
-        V = ({ onSubmit: e }) => {
+        K = ({ onSubmit: e }) => {
           const t = (0, o.useCallback)(
             (t) => {
               e(t.label)
@@ -826,16 +803,16 @@
           return (0, n.jsxs)('div', {
             className: 'ldf__blank',
             children: [
-              (0, n.jsx)($, { className: 'ldf__illustration' }),
+              (0, n.jsx)(M, { className: 'ldf__illustration' }),
               (0, n.jsx)(s.Arc.h4, { size: 'subheading-lg', children: 'Hey there, need a hand?' }),
               (0, n.jsx)('ul', {
-                children: U.map((e) =>
+                children: V.map((e) =>
                   (0, n.jsx)(
                     'li',
                     {
                       children: (0, n.jsx)(s.ArcButton, {
                         size: 'md',
-                        icon: (0, n.jsx)(R, { name: e.icon }),
+                        icon: (0, n.jsx)(U, { name: e.icon }),
                         text: e.label,
                         variant: 'ai-secondary',
                         onClick: () => t(e),
@@ -845,15 +822,15 @@
                   ),
                 ),
               }),
-              (0, n.jsx)(_, { size: 'body-sm', variant: 'secondary' }),
+              (0, n.jsx)(I, { size: 'body-sm', variant: 'secondary' }),
             ],
           })
         },
-        K = (e) => Array.from(e).reduce((e, t) => ((e << 5) - e + t.charCodeAt(0)) | 0, 0),
-        Q = ['h4', 'h2', 'p', 'ol', 'ul', 'li', 'em', 'strong'],
-        G = (e, t, r = 0, o) => {
+        Q = (e) => Array.from(e).reduce((e, t) => ((e << 5) - e + t.charCodeAt(0)) | 0, 0),
+        G = ['h4', 'h2', 'p', 'ol', 'ul', 'li', 'em', 'strong'],
+        J = (e, t, r = 0, o) => {
           const a = ((e, t) =>
-            t instanceof Array ? e + '-' + t.map((e) => K(e)).join('-') : e + '-' + K(t))(r, t)
+            t instanceof Array ? e + '-' + t.map((e) => Q(e)).join('-') : e + '-' + Q(t))(r, t)
           switch (e.toLowerCase()) {
             case 'ol':
               return (0, n.jsx)('ol', { children: t }, a)
@@ -875,38 +852,38 @@
               return t
           }
         },
-        J = (e, t = 0) =>
-          G(
+        X = (e, t = 0) =>
+          J(
             e.tagName,
             Array.from(e.childNodes).map((e, t) =>
-              e.tagName ? J(e, t) : e.nodeType === Node.TEXT_NODE ? e.textContent : null,
+              e.tagName ? X(e, t) : e.nodeType === Node.TEXT_NODE ? e.textContent : null,
             ),
             t,
           ),
-        X = ({ content: e, icon: t }) => {
-          if (!/<\/?[a-z][\s\S]*>/i.test(e)) return G('p', [e], 0, t)
-          const r = u()(e, { allowedTags: [...Q], allowedAttributes: {} }),
+        Y = ({ content: e, icon: t }) => {
+          if (!/<\/?[a-z][\s\S]*>/i.test(e)) return J('p', [e], 0, t)
+          const r = u()(e, { allowedTags: [...G], allowedAttributes: {} }),
             n = new DOMParser().parseFromString(r, 'text/html')
-          return J(n.body)
+          return X(n.body)
         },
-        Y = 'ldf__bubble',
-        ee = 'ldf__assistant',
-        te = ({ exchange: e }) => {
+        ee = 'ldf__bubble',
+        te = 'ldf__assistant',
+        re = ({ exchange: e }) => {
           const t = 'assistant' === e.role && 0 === e.content.length ? '• • •' : e.content
           return (0, n.jsx)('li', {
-            className: `${Y} ${'user' === e.role ? 'ldf__user' : ee}`,
-            children: (0, n.jsx)(X, { content: t }),
+            className: `${ee} ${'user' === e.role ? 'ldf__user' : te}`,
+            children: (0, n.jsx)(Y, { content: t }),
           })
         },
-        re = () =>
+        ne = () =>
           (0, n.jsx)('li', {
-            className: `${Y} ${ee} ldf__error`,
-            children: (0, n.jsx)(X, {
+            className: `${ee} ${te} ldf__error`,
+            children: (0, n.jsx)(Y, {
               content: 'Something went wrong. Try refreshing the page or submitting a new request.',
-              icon: (0, n.jsx)(R, { name: 'circle-exclamation' }),
+              icon: (0, n.jsx)(U, { name: 'circle-exclamation' }),
             }),
           }),
-        ne = ({ exchanges: e, currentExchange: t, error: r }) => {
+        oe = ({ exchanges: e, currentExchange: t, error: r }) => {
           const s = (0, o.useMemo)(() => {
             const n = [...e]
             return (null === t || r || n.push(t), n.toReversed())
@@ -914,19 +891,19 @@
           return (0, n.jsxs)('ul', {
             className: 'ldf__chat',
             children: [
-              r && (0, n.jsx)(re, {}),
+              r && (0, n.jsx)(ne, {}),
               s.map((e, t) => {
-                const r = K(`${t}-${e.role}-${e.content}`)
-                return (0, n.jsx)(te, { exchange: e }, r)
+                const r = Q(`${t}-${e.role}-${e.content}`)
+                return (0, n.jsx)(re, { exchange: e }, r)
               }),
               (0, n.jsx)('li', {
-                className: `${Y} ${ee}`,
-                children: (0, n.jsx)(_, { size: 'body-md' }),
+                className: `${ee} ${te}`,
+                children: (0, n.jsx)(I, { size: 'body-md' }),
               }),
             ],
           })
         }
-      var oe = (e, t, r) =>
+      var se = (e, t, r) =>
         new Promise((n, o) => {
           var s = (e) => {
               try {
@@ -945,7 +922,7 @@
             i = (e) => (e.done ? n(e.value) : Promise.resolve(e.value).then(s, a))
           i((r = r.apply(e, t)).next())
         })
-      const se = ({
+      const ae = ({
         apiKey: e,
         courseContext: t,
         lessonIndex: r,
@@ -995,7 +972,7 @@
           },
           y = (0, o.useCallback)(
             (n) =>
-              oe(null, null, function* () {
+              se(null, null, function* () {
                 if (
                   (b(!1),
                   yield d.current(),
@@ -1005,7 +982,7 @@
                   n.length > 0)
                 )
                   try {
-                    const o = yield L(n, e, t, r, p, i)
+                    const o = yield v(n, e, t, r, p, i)
                     if (o) {
                       const e = ((e, t, r = 200) => {
                         const n = new TextDecoder('utf-8'),
@@ -1015,14 +992,14 @@
                           i = !1,
                           l = !1
                         return (
-                          v(null, null, function* () {
+                          w(null, null, function* () {
                             for (; !l; ) {
                               const { done: e, value: l } = yield o.read(),
                                 c = n.decode(l)
                               if (
                                 ((s += c),
                                 !i &&
-                                  w(s) &&
+                                  $(s) &&
                                   ((i = !0),
                                   t({ role: 'assistant', content: s }, !1),
                                   (a = setTimeout(() => {
@@ -1035,7 +1012,7 @@
                             ;(a && clearTimeout(a), t({ role: 'assistant', content: s }, !0))
                           }),
                           () =>
-                            v(null, null, function* () {
+                            w(null, null, function* () {
                               l = !0
                               try {
                                 yield o.cancel()
@@ -1055,14 +1032,14 @@
           ),
           g = (0, o.useCallback)(
             (e) =>
-              oe(null, null, function* () {
+              se(null, null, function* () {
                 ;(e.preventDefault(), c.length > 0 && (yield y(c)))
               }),
             [c, y],
           ),
-          $ = (0, o.useCallback)(
+          L = (0, o.useCallback)(
             () =>
-              oe(null, null, function* () {
+              se(null, null, function* () {
                 ;(yield d.current(), (d.current = () => Promise.resolve()), x())
               }),
             [x, d],
@@ -1075,7 +1052,7 @@
               className: 'ldf__header',
               children: [
                 (0, n.jsx)(s.ArcButton, {
-                  icon: (0, n.jsx)(R, { name: 'arrow-down-left-and-arrow-up-right-to-center' }),
+                  icon: (0, n.jsx)(U, { name: 'arrow-down-left-and-arrow-up-right-to-center' }),
                   variant: 'secondary',
                   layout: 'icon',
                   shape: 'square',
@@ -1088,12 +1065,12 @@
                     children: [
                       (0, n.jsx)(s.Arc.p, { size: 'body-sm', variant: 'secondary', children: f }),
                       (0, n.jsx)(s.ArcButton, {
-                        icon: (0, n.jsx)(R, { name: 'pen-to-square' }),
+                        icon: (0, n.jsx)(U, { name: 'pen-to-square' }),
                         variant: 'secondary',
                         layout: 'icon',
                         shape: 'square',
                         size: 'md',
-                        onClick: $,
+                        onClick: L,
                         'aria-label': 'Return to AI Tutor home screen',
                       }),
                     ],
@@ -1101,8 +1078,8 @@
               ],
             }),
             M
-              ? (0, n.jsx)(V, { onSubmit: y })
-              : (0, n.jsx)(ne, { exchanges: p, currentExchange: h, error: j }),
+              ? (0, n.jsx)(K, { onSubmit: y })
+              : (0, n.jsx)(oe, { exchanges: p, currentExchange: h, error: j }),
             (0, n.jsx)('form', {
               onSubmit: g,
               children: (0, n.jsx)(s.ArcTextInput, {
@@ -1123,20 +1100,20 @@
           ],
         })
       }
-      var ae = Object.defineProperty,
-        ie = Object.getOwnPropertySymbols,
-        le = Object.prototype.hasOwnProperty,
-        ce = Object.prototype.propertyIsEnumerable,
-        ue = (e, t, r) =>
+      var ie = Object.defineProperty,
+        le = Object.getOwnPropertySymbols,
+        ce = Object.prototype.hasOwnProperty,
+        ue = Object.prototype.propertyIsEnumerable,
+        de = (e, t, r) =>
           t in e
-            ? ae(e, t, { enumerable: !0, configurable: !0, writable: !0, value: r })
+            ? ie(e, t, { enumerable: !0, configurable: !0, writable: !0, value: r })
             : (e[t] = r),
-        de = (e, t) => {
-          for (var r in t || (t = {})) le.call(t, r) && ue(e, r, t[r])
-          if (ie) for (var r of ie(t)) ce.call(t, r) && ue(e, r, t[r])
+        pe = (e, t) => {
+          for (var r in t || (t = {})) ce.call(t, r) && de(e, r, t[r])
+          if (le) for (var r of le(t)) ue.call(t, r) && de(e, r, t[r])
           return e
         }
-      const pe = ({
+      const he = ({
           apiKey: e,
           course: t,
           currentLessonId: r,
@@ -1146,12 +1123,12 @@
         }) => {
           const c = {
               size: 'lg',
-              icon: (0, n.jsx)(R, { name: 'sparkles-solid' }),
+              icon: (0, n.jsx)(U, { name: 'sparkles-solid' }),
               text: 'AI Tutor',
             },
             [u, d] = (0, o.useState)(!1),
             [p, h] = (0, o.useState)(null),
-            [m, x] = (0, o.useState)(-1)
+            [k, x] = (0, o.useState)(-1)
           return (
             (0, o.useEffect)(() => {
               let e = !1
@@ -1159,20 +1136,20 @@
               return (
                 (n = function* () {
                   try {
-                    const { context: n, currentLessonIndex: o } = yield ((e, t, r) =>
-                      k(null, [e, t, r, ...[]], function* (e, t, r, n = {}) {
+                    const { context: n, currentLessonIndex: o } = yield ((e, t, r, ...n) =>
+                      m(null, [e, t, r, ...n], function* (e, t, r, n = {}) {
                         const o = e.lessons.filter(({ type: e }) => 'blocks' === e),
                           s = yield ((e, t, r, ...n) =>
-                            k(null, [e, t, r, ...n], function* (e, t, r, n = {}) {
+                            m(null, [e, t, r, ...n], function* (e, t, r, n = {}) {
                               const { filters: o = [], shouldLabelBlock: s = !0 } = n,
                                 a = yield Promise.all(
-                                  t.map((e) => C(e, r, { filters: o, shouldLabelBlock: s })),
+                                  t.map((e) => y(e, r, { filters: o, shouldLabelBlock: s })),
                                 )
-                              return { context: [y(e)], lessonContents: a }
+                              return { context: [g(e)], lessonContents: a }
                             }))(e.title, o, t, n)
                         let a = -1
                         const i = s.lessonContents
-                          .filter(b)
+                          .filter(f)
                           .map(
                             (e, t) => (
                               e.lessonId === r && (a = t),
@@ -1229,10 +1206,10 @@
                     open: u,
                     children:
                       p &&
-                      (0, n.jsx)(se, {
+                      (0, n.jsx)(ae, {
                         apiKey: e,
                         courseContext: p,
-                        lessonIndex: m,
+                        lessonIndex: k,
                         currentLocale: a,
                         rtl: i,
                         resetSession: l,
@@ -1241,7 +1218,7 @@
                 })
           )
         },
-        he = (e) => (0, n.jsx)(a, { children: (0, n.jsx)(pe, de({}, e)) })
+        ke = (e) => (0, n.jsx)(a, { children: (0, n.jsx)(he, pe({}, e)) })
     },
   },
 ])
