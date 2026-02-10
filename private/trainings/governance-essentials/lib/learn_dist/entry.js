@@ -460,19 +460,19 @@ var learn_distribution_frontend
               preRelease: null == a ? void 0 : a.split('.'),
             },
             c = t.split('||')
-          for (const t of c) {
-            const r = t.trim()
-            if (!r) return !0
-            if ('*' === r || 'x' === r) return !0
+          for (const e of c) {
+            const t = e.trim()
+            if (!t) return !0
+            if ('*' === t || 'x' === t) return !0
             try {
-              const e = Le(r)
+              const e = Le(t)
               if (!e.trim()) return !0
-              const t = e
+              const r = e
                 .split(' ')
                 .map((e) => xe(e))
                 .join(' ')
-              if (!t.trim()) return !0
-              const o = t
+              if (!r.trim()) return !0
+              const o = r
                 .split(/\s+/)
                 .map((e) => e.trim().replace(ye('^\\s*>=\\s*0.0.0\\s*$'), ''))
                 .filter(Boolean)
@@ -504,7 +504,7 @@ var learn_distribution_frontend
               }
               if (n) return !0
             } catch (e) {
-              console.error(`[semver] Error processing range part "${r}":`, e)
+              console.error(`[semver] Error processing range part "${t}":`, e)
               continue
             }
           }
@@ -3250,7 +3250,7 @@ var learn_distribution_frontend
                           const script = new vm.Script(
                             `(function(exports, module, require, __dirname, __filename) {${data}\n})`,
                             {
-                              filename: filename,
+                              filename,
                               importModuleDynamically:
                                 null !=
                                 (_vm_constants_USE_MAIN_CONTEXT_DEFAULT_LOADER =
@@ -3721,10 +3721,10 @@ var learn_distribution_frontend
     (chunkMapping = { 170: [794, 800, 825, 883] }),
     (__webpack_require__.f.consumes = (e, t) => {
       __webpack_require__.federation.bundlerRuntime.consumes({
-        chunkMapping: chunkMapping,
-        installedModules: installedModules,
+        chunkMapping,
+        installedModules,
         chunkId: e,
-        moduleToHandlerMapping: moduleToHandlerMapping,
+        moduleToHandlerMapping,
         promises: t,
         webpackRequire: __webpack_require__,
       })

@@ -2,10 +2,10 @@
 ;(self.wpRiseJsonp = self.wpRiseJsonp || []).push([
   ['node_modules_pnpm_react_19_2_3_node_modules_react_jsx-runtime_js'],
   {
-    6534: (e, r, s) => {
-      e.exports = s(96212)
+    6534: (u, _, r) => {
+      u.exports = r(96212)
     },
-    96212: (e, r) => {
+    96212: (u, _) => {
       /**
        * @license React
        * react-jsx-runtime.production.js
@@ -14,20 +14,20 @@
        *
        * This source code is licensed under the MIT license found in the
        * LICENSE file in the root directory of this source tree.
-       */
-      var s = Symbol.for('react.transitional.element'),
-        o = Symbol.for('react.fragment')
-      function n(e, r, o) {
-        var n = null
-        if ((void 0 !== o && (n = '' + o), void 0 !== r.key && (n = '' + r.key), 'key' in r))
-          for (var t in ((o = {}), r)) 'key' !== t && (o[t] = r[t])
-        else o = r
+       */ var r = Symbol.for('react.transitional.element'),
+        d = Symbol.for('react.fragment')
+      function n(o, e, s) {
+        var t = null
+        if ((s !== void 0 && (t = '' + s), e.key !== void 0 && (t = '' + e.key), 'key' in e)) {
+          s = {}
+          for (var l in e) l !== 'key' && (s[l] = e[l])
+        } else s = e
         return (
-          (r = o.ref),
-          { $$typeof: s, type: e, key: n, ref: void 0 !== r ? r : null, props: o }
+          (e = s.ref),
+          { $$typeof: r, type: o, key: t, ref: e !== void 0 ? e : null, props: s }
         )
       }
-      ;((r.Fragment = o), (r.jsx = n), (r.jsxs = n))
+      ;((_.Fragment = d), (_.jsx = n), (_.jsxs = n))
     },
   },
 ])

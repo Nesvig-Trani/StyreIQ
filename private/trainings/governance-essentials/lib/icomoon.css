@@ -1,8 +1,8 @@
 @font-face {
   font-family: icomoon;
   src:
-    url('fonts/icomoon.ttf') format('truetype'),
-    url('fonts/icomoon.woff') format('woff');
+    url(fonts/icomoon.ttf) format('truetype'),
+    url(fonts/icomoon.woff) format('woff');
   font-weight: 400;
   font-style: normal;
 }
@@ -315,16 +315,12 @@
 .icon-password-hide:before {
   content: '\e973';
 }
+.icon-grid-view:before,
 .icon-view-grid:before {
   content: '\e96c';
 }
-.icon-grid-view:before {
-  content: '\e96c';
-}
+.icon-list-view:before,
 .icon-view-list:before {
-  content: '\e96d';
-}
-.icon-list-view:before {
   content: '\e96d';
 }
 .icon-blocks:before {
@@ -342,9 +338,7 @@
 .icon-cursor:before {
   content: '\e956';
 }
-.icon-documents:before {
-  content: '\e952';
-}
+.icon-documents:before,
 .icon-duplicate:before {
   content: '\e952';
 }
@@ -435,10 +429,8 @@
 .icon-chevron-left:before {
   content: '\e600';
 }
+.icon-chevron-right:before,
 .icon-chevron:before {
-  content: '\e601';
-}
-.icon-chevron-right:before {
   content: '\e601';
 }
 .icon-close-small:before {
