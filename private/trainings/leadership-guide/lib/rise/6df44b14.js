@@ -4,172 +4,172 @@
     'defaultVendors-node_modules_pnpm_articulate_design-system_1_13_0__articulate_design-system-to-8c2658',
   ],
   {
-    57324: (yl, ut, Wa) => {
-      ;(Wa.r(ut),
-        Wa.d(ut, {
-          Arc: () => qs,
-          ArcAbstractFlexLayouts: () => Uo,
-          ArcAbstractGapSizes: () => ft,
-          ArcAbstractIconSizes: () => $e,
-          ArcAbstractOrientations: () => Yo,
-          ArcAbstractPopoverActions: () => Za,
-          ArcAbstractPopoverModes: () => xe,
-          ArcAbstractTextLayouts: () => No,
-          ArcAbstractTextOverflows: () => gt,
-          ArcAbstractTextSizes: () => Fo,
-          ArcAvatar: () => He,
-          ArcAvatarColors: () => Ft,
-          ArcAvatarColorsReserved: () => un,
-          ArcAvatarOverflow: () => Gi,
-          ArcAvatarOverflowSizes: () => bn,
-          ArcAvatarPile: () => Hn,
-          ArcAvatarPileSizes: () => gn,
-          ArcAvatarSizes: () => hn,
-          ArcAvatarText: () => Ve,
-          ArcAvatarTextGapSizes: () => vn,
-          ArcAvatarTextOverflows: () => mn,
-          ArcAvatarTextSizes: () => fn,
-          ArcBadge: () => rc,
-          ArcBadgeContrasts: () => Ji,
-          ArcBadgeCount: () => nc,
-          ArcBadgeCountShapes: () => oc,
-          ArcBadgeCountSizes: () => ec,
-          ArcBadgeCountVariants: () => tc,
-          ArcBadgeLayouts: () => Ki,
-          ArcBadgeSizes: () => qi,
-          ArcBadgeVariants: () => Qi,
-          ArcButton: () => ur,
-          ArcButtonDeprecatedVariants: () => $o,
-          ArcButtonHierarchies: () => wi,
-          ArcButtonLayouts: () => $i,
-          ArcButtonPopoverActions: () => ki,
-          ArcButtonShapes: () => bi,
-          ArcButtonSizes: () => xi,
-          ArcButtonVariants: () => yi,
-          ArcCheckbox: () => Ao,
-          ArcCheckboxBar: () => xc,
-          ArcCheckboxBarLayouts: () => fc,
-          ArcCheckboxBarOption: () => bc,
-          ArcCheckboxBarSizes: () => gc,
-          ArcCheckboxLayouts: () => uc,
-          ArcCheckboxSizes: () => hc,
-          ArcCheckboxVariants: () => vc,
-          ArcDropdownMenu: () => Ke,
-          ArcIcon: () => B,
-          ArcIconText: () => Er,
-          ArcIconTextVariants: () => ai,
-          ArcInputAction: () => Tc,
-          ArcLabel: () => ca,
-          ArcLabelContent: () => sa,
-          ArcLabelLayouts: () => cc,
-          ArcLink: () => Mc,
-          ArcLinkVariants: () => Lc,
-          ArcModal: () => rs,
-          ArcModalAlert: () => es,
-          ArcModalAlertDefaults: () => Jr,
-          ArcModalAlertVariants: () => Bc,
-          ArcModalBackdropColors: () => Oc,
-          ArcModalBodyPaddings: () => Dc,
-          ArcModalCloseReasons: () => Vc,
-          ArcModalCommonDefaults: () => gr,
-          ArcModalCommonVariants: () => Pc,
-          ArcModalConfirm: () => Io,
-          ArcModalConfirmDefaults: () => da,
-          ArcModalConfirmVariants: () => Rc,
-          ArcModalSizes: () => Hc,
-          ArcPopover: () => Ba,
-          ArcPopoverActions: () => Fn,
-          ArcPopoverAnchors: () => Qt,
-          ArcPopoverBoundaries: () => ro,
-          ArcPopoverButton: () => Pa,
-          ArcPopoverDefaults: () => wr,
-          ArcPopoverDensities: () => ao,
-          ArcPopoverModes: () => Jt,
-          ArcPopoverVariants: () => Fe,
-          ArcPopoverVariantsWithOutline: () => Nn,
-          ArcRadio: () => Lo,
-          ArcRadioBar: () => ds,
-          ArcRadioBarLayouts: () => cs,
-          ArcRadioBarOption: () => ls,
-          ArcRadioBarSizes: () => ss,
-          ArcRadioLayouts: () => os,
-          ArcRadioSizes: () => ns,
-          ArcSelect: () => Is,
-          ArcSelectLayouts: () => us,
-          ArcSelectSizes: () => hs,
-          ArcSelectVariants: () => vs,
-          ArcSwitch: () => Rs,
-          ArcSwitchLabelPositions: () => wa,
-          ArcSwitchSizes: () => Ls,
-          ArcSwitchStates: () => ar,
-          ArcSystemAlignments: () => vt,
-          ArcSystemColors: () => be,
-          ArcSystemHierarchies: () => ht,
-          ArcSystemLayouts: () => Hr,
-          ArcSystemLineHeights: () => mt,
-          ArcSystemShapes: () => ge,
-          ArcSystemSizes: () => yr,
-          ArcSystemVariants: () => Q,
-          ArcTextAlignments: () => Us,
-          ArcTextBodyElements: () => Bo,
-          ArcTextBodySizes: () => Fs,
-          ArcTextBodyVariants: () => Ns,
-          ArcTextElements: () => Oo,
-          ArcTextHeadingElements: () => Ro,
-          ArcTextHeadingSizes: () => Ds,
-          ArcTextHeadingVariants: () => Vs,
-          ArcTextInput: () => al,
-          ArcTextInputLayouts: () => Ks,
-          ArcTextInputSizes: () => Js,
-          ArcTextInputTypes: () => rl,
-          ArcTextInputVariants: () => Qs,
-          ArcTextKinds: () => Bs,
-          ArcTextLineHeights: () => Ys,
-          ArcTextSubheadingSizes: () => Hs,
-          ArcTextTitleSizes: () => Os,
-          ArcToast: () => Vo,
-          ArcToastPlacements: () => pl,
-          ArcToastPopoverActions: () => dl,
-          ArcToastPopoverModes: () => ll,
-          ArcToastProgressBarVariants: () => ul,
-          ArcToastSeverities: () => il,
-          ArcToastSizes: () => cl,
-          ArcToastVariants: () => sl,
-          ArcTooltip: () => xo,
-          ArcTooltipDefaults: () => Tr,
-          SVGLogoArticulate: () => Le,
-          SVGLogoProductAI: () => Me,
-          SVGLogoProductPeek: () => Pe,
-          SVGLogoProductReach: () => Re,
-          SVGLogoProductReview: () => Be,
-          SVGLogoProductRise: () => Oe,
-          SVGLogoProductStoryline: () => De,
-          adoptStyles: () => O,
-          assignRef: () => bt,
-          bindDelegatedEvents: () => bo,
-          clamp: () => xt,
-          createEmptyRect: () => Ia,
-          css: () => u,
-          didElementRectChange: () => $t,
-          extractTextFromReactNode: () => Ta,
-          getPreferredAnchorForTooltipId: () => Xe,
-          isDifferent: () => ea,
-          isFixedDetector: () => uo,
-          isSame: () => Ga,
-          joinArray: () => ho,
-          logError: () => qn,
-          logMessage: () => Xn,
-          logWarning: () => vo,
-          makeHtmlId: () => Vn,
-          mapDeprecated: () => Wo,
-          pickFromList: () => z,
-          shareAdoptedStyles: () => sn,
-          unbindDelegatedEvents: () => fi,
-          updatePopoverPosition: () => Ne,
-          useStableId: () => Sr,
+    57324: (a, r, e) => {
+      ;(e.r(r),
+        e.d(r, {
+          Arc: () => rc,
+          ArcAbstractFlexLayouts: () => f,
+          ArcAbstractGapSizes: () => u,
+          ArcAbstractIconSizes: () => h,
+          ArcAbstractOrientations: () => x,
+          ArcAbstractPopoverActions: () => v,
+          ArcAbstractPopoverModes: () => p,
+          ArcAbstractTextLayouts: () => b,
+          ArcAbstractTextOverflows: () => g,
+          ArcAbstractTextSizes: () => m,
+          ArcAvatar: () => kr,
+          ArcAvatarColors: () => Za,
+          ArcAvatarColorsReserved: () => Ya,
+          ArcAvatarOverflow: () => io,
+          ArcAvatarOverflowSizes: () => Qa,
+          ArcAvatarPile: () => Tr,
+          ArcAvatarPileSizes: () => Ja,
+          ArcAvatarSizes: () => Wa,
+          ArcAvatarText: () => jr,
+          ArcAvatarTextGapSizes: () => Ga,
+          ArcAvatarTextOverflows: () => Xa,
+          ArcAvatarTextSizes: () => Ka,
+          ArcBadge: () => vo,
+          ArcBadgeContrasts: () => so,
+          ArcBadgeCount: () => bo,
+          ArcBadgeCountShapes: () => go,
+          ArcBadgeCountSizes: () => uo,
+          ArcBadgeCountVariants: () => mo,
+          ArcBadgeLayouts: () => lo,
+          ArcBadgeSizes: () => co,
+          ArcBadgeVariants: () => po,
+          ArcButton: () => Et,
+          ArcButtonDeprecatedVariants: () => pt,
+          ArcButtonHierarchies: () => vt,
+          ArcButtonLayouts: () => st,
+          ArcButtonPopoverActions: () => ht,
+          ArcButtonShapes: () => ct,
+          ArcButtonSizes: () => lt,
+          ArcButtonVariants: () => dt,
+          ArcCheckbox: () => Oo,
+          ArcCheckboxBar: () => Ro,
+          ArcCheckboxBarLayouts: () => _o,
+          ArcCheckboxBarOption: () => Mo,
+          ArcCheckboxBarSizes: () => Po,
+          ArcCheckboxLayouts: () => jo,
+          ArcCheckboxSizes: () => Eo,
+          ArcCheckboxVariants: () => To,
+          ArcDropdownMenu: () => Ko,
+          ArcIcon: () => xr,
+          ArcIconText: () => Pe,
+          ArcIconTextVariants: () => _e,
+          ArcInputAction: () => Jo,
+          ArcLabel: () => $o,
+          ArcLabelContent: () => wo,
+          ArcLabelLayouts: () => xo,
+          ArcLink: () => oi,
+          ArcLinkVariants: () => ti,
+          ArcModal: () => rn,
+          ArcModalAlert: () => on,
+          ArcModalAlertDefaults: () => en,
+          ArcModalAlertVariants: () => ci,
+          ArcModalBackdropColors: () => li,
+          ArcModalBodyPaddings: () => si,
+          ArcModalCloseReasons: () => pi,
+          ArcModalCommonDefaults: () => an,
+          ArcModalCommonVariants: () => ii,
+          ArcModalConfirm: () => Qi,
+          ArcModalConfirmDefaults: () => Ji,
+          ArcModalConfirmVariants: () => ni,
+          ArcModalSizes: () => di,
+          ArcPopover: () => ao,
+          ArcPopoverActions: () => Lr,
+          ArcPopoverAnchors: () => Fr,
+          ArcPopoverBoundaries: () => Hr,
+          ArcPopoverButton: () => Tt,
+          ArcPopoverDefaults: () => se,
+          ArcPopoverDensities: () => Vr,
+          ArcPopoverModes: () => Rr,
+          ArcPopoverVariants: () => Br,
+          ArcPopoverVariantsWithOutline: () => Dr,
+          ArcRadio: () => sn,
+          ArcRadioBar: () => un,
+          ArcRadioBarLayouts: () => pn,
+          ArcRadioBarOption: () => hn,
+          ArcRadioBarSizes: () => vn,
+          ArcRadioLayouts: () => cn,
+          ArcRadioSizes: () => ln,
+          ArcSelect: () => In,
+          ArcSelectLayouts: () => fn,
+          ArcSelectSizes: () => xn,
+          ArcSelectVariants: () => $n,
+          ArcSwitch: () => Bn,
+          ArcSwitchLabelPositions: () => Mn,
+          ArcSwitchSizes: () => _n,
+          ArcSwitchStates: () => Pn,
+          ArcSystemAlignments: () => c,
+          ArcSystemColors: () => d,
+          ArcSystemHierarchies: () => i,
+          ArcSystemLayouts: () => n,
+          ArcSystemLineHeights: () => l,
+          ArcSystemShapes: () => t,
+          ArcSystemSizes: () => s,
+          ArcSystemVariants: () => o,
+          ArcTextAlignments: () => Gn,
+          ArcTextBodyElements: () => Hn,
+          ArcTextBodySizes: () => qn,
+          ArcTextBodyVariants: () => Wn,
+          ArcTextElements: () => Vn,
+          ArcTextHeadingElements: () => Fn,
+          ArcTextHeadingSizes: () => Un,
+          ArcTextHeadingVariants: () => Yn,
+          ArcTextInput: () => nc,
+          ArcTextInputLayouts: () => ec,
+          ArcTextInputSizes: () => tc,
+          ArcTextInputTypes: () => ic,
+          ArcTextInputVariants: () => oc,
+          ArcTextKinds: () => Dn,
+          ArcTextLineHeights: () => Xn,
+          ArcTextSubheadingSizes: () => Zn,
+          ArcTextTitleSizes: () => Nn,
+          ArcToast: () => yc,
+          ArcToastPlacements: () => xc,
+          ArcToastPopoverActions: () => fc,
+          ArcToastPopoverModes: () => bc,
+          ArcToastProgressBarVariants: () => $c,
+          ArcToastSeverities: () => uc,
+          ArcToastSizes: () => mc,
+          ArcToastVariants: () => gc,
+          ArcTooltip: () => nt,
+          ArcTooltipDefaults: () => Me,
+          SVGLogoArticulate: () => ir,
+          SVGLogoProductAI: () => nr,
+          SVGLogoProductPeek: () => cr,
+          SVGLogoProductReach: () => lr,
+          SVGLogoProductReview: () => sr,
+          SVGLogoProductRise: () => dr,
+          SVGLogoProductStoryline: () => pr,
+          adoptStyles: () => Ba,
+          assignRef: () => w,
+          bindDelegatedEvents: () => tt,
+          clamp: () => k,
+          createEmptyRect: () => Mr,
+          css: () => P,
+          didElementRectChange: () => A,
+          extractTextFromReactNode: () => Or,
+          getPreferredAnchorForTooltipId: () => qe,
+          isDifferent: () => z,
+          isFixedDetector: () => be,
+          isSame: () => C,
+          joinArray: () => fe,
+          logError: () => ke,
+          logMessage: () => ye,
+          logWarning: () => we,
+          makeHtmlId: () => _r,
+          mapDeprecated: () => $,
+          pickFromList: () => y,
+          shareAdoptedStyles: () => Da,
+          unbindDelegatedEvents: () => ot,
+          updatePopoverPosition: () => ge,
+          useStableId: () => Pr,
         }))
-      const ge = ['circle', 'square', 'narrow'],
-        Q = [
+      const t = ['circle', 'square', 'narrow'],
+        o = [
           'inherit',
           'common',
           'disabled',
@@ -201,9 +201,9 @@
           'error',
           'processing',
         ],
-        ht = ['primary', 'secondary', 'tertiary', 'plain'],
-        Hr = ['hug', 'fill', 'icon', 'gutter', 'inline'],
-        vt = [
+        i = ['primary', 'secondary', 'tertiary', 'plain'],
+        n = ['hug', 'fill', 'icon', 'gutter', 'inline'],
+        c = [
           'inherit',
           'start',
           'left',
@@ -216,9 +216,9 @@
           'end',
           'right',
         ],
-        mt = ['inherit', 'tight', 'standard', 'loose'],
-        yr = ['inherit', 'xxl', 'xl', 'lg', 'md', 'sm', 'xs', 'xxs', 'custom', 'fullscreen'],
-        be = [
+        l = ['inherit', 'tight', 'standard', 'loose'],
+        s = ['inherit', 'xxl', 'xl', 'lg', 'md', 'sm', 'xs', 'xxs', 'custom', 'fullscreen'],
+        d = [
           'blue',
           'orange',
           'mint',
@@ -231,56 +231,56 @@
           'white',
           'black',
         ],
-        xe = ['', 'auto', 'manual'],
-        Za = ['toggle', 'show', 'hide'],
-        $e = ['inherit', 'xl', 'lg', 'md', 'sm', 'xs'],
-        ft = ['inherit', 'lg', 'md', 'sm'],
-        Fo = ['inherit', 'md', 'sm'],
-        gt = ['inherit', 'wrap', 'truncate'],
-        No = ['gutter', 'inline'],
-        Uo = ['hug', 'fill'],
-        Yo = ['horizontal', 'vertical'],
-        Wo = (r, a) => a[r] || r,
-        z = (r, a) => r.filter((e) => a.includes(e)),
-        bt = (r, a) => {
-          r && (typeof r == 'function' ? r(a) : (r.current = a))
+        p = ['', 'auto', 'manual'],
+        v = ['toggle', 'show', 'hide'],
+        h = ['inherit', 'xl', 'lg', 'md', 'sm', 'xs'],
+        u = ['inherit', 'lg', 'md', 'sm'],
+        m = ['inherit', 'md', 'sm'],
+        g = ['inherit', 'wrap', 'truncate'],
+        b = ['gutter', 'inline'],
+        f = ['hug', 'fill'],
+        x = ['horizontal', 'vertical'],
+        $ = (a, r) => r[a] || a,
+        y = (a, r) => a.filter((a) => r.includes(a)),
+        w = (a, r) => {
+          a && ('function' == typeof a ? a(r) : (a.current = r))
         },
-        xt = (r, a = 0, e = 100) => Math.min(Math.max(r, a), e),
-        ea = (r, a) => r !== a,
-        Ga = (r, a) => r === a,
-        $t = ({ a: r, b: a }) =>
-          ea(r?.top, a?.top) ||
-          ea(r?.left, a?.left) ||
-          ea(r?.width, a?.width) ||
-          ea(r?.height, a?.height)
-      var t = Wa(6534),
-        b = Wa(15648)
+        k = (a, r = 0, e = 100) => Math.min(Math.max(a, r), e),
+        z = (a, r) => a !== r,
+        C = (a, r) => a === r,
+        A = ({ a: a, b: r }) =>
+          z(a?.top, r?.top) ||
+          z(a?.left, r?.left) ||
+          z(a?.width, r?.width) ||
+          z(a?.height, r?.height)
+      var S = e(6534),
+        j = e(15648)
       /**
        * @license
        * Copyright 2019 Google LLC
        * SPDX-License-Identifier: BSD-3-Clause
-       */ const Xa = globalThis,
-        ye =
-          Xa.ShadowRoot &&
-          (Xa.ShadyCSS === void 0 || Xa.ShadyCSS.nativeShadow) &&
+       */ const E = globalThis,
+        T =
+          E.ShadowRoot &&
+          (void 0 === E.ShadyCSS || E.ShadyCSS.nativeShadow) &&
           'adoptedStyleSheets' in Document.prototype &&
           'replace' in CSSStyleSheet.prototype,
-        we = Symbol(),
-        yt = new WeakMap()
-      class wt {
-        constructor(a, e, n) {
-          if (((this._$cssResult$ = !0), n !== we))
+        O = Symbol(),
+        I = new WeakMap()
+      class _ {
+        constructor(a, r, e) {
+          if (((this._$cssResult$ = !0), e !== O))
             throw Error('CSSResult is not constructable. Use `unsafeCSS` or `css` instead.')
-          ;((this.cssText = a), (this.t = e))
+          ;((this.cssText = a), (this.t = r))
         }
         get styleSheet() {
           let a = this.o
-          const e = this.t
-          if (ye && a === void 0) {
-            const n = e !== void 0 && e.length === 1
-            ;(n && (a = yt.get(e)),
-              a === void 0 &&
-                ((this.o = a = new CSSStyleSheet()).replaceSync(this.cssText), n && yt.set(e, a)))
+          const r = this.t
+          if (T && void 0 === a) {
+            const e = void 0 !== r && 1 === r.length
+            ;(e && (a = I.get(r)),
+              void 0 === a &&
+                ((this.o = a = new CSSStyleSheet()).replaceSync(this.cssText), e && I.set(r, a)))
           }
           return a
         }
@@ -288,92 +288,75 @@
           return this.cssText
         }
       }
-      const Zo = (r) => new wt(typeof r == 'string' ? r : r + '', void 0, we),
-        u = (r, ...a) => {
+      const P = (a, ...r) => {
           const e =
-            r.length === 1
-              ? r[0]
-              : a.reduce(
-                  (n, i, c) =>
-                    n +
-                    ((s) => {
-                      if (s._$cssResult$ === !0) return s.cssText
-                      if (typeof s == 'number') return s
+            1 === a.length
+              ? a[0]
+              : r.reduce(
+                  (r, e, t) =>
+                    r +
+                    ((a) => {
+                      if (!0 === a._$cssResult$) return a.cssText
+                      if ('number' == typeof a) return a
                       throw Error(
                         "Value passed to 'css' function must be a 'css' function result: " +
-                          s +
+                          a +
                           ". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.",
                       )
-                    })(i) +
-                    r[c + 1],
-                  r[0],
+                    })(e) +
+                    a[t + 1],
+                  a[0],
                 )
-          return new wt(e, r, we)
+          return new _(e, a, O)
         },
-        Go = (r, a) => {
-          if (ye)
-            r.adoptedStyleSheets = a.map((e) => (e instanceof CSSStyleSheet ? e : e.styleSheet))
-          else
-            for (const e of a) {
-              const n = document.createElement('style'),
-                i = Xa.litNonce
-              ;(i !== void 0 && n.setAttribute('nonce', i),
-                (n.textContent = e.cssText),
-                r.appendChild(n))
-            }
-        },
-        kt = ye
-          ? (r) => r
-          : (r) =>
-              r instanceof CSSStyleSheet
+        M = T
+          ? (a) => a
+          : (a) =>
+              a instanceof CSSStyleSheet
                 ? ((a) => {
-                    let e = ''
-                    for (const n of a.cssRules) e += n.cssText
-                    return Zo(e)
-                  })(r)
-                : r
-      /**
-       * @license
-       * Copyright 2017 Google LLC
-       * SPDX-License-Identifier: BSD-3-Clause
-       */ const {
-          is: Xo,
-          defineProperty: qo,
-          getOwnPropertyDescriptor: Ko,
-          getOwnPropertyNames: Jo,
-          getOwnPropertySymbols: Qo,
-          getPrototypeOf: rn,
+                    let r = ''
+                    for (const e of a.cssRules) r += e.cssText
+                    return ((a) => new _('string' == typeof a ? a : a + '', void 0, O))(r)
+                  })(a)
+                : a,
+        {
+          is: R,
+          defineProperty: L,
+          getOwnPropertyDescriptor: B,
+          getOwnPropertyNames: D,
+          getOwnPropertySymbols: F,
+          getPrototypeOf: H,
         } = Object,
-        qa = globalThis,
-        At = qa.trustedTypes,
-        an = At ? At.emptyScript : '',
-        en = qa.reactiveElementPolyfillSupport,
-        za = (r, a) => r,
-        ke = {
-          toAttribute(r, a) {
-            switch (a) {
+        V = globalThis,
+        N = V.trustedTypes,
+        U = N ? N.emptyScript : '',
+        Z = V.reactiveElementPolyfillSupport,
+        Y = (a, r) => a,
+        q = {
+          toAttribute(a, r) {
+            switch (r) {
               case Boolean:
-                r = r ? an : null
+                a = a ? U : null
                 break
               case Object:
               case Array:
-                r = r == null ? r : JSON.stringify(r)
+                a = null == a ? a : JSON.stringify(a)
             }
-            return r
+            return a
           },
-          fromAttribute(r, a) {
-            let e = r
-            switch (a) {
+          fromAttribute(a, r) {
+            let e = a
+            switch (r) {
               case Boolean:
-                e = r !== null
+                e = null !== a
                 break
               case Number:
-                e = r === null ? null : Number(r)
+                e = null === a ? null : Number(a)
                 break
               case Object:
               case Array:
                 try {
-                  e = JSON.parse(r)
+                  e = JSON.parse(a)
                 } catch {
                   e = null
                 }
@@ -381,99 +364,103 @@
             return e
           },
         },
-        zt = (r, a) => !Xo(r, a),
-        Ct = {
+        W = (a, r) => !R(a, r),
+        G = {
           attribute: !0,
           type: String,
-          converter: ke,
+          converter: q,
           reflect: !1,
           useDefault: !1,
-          hasChanged: zt,
+          hasChanged: W,
         }
-      ;((Symbol.metadata ??= Symbol('metadata')), (qa.litPropertyMetadata ??= new WeakMap()))
-      class pa extends HTMLElement {
+      /**
+       * @license
+       * Copyright 2017 Google LLC
+       * SPDX-License-Identifier: BSD-3-Clause
+       */ ;((Symbol.metadata ??= Symbol('metadata')), (V.litPropertyMetadata ??= new WeakMap()))
+      class X extends HTMLElement {
         static addInitializer(a) {
           ;(this._$Ei(), (this.l ??= []).push(a))
         }
         static get observedAttributes() {
           return (this.finalize(), this._$Eh && [...this._$Eh.keys()])
         }
-        static createProperty(a, e = Ct) {
+        static createProperty(a, r = G) {
           if (
-            (e.state && (e.attribute = !1),
+            (r.state && (r.attribute = !1),
             this._$Ei(),
-            this.prototype.hasOwnProperty(a) && ((e = Object.create(e)).wrapped = !0),
-            this.elementProperties.set(a, e),
-            !e.noAccessor)
+            this.prototype.hasOwnProperty(a) && ((r = Object.create(r)).wrapped = !0),
+            this.elementProperties.set(a, r),
+            !r.noAccessor)
           ) {
-            const n = Symbol(),
-              i = this.getPropertyDescriptor(a, n, e)
-            i !== void 0 && qo(this.prototype, a, i)
+            const e = Symbol(),
+              t = this.getPropertyDescriptor(a, e, r)
+            void 0 !== t && L(this.prototype, a, t)
           }
         }
-        static getPropertyDescriptor(a, e, n) {
-          const { get: i, set: c } = Ko(this.prototype, a) ?? {
+        static getPropertyDescriptor(a, r, e) {
+          const { get: t, set: o } = B(this.prototype, a) ?? {
             get() {
-              return this[e]
+              return this[r]
             },
-            set(s) {
-              this[e] = s
+            set(a) {
+              this[r] = a
             },
           }
           return {
-            get: i,
-            set(s) {
-              const d = i?.call(this)
-              ;(c?.call(this, s), this.requestUpdate(a, d, n))
+            get: t,
+            set(r) {
+              const i = t?.call(this)
+              ;(o?.call(this, r), this.requestUpdate(a, i, e))
             },
             configurable: !0,
             enumerable: !0,
           }
         }
         static getPropertyOptions(a) {
-          return this.elementProperties.get(a) ?? Ct
+          return this.elementProperties.get(a) ?? G
         }
         static _$Ei() {
-          if (this.hasOwnProperty(za('elementProperties'))) return
-          const a = rn(this)
+          if (this.hasOwnProperty(Y('elementProperties'))) return
+          const a = H(this)
           ;(a.finalize(),
-            a.l !== void 0 && (this.l = [...a.l]),
+            void 0 !== a.l && (this.l = [...a.l]),
             (this.elementProperties = new Map(a.elementProperties)))
         }
         static finalize() {
-          if (this.hasOwnProperty(za('finalized'))) return
-          if (((this.finalized = !0), this._$Ei(), this.hasOwnProperty(za('properties')))) {
-            const e = this.properties,
-              n = [...Jo(e), ...Qo(e)]
-            for (const i of n) this.createProperty(i, e[i])
+          if (this.hasOwnProperty(Y('finalized'))) return
+          if (((this.finalized = !0), this._$Ei(), this.hasOwnProperty(Y('properties')))) {
+            const a = this.properties,
+              r = [...D(a), ...F(a)]
+            for (const e of r) this.createProperty(e, a[e])
           }
           const a = this[Symbol.metadata]
-          if (a !== null) {
-            const e = litPropertyMetadata.get(a)
-            if (e !== void 0) for (const [n, i] of e) this.elementProperties.set(n, i)
+          if (null !== a) {
+            const r = litPropertyMetadata.get(a)
+            if (void 0 !== r) for (const [a, e] of r) this.elementProperties.set(a, e)
           }
           this._$Eh = new Map()
-          for (const [e, n] of this.elementProperties) {
-            const i = this._$Eu(e, n)
-            i !== void 0 && this._$Eh.set(i, e)
+          for (const [a, r] of this.elementProperties) {
+            const e = this._$Eu(a, r)
+            void 0 !== e && this._$Eh.set(e, a)
           }
           this.elementStyles = this.finalizeStyles(this.styles)
         }
         static finalizeStyles(a) {
-          const e = []
+          const r = []
           if (Array.isArray(a)) {
-            const n = new Set(a.flat(1 / 0).reverse())
-            for (const i of n) e.unshift(kt(i))
-          } else a !== void 0 && e.push(kt(a))
-          return e
+            const e = new Set(a.flat(1 / 0).reverse())
+            for (const a of e) r.unshift(M(a))
+          } else void 0 !== a && r.push(M(a))
+          return r
         }
-        static _$Eu(a, e) {
-          const n = e.attribute
-          return n === !1
+        static _$Eu(a, r) {
+          const e = r.attribute
+          return !1 === e
             ? void 0
-            : typeof n == 'string'
-              ? n
-              : typeof a == 'string'
+            : 'string' == typeof e
+              ? e
+              : 'string' == typeof a
                 ? a.toLowerCase()
                 : void 0
         }
@@ -494,20 +481,34 @@
         }
         addController(a) {
           ;((this._$EO ??= new Set()).add(a),
-            this.renderRoot !== void 0 && this.isConnected && a.hostConnected?.())
+            void 0 !== this.renderRoot && this.isConnected && a.hostConnected?.())
         }
         removeController(a) {
           this._$EO?.delete(a)
         }
         _$E_() {
           const a = new Map(),
-            e = this.constructor.elementProperties
-          for (const n of e.keys()) this.hasOwnProperty(n) && (a.set(n, this[n]), delete this[n])
+            r = this.constructor.elementProperties
+          for (const e of r.keys()) this.hasOwnProperty(e) && (a.set(e, this[e]), delete this[e])
           a.size > 0 && (this._$Ep = a)
         }
         createRenderRoot() {
           const a = this.shadowRoot ?? this.attachShadow(this.constructor.shadowRootOptions)
-          return (Go(a, this.constructor.elementStyles), a)
+          return (
+            ((a, r) => {
+              if (T)
+                a.adoptedStyleSheets = r.map((a) => (a instanceof CSSStyleSheet ? a : a.styleSheet))
+              else
+                for (const e of r) {
+                  const r = document.createElement('style'),
+                    t = E.litNonce
+                  ;(void 0 !== t && r.setAttribute('nonce', t),
+                    (r.textContent = e.cssText),
+                    a.appendChild(r))
+                }
+            })(a, this.constructor.elementStyles),
+            a
+          )
         }
         connectedCallback() {
           ;((this.renderRoot ??= this.createRenderRoot()),
@@ -518,73 +519,70 @@
         disconnectedCallback() {
           this._$EO?.forEach((a) => a.hostDisconnected?.())
         }
-        attributeChangedCallback(a, e, n) {
-          this._$AK(a, n)
+        attributeChangedCallback(a, r, e) {
+          this._$AK(a, e)
         }
-        _$ET(a, e) {
-          const n = this.constructor.elementProperties.get(a),
-            i = this.constructor._$Eu(a, n)
-          if (i !== void 0 && n.reflect === !0) {
-            const c = (n.converter?.toAttribute !== void 0 ? n.converter : ke).toAttribute(
-              e,
-              n.type,
-            )
+        _$ET(a, r) {
+          const e = this.constructor.elementProperties.get(a),
+            t = this.constructor._$Eu(a, e)
+          if (void 0 !== t && !0 === e.reflect) {
+            const o = (void 0 !== e.converter?.toAttribute ? e.converter : q).toAttribute(r, e.type)
             ;((this._$Em = a),
-              c == null ? this.removeAttribute(i) : this.setAttribute(i, c),
+              null == o ? this.removeAttribute(t) : this.setAttribute(t, o),
               (this._$Em = null))
           }
         }
-        _$AK(a, e) {
-          const n = this.constructor,
-            i = n._$Eh.get(a)
-          if (i !== void 0 && this._$Em !== i) {
-            const c = n.getPropertyOptions(i),
-              s =
-                typeof c.converter == 'function'
-                  ? { fromAttribute: c.converter }
-                  : c.converter?.fromAttribute !== void 0
-                    ? c.converter
-                    : ke
-            this._$Em = i
-            const d = s.fromAttribute(e, c.type)
-            ;((this[i] = d ?? this._$Ej?.get(i) ?? d), (this._$Em = null))
+        _$AK(a, r) {
+          const e = this.constructor,
+            t = e._$Eh.get(a)
+          if (void 0 !== t && this._$Em !== t) {
+            const a = e.getPropertyOptions(t),
+              o =
+                'function' == typeof a.converter
+                  ? { fromAttribute: a.converter }
+                  : void 0 !== a.converter?.fromAttribute
+                    ? a.converter
+                    : q
+            this._$Em = t
+            const i = o.fromAttribute(r, a.type)
+            ;((this[t] = i ?? this._$Ej?.get(t) ?? i), (this._$Em = null))
           }
         }
-        requestUpdate(a, e, n) {
-          if (a !== void 0) {
-            const i = this.constructor,
-              c = this[a]
+        requestUpdate(a, r, e) {
+          if (void 0 !== a) {
+            const t = this.constructor,
+              o = this[a]
             if (
-              ((n ??= i.getPropertyOptions(a)),
+              ((e ??= t.getPropertyOptions(a)),
               !(
-                (n.hasChanged ?? zt)(c, e) ||
-                (n.useDefault &&
-                  n.reflect &&
-                  c === this._$Ej?.get(a) &&
-                  !this.hasAttribute(i._$Eu(a, n)))
+                (e.hasChanged ?? W)(o, r) ||
+                (e.useDefault &&
+                  e.reflect &&
+                  o === this._$Ej?.get(a) &&
+                  !this.hasAttribute(t._$Eu(a, e)))
               ))
             )
               return
-            this.C(a, e, n)
+            this.C(a, r, e)
           }
-          this.isUpdatePending === !1 && (this._$ES = this._$EP())
+          !1 === this.isUpdatePending && (this._$ES = this._$EP())
         }
-        C(a, e, { useDefault: n, reflect: i, wrapped: c }, s) {
-          ;(n &&
+        C(a, r, { useDefault: e, reflect: t, wrapped: o }, i) {
+          ;(e &&
             !(this._$Ej ??= new Map()).has(a) &&
-            (this._$Ej.set(a, s ?? e ?? this[a]), c !== !0 || s !== void 0)) ||
-            (this._$AL.has(a) || (this.hasUpdated || n || (e = void 0), this._$AL.set(a, e)),
-            i === !0 && this._$Em !== a && (this._$Eq ??= new Set()).add(a))
+            (this._$Ej.set(a, i ?? r ?? this[a]), !0 !== o || void 0 !== i)) ||
+            (this._$AL.has(a) || (this.hasUpdated || e || (r = void 0), this._$AL.set(a, r)),
+            !0 === t && this._$Em !== a && (this._$Eq ??= new Set()).add(a))
         }
         async _$EP() {
           this.isUpdatePending = !0
           try {
             await this._$ES
-          } catch (e) {
-            Promise.reject(e)
+          } catch (a) {
+            Promise.reject(a)
           }
           const a = this.scheduleUpdate()
-          return (a != null && (await a), !this.isUpdatePending)
+          return (null != a && (await a), !this.isUpdatePending)
         }
         scheduleUpdate() {
           return this.performUpdate()
@@ -593,32 +591,32 @@
           if (!this.isUpdatePending) return
           if (!this.hasUpdated) {
             if (((this.renderRoot ??= this.createRenderRoot()), this._$Ep)) {
-              for (const [i, c] of this._$Ep) this[i] = c
+              for (const [a, r] of this._$Ep) this[a] = r
               this._$Ep = void 0
             }
-            const n = this.constructor.elementProperties
-            if (n.size > 0)
-              for (const [i, c] of n) {
-                const { wrapped: s } = c,
-                  d = this[i]
-                s !== !0 || this._$AL.has(i) || d === void 0 || this.C(i, void 0, c, d)
+            const a = this.constructor.elementProperties
+            if (a.size > 0)
+              for (const [r, e] of a) {
+                const { wrapped: a } = e,
+                  t = this[r]
+                !0 !== a || this._$AL.has(r) || void 0 === t || this.C(r, void 0, e, t)
               }
           }
           let a = !1
-          const e = this._$AL
+          const r = this._$AL
           try {
-            ;((a = this.shouldUpdate(e)),
+            ;((a = this.shouldUpdate(r)),
               a
-                ? (this.willUpdate(e), this._$EO?.forEach((n) => n.hostUpdate?.()), this.update(e))
+                ? (this.willUpdate(r), this._$EO?.forEach((a) => a.hostUpdate?.()), this.update(r))
                 : this._$EM())
-          } catch (n) {
-            throw ((a = !1), this._$EM(), n)
+          } catch (r) {
+            throw ((a = !1), this._$EM(), r)
           }
-          a && this._$AE(e)
+          a && this._$AE(r)
         }
         willUpdate(a) {}
         _$AE(a) {
-          ;(this._$EO?.forEach((e) => e.hostUpdated?.()),
+          ;(this._$EO?.forEach((a) => a.hostUpdated?.()),
             this.hasUpdated || ((this.hasUpdated = !0), this.firstUpdated(a)),
             this.updated(a))
         }
@@ -635,180 +633,176 @@
           return !0
         }
         update(a) {
-          ;((this._$Eq &&= this._$Eq.forEach((e) => this._$ET(e, this[e]))), this._$EM())
+          ;((this._$Eq &&= this._$Eq.forEach((a) => this._$ET(a, this[a]))), this._$EM())
         }
         updated(a) {}
         firstUpdated(a) {}
       }
-      ;((pa.elementStyles = []),
-        (pa.shadowRootOptions = { mode: 'open' }),
-        (pa[za('elementProperties')] = new Map()),
-        (pa[za('finalized')] = new Map()),
-        en?.({ ReactiveElement: pa }),
-        (qa.reactiveElementVersions ??= []).push('2.1.1'))
+      ;((X.elementStyles = []),
+        (X.shadowRootOptions = { mode: 'open' }),
+        (X[Y('elementProperties')] = new Map()),
+        (X[Y('finalized')] = new Map()),
+        Z?.({ ReactiveElement: X }),
+        (V.reactiveElementVersions ??= []).push('2.1.1'))
       /**
        * @license
        * Copyright 2017 Google LLC
        * SPDX-License-Identifier: BSD-3-Clause
-       */ const Ae = globalThis,
-        Ka = Ae.trustedTypes,
-        St = Ka ? Ka.createPolicy('lit-html', { createHTML: (r) => r }) : void 0,
-        ze = '$lit$',
-        Vr = `lit$${Math.random().toFixed(9).slice(2)}$`,
-        Ce = '?' + Vr,
-        tn = `<${Ce}>`,
-        ta = document,
-        Ca = () => ta.createComment(''),
-        Sa = (r) => r === null || (typeof r != 'object' && typeof r != 'function'),
-        Se = Array.isArray,
-        jt = (r) => Se(r) || typeof r?.[Symbol.iterator] == 'function',
-        je = `[ 	
-\f\r]`,
-        ja = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,
-        Et = /-->/g,
-        _t = />/g,
-        oa = RegExp(
-          `>|${je}(?:([^\\s"'>=/]+)(${je}*=${je}*(?:[^ 	
-\f\r"'\`<>=]|("|')|))|$)`,
+       */
+      const K = globalThis,
+        J = K.trustedTypes,
+        Q = J ? J.createPolicy('lit-html', { createHTML: (a) => a }) : void 0,
+        aa = '$lit$',
+        ra = `lit$${Math.random().toFixed(9).slice(2)}$`,
+        ea = '?' + ra,
+        ta = `<${ea}>`,
+        oa = document,
+        ia = () => oa.createComment(''),
+        na = (a) => null === a || ('object' != typeof a && 'function' != typeof a),
+        ca = Array.isArray,
+        la = (a) => ca(a) || 'function' == typeof a?.[Symbol.iterator],
+        sa = '[ \t\n\f\r]',
+        da = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,
+        pa = /-->/g,
+        va = />/g,
+        ha = RegExp(
+          `>|${sa}(?:([^\\s"'>=/]+)(${sa}*=${sa}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,
           'g',
         ),
-        Tt = /'/g,
-        It = /"/g,
-        Lt = /^(?:script|style|textarea|title)$/i,
-        Ee =
-          (r) =>
-          (a, ...e) => ({ _$litType$: r, strings: a, values: e }),
-        wl = Ee(1),
-        kl = Ee(2),
-        Al = Ee(3),
-        ua = Symbol.for('lit-noChange'),
-        rr = Symbol.for('lit-nothing'),
-        Mt = new WeakMap(),
-        na = ta.createTreeWalker(ta, 129)
-      function Pt(r, a) {
-        if (!Se(r) || !r.hasOwnProperty('raw')) throw Error('invalid template strings array')
-        return St !== void 0 ? St.createHTML(a) : a
+        ua = /'/g,
+        ma = /"/g,
+        ga = /^(?:script|style|textarea|title)$/i,
+        ba =
+          (a) =>
+          (r, ...e) => ({ _$litType$: a, strings: r, values: e }),
+        fa = (ba(1), ba(2), ba(3), Symbol.for('lit-noChange')),
+        xa = Symbol.for('lit-nothing'),
+        $a = new WeakMap(),
+        ya = oa.createTreeWalker(oa, 129)
+      function wa(a, r) {
+        if (!ca(a) || !a.hasOwnProperty('raw')) throw Error('invalid template strings array')
+        return void 0 !== Q ? Q.createHTML(r) : r
       }
-      const Rt = (r, a) => {
-        const e = r.length - 1,
-          n = []
-        let i,
-          c = a === 2 ? '<svg>' : a === 3 ? '<math>' : '',
-          s = ja
-        for (let d = 0; d < e; d++) {
-          const l = r[d]
-          let p,
-            h,
-            v = -1,
-            f = 0
-          for (; f < l.length && ((s.lastIndex = f), (h = s.exec(l)), h !== null); )
-            ((f = s.lastIndex),
-              s === ja
-                ? h[1] === '!--'
-                  ? (s = Et)
-                  : h[1] !== void 0
-                    ? (s = _t)
-                    : h[2] !== void 0
-                      ? (Lt.test(h[2]) && (i = RegExp('</' + h[2], 'g')), (s = oa))
-                      : h[3] !== void 0 && (s = oa)
-                : s === oa
-                  ? h[0] === '>'
-                    ? ((s = i ?? ja), (v = -1))
-                    : h[1] === void 0
-                      ? (v = -2)
-                      : ((v = s.lastIndex - h[2].length),
-                        (p = h[1]),
-                        (s = h[3] === void 0 ? oa : h[3] === '"' ? It : Tt))
-                  : s === It || s === Tt
-                    ? (s = oa)
-                    : s === Et || s === _t
-                      ? (s = ja)
-                      : ((s = oa), (i = void 0)))
-          const g = s === oa && r[d + 1].startsWith('/>') ? ' ' : ''
-          c +=
-            s === ja
-              ? l + tn
-              : v >= 0
-                ? (n.push(p), l.slice(0, v) + ze + l.slice(v) + Vr + g)
-                : l + Vr + (v === -2 ? d : g)
+      const ka = (a, r) => {
+        const e = a.length - 1,
+          t = []
+        let o,
+          i = 2 === r ? '<svg>' : 3 === r ? '<math>' : '',
+          n = da
+        for (let r = 0; r < e; r++) {
+          const e = a[r]
+          let c,
+            l,
+            s = -1,
+            d = 0
+          for (; d < e.length && ((n.lastIndex = d), (l = n.exec(e)), null !== l); )
+            ((d = n.lastIndex),
+              n === da
+                ? '!--' === l[1]
+                  ? (n = pa)
+                  : void 0 !== l[1]
+                    ? (n = va)
+                    : void 0 !== l[2]
+                      ? (ga.test(l[2]) && (o = RegExp('</' + l[2], 'g')), (n = ha))
+                      : void 0 !== l[3] && (n = ha)
+                : n === ha
+                  ? '>' === l[0]
+                    ? ((n = o ?? da), (s = -1))
+                    : void 0 === l[1]
+                      ? (s = -2)
+                      : ((s = n.lastIndex - l[2].length),
+                        (c = l[1]),
+                        (n = void 0 === l[3] ? ha : '"' === l[3] ? ma : ua))
+                  : n === ma || n === ua
+                    ? (n = ha)
+                    : n === pa || n === va
+                      ? (n = da)
+                      : ((n = ha), (o = void 0)))
+          const p = n === ha && a[r + 1].startsWith('/>') ? ' ' : ''
+          i +=
+            n === da
+              ? e + ta
+              : s >= 0
+                ? (t.push(c), e.slice(0, s) + aa + e.slice(s) + ra + p)
+                : e + ra + (-2 === s ? r : p)
         }
-        return [Pt(r, c + (r[e] || '<?>') + (a === 2 ? '</svg>' : a === 3 ? '</math>' : '')), n]
+        return [wa(a, i + (a[e] || '<?>') + (2 === r ? '</svg>' : 3 === r ? '</math>' : '')), t]
       }
-      class Ea {
-        constructor({ strings: a, _$litType$: e }, n) {
-          let i
+      class za {
+        constructor({ strings: a, _$litType$: r }, e) {
+          let t
           this.parts = []
-          let c = 0,
-            s = 0
-          const d = a.length - 1,
-            l = this.parts,
-            [p, h] = Rt(a, e)
+          let o = 0,
+            i = 0
+          const n = a.length - 1,
+            c = this.parts,
+            [l, s] = ka(a, r)
           if (
-            ((this.el = Ea.createElement(p, n)),
-            (na.currentNode = this.el.content),
-            e === 2 || e === 3)
+            ((this.el = za.createElement(l, e)),
+            (ya.currentNode = this.el.content),
+            2 === r || 3 === r)
           ) {
-            const v = this.el.content.firstChild
-            v.replaceWith(...v.childNodes)
+            const a = this.el.content.firstChild
+            a.replaceWith(...a.childNodes)
           }
-          for (; (i = na.nextNode()) !== null && l.length < d; ) {
-            if (i.nodeType === 1) {
-              if (i.hasAttributes())
-                for (const v of i.getAttributeNames())
-                  if (v.endsWith(ze)) {
-                    const f = h[s++],
-                      g = i.getAttribute(v).split(Vr),
-                      w = /([.?@])?(.*)/.exec(f)
-                    ;(l.push({
+          for (; null !== (t = ya.nextNode()) && c.length < n; ) {
+            if (1 === t.nodeType) {
+              if (t.hasAttributes())
+                for (const a of t.getAttributeNames())
+                  if (a.endsWith(aa)) {
+                    const r = s[i++],
+                      e = t.getAttribute(a).split(ra),
+                      n = /([.?@])?(.*)/.exec(r)
+                    ;(c.push({
                       type: 1,
-                      index: c,
-                      name: w[2],
-                      strings: g,
-                      ctor: w[1] === '.' ? Ot : w[1] === '?' ? Dt : w[1] === '@' ? Ht : _a,
+                      index: o,
+                      name: n[2],
+                      strings: e,
+                      ctor: '.' === n[1] ? Ea : '?' === n[1] ? Ta : '@' === n[1] ? Oa : ja,
                     }),
-                      i.removeAttribute(v))
-                  } else v.startsWith(Vr) && (l.push({ type: 6, index: c }), i.removeAttribute(v))
-              if (Lt.test(i.tagName)) {
-                const v = i.textContent.split(Vr),
-                  f = v.length - 1
-                if (f > 0) {
-                  i.textContent = Ka ? Ka.emptyScript : ''
-                  for (let g = 0; g < f; g++)
-                    (i.append(v[g], Ca()), na.nextNode(), l.push({ type: 2, index: ++c }))
-                  i.append(v[f], Ca())
+                      t.removeAttribute(a))
+                  } else a.startsWith(ra) && (c.push({ type: 6, index: o }), t.removeAttribute(a))
+              if (ga.test(t.tagName)) {
+                const a = t.textContent.split(ra),
+                  r = a.length - 1
+                if (r > 0) {
+                  t.textContent = J ? J.emptyScript : ''
+                  for (let e = 0; e < r; e++)
+                    (t.append(a[e], ia()), ya.nextNode(), c.push({ type: 2, index: ++o }))
+                  t.append(a[r], ia())
                 }
               }
-            } else if (i.nodeType === 8)
-              if (i.data === Ce) l.push({ type: 2, index: c })
+            } else if (8 === t.nodeType)
+              if (t.data === ea) c.push({ type: 2, index: o })
               else {
-                let v = -1
-                for (; (v = i.data.indexOf(Vr, v + 1)) !== -1; )
-                  (l.push({ type: 7, index: c }), (v += Vr.length - 1))
+                let a = -1
+                for (; -1 !== (a = t.data.indexOf(ra, a + 1)); )
+                  (c.push({ type: 7, index: o }), (a += ra.length - 1))
               }
-            c++
+            o++
           }
         }
-        static createElement(a, e) {
-          const n = ta.createElement('template')
-          return ((n.innerHTML = a), n)
+        static createElement(a, r) {
+          const e = oa.createElement('template')
+          return ((e.innerHTML = a), e)
         }
       }
-      function ia(r, a, e = r, n) {
-        if (a === ua) return a
-        let i = n !== void 0 ? e._$Co?.[n] : e._$Cl
-        const c = Sa(a) ? void 0 : a._$litDirective$
+      function Ca(a, r, e = a, t) {
+        if (r === fa) return r
+        let o = void 0 !== t ? e._$Co?.[t] : e._$Cl
+        const i = na(r) ? void 0 : r._$litDirective$
         return (
-          i?.constructor !== c &&
-            (i?._$AO?.(!1),
-            c === void 0 ? (i = void 0) : ((i = new c(r)), i._$AT(r, e, n)),
-            n !== void 0 ? ((e._$Co ??= [])[n] = i) : (e._$Cl = i)),
-          i !== void 0 && (a = ia(r, i._$AS(r, a.values), i, n)),
-          a
+          o?.constructor !== i &&
+            (o?._$AO?.(!1),
+            void 0 === i ? (o = void 0) : ((o = new i(a)), o._$AT(a, e, t)),
+            void 0 !== t ? ((e._$Co ??= [])[t] = o) : (e._$Cl = o)),
+          void 0 !== o && (r = Ca(a, o._$AS(a, r.values), o, t)),
+          r
         )
       }
-      class Bt {
-        constructor(a, e) {
-          ;((this._$AV = []), (this._$AN = void 0), (this._$AD = a), (this._$AM = e))
+      class Aa {
+        constructor(a, r) {
+          ;((this._$AV = []), (this._$AN = void 0), (this._$AD = a), (this._$AM = r))
         }
         get parentNode() {
           return this._$AM.parentNode
@@ -818,58 +812,58 @@
         }
         u(a) {
           const {
-              el: { content: e },
-              parts: n,
+              el: { content: r },
+              parts: e,
             } = this._$AD,
-            i = (a?.creationScope ?? ta).importNode(e, !0)
-          na.currentNode = i
-          let c = na.nextNode(),
-            s = 0,
-            d = 0,
-            l = n[0]
-          for (; l !== void 0; ) {
-            if (s === l.index) {
-              let p
-              ;(l.type === 2
-                ? (p = new ha(c, c.nextSibling, this, a))
-                : l.type === 1
-                  ? (p = new l.ctor(c, l.name, l.strings, this, a))
-                  : l.type === 6 && (p = new Vt(c, this, a)),
-                this._$AV.push(p),
-                (l = n[++d]))
+            t = (a?.creationScope ?? oa).importNode(r, !0)
+          ya.currentNode = t
+          let o = ya.nextNode(),
+            i = 0,
+            n = 0,
+            c = e[0]
+          for (; void 0 !== c; ) {
+            if (i === c.index) {
+              let r
+              ;(2 === c.type
+                ? (r = new Sa(o, o.nextSibling, this, a))
+                : 1 === c.type
+                  ? (r = new c.ctor(o, c.name, c.strings, this, a))
+                  : 6 === c.type && (r = new Ia(o, this, a)),
+                this._$AV.push(r),
+                (c = e[++n]))
             }
-            s !== l?.index && ((c = na.nextNode()), s++)
+            i !== c?.index && ((o = ya.nextNode()), i++)
           }
-          return ((na.currentNode = ta), i)
+          return ((ya.currentNode = oa), t)
         }
         p(a) {
-          let e = 0
-          for (const n of this._$AV)
-            (n !== void 0 &&
-              (n.strings !== void 0
-                ? (n._$AI(a, n, e), (e += n.strings.length - 2))
-                : n._$AI(a[e])),
-              e++)
+          let r = 0
+          for (const e of this._$AV)
+            (void 0 !== e &&
+              (void 0 !== e.strings
+                ? (e._$AI(a, e, r), (r += e.strings.length - 2))
+                : e._$AI(a[r])),
+              r++)
         }
       }
-      class ha {
+      class Sa {
         get _$AU() {
           return this._$AM?._$AU ?? this._$Cv
         }
-        constructor(a, e, n, i) {
+        constructor(a, r, e, t) {
           ;((this.type = 2),
-            (this._$AH = rr),
+            (this._$AH = xa),
             (this._$AN = void 0),
             (this._$AA = a),
-            (this._$AB = e),
-            (this._$AM = n),
-            (this.options = i),
-            (this._$Cv = i?.isConnected ?? !0))
+            (this._$AB = r),
+            (this._$AM = e),
+            (this.options = t),
+            (this._$Cv = t?.isConnected ?? !0))
         }
         get parentNode() {
           let a = this._$AA.parentNode
-          const e = this._$AM
-          return (e !== void 0 && a?.nodeType === 11 && (a = e.parentNode), a)
+          const r = this._$AM
+          return (void 0 !== r && 11 === a?.nodeType && (a = r.parentNode), a)
         }
         get startNode() {
           return this._$AA
@@ -877,17 +871,17 @@
         get endNode() {
           return this._$AB
         }
-        _$AI(a, e = this) {
-          ;((a = ia(this, a, e)),
-            Sa(a)
-              ? a === rr || a == null || a === ''
-                ? (this._$AH !== rr && this._$AR(), (this._$AH = rr))
-                : a !== this._$AH && a !== ua && this._(a)
-              : a._$litType$ !== void 0
+        _$AI(a, r = this) {
+          ;((a = Ca(this, a, r)),
+            na(a)
+              ? a === xa || null == a || '' === a
+                ? (this._$AH !== xa && this._$AR(), (this._$AH = xa))
+                : a !== this._$AH && a !== fa && this._(a)
+              : void 0 !== a._$litType$
                 ? this.$(a)
-                : a.nodeType !== void 0
+                : void 0 !== a.nodeType
                   ? this.T(a)
-                  : jt(a)
+                  : la(a)
                     ? this.k(a)
                     : this._(a))
         }
@@ -898,182 +892,157 @@
           this._$AH !== a && (this._$AR(), (this._$AH = this.O(a)))
         }
         _(a) {
-          ;(this._$AH !== rr && Sa(this._$AH)
+          ;(this._$AH !== xa && na(this._$AH)
             ? (this._$AA.nextSibling.data = a)
-            : this.T(ta.createTextNode(a)),
+            : this.T(oa.createTextNode(a)),
             (this._$AH = a))
         }
         $(a) {
-          const { values: e, _$litType$: n } = a,
-            i =
-              typeof n == 'number'
+          const { values: r, _$litType$: e } = a,
+            t =
+              'number' == typeof e
                 ? this._$AC(a)
-                : (n.el === void 0 && (n.el = Ea.createElement(Pt(n.h, n.h[0]), this.options)), n)
-          if (this._$AH?._$AD === i) this._$AH.p(e)
+                : (void 0 === e.el && (e.el = za.createElement(wa(e.h, e.h[0]), this.options)), e)
+          if (this._$AH?._$AD === t) this._$AH.p(r)
           else {
-            const c = new Bt(i, this),
-              s = c.u(this.options)
-            ;(c.p(e), this.T(s), (this._$AH = c))
+            const a = new Aa(t, this),
+              e = a.u(this.options)
+            ;(a.p(r), this.T(e), (this._$AH = a))
           }
         }
         _$AC(a) {
-          let e = Mt.get(a.strings)
-          return (e === void 0 && Mt.set(a.strings, (e = new Ea(a))), e)
+          let r = $a.get(a.strings)
+          return (void 0 === r && $a.set(a.strings, (r = new za(a))), r)
         }
         k(a) {
-          Se(this._$AH) || ((this._$AH = []), this._$AR())
-          const e = this._$AH
-          let n,
-            i = 0
-          for (const c of a)
-            (i === e.length
-              ? e.push((n = new ha(this.O(Ca()), this.O(Ca()), this, this.options)))
-              : (n = e[i]),
-              n._$AI(c),
-              i++)
-          i < e.length && (this._$AR(n && n._$AB.nextSibling, i), (e.length = i))
+          ca(this._$AH) || ((this._$AH = []), this._$AR())
+          const r = this._$AH
+          let e,
+            t = 0
+          for (const o of a)
+            (t === r.length
+              ? r.push((e = new Sa(this.O(ia()), this.O(ia()), this, this.options)))
+              : (e = r[t]),
+              e._$AI(o),
+              t++)
+          t < r.length && (this._$AR(e && e._$AB.nextSibling, t), (r.length = t))
         }
-        _$AR(a = this._$AA.nextSibling, e) {
-          for (this._$AP?.(!1, !0, e); a !== this._$AB; ) {
-            const n = a.nextSibling
-            ;(a.remove(), (a = n))
+        _$AR(a = this._$AA.nextSibling, r) {
+          for (this._$AP?.(!1, !0, r); a !== this._$AB; ) {
+            const r = a.nextSibling
+            ;(a.remove(), (a = r))
           }
         }
         setConnected(a) {
-          this._$AM === void 0 && ((this._$Cv = a), this._$AP?.(a))
+          void 0 === this._$AM && ((this._$Cv = a), this._$AP?.(a))
         }
       }
-      class _a {
+      class ja {
         get tagName() {
           return this.element.tagName
         }
         get _$AU() {
           return this._$AM._$AU
         }
-        constructor(a, e, n, i, c) {
+        constructor(a, r, e, t, o) {
           ;((this.type = 1),
-            (this._$AH = rr),
+            (this._$AH = xa),
             (this._$AN = void 0),
             (this.element = a),
-            (this.name = e),
-            (this._$AM = i),
-            (this.options = c),
-            n.length > 2 || n[0] !== '' || n[1] !== ''
-              ? ((this._$AH = Array(n.length - 1).fill(new String())), (this.strings = n))
-              : (this._$AH = rr))
+            (this.name = r),
+            (this._$AM = t),
+            (this.options = o),
+            e.length > 2 || '' !== e[0] || '' !== e[1]
+              ? ((this._$AH = Array(e.length - 1).fill(new String())), (this.strings = e))
+              : (this._$AH = xa))
         }
-        _$AI(a, e = this, n, i) {
-          const c = this.strings
-          let s = !1
-          if (c === void 0)
-            ((a = ia(this, a, e, 0)),
-              (s = !Sa(a) || (a !== this._$AH && a !== ua)),
-              s && (this._$AH = a))
+        _$AI(a, r = this, e, t) {
+          const o = this.strings
+          let i = !1
+          if (void 0 === o)
+            ((a = Ca(this, a, r, 0)),
+              (i = !na(a) || (a !== this._$AH && a !== fa)),
+              i && (this._$AH = a))
           else {
-            const d = a
-            let l, p
-            for (a = c[0], l = 0; l < c.length - 1; l++)
-              ((p = ia(this, d[n + l], e, l)),
-                p === ua && (p = this._$AH[l]),
-                (s ||= !Sa(p) || p !== this._$AH[l]),
-                p === rr ? (a = rr) : a !== rr && (a += (p ?? '') + c[l + 1]),
-                (this._$AH[l] = p))
+            const t = a
+            let n, c
+            for (a = o[0], n = 0; n < o.length - 1; n++)
+              ((c = Ca(this, t[e + n], r, n)),
+                c === fa && (c = this._$AH[n]),
+                (i ||= !na(c) || c !== this._$AH[n]),
+                c === xa ? (a = xa) : a !== xa && (a += (c ?? '') + o[n + 1]),
+                (this._$AH[n] = c))
           }
-          s && !i && this.j(a)
+          i && !t && this.j(a)
         }
         j(a) {
-          a === rr
+          a === xa
             ? this.element.removeAttribute(this.name)
             : this.element.setAttribute(this.name, a ?? '')
         }
       }
-      class Ot extends _a {
+      class Ea extends ja {
         constructor() {
           ;(super(...arguments), (this.type = 3))
         }
         j(a) {
-          this.element[this.name] = a === rr ? void 0 : a
+          this.element[this.name] = a === xa ? void 0 : a
         }
       }
-      class Dt extends _a {
+      class Ta extends ja {
         constructor() {
           ;(super(...arguments), (this.type = 4))
         }
         j(a) {
-          this.element.toggleAttribute(this.name, !!a && a !== rr)
+          this.element.toggleAttribute(this.name, !!a && a !== xa)
         }
       }
-      class Ht extends _a {
-        constructor(a, e, n, i, c) {
-          ;(super(a, e, n, i, c), (this.type = 5))
+      class Oa extends ja {
+        constructor(a, r, e, t, o) {
+          ;(super(a, r, e, t, o), (this.type = 5))
         }
-        _$AI(a, e = this) {
-          if ((a = ia(this, a, e, 0) ?? rr) === ua) return
-          const n = this._$AH,
-            i =
-              (a === rr && n !== rr) ||
-              a.capture !== n.capture ||
-              a.once !== n.once ||
-              a.passive !== n.passive,
-            c = a !== rr && (n === rr || i)
-          ;(i && this.element.removeEventListener(this.name, this, n),
-            c && this.element.addEventListener(this.name, this, a),
+        _$AI(a, r = this) {
+          if ((a = Ca(this, a, r, 0) ?? xa) === fa) return
+          const e = this._$AH,
+            t =
+              (a === xa && e !== xa) ||
+              a.capture !== e.capture ||
+              a.once !== e.once ||
+              a.passive !== e.passive,
+            o = a !== xa && (e === xa || t)
+          ;(t && this.element.removeEventListener(this.name, this, e),
+            o && this.element.addEventListener(this.name, this, a),
             (this._$AH = a))
         }
         handleEvent(a) {
-          typeof this._$AH == 'function'
+          'function' == typeof this._$AH
             ? this._$AH.call(this.options?.host ?? this.element, a)
             : this._$AH.handleEvent(a)
         }
       }
-      class Vt {
-        constructor(a, e, n) {
+      class Ia {
+        constructor(a, r, e) {
           ;((this.element = a),
             (this.type = 6),
             (this._$AN = void 0),
-            (this._$AM = e),
-            (this.options = n))
+            (this._$AM = r),
+            (this.options = e))
         }
         get _$AU() {
           return this._$AM._$AU
         }
         _$AI(a) {
-          ia(this, a)
+          Ca(this, a)
         }
       }
-      const zl = {
-          M: ze,
-          P: Vr,
-          A: Ce,
-          C: 1,
-          L: Rt,
-          R: Bt,
-          D: jt,
-          V: ia,
-          I: ha,
-          H: _a,
-          N: Dt,
-          U: Ht,
-          B: Ot,
-          F: Vt,
-        },
-        on = Ae.litHtmlPolyfillSupport
-      ;(on?.(Ea, ha), (Ae.litHtmlVersions ??= []).push('3.3.1'))
-      const nn = (r, a, e) => {
-        const n = e?.renderBefore ?? a
-        let i = n._$litPart$
-        if (i === void 0) {
-          const c = e?.renderBefore ?? null
-          n._$litPart$ = i = new ha(a.insertBefore(Ca(), c), c, void 0, e ?? {})
-        }
-        return (i._$AI(r), i)
-      }
+      const _a = K.litHtmlPolyfillSupport
+      ;(_a?.(za, Sa), (K.litHtmlVersions ??= []).push('3.3.1'))
+      const Pa = globalThis
       /**
        * @license
        * Copyright 2017 Google LLC
        * SPDX-License-Identifier: BSD-3-Clause
-       */ const _e = globalThis
-      class Ja extends pa {
+       */ class Ma extends X {
         constructor() {
           ;(super(...arguments), (this.renderOptions = { host: this }), (this._$Do = void 0))
         }
@@ -1082,10 +1051,18 @@
           return ((this.renderOptions.renderBefore ??= a.firstChild), a)
         }
         update(a) {
-          const e = this.render()
+          const r = this.render()
           ;(this.hasUpdated || (this.renderOptions.isConnected = this.isConnected),
             super.update(a),
-            (this._$Do = nn(e, this.renderRoot, this.renderOptions)))
+            (this._$Do = ((a, r, e) => {
+              const t = e?.renderBefore ?? r
+              let o = t._$litPart$
+              if (void 0 === o) {
+                const a = e?.renderBefore ?? null
+                t._$litPart$ = o = new Sa(r.insertBefore(ia(), a), a, void 0, e ?? {})
+              }
+              return (o._$AI(a), o)
+            })(r, this.renderRoot, this.renderOptions)))
         }
         connectedCallback() {
           ;(super.connectedCallback(), this._$Do?.setConnected(!0))
@@ -1094,197 +1071,197 @@
           ;(super.disconnectedCallback(), this._$Do?.setConnected(!1))
         }
         render() {
-          return ua
+          return fa
         }
       }
-      ;((Ja._$litElement$ = !0),
-        (Ja.finalized = !0),
-        _e.litElementHydrateSupport?.({ LitElement: Ja }))
-      const cn = _e.litElementPolyfillSupport
-      cn?.({ LitElement: Ja })
-      const Cl = {
-        _$AK: (r, a, e) => {
-          r._$AK(a, e)
-        },
-        _$AL: (r) => r._$AL,
-      }
-      ;(_e.litElementVersions ??= []).push('4.2.1')
-      const Te = {}
-      function O(r, a) {
-        if (typeof document < 'u' && a?.styleSheet) {
-          const e = Te[r]
-          ;((Te[r] = a.styleSheet),
+      ;((Ma._$litElement$ = !0),
+        (Ma.finalized = !0),
+        Pa.litElementHydrateSupport?.({ LitElement: Ma }))
+      const Ra = Pa.litElementPolyfillSupport
+      Ra?.({ LitElement: Ma })
+      ;(Pa.litElementVersions ??= []).push('4.2.1')
+      const La = {}
+      function Ba(a, r) {
+        if (typeof document < 'u' && r?.styleSheet) {
+          const e = La[a]
+          ;((La[a] = r.styleSheet),
             (document.adoptedStyleSheets = [
-              ...document.adoptedStyleSheets.filter((n) => n !== e),
-              a.styleSheet,
+              ...document.adoptedStyleSheets.filter((a) => a !== e),
+              r.styleSheet,
             ]))
         }
       }
-      function sn(r) {
-        const a = Object.values(Te),
-          e = document.adoptedStyleSheets.filter((n) => a.includes(n))
-        if (r.adoptedStyleSheets) {
-          const n = e.filter((i) => !r.adoptedStyleSheets.includes(i))
-          r.adoptedStyleSheets = [...r.adoptedStyleSheets, ...n]
+      function Da(a) {
+        const r = Object.values(La),
+          e = document.adoptedStyleSheets.filter((a) => r.includes(a))
+        if (a.adoptedStyleSheets) {
+          const r = e.filter((r) => !a.adoptedStyleSheets.includes(r))
+          a.adoptedStyleSheets = [...a.adoptedStyleSheets, ...r]
         }
       }
-      const $ = u`arc•avatar`,
-        Z = u`arc•modifier`,
-        tr = u`${$}•computed`,
-        Pr = u`${$}•mask`,
-        ln = (r) => r?.trim().charAt(0) ?? void 0,
-        dn = (r, a) => {
-          let e = 0
-          const n = Math.min(r.length, 50)
-          for (let i = 0; i < n; i += 1) e = (e + r.charCodeAt(i)) % (a ?? 33)
-          return e
-        },
-        pn = (r, a, e) =>
-          a?.length ? (r?.trim() === '' ? e || a[0] : a[dn(r, a.length)] || e || a[0]) : e,
-        Ft = z(be, ['blue', 'orange', 'mint', 'red', 'yellow', 'green', 'maroon', 'purple']),
-        un = z(be, ['neutral', 'white', 'black']),
-        Qa = z(yr, ['lg', 'md', 'sm', 'xs']),
-        hn = [...Qa, 'profile-sm', 'profile-md', 'profile-lg'],
-        vn = ft,
-        mn = gt,
-        fn = Qa,
-        gn = Qa,
-        bn = Qa,
-        Ie = u`
+      const Fa = P`arc•avatar`,
+        Ha = P`arc•modifier`,
+        Va = P`${Fa}•computed`,
+        Na = P`${Fa}•mask`,
+        Ua = (a, r, e) =>
+          r?.length
+            ? '' === a?.trim()
+              ? e || r[0]
+              : r[
+                  ((a, r) => {
+                    let e = 0
+                    const t = Math.min(a.length, 50)
+                    for (let o = 0; o < t; o += 1) e = (e + a.charCodeAt(o)) % (r ?? 33)
+                    return e
+                  })(a, r.length)
+                ] ||
+                e ||
+                r[0]
+            : e,
+        Za = y(d, ['blue', 'orange', 'mint', 'red', 'yellow', 'green', 'maroon', 'purple']),
+        Ya = y(d, ['neutral', 'white', 'black']),
+        qa = y(s, ['lg', 'md', 'sm', 'xs']),
+        Wa = [...qa, 'profile-sm', 'profile-md', 'profile-lg'],
+        Ga = u,
+        Xa = g,
+        Ka = qa,
+        Ja = qa,
+        Qa = qa,
+        ar = P`
 
   &[data-size=xs] {
-    --${Z}: 10; /* unitless, desired size at 100% */
-    --${$}-num-size-1: 10;
-    --${$}-num-size-2: 8;
-    --${$}-num-size-3: 6;
-    --${$}-size: 20;
+    --${Ha}: 10; /* unitless, desired size at 100% */
+    --${Fa}-num-size-1: 10;
+    --${Fa}-num-size-2: 8;
+    --${Fa}-num-size-3: 6;
+    --${Fa}-size: 20;
   }
 
   &[data-size=sm] {
-    --${Z}: 12; /* unitless, desired size at 100% */
-    --${$}-num-size-1: 12;
-    --${$}-num-size-2: 10;
-    --${$}-num-size-3: 8;
-    --${$}-size: 24;
+    --${Ha}: 12; /* unitless, desired size at 100% */
+    --${Fa}-num-size-1: 12;
+    --${Fa}-num-size-2: 10;
+    --${Fa}-num-size-3: 8;
+    --${Fa}-size: 24;
   }
 
   &:is([data-size=md], [data-size=inherit], :not([data-size])) { /* @default size */
-    --${Z}: 14; /* unitless, desired size at 100% */
-    --${$}-num-size-1: 14;
-    --${$}-num-size-2: 12;
-    --${$}-num-size-3: 10;
-    --${$}-size: 32;
+    --${Ha}: 14; /* unitless, desired size at 100% */
+    --${Fa}-num-size-1: 14;
+    --${Fa}-num-size-2: 12;
+    --${Fa}-num-size-3: 10;
+    --${Fa}-size: 32;
   }
 
   &[data-size=lg] {
-    --${Z}: 16; /* unitless, desired size at 100% */
-    --${$}-num-size-1: 16;
-    --${$}-num-size-2: 14;
-    --${$}-num-size-3: 12;
-    --${$}-size: 40;
+    --${Ha}: 16; /* unitless, desired size at 100% */
+    --${Fa}-num-size-1: 16;
+    --${Fa}-num-size-2: 14;
+    --${Fa}-num-size-3: 12;
+    --${Fa}-size: 40;
   }
 
 `,
-        Nt = u`
+        rr = P`
   [arc-avatar] {
-    --${Z}: inherit;
-    --${$}-num-size-1: inherit;
-    --${$}-num-size-2: inherit;
-    --${$}-num-size-3: inherit;
-    --${$}-size: inherit;
+    --${Ha}: inherit;
+    --${Fa}-num-size-1: inherit;
+    --${Fa}-num-size-2: inherit;
+    --${Fa}-num-size-3: inherit;
+    --${Fa}-size: inherit;
   }
 `,
-        xn = u`
+        er = P`
 @layer arc-components {
 
 [arc-avatar] {
 
   /* Colors --------------------------------------------------------• */
 
-  --${$}-color: var(--arc-avatar-color, var(--arc-color-text-inverse));
+  --${Fa}-color: var(--arc-avatar-color, var(--arc-color-text-inverse));
 
   &:has([data-color=blue]) { /* @default color */
-    --${$}-background: var(--arc-color-blue-400);
+    --${Fa}-background: var(--arc-color-blue-400);
   }
   &:has([data-color=purple]) {
-    --${$}-background: var(--arc-color-purple-400);
+    --${Fa}-background: var(--arc-color-purple-400);
   }
   &:has([data-color=red]) {
-    --${$}-background: var(--arc-color-red-400);
+    --${Fa}-background: var(--arc-color-red-400);
   }
   &:has([data-color=yellow]) {
-    --${$}-background: var(--arc-color-yellow-400);
+    --${Fa}-background: var(--arc-color-yellow-400);
   }
   &:has([data-color=green]) {
-    --${$}-background: var(--arc-color-green-400);
+    --${Fa}-background: var(--arc-color-green-400);
   }
   &:has([data-color=maroon]) {
-    --${$}-background: var(--arc-color-maroon-400);
+    --${Fa}-background: var(--arc-color-maroon-400);
   }
   &:has([data-color=orange]) {
-    --${$}-background: var(--arc-color-orange-400);
+    --${Fa}-background: var(--arc-color-orange-400);
   }
   &:has([data-color=mint]) {
-    --${$}-background: var(--arc-color-mint-400);
+    --${Fa}-background: var(--arc-color-mint-400);
   }
 
 
   /* RESERVED COLORS -----------------------------------------------• */
 
   &:has([data-color=black]) {
-    --${$}-background: var(--arc-color-mono-black);
+    --${Fa}-background: var(--arc-color-mono-black);
   }
 
   &:has([data-color=neutral]) { /* @default anonymous */
-    --${$}-color: var(--${$}-neutral-color, var(--arc-color-icon-secondary));
-    --${$}-background: var(--${$}-neutral-background, var(--arc-color-alpha-black-10));
+    --${Fa}-color: var(--${Fa}-neutral-color, var(--arc-color-icon-secondary));
+    --${Fa}-background: var(--${Fa}-neutral-background, var(--arc-color-alpha-black-10));
   }
 
   &:has([data-color=white]) {
-    --${$}-color: var(--arc-color-text-primary);
-    --${$}-background: var(--arc-color-mono-white);
+    --${Fa}-color: var(--arc-color-text-primary);
+    --${Fa}-background: var(--arc-color-mono-white);
   }
 
 
   /* SIZES ---------------------------------------------------------• */
 
-  ${Ie}
+  ${ar}
 
 
   /* PROFILE SIZES -------------------------------------------------• */
 
   &[data-size=profile-sm] {
-    --${Z}: 28; /* unitless, desired size at 100% */
-    --${$}-size: 64;
+    --${Ha}: 28; /* unitless, desired size at 100% */
+    --${Fa}-size: 64;
   }
 
   &[data-size=profile-md] {
-    --${Z}: 32; /* unitless, desired size at 100% */
-    --${$}-size: 96;
+    --${Ha}: 32; /* unitless, desired size at 100% */
+    --${Fa}-size: 96;
   }
 
   &[data-size=profile-lg] {
-    --${Z}: 40; /* unitless, desired size at 100% */
-    --${$}-size: 160;
+    --${Ha}: 40; /* unitless, desired size at 100% */
+    --${Fa}-size: 160;
   }
 
 
   /* COMPUTED -------------------------------------------------------• */
 
-  --${Z}-px: var(--${Z}) * 1px;
-  --${Z}-em: var(--${Z}) * 1em;
+  --${Ha}-px: var(--${Ha}) * 1px;
+  --${Ha}-em: var(--${Ha}) * 1em;
 
-  --${tr}-font-size: calc(var(--${Z}-px));
-  --${tr}-size: calc(var(--${$}-size) / var(--${Z}-em));
-  --${tr}-num-size-1: calc(var(--${$}-num-size-1) / var(--${Z}-em));
-  --${tr}-num-size-2: calc(var(--${$}-num-size-2) / var(--${Z}-em));
-  --${tr}-num-size-3: calc(var(--${$}-num-size-3) / var(--${Z}-em));
+  --${Va}-font-size: calc(var(--${Ha}-px));
+  --${Va}-size: calc(var(--${Fa}-size) / var(--${Ha}-em));
+  --${Va}-num-size-1: calc(var(--${Fa}-num-size-1) / var(--${Ha}-em));
+  --${Va}-num-size-2: calc(var(--${Fa}-num-size-2) / var(--${Ha}-em));
+  --${Va}-num-size-3: calc(var(--${Fa}-num-size-3) / var(--${Ha}-em));
 }
 
 /* CORE AVATAR STYLES ----------------------------------------------• */
 
 [arc-avatar] {
-  font-size: var(--arc-avatar-font-size, var(--${tr}-font-size));
+  font-size: var(--arc-avatar-font-size, var(--${Va}-font-size));
 
   flex: none;
   align-self: center;
@@ -1292,7 +1269,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--arc-avatar-size, var(--${tr}-size));
+  width: var(--arc-avatar-size, var(--${Va}-size));
   aspect-ratio: 1 / 1;
   line-height: normal;
 
@@ -1306,30 +1283,30 @@
   }
 
   [data-num-length] {
-    --arc-button-font-size: var(--${tr}-num-size-1);
+    --arc-button-font-size: var(--${Va}-num-size-1);
   }
 
   [data-num-length='2'] {
-    --arc-button-font-size: var(--${tr}-num-size-2);
+    --arc-button-font-size: var(--${Va}-num-size-2);
   }
 
   [data-num-length='3'] {
-    --arc-button-font-size: var(--${tr}-num-size-3);
+    --arc-button-font-size: var(--${Va}-num-size-3);
   }
 
 
   /* INNER ELEMENTS ------------------------------------------------• */
 
   [data-element=counter] {
-    --${$}-pointer-events: all;
+    --${Fa}-pointer-events: all;
 
     /* Inter-Component Communication • ArcButton --------------------• */
     --arc-button-width: 100%;
     --arc-button-height: auto;
     --arc-button-aspect-ratio: 1 /1;
     --arc-button-padding: 0;
-    --arc-button-background: var(--arc-avatar-background, var(--${$}-background));
-    --arc-button-color: var(--arc-avatar-color, var(--${$}-color));
+    --arc-button-background: var(--arc-avatar-background, var(--${Fa}-background));
+    --arc-button-color: var(--arc-avatar-color, var(--${Fa}-color));
     /* --arc-button-content-pointer-events: all; */
 
     &:disabled {
@@ -1342,13 +1319,13 @@
 
     /* Hides problematic image */
     &:is([data-not-loaded], [data-has-error]) {
-      --${$}-visibility: hidden;
+      --${Fa}-visibility: hidden;
     }
 
     /* Hides subsequent elements with valid image */
     &:not([data-has-error]) ~ [data-element] {
-      --${$}-color: transparent;
-      --${$}-background: none;
+      --${Fa}-color: transparent;
+      --${Fa}-background: none;
     }
   }
 
@@ -1357,8 +1334,8 @@
     [data-element=initial],
     [data-element=anonymous]
    ) {
-    background: var(--${$}-background);
-    color: var(--${$}-color);
+    background: var(--${Fa}-background);
+    color: var(--${Fa}-color);
   }
 
   :is([data-element=initial]) {
@@ -1379,14 +1356,14 @@
 
     border-radius: inherit;
     font-weight: var(--arc-font-weight-600);
-    visibility: var(--${$}-visibility, unset);
+    visibility: var(--${Fa}-visibility, unset);
 
     transition-property: visibility, background-color, color;
     transition-behavior: allow-discrete;
     transition-duration: 200ms;
     transition-timing-function: linear;
 
-    pointer-events: var(--${$}-pointer-events, none);
+    pointer-events: var(--${Fa}-pointer-events, none);
     user-select: none;
     -webkit-user-select: none;
   }
@@ -1394,47 +1371,45 @@
 
 }
 `,
-        $n = ({ children: r, initial: a, color: e, ...n }) =>
-          (0, t.jsx)('span', {
-            ...n,
+        tr = ({ children: a, initial: r, color: e, ...t }) =>
+          (0, S.jsx)('span', {
+            ...t,
             'data-element': 'initial',
             'data-color': e,
-            children: r || a,
+            children: a || r,
           }),
-        yn = ({ isLoaded: r, hasError: a, onLoad: e, onError: n, ...i }) => {
-          const c = (!r && '') || void 0,
-            s = (a && '') || void 0,
-            d = !r || a || void 0
-          return (0, t.jsx)('img', {
-            ...i,
-            hidden: d,
+        or = ({ isLoaded: a, hasError: r, onLoad: e, onError: t, ...o }) => {
+          const i = !a || r || void 0
+          return (0, S.jsx)('img', {
+            ...o,
+            hidden: i,
             'data-element': 'image',
-            'data-not-loaded': c,
-            'data-has-error': s,
+            'data-not-loaded': void 0,
+            'data-has-error': void 0,
             onLoad: e,
-            onError: n,
+            onError: t,
           })
         },
-        Le = (r) =>
-          (0, t.jsx)('svg', {
-            ...r,
+        ir = (a) =>
+          (0, S.jsx)('svg', {
+            ...a,
             viewBox: '0 0 20 20',
             xmlns: 'http://www.w3.org/2000/svg',
-            children: (0, t.jsx)('path', {
+            children: (0, S.jsx)('path', {
               fillRule: 'evenodd',
               clipRule: 'evenodd',
               d: 'M16.2362 2V4.04215H3.7443V2H16.2362ZM13.8453 11.7538C13.8453 9.47528 12.1743 7.75773 9.96905 7.75773C7.79316 7.75773 6.15147 9.47528 6.15147 11.7538C6.15147 14.0323 7.7899 15.753 9.96905 15.753C12.1775 15.753 13.8453 14.0355 13.8453 11.7569V11.7538ZM9.96905 18C6.29153 18 3.5 15.3213 3.5 11.7538C3.5 8.20209 6.27524 5.50758 9.96905 5.49183C13.6922 5.49183 16.5 8.17057 16.5 11.738V17.6754H13.8485V16.3581C13.8485 16.3581 12.3925 18 9.97231 18H9.96905Z',
               fill: 'var(--arc-color-logo-articulate, #000000)',
             }),
           }),
-        Me = (r) =>
-          (0, t.jsxs)('svg', {
-            ...r,
+        nr = (a) =>
+          (0, S.jsxs)('svg', {
+            ...a,
             viewBox: '0 0 20 20',
             xmlns: 'http://www.w3.org/2000/svg',
             children: [
-              (0, t.jsx)('defs', {
-                children: (0, t.jsxs)('linearGradient', {
+              (0, S.jsx)('defs', {
+                children: (0, S.jsxs)('linearGradient', {
                   id: 'ai_gradient',
                   x1: '2',
                   y1: '18',
@@ -1442,15 +1417,15 @@
                   y2: '2',
                   gradientUnits: 'userSpaceOnUse',
                   children: [
-                    (0, t.jsx)('stop', { stopColor: 'var(--arc-color-logo-ai-purple, #9c15ff)' }),
-                    (0, t.jsx)('stop', {
+                    (0, S.jsx)('stop', { stopColor: 'var(--arc-color-logo-ai-purple, #9c15ff)' }),
+                    (0, S.jsx)('stop', {
                       offset: '1',
                       stopColor: 'var(--arc-color-logo-ai-blue, #1eb4fb)',
                     }),
                   ],
                 }),
               }),
-              (0, t.jsx)('path', {
+              (0, S.jsx)('path', {
                 fillRule: 'evenodd',
                 clipRule: 'evenodd',
                 d: 'M17.25 10C17.25 14.0041 14.0041 17.25 10 17.25C5.99594 17.25 2.75 14.0041 2.75 10C2.75 5.99594 5.99594 2.75 10 2.75C14.0041 2.75 17.25 5.99594 17.25 10ZM18 10C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10ZM11.8524 12.87V8.17199H12.6444V12.87H11.8524ZM11.8524 7.28999V6.29999H12.6444V7.28999H11.8524ZM6.5 11.511C6.5 11.211 6.584 10.953 6.752 10.737C6.926 10.515 7.163 10.344 7.463 10.224C7.763 10.104 8.111 10.044 8.507 10.044C8.717 10.044 8.939 10.062 9.173 10.098C9.407 10.128 9.614 10.176 9.794 10.242V9.89999C9.794 9.53999 9.686 9.25799 9.47 9.05399C9.254 8.84399 8.948 8.73899 8.552 8.73899C8.294 8.73899 8.045 8.78699 7.805 8.88299C7.571 8.97299 7.322 9.10499 7.058 9.27899L6.77 8.72099C7.076 8.51099 7.382 8.35499 7.688 8.25299C7.994 8.14499 8.312 8.09099 8.642 8.09099C9.242 8.09099 9.716 8.25899 10.064 8.59499C10.412 8.92499 10.586 9.38699 10.586 9.98099V11.97C10.586 12.066 10.604 12.138 10.64 12.186C10.682 12.228 10.748 12.252 10.838 12.258V12.87C10.76 12.882 10.691 12.891 10.631 12.897C10.577 12.903 10.532 12.906 10.496 12.906C10.31 12.906 10.169 12.855 10.073 12.753C9.983 12.651 9.932 12.543 9.92 12.429L9.902 12.132C9.698 12.396 9.431 12.6 9.101 12.744C8.771 12.888 8.444 12.96 8.12 12.96C7.808 12.96 7.529 12.897 7.283 12.771C7.037 12.639 6.845 12.465 6.707 12.249C6.569 12.027 6.5 11.781 6.5 11.511ZM9.56 11.844C9.632 11.76 9.689 11.676 9.731 11.592C9.773 11.502 9.794 11.427 9.794 11.367V10.782C9.608 10.71 9.413 10.656 9.209 10.62C9.005 10.578 8.804 10.557 8.606 10.557C8.204 10.557 7.877 10.638 7.625 10.8C7.379 10.956 7.256 11.172 7.256 11.448C7.256 11.598 7.295 11.745 7.373 11.889C7.457 12.027 7.577 12.141 7.733 12.231C7.895 12.321 8.093 12.366 8.327 12.366C8.573 12.366 8.807 12.318 9.029 12.222C9.251 12.12 9.428 11.994 9.56 11.844Z',
@@ -1458,105 +1433,90 @@
               }),
             ],
           }),
-        Pe = (r) =>
-          (0, t.jsx)('svg', {
-            ...r,
+        cr = (a) =>
+          (0, S.jsx)('svg', {
+            ...a,
             viewBox: '0 0 20 20',
             xmlns: 'http://www.w3.org/2000/svg',
-            children: (0, t.jsx)('path', {
+            children: (0, S.jsx)('path', {
               fillRule: 'evenodd',
               clipRule: 'evenodd',
               d: 'M10 18C5.582 18 2 14.418 2 10C2 5.582 5.582 2 10 2C14.418 2 18 5.582 18 10C18 14.418 14.418 18 10 18ZM10 17.272C14.016 17.272 17.272 14.016 17.272 10C17.272 5.984 14.016 2.728 10 2.728C5.984 2.728 2.728 5.984 2.728 10C2.728 14.016 5.984 17.272 10 17.272ZM11.3493 8.65067L13.3747 7.51C13.4276 7.48023 13.4874 7.46481 13.5481 7.46529C13.6088 7.46576 13.6683 7.48211 13.7207 7.51271C13.7732 7.54331 13.8167 7.58709 13.847 7.63971C13.8772 7.69233 13.8932 7.75196 13.8933 7.81267V12.14C13.8934 12.2014 13.8772 12.2616 13.8464 12.3147C13.8156 12.3678 13.7713 12.4118 13.7181 12.4423C13.6648 12.4727 13.6044 12.4886 13.5431 12.4882C13.4817 12.4878 13.4215 12.4712 13.3687 12.44L11.3433 11.2453C11.2911 11.2146 11.2479 11.1707 11.2178 11.1181C11.1878 11.0655 11.172 11.0059 11.172 10.9453V8.95333C11.172 8.828 11.24 8.712 11.3493 8.65067ZM7.20267 7.46333H9.93867C10.3227 7.46333 10.634 7.77467 10.634 8.15867V11.592C10.634 11.9767 10.3227 12.288 9.93867 12.288H7.202C7.0177 12.288 6.84094 12.2148 6.71056 12.0846C6.58018 11.9543 6.50684 11.7776 6.50667 11.5933V8.16C6.50667 7.77533 6.818 7.464 7.202 7.464L7.20267 7.46333Z',
               fill: 'var(--arc-color-logo-peek, #497add)',
             }),
           }),
-        Re = (r) =>
-          (0, t.jsx)('svg', {
-            ...r,
+        lr = (a) =>
+          (0, S.jsx)('svg', {
+            ...a,
             viewBox: '0 0 20 20',
             xmlns: 'http://www.w3.org/2000/svg',
-            children: (0, t.jsx)('path', {
+            children: (0, S.jsx)('path', {
               fillRule: 'evenodd',
               clipRule: 'evenodd',
               d: 'M17.25 10C17.25 14.0041 14.0041 17.25 10 17.25C5.99594 17.25 2.75 14.0041 2.75 10C2.75 5.99594 5.99594 2.75 10 2.75C14.0041 2.75 17.25 5.99594 17.25 10ZM18 10C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10ZM11.7343 12.569C11.3803 12.569 11.0563 12.506 10.7623 12.38C10.4743 12.248 10.2223 12.071 10.0063 11.849C9.79627 11.621 9.63127 11.36 9.51127 11.066C9.39727 10.772 9.34027 10.46 9.34027 10.13C9.34027 9.68601 9.44227 9.28101 9.64627 8.91501C9.85027 8.54901 10.1323 8.25501 10.4923 8.03301C10.8583 7.81101 11.2753 7.70001 11.7433 7.70001C12.2173 7.70001 12.6283 7.81401 12.9763 8.04201C13.3303 8.26401 13.6033 8.55801 13.7953 8.92401C13.9933 9.28401 14.0923 9.67401 14.0923 10.094C14.0923 10.154 14.0893 10.214 14.0833 10.274C14.0833 10.328 14.0803 10.37 14.0743 10.4H10.1773C10.2013 10.706 10.2853 10.979 10.4293 11.219C10.5793 11.453 10.7713 11.639 11.0053 11.777C11.2393 11.909 11.4913 11.975 11.7613 11.975C12.0493 11.975 12.3193 11.903 12.5713 11.759C12.8293 11.615 13.0063 11.426 13.1023 11.192L13.7863 11.381C13.6843 11.609 13.5313 11.813 13.3273 11.993C13.1293 12.173 12.8923 12.314 12.6163 12.416C12.3463 12.518 12.0523 12.569 11.7343 12.569ZM10.1503 9.85101H13.3543C13.3303 9.54501 13.2433 9.27501 13.0933 9.04101C12.9433 8.80701 12.7513 8.62401 12.5173 8.49201C12.2833 8.36001 12.0253 8.29401 11.7433 8.29401C11.4673 8.29401 11.2123 8.36001 10.9783 8.49201C10.7443 8.62401 10.5523 8.80701 10.4023 9.04101C10.2583 9.27501 10.1743 9.54501 10.1503 9.85101ZM8.984 8.47401C8.588 8.48001 8.237 8.58201 7.931 8.78001C7.631 8.97201 7.418 9.23901 7.292 9.58101V12.479H6.5V7.78101H7.238V8.87001C7.4 8.54601 7.613 8.28501 7.877 8.08701C8.147 7.88301 8.429 7.76901 8.723 7.74501H8.876C8.918 7.74501 8.954 7.74801 8.984 7.75401V8.47401Z',
               fill: 'var(--arc-color-logo-reach, #0081de)',
             }),
           }),
-        Be = (r) =>
-          (0, t.jsx)('svg', {
-            ...r,
+        sr = (a) =>
+          (0, S.jsx)('svg', {
+            ...a,
             viewBox: '0 0 20 20',
             xmlns: 'http://www.w3.org/2000/svg',
-            children: (0, t.jsx)('path', {
+            children: (0, S.jsx)('path', {
               fillRule: 'evenodd',
               clipRule: 'evenodd',
               d: 'M17.25 10C17.25 14.0041 14.0041 17.25 10 17.25C5.99594 17.25 2.75 14.0041 2.75 10C2.75 5.99594 5.99594 2.75 10 2.75C14.0041 2.75 17.25 5.99594 17.25 10ZM18 10C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10ZM9.38402 8.46899C8.98802 8.47499 8.63702 8.57699 8.33102 8.77499C8.03102 8.96699 7.81802 9.23399 7.69202 9.57599V12.474H6.90002V7.77599H7.63802V8.86499C7.80002 8.54099 8.01302 8.27999 8.27702 8.08199C8.54702 7.87799 8.82902 7.76399 9.12302 7.73999H9.27602C9.31802 7.73999 9.35402 7.74299 9.38402 7.74899V8.46899ZM11.5195 12.474L9.67455 7.77599H10.5025L11.9785 11.718L13.4545 7.77599H14.2285L12.3835 12.474H11.5195Z',
               fill: 'var(--arc-color-logo-review, #35b062)',
             }),
           }),
-        Oe = (r) =>
-          (0, t.jsx)('svg', {
-            ...r,
+        dr = (a) =>
+          (0, S.jsx)('svg', {
+            ...a,
             viewBox: '0 0 20 20',
             xmlns: 'http://www.w3.org/2000/svg',
-            children: (0, t.jsx)('path', {
+            children: (0, S.jsx)('path', {
               fillRule: 'evenodd',
               clipRule: 'evenodd',
               d: 'M10 18C5.582 18 2 14.418 2 10C2 5.582 5.582 2 10 2C14.418 2 18 5.582 18 10C18 14.418 14.418 18 10 18ZM10 17.272C14.016 17.272 17.272 14.016 17.272 10C17.272 5.984 14.016 2.728 10 2.728C5.984 2.728 2.728 5.984 2.728 10C2.728 14.016 5.984 17.272 10 17.272ZM9.29467 8.48267C8.90667 8.49467 8.564 8.59467 8.268 8.78267C7.97067 8.97067 7.76067 9.232 7.63733 9.56733V12.406H6.86133V7.804H7.584V8.87067C7.74267 8.55333 7.95133 8.296 8.21067 8.09933C8.46867 7.90267 8.74467 7.79267 9.03867 7.76867H9.18867C9.23 7.76867 9.26533 7.772 9.29467 7.77733V8.48267ZM11.6747 12.494C11.3035 12.4941 10.9347 12.4363 10.5813 12.3227C10.2233 12.208 9.91467 12.042 9.656 11.824L9.99067 11.304C10.2613 11.51 10.532 11.664 10.802 11.7667C11.0727 11.87 11.3573 11.9213 11.6573 11.9213C11.992 11.9213 12.258 11.8547 12.4553 11.7227C12.5492 11.6632 12.6258 11.5803 12.6776 11.482C12.7294 11.3838 12.7546 11.2737 12.7507 11.1627C12.7507 11.0513 12.724 10.956 12.6707 10.876C12.6092 10.7892 12.5278 10.7183 12.4333 10.6693C12.3044 10.6014 12.1682 10.5482 12.0273 10.5107C11.8627 10.464 11.672 10.4133 11.454 10.3607C11.2142 10.3005 10.9763 10.2329 10.7407 10.158C10.566 10.1052 10.3997 10.028 10.2467 9.92867C10.1259 9.85011 10.0285 9.7405 9.96467 9.61133C9.90168 9.46686 9.87162 9.31019 9.87667 9.15267C9.87261 8.94053 9.91923 8.73049 10.0127 8.54C10.104 8.36067 10.2287 8.21133 10.388 8.09067C10.5561 7.96556 10.746 7.87287 10.948 7.81733C11.173 7.7542 11.4057 7.72301 11.6393 7.72467C11.986 7.72467 12.3093 7.78067 12.6093 7.892C12.9093 8.004 13.162 8.15067 13.3673 8.33267L13.0147 8.8C12.824 8.63151 12.6026 8.50136 12.3627 8.41667C12.1249 8.33193 11.8744 8.28864 11.622 8.28867C11.34 8.28867 11.1 8.34867 10.9033 8.46933C10.7067 8.59 10.608 8.78267 10.608 9.04733C10.608 9.15267 10.6273 9.24067 10.6653 9.31133C10.7106 9.38903 10.776 9.45306 10.8547 9.49667C10.9433 9.55 11.056 9.59667 11.1947 9.638C11.3327 9.67867 11.4987 9.72333 11.6927 9.77C11.998 9.84067 12.264 9.91267 12.4907 9.986C12.7167 10.0593 12.9047 10.146 13.0547 10.246C13.2047 10.346 13.316 10.4633 13.3893 10.5993C13.4627 10.734 13.5 10.8987 13.5 11.0927C13.5 11.5213 13.3353 11.8627 13.0067 12.1153C12.6767 12.368 12.2333 12.494 11.6747 12.494Z',
               fill: 'var(--arc-color-logo-rise, #ff6600)',
             }),
           }),
-        De = (r) =>
-          (0, t.jsx)('svg', {
-            ...r,
+        pr = (a) =>
+          (0, S.jsx)('svg', {
+            ...a,
             viewBox: '0 0 20 20',
             xmlns: 'http://www.w3.org/2000/svg',
-            children: (0, t.jsx)('path', {
+            children: (0, S.jsx)('path', {
               fillRule: 'evenodd',
               clipRule: 'evenodd',
               d: 'M17.25 10C17.25 14.0041 14.0041 17.25 10 17.25C5.99594 17.25 2.75 14.0041 2.75 10C2.75 5.99594 5.99594 2.75 10 2.75C14.0041 2.75 17.25 5.99594 17.25 10ZM18 10C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10ZM11.2815 6.29999H12.0735V11.655C12.0735 11.913 12.1095 12.072 12.1815 12.132C12.2535 12.192 12.3405 12.222 12.4425 12.222C12.5685 12.222 12.6885 12.21 12.8025 12.186C12.9165 12.156 13.0125 12.126 13.0905 12.096L13.2165 12.744C13.0845 12.798 12.9285 12.843 12.7485 12.879C12.5685 12.915 12.4095 12.933 12.2715 12.933C11.9655 12.933 11.7225 12.846 11.5425 12.672C11.3685 12.498 11.2815 12.255 11.2815 11.943V6.29999ZM8.48 12.96C8.09 12.96 7.724 12.897 7.382 12.771C7.04 12.639 6.746 12.444 6.5 12.186L6.806 11.628C7.076 11.88 7.346 12.06 7.616 12.168C7.886 12.276 8.162 12.33 8.444 12.33C8.768 12.33 9.032 12.27 9.236 12.15C9.44 12.024 9.542 11.841 9.542 11.601C9.542 11.427 9.488 11.298 9.38 11.214C9.278 11.13 9.131 11.061 8.939 11.007C8.747 10.947 8.519 10.881 8.255 10.809C7.931 10.713 7.658 10.611 7.436 10.503C7.214 10.395 7.046 10.26 6.932 10.098C6.818 9.93599 6.761 9.73199 6.761 9.48599C6.761 9.18599 6.839 8.93399 6.995 8.72999C7.151 8.51999 7.364 8.36099 7.634 8.25299C7.91 8.14499 8.222 8.09099 8.57 8.09099C8.918 8.09099 9.233 8.14499 9.515 8.25299C9.797 8.36099 10.04 8.51999 10.244 8.72999L9.884 9.27899C9.698 9.08699 9.494 8.94599 9.272 8.85599C9.05 8.75999 8.801 8.71199 8.525 8.71199C8.363 8.71199 8.204 8.73299 8.048 8.77499C7.892 8.81099 7.763 8.87999 7.661 8.98199C7.559 9.07799 7.508 9.21599 7.508 9.39599C7.508 9.54599 7.547 9.66599 7.625 9.75599C7.709 9.83999 7.829 9.91199 7.985 9.97199C8.147 10.032 8.342 10.098 8.57 10.17C8.924 10.272 9.23 10.374 9.488 10.476C9.752 10.578 9.956 10.71 10.1 10.872C10.244 11.034 10.316 11.259 10.316 11.547C10.316 11.991 10.148 12.339 9.812 12.591C9.476 12.837 9.032 12.96 8.48 12.96Z',
               fill: 'var(--arc-color-logo-storyline, #c560b3)',
             }),
           }),
-        wn = 'fa-width-auto',
-        Ut = 'fa-fw',
-        kn = 'arc-fw',
-        Yt = 'arc-aw',
-        El = (r) =>
-          typeof r == 'number' ? `calc(${r / 10}rem * var(--arc-internal-font-size))` : r,
-        An = {
-          'arc-svg logo-articulate': (0, t.jsx)(Le, {}),
-          'arc-svg product-ai': (0, t.jsx)(Me, {}),
-          'arc-svg product-peek': (0, t.jsx)(Pe, {}),
-          'arc-svg product-reach': (0, t.jsx)(Re, {}),
-          'arc-svg product-review': (0, t.jsx)(Be, {}),
-          'arc-svg product-rise': (0, t.jsx)(Oe, {}),
-          'arc-svg product-storyline': (0, t.jsx)(De, {}),
+        vr = 'fa-fw',
+        hr = 'arc-aw',
+        ur =
+          ((0, S.jsx)(ir, {}),
+          (0, S.jsx)(nr, {}),
+          (0, S.jsx)(cr, {}),
+          (0, S.jsx)(lr, {}),
+          (0, S.jsx)(sr, {}),
+          (0, S.jsx)(dr, {}),
+          (0, S.jsx)(pr, {}),
+          (a) => ({
+            hasFaAutoWidth: a.includes('fa-width-auto'),
+            hasFaFixedWidth: a.includes(vr),
+            hasArcFixedWidth: a.includes('arc-fw'),
+            hasArcAutoWidth: a.includes(hr),
+          })),
+        mr = (a) => ((0, j.isValidElement)(a) && a.type === xr ? a.props.icon : a) ?? void 0,
+        gr = (a) => {
+          const r = mr(a)
+          if ('string' != typeof r) return r
+          const { hasFaFixedWidth: e, hasArcFixedWidth: t, hasArcAutoWidth: o } = ur(r)
+          return e || t || o ? r : `${r} ${hr}`
         },
-        _l = (r) =>
-          r && r.length > 0 && r?.includes('arc-svg') ? An[r] : _jsx('span', { className: r }),
-        Wt = (r) => {
-          const a = r.includes(wn),
-            e = r.includes(Ut),
-            n = r.includes(kn),
-            i = r.includes(Yt)
-          return { hasFaAutoWidth: a, hasFaFixedWidth: e, hasArcFixedWidth: n, hasArcAutoWidth: i }
-        },
-        Zt = (r) => ((0, b.isValidElement)(r) && r.type === B ? r.props.icon : r) ?? void 0,
-        Gt = (r) => {
-          const a = Zt(r)
-          if (typeof a != 'string') return a
-          const { hasFaFixedWidth: e, hasArcFixedWidth: n, hasArcAutoWidth: i } = Wt(a)
-          return !e && !n && !i ? `${a} ${Yt}` : a
-        },
-        zn = (r) => {
-          const a = Zt(r)
-          if (typeof a != 'string') return a
-          let e = a
-          const { hasArcFixedWidth: n, hasFaFixedWidth: i } = Wt(e)
-          return (n && !i && (e = `${e} ${Ut}`), e)
-        },
-        Cn = u`
+        br = P`
 @layer arc-components {
 
 [arc-icon] {
@@ -1641,15 +1601,44 @@
 
 }
 `,
-        Sn = (r) =>
-          (0, t.jsx)(B, {
-            ...r,
+        fr = (a) =>
+          'number' == typeof a ? `calc(${a / 10}rem * var(--arc-internal-font-size))` : a,
+        xr = ({
+          children: a,
+          icon: r = 'fa-regular fa-circle-dashed',
+          color: e,
+          size: t,
+          style: o,
+          ...i
+        }) => {
+          const n = { ...o, '--arc-icon-size': fr(t), '--arc-icon-color': e },
+            c = !(!i['aria-label'] && !i['aria-labelledby']),
+            l = ((a) => {
+              const r = mr(a)
+              if ('string' != typeof r) return r
+              let e = r
+              const { hasArcFixedWidth: t, hasFaFixedWidth: o } = ur(e)
+              return (t && !o && (e = `${e} ${vr}`), e)
+            })(r),
+            s = 'string' == typeof l && l.length > 0 ? (0, S.jsx)('span', { className: l }) : l
+          return (0, S.jsx)('span', {
+            'aria-hidden': !c || void 0,
+            ...i,
+            'arc-icon': '',
+            style: n,
+            children: a || s,
+          })
+        }
+      ;(Ba('ArcIcon', br),
+        (xr.Articulate = (a) =>
+          (0, S.jsx)(xr, {
+            ...a,
             icon: 'fa-kit fa-articulate arc-aw',
-            color: r?.color || 'var(--arc-color-logo-articulate, #000000)',
-            'aria-label': r?.['aria-label'] || 'Articulate Logo',
-          }),
-        jn = (r) => {
-          const a = {
+            color: a?.color || 'var(--arc-color-logo-articulate, #000000)',
+            'aria-label': a?.['aria-label'] || 'Articulate Logo',
+          })),
+        (xr.AI = (a) => {
+          const r = {
             background: [
               'linear-gradient(',
               'to right top, ',
@@ -1662,214 +1651,188 @@
             height: 'auto',
             maxHeight: 'none',
           }
-          return (0, t.jsx)(B, {
-            ...r,
+          return (0, S.jsx)(xr, {
+            ...a,
             icon: 'fa-kit fa-product-badge-ai arc-aw',
-            'aria-label': r?.['aria-label'] || 'Articulate AI Logo',
-            style: { ...r.style, ...a },
+            'aria-label': a?.['aria-label'] || 'Articulate AI Logo',
+            style: { ...a.style, ...r },
           })
-        },
-        En = (r) =>
-          (0, t.jsx)(B, {
-            ...r,
+        }),
+        (xr.Peek = (a) =>
+          (0, S.jsx)(xr, {
+            ...a,
             icon: 'fa-kit fa-product-badge-peek arc-aw',
-            color: r?.color || 'var(--arc-color-logo-peek, #497add)',
-            'aria-label': r?.['aria-label'] || 'Articulate Peek Logo',
-          }),
-        _n = (r) =>
-          (0, t.jsx)(B, {
-            ...r,
+            color: a?.color || 'var(--arc-color-logo-peek, #497add)',
+            'aria-label': a?.['aria-label'] || 'Articulate Peek Logo',
+          })),
+        (xr.Reach = (a) =>
+          (0, S.jsx)(xr, {
+            ...a,
             icon: 'fa-kit fa-product-badge-reach arc-aw',
-            color: r?.color || 'var(--arc-color-logo-reach, #0081de)',
-            'aria-label': r?.['aria-label'] || 'Articulate Reach Logo',
-          }),
-        Tn = (r) =>
-          (0, t.jsx)(B, {
-            ...r,
+            color: a?.color || 'var(--arc-color-logo-reach, #0081de)',
+            'aria-label': a?.['aria-label'] || 'Articulate Reach Logo',
+          })),
+        (xr.Review = (a) =>
+          (0, S.jsx)(xr, {
+            ...a,
             icon: 'fa-kit fa-product-badge-review arc-aw',
-            color: r?.color || 'var(--arc-color-logo-review, #35b062)',
-            'aria-label': r?.['aria-label'] || 'Articulate Review Logo',
-          }),
-        In = (r) =>
-          (0, t.jsx)(B, {
-            ...r,
+            color: a?.color || 'var(--arc-color-logo-review, #35b062)',
+            'aria-label': a?.['aria-label'] || 'Articulate Review Logo',
+          })),
+        (xr.Rise = (a) =>
+          (0, S.jsx)(xr, {
+            ...a,
             icon: 'fa-kit fa-product-badge-rise arc-aw',
-            color: r?.color || 'var(--arc-color-logo-rise, var(--arc-color-orange-400))',
-            'aria-label': r?.['aria-label'] || 'Articulate Rise Logo',
-          }),
-        Ln = (r) =>
-          (0, t.jsx)(B, {
-            ...r,
+            color: a?.color || 'var(--arc-color-logo-rise, var(--arc-color-orange-400))',
+            'aria-label': a?.['aria-label'] || 'Articulate Rise Logo',
+          })),
+        (xr.Storyline = (a) =>
+          (0, S.jsx)(xr, {
+            ...a,
             icon: 'fa-kit fa-product-badge-storyline arc-aw',
-            color: r?.color || 'var(--arc-color-logo-storyline, #c560b3)',
-            'aria-label': r?.['aria-label'] || 'Articulate Storyline Logo',
-          }),
-        Mn = (r) =>
-          typeof r == 'number' ? `calc(${r / 10}rem * var(--arc-internal-font-size))` : r,
-        B = ({
-          children: r,
-          icon: a = 'fa-regular fa-circle-dashed',
-          color: e,
-          size: n,
-          style: i,
-          ...c
-        }) => {
-          const s = { ...i, '--arc-icon-size': Mn(n), '--arc-icon-color': e },
-            d = !!(c['aria-label'] || c['aria-labelledby']),
-            l = zn(a),
-            p = typeof l == 'string' && l.length > 0 ? (0, t.jsx)('span', { className: l }) : l
-          return (0, t.jsx)('span', {
-            'aria-hidden': !d || void 0,
-            ...c,
-            'arc-icon': '',
-            style: s,
-            children: r || p,
-          })
-        }
-      ;(O('ArcIcon', Cn),
-        (B.Articulate = Sn),
-        (B.AI = jn),
-        (B.Peek = En),
-        (B.Reach = _n),
-        (B.Review = Tn),
-        (B.Rise = In),
-        (B.Storyline = Ln),
-        (B.SVGArticulate = Le),
-        (B.SVGAI = Me),
-        (B.SVGPeek = Pe),
-        (B.SVGReach = Re),
-        (B.SVGReview = Be),
-        (B.SVGRise = Oe),
-        (B.SVGStoryline = De))
-      const Pn = ({ children: r, icon: a, color: e, ...n }) =>
-          (0, t.jsx)('span', {
-            ...n,
+            color: a?.color || 'var(--arc-color-logo-storyline, #c560b3)',
+            'aria-label': a?.['aria-label'] || 'Articulate Storyline Logo',
+          })),
+        (xr.SVGArticulate = ir),
+        (xr.SVGAI = nr),
+        (xr.SVGPeek = cr),
+        (xr.SVGReach = lr),
+        (xr.SVGReview = sr),
+        (xr.SVGRise = dr),
+        (xr.SVGStoryline = pr))
+      const $r = ({ children: a, icon: r, color: e, ...t }) =>
+          (0, S.jsx)('span', {
+            ...t,
             'data-element': 'anonymous',
             'data-color': 'neutral',
-            children: r || (0, t.jsx)(B, { icon: a }),
+            children: a || (0, S.jsx)(xr, { icon: r }),
           }),
-        Xt = 'blue',
-        qt = 'neutral',
-        Rn = 'fa-solid fa-user arc-aw',
-        He = (0, b.forwardRef)(
+        yr = 'blue',
+        wr = 'neutral',
+        kr = (0, j.forwardRef)(
           (
             {
-              children: r,
-              size: a,
+              children: a,
+              size: r,
               color: e,
-              isActive: n = !0,
-              isAnonymous: i,
-              alt: c,
-              src: s,
-              name: d,
+              isActive: t = !0,
+              isAnonymous: o,
+              alt: i,
+              src: n,
+              name: c,
               email: l,
-              ...p
+              ...s
             },
-            h,
+            d,
           ) => {
-            const [v, f] = (0, b.useState)(!1),
-              [g, w] = (0, b.useState)(!1),
-              E = (H) => {
-                ;(f(!0), w(!1), p.onLoad?.(H))
-              },
-              j = (H) => {
-                ;(f(!1), w(!0), p.onError?.(H))
-              },
-              P = ln(d || l),
-              A = !!P,
-              _ = i || ((!v || g) && !A),
-              S = (!_ && !!s && !g) || void 0,
-              C =
-                ((_ && qt) || void 0) ??
+            const [p, v] = (0, j.useState)(!1),
+              [h, u] = (0, j.useState)(!1),
+              m = ((a) => a?.trim().charAt(0) ?? void 0)(c || l),
+              g = !!m,
+              b = o || ((!p || h) && !g),
+              f = (!b && !!n && !h) || void 0,
+              x =
+                ((b && wr) || void 0) ??
                 (e || void 0) ??
-                pn(String(l || d || void 0), Ft, Xt) ??
-                Xt,
-              L = { src: s, alt: c, isLoaded: v, hasError: g, onLoad: E, onError: j }
+                Ua(String(l || c || void 0), Za, yr) ??
+                yr,
+              $ = {
+                src: n,
+                alt: i,
+                isLoaded: p,
+                hasError: h,
+                onLoad: (a) => {
+                  ;(v(!0), u(!1), s.onLoad?.(a))
+                },
+                onError: (a) => {
+                  ;(v(!1), u(!0), s.onError?.(a))
+                },
+              }
             return (
-              (0, b.useEffect)(() => {
-                _ && f(!1)
-              }, [_]),
-              (0, t.jsx)('span', {
-                ...p,
-                ref: h,
+              (0, j.useEffect)(() => {
+                b && v(!1)
+              }, [b]),
+              (0, S.jsx)('span', {
+                ...s,
+                ref: d,
                 'arc-avatar': '',
-                'data-is-inactive': !n || void 0,
-                'data-size': a,
-                'aria-label': (p.title ?? d ?? l) || void 0,
+                'data-is-inactive': !t || void 0,
+                'data-size': r,
+                'aria-label': (s.title ?? c ?? l) || void 0,
                 children:
-                  r ||
-                  (_
-                    ? (0, t.jsx)(Pn, { icon: Rn, color: qt })
-                    : (0, t.jsxs)(t.Fragment, {
+                  a ||
+                  (b
+                    ? (0, S.jsx)($r, { icon: 'fa-solid fa-user arc-aw', color: wr })
+                    : (0, S.jsxs)(S.Fragment, {
                         children: [
-                          S && (0, t.jsx)(yn, { ...L }),
-                          A && (0, t.jsx)($n, { initial: P, color: C }),
+                          f && (0, S.jsx)(or, { ...$ }),
+                          g && (0, S.jsx)(tr, { initial: m, color: x }),
                         ],
                       })),
               })
             )
           },
         )
-      O('ArcAvatar', xn)
-      const sr = u`${$}•text`,
-        qr = u`${$}•subtext`,
-        va = u`${$}•gap`,
-        Bn = u`
+      Ba('ArcAvatar', er)
+      const zr = P`${Fa}•text`,
+        Cr = P`${Fa}•subtext`,
+        Ar = P`${Fa}•gap`,
+        Sr = P`
 @layer arc-components {
 
   [arc-avatar-text] {
-    --${sr}-font-size: max(var(--arc-font-size-14), 0.875em); /* 14px @ 100% */
-    --${qr}-font-size: max(var(--arc-font-size-12), 0.75em); /* 12px @ 100% */
-    --${va}: max(var(--arc-space-1), 0.5em); /* 8px @ 100% */
+    --${zr}-font-size: max(var(--arc-font-size-14), 0.875em); /* 14px @ 100% */
+    --${Cr}-font-size: max(var(--arc-font-size-12), 0.75em); /* 12px @ 100% */
+    --${Ar}: max(var(--arc-space-1), 0.5em); /* 8px @ 100% */
 
-    --${sr}-overflow: unset;
-    --${sr}-text-overflow: unset;
-    --${sr}-white-space: unset;
+    --${zr}-overflow: unset;
+    --${zr}-text-overflow: unset;
+    --${zr}-white-space: unset;
 
     &[data-overflow=truncate] {
-      --${sr}-overflow: hidden;
-      --${sr}-text-overflow: ellipsis;
-      --${sr}-white-space: nowrap;
+      --${zr}-overflow: hidden;
+      --${zr}-text-overflow: ellipsis;
+      --${zr}-white-space: nowrap;
     }
 
     /* @default size: md */
 
     &:has([data-size=inherit]) {
-      --${sr}-font-size: 1em;
-      --${qr}-font-size: 0.875em;
-      --${va}: 0.5em;
+      --${zr}-font-size: 1em;
+      --${Cr}-font-size: 0.875em;
+      --${Ar}: 0.5em;
     }
 
     &:has([data-size=lg]) {
-      --${sr}-font-size: var(--arc-font-size-14);
-      --${qr}-font-size: var(--arc-font-size-12);
+      --${zr}-font-size: var(--arc-font-size-14);
+      --${Cr}-font-size: var(--arc-font-size-12);
     }
 
     &:has([data-size=md]) {
-      --${sr}-font-size: var(--arc-font-size-14);
-      --${qr}-font-size: var(--arc-font-size-12);
+      --${zr}-font-size: var(--arc-font-size-14);
+      --${Cr}-font-size: var(--arc-font-size-12);
     }
 
     &:has([data-size=sm]) {
-      --${sr}-font-size: var(--arc-font-size-14);
-      --${qr}-font-size: var(--arc-font-size-12);
+      --${zr}-font-size: var(--arc-font-size-14);
+      --${Cr}-font-size: var(--arc-font-size-12);
     }
 
     &:has([data-size=xs]) {
-      --${sr}-font-size: var(--arc-font-size-12);
-      --${qr}-font-size: var(--arc-font-size-12);
-      --${va}: var(--arc-space-0-75);
+      --${zr}-font-size: var(--arc-font-size-12);
+      --${Cr}-font-size: var(--arc-font-size-12);
+      --${Ar}: var(--arc-space-0-75);
     }
 
-    &[data-gap=lg] { --${va}: var(--arc-space-1-5); }
-    &[data-gap=sm] { --${va}: var(--arc-space-0-5); }
+    &[data-gap=lg] { --${Ar}: var(--arc-space-1-5); }
+    &[data-gap=sm] { --${Ar}: var(--arc-space-0-5); }
   }
 
   [arc-avatar-text] {
-    font-size: var(--arc-avatar-text-font-size, var(--${sr}-font-size));
+    font-size: var(--arc-avatar-text-font-size, var(--${zr}-font-size));
     display: inline-flex;
     align-items: center;
-    gap: var(--${va});
+    gap: var(--${Ar});
     line-height: normal;
 
     min-width: 0%; /* @note: allows truncation/ellipsis for [data-element=text] */
@@ -1889,54 +1852,53 @@
 
     [data-element=subtext] {
       display: var(--arc-avatar-subtext-display, block);
-      font-size: var(--arc-avatar-subtext-font-size, var(--${qr}-font-size));
-      color: var(--arc-avatar-subtext-color, var(--${qr}-color, color-mix(in srgb, currentcolor 61%, transparent)));
+      font-size: var(--arc-avatar-subtext-font-size, var(--${Cr}-font-size));
+      color: var(--arc-avatar-subtext-color, var(--${Cr}-color, color-mix(in srgb, currentcolor 61%, transparent)));
     }
 
     :where([data-element=text], [data-element=subtext]) {
-      overflow: var(--${sr}-overflow);
-      text-overflow: var(--${sr}-text-overflow);
-      white-space: var(--${sr}-white-space);
+      overflow: var(--${zr}-overflow);
+      text-overflow: var(--${zr}-text-overflow);
+      white-space: var(--${zr}-white-space);
     }
   }
 
 }
 `,
-        On = 'Anonymous',
-        Ve = ({
-          children: r,
-          avatar: a = {},
+        jr = ({
+          children: a,
+          avatar: r = {},
           subtext: e,
-          size: n,
-          gapSize: i,
-          overflow: c,
-          isStrong: s,
-          ...d
+          size: t,
+          gapSize: o,
+          overflow: i,
+          isStrong: n,
+          ...c
         }) => {
-          const l = a.anonymousName || On,
-            p = a.name || a.email || a.src,
-            h = a.name || a.email,
-            v = a.isAnonymous || !p,
-            f = r || v ? l : h,
-            g = i !== 'inherit' ? i : void 0,
-            w = c !== 'inherit' ? c : void 0
-          return (0, t.jsxs)('span', {
-            ...d,
+          const l = r.anonymousName || 'Anonymous',
+            s = r.name || r.email || r.src,
+            d = r.name || r.email,
+            p = r.isAnonymous || !s,
+            v = a || p ? l : d,
+            h = 'inherit' !== o ? o : void 0,
+            u = 'inherit' !== i ? i : void 0
+          return (0, S.jsxs)('span', {
+            ...c,
             'arc-avatar-text': '',
-            'data-gap': g,
-            'data-overflow': w,
-            'is-strong': s ? '' : void 0,
+            'data-gap': h,
+            'data-overflow': u,
+            'is-strong': n ? '' : void 0,
             children: [
-              (0, t.jsx)(He, { ...a, isAnonymous: v, size: n }),
-              (0, t.jsxs)('span', {
+              (0, S.jsx)(kr, { ...r, isAnonymous: p, size: t }),
+              (0, S.jsxs)('span', {
                 'data-element': 'text',
                 children: [
-                  f,
+                  v,
                   e &&
-                    (0, t.jsxs)(t.Fragment, {
+                    (0, S.jsxs)(S.Fragment, {
                       children: [
-                        (0, t.jsx)('br', {}),
-                        (0, t.jsx)('small', { 'data-element': 'subtext', children: e }),
+                        (0, S.jsx)('br', {}),
+                        (0, S.jsx)('small', { 'data-element': 'subtext', children: e }),
                       ],
                     }),
                 ],
@@ -1944,8 +1906,8 @@
             ],
           })
         }
-      O('ArcAvatarText', Bn)
-      const Dn = u`
+      Ba('ArcAvatarText', Sr)
+      const Er = P`
 @layer arc-components {
 
   [arc-avatar-pile] {
@@ -1954,62 +1916,62 @@
     align-items: center;
     gap: 0;
 
-    ${Ie}
-    ${Nt}
+    ${ar}
+    ${rr}
 
     /* OVERLAP MASK --------------------------------------------------•
-       --${Z} comes from avatarSizesShared
+       --${Ha} comes from avatarSizesShared
     */
 
-    --${Z}-em: var(--${Z}) * 1em;
-    --${tr}-offset: calc(2 / var(--${Z}-em));
-    --${tr}-mask-shift: calc(-2 / var(--${Z}-em));
+    --${Ha}-em: var(--${Ha}) * 1em;
+    --${Va}-offset: calc(2 / var(--${Ha}-em));
+    --${Va}-mask-shift: calc(-2 / var(--${Ha}-em));
 
-    --${Pr}-position: 50% 50% at calc(-50% + var(--${tr}-offset)) 50%;
-    --${Pr}-sharpness: min(var(--${tr}-offset), 0.015em);
-    --${Pr}-hide: transparent calc(100% + var(--${tr}-offset));
-    --${Pr}-show: black calc(100% + var(--${Pr}-sharpness) + var(--${tr}-offset));
+    --${Na}-position: 50% 50% at calc(-50% + var(--${Va}-offset)) 50%;
+    --${Na}-sharpness: min(var(--${Va}-offset), 0.015em);
+    --${Na}-hide: transparent calc(100% + var(--${Va}-offset));
+    --${Na}-show: black calc(100% + var(--${Na}-sharpness) + var(--${Va}-offset));
 
-    --${Pr}: radial-gradient(
-      var(--${Pr}-position),
-      var(--${Pr}-hide),
-      var(--${Pr}-show)
+    --${Na}: radial-gradient(
+      var(--${Na}-position),
+      var(--${Na}-hide),
+      var(--${Na}-show)
     ) padding-box;
 
     /* Cutout (mask) a portion of subsequent avatars -----------------• */
 
     [arc-avatar]+[arc-avatar] {
-      margin-left: var(--${tr}-mask-shift);
-      mask: var(--${Pr}); /* magic! */
+      margin-left: var(--${Va}-mask-shift);
+      mask: var(--${Na}); /* magic! */
     }
 
   }
 
 }
 `,
-        Hn = ({ size: r = 'md', ...a }) =>
-          (0, t.jsx)('div', { ...a, 'arc-avatar-pile': '', 'data-size': r })
-      O('ArcAvatarPile', Dn)
-      const Ta = (r) =>
-          typeof r == 'string'
-            ? r
-            : typeof r == 'number'
-              ? r.toString()
-              : Array.isArray(r)
-                ? r.map(Ta).join('')
-                : (0, b.isValidElement)(r)
-                  ? Ta(r.props.children)
+        Tr = ({ size: a = 'md', ...r }) =>
+          (0, S.jsx)('div', { ...r, 'arc-avatar-pile': '', 'data-size': a })
+      Ba('ArcAvatarPile', Er)
+      const Or = (a) =>
+          'string' == typeof a
+            ? a
+            : 'number' == typeof a
+              ? a.toString()
+              : Array.isArray(a)
+                ? a.map(Or).join('')
+                : (0, j.isValidElement)(a)
+                  ? Or(a.props.children)
                   : '',
-        Kt = {},
-        Vn = (r = 'id') => {
-          const a = (Kt[r] ?? 0) + 1
-          return ((Kt[r] = a), `${r}-${a}`)
+        Ir = {},
+        _r = (a = 'id') => {
+          const r = (Ir[a] ?? 0) + 1
+          return ((Ir[a] = r), `${a}-${r}`)
         },
-        Sr = (r, a = 'id') => {
-          const e = (0, b.useId)()
-          return r ?? `${a}-${e}`
+        Pr = (a, r = 'id') => {
+          const e = (0, j.useId)()
+          return a ?? `${r}-${e}`
         },
-        Ia = () =>
+        Mr = () =>
           typeof DOMRect < 'u'
             ? new DOMRect()
             : {
@@ -2032,11 +1994,11 @@
                   left: 0,
                 }),
               },
-        Jt = [...xe],
-        Fn = [...Za],
-        Fe = z(Q, ['common']),
-        Nn = z(Q, ['ai', 'brand']),
-        Qt = [
+        Rr = [...p],
+        Lr = [...v],
+        Br = y(o, ['common']),
+        Dr = y(o, ['ai', 'brand']),
+        Fr = [
           'top-start',
           'top-center',
           'top-end',
@@ -2051,149 +2013,147 @@
           'bottom-center',
           'bottom-end',
         ],
-        ro = ['ignore', 'flip'],
-        ao = ['compact', 'comfortable'],
-        T = {
-          Threshold: 0,
-          StartX: { align: 'start', y: 'y1', oY: 'ch', xMod: -1, yMod: 1 },
-          StartY: { align: 'start', x: 'x1', oX: 'cw', xMod: -1, yMod: 1 },
-          CenterX: { align: 'center', y: 'cy', oY: 'z', xMod: -1, yMod: 1 },
-          CenterY: { align: 'center', x: 'cx', oX: 'z', xMod: 1, yMod: -1 },
-          EndX: { align: 'end', y: 'y2', oY: 'ch', xMod: 1, yMod: -1 },
-          EndY: { align: 'end', x: 'x2', oX: 'cw', xMod: 1, yMod: -1 },
-          Top: { edge: 'top', y: 'top', pX: 'z', pY: 'ch', oY: 'z', pMod: -1 },
-          Bottom: { edge: 'bottom', y: 'bottom', pX: 'z', pY: 'ch', oY: 'z', pMod: 1 },
-          Right: { edge: 'right', x: 'right', pX: 'cw', pY: 'z', oX: 'z', pMod: 1 },
-          Left: { edge: 'left', x: 'left', pX: 'cw', pY: 'z', oX: 'z', pMod: -1 },
-          Center: { edge: 'center', pX: 'cw', pY: 'ch', pMod: 0 },
-        },
-        jr = (r, a, e) =>
-          (e === 'left' &&
-            r.a.left >= r.v.threshold &&
-            r.a.left - r.p.width + a.x >= r.v.threshold) ||
-          (e === 'top' &&
-            r.a.top >= r.v.threshold &&
-            r.a.top - r.p.height + a.y >= r.v.threshold) ||
-          (e === 'right' &&
-            r.a.right <= r.v.width - r.v.threshold &&
-            r.a.right + r.p.width + a.x <= r.v.width - r.v.threshold) ||
-          (e === 'bottom' &&
-            r.a.bottom <= r.v.height - r.v.threshold &&
-            r.a.bottom + r.p.height + a.y <= r.v.height - r.v.threshold),
-        eo = (r, a) =>
-          r.a.top + r.p.height + a.y <= r.v.height - r.v.threshold && r.a.top >= r.v.threshold,
-        to = (r, a) =>
-          r.a.left + r.p.width + a.x <= r.v.width - r.v.threshold && r.a.left >= r.v.threshold,
-        oo = (r, a) =>
-          r.a.cy + r.p.ch + a.y <= r.v.height - r.v.threshold &&
-          r.a.cy - r.p.ch + a.y >= r.v.threshold,
-        no = (r, a) =>
-          r.a.cx + r.p.cw + a.x <= r.v.width - r.v.threshold &&
-          r.a.cx - r.p.cw + a.x >= r.v.threshold,
-        io = (r, a) =>
-          r.a.bottom <= r.v.height - r.v.threshold &&
-          r.a.bottom - r.p.height + a.y >= r.v.threshold,
-        co = (r, a) =>
-          r.a.right <= r.v.width - r.v.threshold && r.a.right - r.p.width + a.x >= r.v.threshold,
-        La = {
+        Hr = ['ignore', 'flip'],
+        Vr = ['compact', 'comfortable'],
+        Nr = 0,
+        Ur = { align: 'start', y: 'y1', oY: 'ch', xMod: -1, yMod: 1 },
+        Zr = { align: 'start', x: 'x1', oX: 'cw', xMod: -1, yMod: 1 },
+        Yr = { align: 'center', y: 'cy', oY: 'z', xMod: -1, yMod: 1 },
+        qr = { align: 'center', x: 'cx', oX: 'z', xMod: 1, yMod: -1 },
+        Wr = { align: 'end', y: 'y2', oY: 'ch', xMod: 1, yMod: -1 },
+        Gr = { align: 'end', x: 'x2', oX: 'cw', xMod: 1, yMod: -1 },
+        Xr = { edge: 'top', y: 'top', pX: 'z', pY: 'ch', oY: 'z', pMod: -1 },
+        Kr = { edge: 'bottom', y: 'bottom', pX: 'z', pY: 'ch', oY: 'z', pMod: 1 },
+        Jr = { edge: 'right', x: 'right', pX: 'cw', pY: 'z', oX: 'z', pMod: 1 },
+        Qr = { edge: 'left', x: 'left', pX: 'cw', pY: 'z', oX: 'z', pMod: -1 },
+        ae = { edge: 'center', pX: 'cw', pY: 'ch', pMod: 0 },
+        re = (a, r, e) =>
+          ('left' === e &&
+            a.a.left >= a.v.threshold &&
+            a.a.left - a.p.width + r.x >= a.v.threshold) ||
+          ('top' === e &&
+            a.a.top >= a.v.threshold &&
+            a.a.top - a.p.height + r.y >= a.v.threshold) ||
+          ('right' === e &&
+            a.a.right <= a.v.width - a.v.threshold &&
+            a.a.right + a.p.width + r.x <= a.v.width - a.v.threshold) ||
+          ('bottom' === e &&
+            a.a.bottom <= a.v.height - a.v.threshold &&
+            a.a.bottom + a.p.height + r.y <= a.v.height - a.v.threshold),
+        ee = (a, r) =>
+          a.a.top + a.p.height + r.y <= a.v.height - a.v.threshold && a.a.top >= a.v.threshold,
+        te = (a, r) =>
+          a.a.left + a.p.width + r.x <= a.v.width - a.v.threshold && a.a.left >= a.v.threshold,
+        oe = (a, r) =>
+          a.a.cy + a.p.ch + r.y <= a.v.height - a.v.threshold &&
+          a.a.cy - a.p.ch + r.y >= a.v.threshold,
+        ie = (a, r) =>
+          a.a.cx + a.p.cw + r.x <= a.v.width - a.v.threshold &&
+          a.a.cx - a.p.cw + r.x >= a.v.threshold,
+        ne = (a, r) =>
+          a.a.bottom <= a.v.height - a.v.threshold &&
+          a.a.bottom - a.p.height + r.y >= a.v.threshold,
+        ce = (a, r) =>
+          a.a.right <= a.v.width - a.v.threshold && a.a.right - a.p.width + r.x >= a.v.threshold,
+        le = {
           'top-start': {
-            ...T.Top,
-            ...T.StartY,
-            fitCheck: (r, a) => jr(r, a, T.Top.edge) && to(r, a),
+            ...Xr,
+            ...Zr,
+            fitCheck: (a, r) => re(a, r, Xr.edge) && te(a, r),
             flip: 'bottom-start',
           },
           'top-center': {
-            ...T.Top,
-            ...T.CenterY,
-            fitCheck: (r, a) => jr(r, a, T.Top.edge) && no(r, a),
+            ...Xr,
+            ...qr,
+            fitCheck: (a, r) => re(a, r, Xr.edge) && ie(a, r),
             flip: 'bottom-center',
           },
           'top-end': {
-            ...T.Top,
-            ...T.EndY,
-            fitCheck: (r, a) => jr(r, a, T.Top.edge) && co(r, a),
+            ...Xr,
+            ...Gr,
+            fitCheck: (a, r) => re(a, r, Xr.edge) && ce(a, r),
             flip: 'bottom-end',
           },
           'right-start': {
-            ...T.Right,
-            ...T.StartX,
-            fitCheck: (r, a) => jr(r, a, T.Right.edge) && eo(r, a),
+            ...Jr,
+            ...Ur,
+            fitCheck: (a, r) => re(a, r, Jr.edge) && ee(a, r),
             flip: 'left-start',
           },
           'right-center': {
-            ...T.Right,
-            ...T.CenterX,
-            fitCheck: (r, a) => jr(r, a, T.Right.edge) && oo(r, a),
+            ...Jr,
+            ...Yr,
+            fitCheck: (a, r) => re(a, r, Jr.edge) && oe(a, r),
             flip: 'left-center',
           },
           'right-end': {
-            ...T.Right,
-            ...T.EndX,
-            fitCheck: (r, a) => jr(r, a, T.Right.edge) && io(r, a),
+            ...Jr,
+            ...Wr,
+            fitCheck: (a, r) => re(a, r, Jr.edge) && ne(a, r),
             flip: 'left-end',
           },
           center: {
-            ...T.Center,
-            ...T.CenterX,
-            ...T.CenterY,
-            fitCheck: (r, a) =>
-              r.a.cx - r.p.cw + a.x >= r.v.threshold &&
-              r.a.cx + r.p.cw + a.x <= r.v.width - r.v.threshold &&
-              r.a.cy - r.p.ch + a.y >= r.v.threshold &&
-              r.a.cy + r.p.ch + a.y <= r.v.height - r.v.threshold,
+            ...ae,
+            ...Yr,
+            ...qr,
+            fitCheck: (a, r) =>
+              a.a.cx - a.p.cw + r.x >= a.v.threshold &&
+              a.a.cx + a.p.cw + r.x <= a.v.width - a.v.threshold &&
+              a.a.cy - a.p.ch + r.y >= a.v.threshold &&
+              a.a.cy + a.p.ch + r.y <= a.v.height - a.v.threshold,
             flip: 'center',
           },
           'bottom-start': {
-            ...T.Bottom,
-            ...T.StartY,
-            fitCheck: (r, a) => jr(r, a, T.Bottom.edge) && to(r, a),
+            ...Kr,
+            ...Zr,
+            fitCheck: (a, r) => re(a, r, Kr.edge) && te(a, r),
             flip: 'top-start',
           },
           'bottom-center': {
-            ...T.Bottom,
-            ...T.CenterY,
-            fitCheck: (r, a) => jr(r, a, T.Bottom.edge) && no(r, a),
+            ...Kr,
+            ...qr,
+            fitCheck: (a, r) => re(a, r, Kr.edge) && ie(a, r),
             flip: 'top-center',
           },
           'bottom-end': {
-            ...T.Bottom,
-            ...T.EndY,
-            fitCheck: (r, a) => jr(r, a, T.Bottom.edge) && co(r, a),
+            ...Kr,
+            ...Gr,
+            fitCheck: (a, r) => re(a, r, Kr.edge) && ce(a, r),
             flip: 'top-end',
           },
           'left-start': {
-            ...T.Left,
-            ...T.StartX,
-            fitCheck: (r, a) => jr(r, a, T.Left.edge) && eo(r, a),
+            ...Qr,
+            ...Ur,
+            fitCheck: (a, r) => re(a, r, Qr.edge) && ee(a, r),
             flip: 'right-start',
           },
           'left-center': {
-            ...T.Left,
-            ...T.CenterX,
-            fitCheck: (r, a) => jr(r, a, T.Left.edge) && oo(r, a),
+            ...Qr,
+            ...Yr,
+            fitCheck: (a, r) => re(a, r, Qr.edge) && oe(a, r),
             flip: 'right-center',
           },
           'left-end': {
-            ...T.Left,
-            ...T.EndX,
-            fitCheck: (r, a) => jr(r, a, T.Left.edge) && io(r, a),
+            ...Qr,
+            ...Wr,
+            fitCheck: (a, r) => re(a, r, Qr.edge) && ne(a, r),
             flip: 'right-end',
           },
         },
-        wr = {
-          popover: Jt[0],
-          anchorAt: Qt[10],
-          boundary: ro[0],
-          variant: Fe[0],
+        se = {
+          popover: Rr[0],
+          anchorAt: Fr[10],
+          boundary: Hr[0],
+          variant: Br[0],
           isInverse: !1,
           hasTail: !1,
           tailSize: 10,
           threshold: 0,
           offset: 0,
-          density: ao[0],
+          density: Vr[0],
         },
-        Un = (r = wr.threshold) => ({
-          threshold: r,
+        de = (a = se.threshold) => ({
+          threshold: a,
           width: document.documentElement.clientWidth,
           height: document.documentElement.clientHeight,
           scrollX: window.scrollX,
@@ -2203,121 +2163,130 @@
           right: window.scrollX + document.documentElement.clientWidth,
           bottom: window.scrollY + document.documentElement.clientHeight,
         }),
-        so = (r) => ({
-          ...JSON.parse(JSON.stringify(r)),
-          cw: r.width / 2,
-          ch: r.height / 2,
-          cx: r.left + r.width / 2,
-          cy: r.top + r.height / 2,
-          x1: r.left,
-          x2: r.left + r.width,
-          y1: r.top,
-          y2: r.top + r.height,
+        pe = (a) => ({
+          ...JSON.parse(JSON.stringify(a)),
+          cw: a.width / 2,
+          ch: a.height / 2,
+          cx: a.left + a.width / 2,
+          cy: a.top + a.height / 2,
+          x1: a.left,
+          x2: a.left + a.width,
+          y1: a.top,
+          y2: a.top + a.height,
           z: 0,
         }),
-        Yn = (r, a, e = wr.offset, n = wr.tailSize, i = wr.threshold) => ({
-          a: so(r?.getBoundingClientRect() ?? Ia()),
-          p: so(a?.getBoundingClientRect() ?? Ia()),
-          o: e,
-          v: Un(i),
-          t: n,
+        ve = (a, r, e) => ({
+          x: ['left', 'right'].includes(a) ? r * e : 0,
+          y: ['top', 'bottom'].includes(a) ? r * e : 0,
         }),
-        lo = (r, a, e) => ({
-          x: ['left', 'right'].includes(r) ? a * e : 0,
-          y: ['top', 'bottom'].includes(r) ? a * e : 0,
-        }),
-        Wn = (r, a) =>
-          [...Object.keys(La)]
-            .filter((e) => (ea(e, r) && ea(a.align, 'center') ? !e.includes('center') : e))
-            .sort((e, n) => {
-              const i = Ga(La[e].edge, a.edge),
-                c = Ga(La[n].edge, a.edge),
-                s = i ? -1 : 1
-              return Ga(i, c) ? 0 : s
+        he = (a, r) =>
+          [...Object.keys(le)]
+            .filter((e) => (z(e, a) && z(r.align, 'center') ? !e.includes('center') : e))
+            .sort((a, e) => {
+              const t = C(le[a].edge, r.edge),
+                o = C(le[e].edge, r.edge),
+                i = t ? -1 : 1
+              return C(t, o) ? 0 : i
             }),
-        po = ({ anchorAt: r, measurements: a }) => {
-          const e = La[r],
-            n = lo(e.edge, a.o, e.pMod)
-          return { cx: a.a.cx, cy: a.a.cy, offsets: n, config: e }
+        ue = ({ anchorAt: a, measurements: r }) => {
+          const e = le[a],
+            t = ve(e.edge, r.o, e.pMod)
+          return { cx: r.a.cx, cy: r.a.cy, offsets: t, config: e }
         },
-        Zn = ({ anchorAt: r, measurements: a }) => {
-          const { offsets: e, config: n } = po({ anchorAt: r, measurements: a })
-          return n.fitCheck(a, e)
-            ? r
-            : ([n.flip, ...Wn(r, n)].find((i) => {
-                const c = La[i],
-                  s = lo(c.edge, a.o, c.pMod)
-                return c.fitCheck(a, s)
-              }) ?? r)
-        },
-        Fr = (r, a = 'px') => `${Math.round(Number(r))}${a}`,
-        Ne = ({
-          anchorElement: r,
-          popoverElement: a,
-          anchorAt: e = wr.anchorAt,
-          boundary: n,
-          offset: i,
-          tailSize: c,
-          threshold: s = T.Threshold,
-          isFixed: d = !1,
+        me = (a, r = 'px') => `${Math.round(Number(a))}${r}`,
+        ge = ({
+          anchorElement: a,
+          popoverElement: r,
+          anchorAt: e = se.anchorAt,
+          boundary: t,
+          offset: o,
+          tailSize: i,
+          threshold: n = Nr,
+          isFixed: c = !1,
         }) => {
           const l = e,
-            p = Yn(r, a, i, c, s),
-            h = n === 'flip' ? Zn({ anchorAt: l, measurements: p }) : l,
-            { cx: v, cy: f } = po({ anchorAt: h, measurements: p }),
-            g = { cx: v, cy: f },
-            w = d ? 0 : window.scrollX,
-            E = d ? 0 : window.scrollY,
-            j =
-              r?.dataset?.layout === 'icon' ||
-              p.t > 0 ||
+            s = ((a, r, e = se.offset, t = se.tailSize, o = se.threshold) => ({
+              a: pe(a?.getBoundingClientRect() ?? Mr()),
+              p: pe(r?.getBoundingClientRect() ?? Mr()),
+              o: e,
+              v: de(o),
+              t: t,
+            }))(a, r, o, i, n),
+            d =
+              'flip' === t
+                ? (({ anchorAt: a, measurements: r }) => {
+                    const { offsets: e, config: t } = ue({ anchorAt: a, measurements: r })
+                    return t.fitCheck(r, e)
+                      ? a
+                      : ([t.flip, ...he(a, t)].find((a) => {
+                          const e = le[a],
+                            t = ve(e.edge, r.o, e.pMod)
+                          return e.fitCheck(r, t)
+                        }) ?? a)
+                  })({ anchorAt: l, measurements: s })
+                : l,
+            { cx: p, cy: v } = ue({ anchorAt: d, measurements: s }),
+            h = p,
+            u = v,
+            m = c ? 0 : window.scrollX,
+            g = c ? 0 : window.scrollY,
+            b =
+              'icon' === a?.dataset?.layout ||
+              s.t > 0 ||
               (!e?.includes('-center') && (e?.includes('left-') || e?.includes('right-')))
           return {
-            anchorAt: h,
+            anchorAt: d,
             vars: {
-              '--js-cx': Fr(g.cx + w),
-              '--js-cy': Fr(g.cy + E),
-              '--js-w': Fr(p.a.width),
-              '--js-h': Fr(p.a.height),
-              '--js-cw': Fr(p.a.cw),
-              '--js-ch': Fr(p.a.ch),
-              '--js-o': Fr(p.o),
-              '--js-t': Fr(p.t, ''),
-              '--js-i': j ? '1' : '0',
-              '--js-m': Fr(xt(p.t, p.a.height, p.a.cw)),
+              '--js-cx': me(h + m),
+              '--js-cy': me(u + g),
+              '--js-w': me(s.a.width),
+              '--js-h': me(s.a.height),
+              '--js-cw': me(s.a.cw),
+              '--js-ch': me(s.a.ch),
+              '--js-o': me(s.o),
+              '--js-t': me(s.t, ''),
+              '--js-i': b ? '1' : '0',
+              '--js-m': me(k(s.t, s.a.height, s.a.cw)),
             },
           }
         },
-        uo = (r, a = 150) => {
+        be = (a, r = 150) => {
           let e = !1,
-            n = 0,
+            t = 0,
+            o = 0,
             i = 0,
-            c = 0,
-            s = null,
-            d = null,
+            n = null,
+            c = null,
             l = null
-          const p = (h) => {
-            if (s !== null) return s
-            let v = h
-            for (; v && v !== document.documentElement; ) {
-              const { position: f } = window.getComputedStyle(v)
-              if (f === 'fixed' || f === 'sticky') return ((s = !0), !0)
-              v = v.parentElement
-            }
-            return ((s = !1), !1)
-          }
           return () => {
-            if (!r) return { isFixed: !1, rect: Ia() }
-            r !== l && ((s = null), (l = r), (c = 0))
-            const h = Math.round(performance.now())
-            if (h - c <= a) return { isFixed: e, rect: d ?? Ia() }
-            ;((c = h), (d = r.getBoundingClientRect()))
-            const v = d.top !== n || d.left !== i
-            return ((n = d.top), (i = d.left), (e = (e ? !0 : p(r)) || !v), { isFixed: e, rect: d })
+            if (!a) return { isFixed: !1, rect: Mr() }
+            a !== l && ((n = null), (l = a), (i = 0))
+            const s = Math.round(performance.now())
+            if (s - i <= r) return { isFixed: e, rect: c ?? Mr() }
+            ;((i = s), (c = a.getBoundingClientRect()))
+            const d = c.top !== t || c.left !== o
+            return (
+              (t = c.top),
+              (o = c.left),
+              (e =
+                !!e ||
+                ((a) => {
+                  if (null !== n) return n
+                  let r = a
+                  for (; r && r !== document.documentElement; ) {
+                    const { position: a } = window.getComputedStyle(r)
+                    if ('fixed' === a || 'sticky' === a) return ((n = !0), !0)
+                    r = r.parentElement
+                  }
+                  return ((n = !1), !1)
+                })(a) ||
+                !d),
+              { isFixed: e, rect: c }
+            )
           }
         },
-        ho = (r, a = 1 / 0, e = ' ') => [...r].flat(a)?.filter(Boolean)?.join(e),
-        Gn = u`
+        fe = (a, r = 1 / 0, e = ' ') => [...a].flat(r)?.filter(Boolean)?.join(e),
+        xe = P`
 @layer arc-components {
 
   [arc-spinner] {
@@ -2358,15 +2327,15 @@
   }
 }
 `,
-        Ue = (0, b.forwardRef)(({ progress: r, ...a }, e) =>
-          (0, t.jsxs)('svg', {
-            ...a,
+        $e = (0, j.forwardRef)(({ progress: a, ...r }, e) =>
+          (0, S.jsxs)('svg', {
+            ...r,
             ref: e,
             viewBox: '0 0 100 100',
             'arc-spinner': '',
-            style: { '--arc-spinner-progress': r ?? '' },
+            style: { '--arc-spinner-progress': a ?? '' },
             children: [
-              (0, t.jsx)('circle', {
+              (0, S.jsx)('circle', {
                 'arc-spinner-circle': '',
                 cx: '50%',
                 cy: '50%',
@@ -2374,7 +2343,7 @@
                 strokeWidth: '12.5%',
                 pathLength: '1',
               }),
-              (0, t.jsx)('circle', {
+              (0, S.jsx)('circle', {
                 'arc-spinner-progress': '',
                 cx: '50%',
                 cy: '50%',
@@ -2385,148 +2354,148 @@
             ],
           }),
         )
-      ;((Ue.displayName = 'ArcSpinner'), O('ArcSpinner', Gn))
-      const Xn = (...r) => console.log(...r),
-        vo = (...r) => console.warn(...r),
-        qn = (...r) => console.error(...r),
-        Nr = u`arc•icon•text`,
-        G = u`${Nr}•icon`,
-        Y = u`${Nr}•text`,
-        ma = u`${Nr}•subtext`,
-        Ur = u`${Nr}•gap`,
-        Kn = u`
+      ;(($e.displayName = 'ArcSpinner'), Ba('ArcSpinner', xe))
+      const ye = (...a) => console.log(...a),
+        we = (...a) => console.warn(...a),
+        ke = (...a) => console.error(...a),
+        ze = P`arc•icon•text`,
+        Ce = P`${ze}•icon`,
+        Ae = P`${ze}•text`,
+        Se = P`${ze}•subtext`,
+        je = P`${ze}•gap`,
+        Ee = P`
 
   &[data-variant=inherit] { /* @default 'inherit' • uses font/color props from context */
-    --${Y}-color: currentcolor;
-    --${G}-color: currentcolor;
+    --${Ae}-color: currentcolor;
+    --${Ce}-color: currentcolor;
   }
 
   &[data-variant=primary] {
-    --${Y}-color: var(--arc-color-text-primary);
-    --${G}-color: var(--arc-color-icon-primary);
+    --${Ae}-color: var(--arc-color-text-primary);
+    --${Ce}-color: var(--arc-color-icon-primary);
   }
 
   &[data-variant=secondary] {
-    --${Y}-color: var(--arc-color-text-secondary);
-    --${G}-color: var(--arc-color-icon-secondary);
+    --${Ae}-color: var(--arc-color-text-secondary);
+    --${Ce}-color: var(--arc-color-icon-secondary);
   }
 
   &[data-variant=inverse] {
-    --${Y}-color: var(--arc-color-text-inverse);
-    --${G}-color: var(--arc-color-icon-inverse);
+    --${Ae}-color: var(--arc-color-text-inverse);
+    --${Ce}-color: var(--arc-color-icon-inverse);
   }
 
   &[data-variant=brand] {
-    --${Y}-color: var(--arc-color-text-brand);
-    --${G}-color: var(--arc-color-icon-brand);
+    --${Ae}-color: var(--arc-color-text-brand);
+    --${Ce}-color: var(--arc-color-icon-brand);
   }
 
   &[data-variant=info] {
-    --${Y}-color: var(--arc-color-text-info);
-    --${G}-color: var(--arc-color-icon-info);
+    --${Ae}-color: var(--arc-color-text-info);
+    --${Ce}-color: var(--arc-color-icon-info);
   }
 
   &[data-variant=success] {
-    --${Y}-color: var(--arc-color-text-success);
-    --${G}-color: var(--arc-color-icon-success);
+    --${Ae}-color: var(--arc-color-text-success);
+    --${Ce}-color: var(--arc-color-icon-success);
   }
 
   &[data-variant=warning] {
-    --${Y}-color: var(--arc-color-text-warning);
-    --${G}-color: var(--arc-color-icon-warning);
+    --${Ae}-color: var(--arc-color-text-warning);
+    --${Ce}-color: var(--arc-color-icon-warning);
   }
 
   &[data-variant=critical] {
-    --${Y}-color: var(--arc-color-text-critical);
-    --${G}-color: var(--arc-color-icon-critical);
+    --${Ae}-color: var(--arc-color-text-critical);
+    --${Ce}-color: var(--arc-color-icon-critical);
   }
 
 `,
-        Jn = u`
+        Te = P`
 
   /* Overall Text Sizes */
 
   &[data-size=inherit] { /* @default 'inherit' • uses font/size from context */
-    --${Nr}-font-size: 1em;
-    --${ma}-font-size: 0.75em;
-    --${G}-size: 1em;
-    --${Ur}: 0.25em; /* 4px @ 100% */
+    --${ze}-font-size: 1em;
+    --${Se}-font-size: 0.75em;
+    --${Ce}-size: 1em;
+    --${je}: 0.25em; /* 4px @ 100% */
   }
 
   &[data-size=md] {
-    --${Nr}-font-size: var(--arc-font-size-14);
-    --${ma}-font-size: var(--arc-font-size-12);
-    --${Ur}: var(--arc-space-0-5);
+    --${ze}-font-size: var(--arc-font-size-14);
+    --${Se}-font-size: var(--arc-font-size-12);
+    --${je}: var(--arc-space-0-5);
   }
 
   &[data-size=sm] {
-    --${Nr}-font-size: var(--arc-font-size-12);
-    --${ma}-font-size: var(--arc-font-size-12);
-    --${Ur}: var(--arc-space-0-5);
+    --${ze}-font-size: var(--arc-font-size-12);
+    --${Se}-font-size: var(--arc-font-size-12);
+    --${je}: var(--arc-space-0-5);
   }
 
   /* Gap Sizes */
 
-  &[data-gap=lg] { --${Ur}: max(var(--arc-space-1-5), 0.75em); } /* 12px @ 100% */
-  &[data-gap=md] { --${Ur}: max(var(--arc-space-1), 0.5em); }    /* 8px @ 100% */
-  &[data-gap=sm] { --${Ur}: max(var(--arc-space-0-5), 0.25em); } /* 4px @ 100% */
+  &[data-gap=lg] { --${je}: max(var(--arc-space-1-5), 0.75em); } /* 12px @ 100% */
+  &[data-gap=md] { --${je}: max(var(--arc-space-1), 0.5em); }    /* 8px @ 100% */
+  &[data-gap=sm] { --${je}: max(var(--arc-space-0-5), 0.25em); } /* 4px @ 100% */
 
   /* Icon Sizes */
 
-  &[icon-size=xl] { --${G}-size: max(var(--arc-font-size-24), 1.5em); }
-  &[icon-size=lg] { --${G}-size: max(var(--arc-font-size-20), 1.25em); }
-  &[icon-size=md] { --${G}-size: max(var(--arc-font-size-16), 1em); }
-  &[icon-size=sm] { --${G}-size: max(var(--arc-font-size-14), 0.75em); }
-  &[icon-size=xs] { --${G}-size: max(var(--arc-font-size-12), 0.625em); }
+  &[icon-size=xl] { --${Ce}-size: max(var(--arc-font-size-24), 1.5em); }
+  &[icon-size=lg] { --${Ce}-size: max(var(--arc-font-size-20), 1.25em); }
+  &[icon-size=md] { --${Ce}-size: max(var(--arc-font-size-16), 1em); }
+  &[icon-size=sm] { --${Ce}-size: max(var(--arc-font-size-14), 0.75em); }
+  &[icon-size=xs] { --${Ce}-size: max(var(--arc-font-size-12), 0.625em); }
 `,
-        Qn = u`
+        Oe = P`
 
   /* 61.2% is the opacity equivalent of the secondary-text color token's gray value. */
-  --${ma}-color: var(--arc-icon-text-subtext-color, color-mix(in srgb, currentcolor 61.2%, transparent));
+  --${Se}-color: var(--arc-icon-text-subtext-color, color-mix(in srgb, currentcolor 61.2%, transparent));
 
   /* ArcIcon */
-  --arc-icon-color: var(--arc-icon-text-icon-color, var(--${G}-color));
-  --arc-icon-size: var(--arc-icon-text-icon-size, var(--${G}-size));
+  --arc-icon-color: var(--arc-icon-text-icon-color, var(--${Ce}-color));
+  --arc-icon-size: var(--arc-icon-text-icon-size, var(--${Ce}-size));
   --arc-icon-fa-line-height: normal;
   --arc-icon-align-self: normal;
 
   &[data-layout=inline] {
-    --${Y}-overflow: unset;
-    --${Y}-text-overflow: unset;
-    --${Y}-white-space: unset;
+    --${Ae}-overflow: unset;
+    --${Ae}-text-overflow: unset;
+    --${Ae}-white-space: unset;
 
-    --${G}-vertical-align: calc((var(--${G}-size) - var(--${Nr}-font-size)) / -2);
+    --${Ce}-vertical-align: calc((var(--${Ce}-size) - var(--${ze}-font-size)) / -2);
 
-    &:has(svg) { --${G}-vertical-align: text-bottom; }
+    &:has(svg) { --${Ce}-vertical-align: text-bottom; }
   }
 
   /* Text Overflows */
   &[data-layout=gutter] {
-    --${Y}-overflow: visible;
-    --${Y}-text-overflow: unset;
-    --${Y}-white-space: normal;
+    --${Ae}-overflow: visible;
+    --${Ae}-text-overflow: unset;
+    --${Ae}-white-space: normal;
 
     &[data-overflow=truncate] {
-      --${Y}-overflow: hidden;
-      --${Y}-text-overflow: ellipsis;
-      --${Y}-white-space: nowrap;
+      --${Ae}-overflow: hidden;
+      --${Ae}-text-overflow: ellipsis;
+      --${Ae}-white-space: nowrap;
     }
   }
 
 `,
-        ri = u`
+        Ie = P`
 @layer arc-components {
 
   [arc-icon-text] {
-    ${Kn}
-    ${Jn}
-    ${Qn}
+    ${Ee}
+    ${Te}
+    ${Oe}
   }
 
   [arc-icon-text] {
     position: var(--arc-icon-text-position, relative);
-    font-size: var(--arc-icon-text-font-size, var(--${Nr}-font-size));
-    color: var(--arc-icon-text-text-color, var(--${Y}-color));
+    font-size: var(--arc-icon-text-font-size, var(--${ze}-font-size));
+    color: var(--arc-icon-text-text-color, var(--${Ae}-color));
     line-height: var(--arc-icon-text-line-height, inherit);
 
     [data-element=text],
@@ -2547,10 +2516,10 @@
     &[data-layout=gutter] {
       display: inline-flex;
       align-items: var(--arc-icon-text-align-items, first baseline);
-      gap: var(--arc-icon-text-gap, var(--${Ur}));
+      gap: var(--arc-icon-text-gap, var(--${je}));
 
       /* Truncation Support */
-      overflow: var(--arc-icon-text-overflow, var(--${Y}-overflow));
+      overflow: var(--arc-icon-text-overflow, var(--${Ae}-overflow));
 
       &[is-flipped] { flex-direction: row-reverse; }
 
@@ -2564,15 +2533,15 @@
       [data-element=subtext] {
         display: var(--arc-icon-text-subtext-display, block);
         line-height: normal;
-        font-size: var(--arc-icon-text-subtext-font-size, var(--${ma}-font-size));
-        color: var(--arc-icon-text-subtext-color, var(--${ma}-color));
+        font-size: var(--arc-icon-text-subtext-font-size, var(--${Se}-font-size));
+        color: var(--arc-icon-text-subtext-color, var(--${Se}-color));
         padding-block-start: var(--arc-icon-text-subtext-spacing, 0);
       }
 
       :where([data-element=text], [data-element=subtext]) {
-        overflow: var(--arc-icon-text-overflow, var(--${Y}-overflow));
-        text-overflow: var(--arc-icon-text-text-overflow, var(--${Y}-text-overflow));
-        white-space: var(--arc-icon-text-white-space, var(--${Y}-white-space));
+        overflow: var(--arc-icon-text-overflow, var(--${Ae}-overflow));
+        text-overflow: var(--arc-icon-text-text-overflow, var(--${Ae}-text-overflow));
+        white-space: var(--arc-icon-text-white-space, var(--${Ae}-white-space));
       }
     }
 
@@ -2581,22 +2550,22 @@
 
       [data-element=icon] {
         line-height: normal;
-        vertical-align: var(--arc-icon-text-icon-vertical-align, var(--${G}-vertical-align));
+        vertical-align: var(--arc-icon-text-icon-vertical-align, var(--${Ce}-vertical-align));
       }
 
-      [data-element=icon] + [data-element=text] { margin-inline-start: var(--arc-icon-text-gap, var(--${Ur})); }
-      [data-element=text]:has(+ [data-element=icon]) { margin-inline-end: var(--arc-icon-text-gap, var(--${Ur})); }
+      [data-element=icon] + [data-element=text] { margin-inline-start: var(--arc-icon-text-gap, var(--${je})); }
+      [data-element=text]:has(+ [data-element=icon]) { margin-inline-end: var(--arc-icon-text-gap, var(--${je})); }
       [data-element=subtext] { display: contents; }
 
       &:has(svg) {
-        --${G}-vertical-align: text-bottom;
+        --${Ce}-vertical-align: text-bottom;
       }
     }
   }
 }
 
 `,
-        ai = z(Q, [
+        _e = y(o, [
           'inherit',
           'primary',
           'secondary',
@@ -2607,84 +2576,83 @@
           'warning',
           'critical',
         ]),
-        Er = ({
-          children: r,
-          layout: a = 'gutter',
+        Pe = ({
+          children: a,
+          layout: r = 'gutter',
           size: e = 'inherit',
-          variant: n = 'inherit',
-          tag: i = 'span',
-          icon: c,
-          text: s,
-          subtext: d,
+          variant: t = 'inherit',
+          tag: o = 'span',
+          icon: i,
+          text: n,
+          subtext: c,
           overflow: l,
-          iconSize: p,
-          gapSize: h,
-          isFlipped: v = !1,
-          isStrong: f = !1,
-          ...g
+          iconSize: s,
+          gapSize: d,
+          isFlipped: p = !1,
+          isStrong: v = !1,
+          ...u
         }) => {
-          const w = r || s,
-            E = !!c,
-            j = !!w,
-            P = a === 'gutter',
-            A = a === 'inline',
-            _ = E && (!v || P),
-            S = E && j && v && A,
-            C = !!p && p !== 'inherit',
-            L = C && $e.includes(p) ? p : void 0,
-            H = C && !$e.includes(p) ? p : void 0,
-            J = h !== 'inherit' ? h : void 0,
-            X = l !== 'inherit' ? l : void 0,
-            V = Gt(c)
-          return (0, t.jsxs)(i, {
-            ...g,
+          const m = a || n,
+            g = !!i,
+            b = !!m,
+            f = 'gutter' === r,
+            x = g && (!p || f),
+            $ = g && b && p && 'inline' === r,
+            y = !!s && 'inherit' !== s,
+            w = y && h.includes(s) ? s : void 0,
+            k = y && !h.includes(s) ? s : void 0,
+            z = 'inherit' !== d ? d : void 0,
+            C = 'inherit' !== l ? l : void 0,
+            A = gr(i)
+          return (0, S.jsxs)(o, {
+            ...u,
             'arc-icon-text': '',
-            'data-variant': n,
-            'data-layout': a,
-            'data-overflow': X,
+            'data-variant': t,
+            'data-layout': r,
+            'data-overflow': C,
             'data-size': e,
-            'data-gap': J,
-            'icon-size': L,
-            'is-flipped': v ? '' : void 0,
-            'is-strong': f ? '' : void 0,
+            'data-gap': z,
+            'icon-size': w,
+            'is-flipped': p ? '' : void 0,
+            'is-strong': v ? '' : void 0,
             children: [
-              _ &&
-                (0, t.jsx)('span', {
+              x &&
+                (0, S.jsx)('span', {
                   'data-element': 'icon',
-                  children: typeof V == 'string' ? (0, t.jsx)(B, { icon: V, size: H }) : V,
+                  children: 'string' == typeof A ? (0, S.jsx)(xr, { icon: A, size: k }) : A,
                 }),
-              j &&
-                (0, t.jsxs)('span', {
+              b &&
+                (0, S.jsxs)('span', {
                   'data-element': 'text',
                   children: [
-                    w,
-                    !!d &&
-                      (P
-                        ? (0, t.jsxs)(t.Fragment, {
+                    m,
+                    !!c &&
+                      (f
+                        ? (0, S.jsxs)(S.Fragment, {
                             children: [
-                              (0, t.jsx)('br', {}),
-                              (0, t.jsx)('small', { 'data-element': 'subtext', children: d }),
+                              (0, S.jsx)('br', {}),
+                              (0, S.jsx)('small', { 'data-element': 'subtext', children: c }),
                             ],
                           })
-                        : (0, t.jsxs)(t.Fragment, {
+                        : (0, S.jsxs)(S.Fragment, {
                             children: [
                               ' ',
-                              (0, t.jsx)('span', { 'data-element': 'subtext', children: d }),
+                              (0, S.jsx)('span', { 'data-element': 'subtext', children: c }),
                             ],
                           })),
                   ],
                 }),
-              S &&
-                (0, t.jsx)('span', {
+              $ &&
+                (0, S.jsx)('span', {
                   'data-element': 'icon',
-                  children: typeof V == 'string' ? (0, t.jsx)(B, { icon: V, size: H }) : V,
+                  children: 'string' == typeof A ? (0, S.jsx)(xr, { icon: A, size: k }) : A,
                 }),
             ],
           })
         }
-      O('ArcIconText', ri)
-      const Tr = {
-        ...wr,
+      Ba('ArcIconText', Ie)
+      const Me = {
+        ...se,
         popover: 'manual',
         anchorAt: 'top-center',
         boundary: 'flip',
@@ -2696,173 +2664,167 @@
         hasTail: !0,
         isEnabled: !0,
       }
-      let re = !1
-      const ei = 100,
-        ti = 100
-      let Ye = !0,
-        We = null
-      const oi =
+      let Re = !1
+      let Le = !0,
+        Be = null
+      const De =
           typeof CSS < 'u' &&
-          typeof CSS.supports == 'function' &&
+          'function' == typeof CSS.supports &&
           CSS.supports('selector(:focus-visible)'),
-        ni = (r) => (r instanceof Element ? (oi ? r.matches(':focus-visible') === !0 : Ye) : !1),
-        Ze = new WeakMap(),
-        Ge = new WeakMap(),
-        ae = (r, a) => {
-          const e = r.get(a)
-          e != null && (clearTimeout(e), r.delete(a))
+        Fe = new WeakMap(),
+        He = new WeakMap(),
+        Ve = (a, r) => {
+          const e = a.get(r)
+          null != e && (clearTimeout(e), a.delete(r))
         },
-        mo = (r, a, e, n) => {
-          const i = window.setTimeout(() => {
-            ;(n(), r.delete(a))
+        Ne = (a, r, e, t) => {
+          const o = window.setTimeout(() => {
+            ;(t(), a.delete(r))
           }, e)
-          r.set(a, i)
+          a.set(r, o)
         },
-        fo = '[aria-describedby]',
-        ii = (r) => typeof r == 'object' && r !== null && r.hasAttribute?.('popover') === !0,
-        go = (r) => r instanceof HTMLElement && r.getAttribute('role') === 'tooltip' && ii(r),
-        ci = (r) => !!r && (r.tagName === 'LABEL' || r.hasAttribute('arc-label')),
-        si = (r) => r?.match(/\S+/g) ?? [],
-        Xe = (r) => {
+        Ue = '[aria-describedby]',
+        Ze = (a) =>
+          a instanceof HTMLElement &&
+          'tooltip' === a.getAttribute('role') &&
+          ((a) => 'object' == typeof a && null !== a && !0 === a.hasAttribute?.('popover'))(a),
+        Ye = (a) => !!a && ('LABEL' === a.tagName || a.hasAttribute('arc-label')),
+        qe = (a) => {
           if (typeof document > 'u') return null
-          const a = document.querySelector(`[aria-describedby~="${r}"]`)
-          return a ? (a.closest('label,[arc-label]') ?? a) : null
+          const r = document.querySelector(`[aria-describedby~="${a}"]`)
+          return r ? (r.closest('label,[arc-label]') ?? r) : null
         },
-        li = (r) => {
-          if (!(r instanceof Element)) return null
-          const a = r.closest?.(fo)
-          if (a) {
-            const n = a.getAttribute('aria-describedby') ?? ''
-            if (n) return { anchor: a.closest?.('label,[arc-label]') ?? a, tooltipId: n }
-          }
-          let e = r
-          for (; e; ) {
-            if (ci(e)) {
-              const n = e.querySelector?.(fo),
-                i = n?.getAttribute?.('aria-describedby') ?? ''
-              if (n && i) return { anchor: e, tooltipId: i }
-            }
-            e = e.parentElement
-          }
-          return null
-        },
-        di = (r) => {
-          if (!(r instanceof Element)) return null
-          const a = r.closest?.('[role="tooltip"][popover]') ?? null
-          return a instanceof HTMLElement ? a : null
-        },
-        pi = (r) => (r?.id ? Xe(r.id) : null),
-        ui = (r) => {
-          const a = di(r),
-            e = li(r)
-          if (!e && a) {
-            const d = pi(a)
-            return !d || !a.id ? null : { anchor: d, tooltip: a }
+        We = (a) => {
+          const r = ((a) => {
+              if (!(a instanceof Element)) return null
+              const r = a.closest?.('[role="tooltip"][popover]') ?? null
+              return r instanceof HTMLElement ? r : null
+            })(a),
+            e = ((a) => {
+              if (!(a instanceof Element)) return null
+              const r = a.closest?.(Ue)
+              if (r) {
+                const a = r.getAttribute('aria-describedby') ?? ''
+                if (a) return { anchor: r.closest?.('label,[arc-label]') ?? r, tooltipId: a }
+              }
+              let e = a
+              for (; e; ) {
+                if (Ye(e)) {
+                  const a = e.querySelector?.(Ue),
+                    r = a?.getAttribute?.('aria-describedby') ?? ''
+                  if (a && r) return { anchor: e, tooltipId: r }
+                }
+                e = e.parentElement
+              }
+              return null
+            })(a)
+          if (!e && r) {
+            const a = ((a) => (a?.id ? qe(a.id) : null))(r)
+            return a && r.id ? { anchor: a, tooltip: r } : null
           }
           if (!e) return null
-          const { anchor: n, tooltipId: i } = e
-          if (!i) return null
-          const c = si(i),
-            s = a ?? c.map((d) => document.getElementById(d)).find((d) => go(d)) ?? null
-          return go(s) ? { anchor: n, tooltip: s } : null
+          const { anchor: t, tooltipId: o } = e
+          if (!o) return null
+          const i = ((a) => a?.match(/\S+/g) ?? [])(o),
+            n = r ?? i.map((a) => document.getElementById(a)).find((a) => Ze(a)) ?? null
+          return Ze(n) ? { anchor: t, tooltip: n } : null
         },
-        hi = (r, a, e) => {
-          const n = e instanceof Element ? e : null
-          if (!n) return !1
-          const i = r === n || r.contains(n),
-            c = a === n || a.contains(n)
-          return i || c
-        },
-        vi = (r, a) => {
-          if ((ae(Ge, r), ae(Ze, r), !a)) {
-            r.isConnected && r.showPopover?.()
-            return
-          }
-          mo(Ze, r, ei, () => {
-            r.isConnected && r.showPopover?.()
-          })
-        },
-        mi = (r, a) => {
-          if ((ae(Ze, r), ae(Ge, r), !a)) {
-            r.isConnected && r.hidePopover?.()
-            return
-          }
-          mo(Ge, r, ti, () => {
-            r.isConnected && r.hidePopover?.()
-          })
-        },
-        Ma = (r, a, e, n) => {
-          const i = ui(a)
-          if (!i) return
-          const { anchor: c, tooltip: s } = i
-          if (r) {
-            vi(s, n)
-            return
-          }
-          hi(c, s, e) || mi(s, n)
+        Ge = (a, r, e, t) => {
+          const o = We(r)
+          if (!o) return
+          const { anchor: i, tooltip: n } = o
+          a
+            ? ((a, r) => {
+                ;(Ve(He, a),
+                  Ve(Fe, a),
+                  r
+                    ? Ne(Fe, a, 100, () => {
+                        a.isConnected && a.showPopover?.()
+                      })
+                    : a.isConnected && a.showPopover?.())
+              })(n, t)
+            : ((a, r, e) => {
+                const t = e instanceof Element ? e : null
+                if (!t) return !1
+                const o = a === t || a.contains(t),
+                  i = r === t || r.contains(t)
+                return o || i
+              })(i, n, e) ||
+              ((a, r) => {
+                ;(Ve(Fe, a),
+                  Ve(He, a),
+                  r
+                    ? Ne(He, a, 100, () => {
+                        a.isConnected && a.hidePopover?.()
+                      })
+                    : a.isConnected && a.hidePopover?.())
+              })(n, t)
         }
-      let ee = null,
-        te = null,
-        oe = null,
-        ne = null,
-        ie = null,
-        ce = null,
-        fa = null
-      const bo = () => {
-          re ||
+      let Xe = null,
+        Ke = null,
+        Je = null,
+        Qe = null,
+        at = null,
+        rt = null,
+        et = null
+      const tt = () => {
+          Re ||
             typeof document > 'u' ||
-            ((ce = (r) => {
-              ;((Ye = !1), (We = r.target))
+            ((rt = (a) => {
+              ;((Le = !1), (Be = a.target))
             }),
-            (fa = () => {
-              We = null
+            (et = () => {
+              Be = null
             }),
-            (ee = (r) => Ma(!0, r.target, void 0, !0)),
-            (te = (r) => {
-              ni(r.target) && Ma(!0, r.target, void 0, !1)
+            (Xe = (a) => Ge(!0, a.target, void 0, !0)),
+            (Ke = (a) => {
+              ;((a) => a instanceof Element && (De ? !0 === a.matches(':focus-visible') : Le))(
+                a.target,
+              ) && Ge(!0, a.target, void 0, !1)
             }),
-            (oe = (r) => Ma(!1, r.target, r.relatedTarget, !0)),
-            (ne = (r) => {
-              const a = r.relatedTarget ?? We
-              Ma(!1, r.target, a, !1)
+            (Je = (a) => Ge(!1, a.target, a.relatedTarget, !0)),
+            (Qe = (a) => {
+              const r = a.relatedTarget ?? Be
+              Ge(!1, a.target, r, !1)
             }),
-            (ie = (r) => {
-              ;(r.key === 'Tab' && (Ye = !0), r.key === 'Escape' && Ma(!1, r.target, void 0, !1))
+            (at = (a) => {
+              ;('Tab' === a.key && (Le = !0), 'Escape' === a.key && Ge(!1, a.target, void 0, !1))
             }),
-            document.addEventListener('pointerdown', ce),
-            document.addEventListener('pointerup', fa),
-            document.addEventListener('pointercancel', fa),
-            document.addEventListener('pointerover', ee),
-            document.addEventListener('focusin', te),
-            document.addEventListener('pointerout', oe),
-            document.addEventListener('focusout', ne),
-            document.addEventListener('keydown', ie),
-            (re = !0))
+            document.addEventListener('pointerdown', rt),
+            document.addEventListener('pointerup', et),
+            document.addEventListener('pointercancel', et),
+            document.addEventListener('pointerover', Xe),
+            document.addEventListener('focusin', Ke),
+            document.addEventListener('pointerout', Je),
+            document.addEventListener('focusout', Qe),
+            document.addEventListener('keydown', at),
+            (Re = !0))
         },
-        fi = () => {
-          if (!re || typeof document > 'u') return
-          ;([
-            ['pointerdown', ce],
-            ['pointerup', fa],
-            ['pointercancel', fa],
-            ['pointerover', ee],
-            ['focusin', te],
-            ['pointerout', oe],
-            ['focusout', ne],
-            ['keydown', ie],
-          ].forEach(([a, e]) => {
-            e && document.removeEventListener(a, e)
-          }),
-            (ee = null),
-            (te = null),
-            (oe = null),
-            (ne = null),
-            (ie = null),
-            (ce = null),
-            (fa = null),
-            (re = !1))
+        ot = () => {
+          !Re ||
+            typeof document > 'u' ||
+            ([
+              ['pointerdown', rt],
+              ['pointerup', et],
+              ['pointercancel', et],
+              ['pointerover', Xe],
+              ['focusin', Ke],
+              ['pointerout', Je],
+              ['focusout', Qe],
+              ['keydown', at],
+            ].forEach(([a, r]) => {
+              r && document.removeEventListener(a, r)
+            }),
+            (Xe = null),
+            (Ke = null),
+            (Je = null),
+            (Qe = null),
+            (at = null),
+            (rt = null),
+            (et = null),
+            (Re = !1))
         },
-        gi = u`
+        it = P`
 @layer arc-components {
   [arc-tooltip] {
     --arc-tooltip-max-width: 20em;
@@ -2890,93 +2852,99 @@
   }
 }
 `,
-        xo = (0, b.forwardRef)(
+        nt = (0, j.forwardRef)(
           (
             {
-              id: r,
-              children: a,
+              id: a,
+              children: r,
               slot: e,
-              isEnabled: n = Tr.isEnabled,
-              anchorAt: i = Tr.anchorAt,
-              boundary: c = Tr.boundary,
-              hasTail: s = Tr.hasTail,
-              tailSize: d = Tr.tailSize,
-              offset: l = Tr.offset,
-              isStrong: p = Tr.isStrong,
-              text: h,
-              subtext: v,
-              icon: f,
-              isFlipped: g,
-              ...w
+              isEnabled: t = Me.isEnabled,
+              anchorAt: o = Me.anchorAt,
+              boundary: i = Me.boundary,
+              hasTail: n = Me.hasTail,
+              tailSize: c = Me.tailSize,
+              offset: l = Me.offset,
+              isStrong: s = Me.isStrong,
+              text: d,
+              subtext: p,
+              icon: v,
+              isFlipped: h,
+              ...u
             },
-            E,
+            m,
           ) => {
-            if (n)
+            if (t)
               try {
-                bo()
+                tt()
               } catch {}
-            const j = Sr(r, 'arc-tooltip'),
-              P = (H) => typeof H == 'object' && H !== null && 'tabIndex' in H,
-              A = a,
-              _ = !!w.alternateAnchor
-            let S = null
-            ;(0, b.isValidElement)(A)
-              ? (S = n
-                  ? (0, b.cloneElement)(A, {
-                      'aria-describedby': j,
-                      ...(P(A.props) && A.props.tabIndex != null ? {} : { tabIndex: 0 }),
+            const g = Pr(a, 'arc-tooltip'),
+              b = r,
+              f = !!u.alternateAnchor
+            let x = null
+            var $
+            ;(0, j.isValidElement)(b)
+              ? (x = t
+                  ? (0, j.cloneElement)(b, {
+                      'aria-describedby': g,
+                      ...(($ = b.props),
+                      'object' == typeof $ &&
+                      null !== $ &&
+                      'tabIndex' in $ &&
+                      null != b.props.tabIndex
+                        ? {}
+                        : { tabIndex: 0 }),
                     })
-                  : A)
-              : !_ &&
+                  : b)
+              : !f &&
                 typeof console < 'u' &&
-                vo('ArcTooltip expects a single ReactElement child as the trigger.')
-            const C = (0, b.useMemo)(() => () => Xe(j), [j]),
-              L = w?.isInverse ?? Tr.isInverse
-            return (0, t.jsxs)(t.Fragment, {
+                we('ArcTooltip expects a single ReactElement child as the trigger.')
+            const y = (0, j.useMemo)(() => () => qe(g), [g]),
+              w = u?.isInverse ?? Me.isInverse
+            return (0, S.jsxs)(S.Fragment, {
               children: [
-                S,
-                n &&
-                  (0, t.jsxs)(Ba, {
-                    ...w,
+                x,
+                t &&
+                  (0, S.jsxs)(ao, {
+                    ...u,
                     'arc-tooltip': '',
                     role: 'tooltip',
-                    id: j,
-                    ref: E,
-                    popover: Tr.popover,
-                    anchorAt: i,
-                    boundary: c,
-                    variant: Tr.variant,
-                    isInverse: L,
-                    hasTail: s,
-                    tailSize: d,
+                    id: g,
+                    ref: m,
+                    popover: Me.popover,
+                    anchorAt: o,
+                    boundary: i,
+                    variant: Me.variant,
+                    isInverse: w,
+                    hasTail: n,
+                    tailSize: c,
                     offset: l,
                     hidePopoverButton: !0,
-                    alternateAnchor: w.alternateAnchor ?? C,
+                    alternateAnchor: u.alternateAnchor ?? y,
                     children: [
-                      h &&
-                        (0, t.jsx)(Er, {
+                      d &&
+                        (0, S.jsx)(Pe, {
                           'arc-tooltip-content': '',
-                          text: h,
-                          subtext: v,
-                          icon: f,
-                          isFlipped: g,
-                          isStrong: p,
+                          text: d,
+                          subtext: p,
+                          icon: v,
+                          isFlipped: h,
+                          isStrong: s,
                           size: 'inherit',
                           variant: 'inherit',
                         }),
-                      e && (0, t.jsx)('span', { 'arc-tooltip-slot-content': '', children: e }),
+                      e && (0, S.jsx)('span', { 'arc-tooltip-slot-content': '', children: e }),
                     ],
                   }),
               ],
             })
           },
         )
-      O('ArcTooltip', gi)
-      const bi = z(ge, ['circle', 'square', 'narrow']),
-        xi = z(yr, ['xxl', 'xl', 'lg', 'md', 'sm']),
-        $i = z(Hr, ['hug', 'fill', 'icon']),
-        yi = z(Q, ['common', 'ai', 'critical']),
-        $o = z(Q, [
+      Ba('ArcTooltip', it)
+      const ct = y(t, ['circle', 'square', 'narrow']),
+        lt = y(s, ['xxl', 'xl', 'lg', 'md', 'sm']),
+        st = y(n, ['hug', 'fill', 'icon']),
+        dt = y(o, ['common', 'ai', 'critical']),
+        pt = y(o, [
           'primary',
           'secondary',
           'tertiary',
@@ -2988,411 +2956,411 @@
           'secondary-inverse',
           'tertiary-inverse',
         ]),
-        wi = z(ht, ['primary', 'secondary', 'tertiary', 'plain']),
-        ki = [...Za],
-        F = u`arc•modifier`,
-        o = u`arc•button`,
-        D = u`${o}•spinner`,
-        lr = u`${o}•icon`,
-        M = u`${o}•computed`,
-        Ai = u`
+        vt = y(i, ['primary', 'secondary', 'tertiary', 'plain']),
+        ht = [...v],
+        ut = P`arc•modifier`,
+        mt = P`arc•button`,
+        gt = P`${mt}•spinner`,
+        bt = P`${mt}•icon`,
+        ft = P`${mt}•computed`,
+        xt = P`
   &[data-size=xxl] {
-    --${F}: 16; /* unitless, desired font size at 100% */
-    --${D}-size: 32;
-    --${lr}-size: 20;
-    --${lr}-size-large: 24;
-    --${o}-height: 56;
-    --${o}-gap: 10;
-    --${o}-padding-inline: 32;
+    --${ut}: 16; /* unitless, desired font size at 100% */
+    --${gt}-size: 32;
+    --${bt}-size: 20;
+    --${bt}-size-large: 24;
+    --${mt}-height: 56;
+    --${mt}-gap: 10;
+    --${mt}-padding-inline: 32;
   }
 
   &[data-size=xl] {
-    --${F}: 14; /* unitless, desired font size at 100% */
-    --${D}-size: 16;
-    --${lr}-size: 16;
-    --${lr}-size-large: 20;
-    --${o}-height: 48;
-    --${o}-gap: 8;
-    --${o}-padding-inline: 32;
+    --${ut}: 14; /* unitless, desired font size at 100% */
+    --${gt}-size: 16;
+    --${bt}-size: 16;
+    --${bt}-size-large: 20;
+    --${mt}-height: 48;
+    --${mt}-gap: 8;
+    --${mt}-padding-inline: 32;
   }
 
   &[data-size=lg] { /** @default */
-    --${F}: 14; /* unitless, desired font size at 100% */
-    --${D}-size: 16;
-    --${lr}-size: 16;
-    --${lr}-size-large: 20;
-    --${o}-height: 40;
-    --${o}-gap: 8;
-    --${o}-padding-inline: 20;
+    --${ut}: 14; /* unitless, desired font size at 100% */
+    --${gt}-size: 16;
+    --${bt}-size: 16;
+    --${bt}-size-large: 20;
+    --${mt}-height: 40;
+    --${mt}-gap: 8;
+    --${mt}-padding-inline: 20;
   }
 
   &[data-size=md] {
-    --${F}: 14; /* unitless, desired font size at 100% */
-    --${D}-size: 16;
-    --${lr}-size: 14;
-    --${lr}-size-large: 20;
-    --${o}-height: 32;
-    --${o}-gap: 6;
-    --${o}-padding-inline: 16;
+    --${ut}: 14; /* unitless, desired font size at 100% */
+    --${gt}-size: 16;
+    --${bt}-size: 14;
+    --${bt}-size-large: 20;
+    --${mt}-height: 32;
+    --${mt}-gap: 6;
+    --${mt}-padding-inline: 16;
   }
 
   &[data-size=sm] {
-    --${F}: 12; /* unitless, desired font size at 100% */
-    --${D}-size: 14;
-    --${lr}-size: 12;
-    --${lr}-size-large: 14;
-    --${o}-height: 24;
-    --${o}-gap: 4;
-    --${o}-padding-inline: 12;
+    --${ut}: 12; /* unitless, desired font size at 100% */
+    --${gt}-size: 14;
+    --${bt}-size: 12;
+    --${bt}-size-large: 14;
+    --${mt}-height: 24;
+    --${mt}-gap: 4;
+    --${mt}-padding-inline: 12;
   }
 
 `,
-        zi = u`
+        $t = P`
   &[data-layout=hug] {
-    --${o}-width: auto;
-    --${o}-content-width: fit-content;
+    --${mt}-width: auto;
+    --${mt}-content-width: fit-content;
   }
 
   &[data-layout=fill] {
-    --${o}-display: flex;
-    --${o}-width: 100%;
-    --${o}-content-width: 0;
+    --${mt}-display: flex;
+    --${mt}-width: 100%;
+    --${mt}-content-width: 0;
   }
 
   &[data-layout=icon] {
-    --${o}-aspect-ratio: 1 / 1;
-    --${o}-flex: none;
-    --${o}-min-width: min-content;
-    --${o}-max-width: none;
-    --${o}-padding-inline: 0;
+    --${mt}-aspect-ratio: 1 / 1;
+    --${mt}-flex: none;
+    --${mt}-min-width: min-content;
+    --${mt}-max-width: none;
+    --${mt}-padding-inline: 0;
 
     &[data-shape=narrow] {
-      --${o}-aspect-ratio: auto;
-      --${o}-padding-inline: 2;
+      --${mt}-aspect-ratio: auto;
+      --${mt}-padding-inline: 2;
     }
   }
 
 `,
-        Ci = u`
+        yt = P`
   &[data-variant=common],&[data-variant=primary] { /** @default */
-    --${o}-text: var(--arc-color-mono-white);
-    --${o}-fill: var(--arc-color-mono-black);
-    --${o}-edge: transparent;
+    --${mt}-text: var(--arc-color-mono-white);
+    --${mt}-fill: var(--arc-color-mono-black);
+    --${mt}-edge: transparent;
 
-    --${o}-text-active: var(--arc-color-neutral-200);
-    --${o}-text-disabled: var(--arc-color-alpha-black-30);
+    --${mt}-text-active: var(--arc-color-neutral-200);
+    --${mt}-text-disabled: var(--arc-color-alpha-black-30);
 
-    --${o}-fill-hover: var(--arc-color-neutral-800);
-    --${o}-fill-active: var(--arc-color-neutral-600);
-    --${o}-fill-processing: var(--arc-color-neutral-800);
-    --${o}-fill-disabled: var(--arc-color-alpha-black-05);
+    --${mt}-fill-hover: var(--arc-color-neutral-800);
+    --${mt}-fill-active: var(--arc-color-neutral-600);
+    --${mt}-fill-processing: var(--arc-color-neutral-800);
+    --${mt}-fill-disabled: var(--arc-color-alpha-black-05);
   }
 
   &[data-variant=secondary] { /** @default - when icon-only */
-    --${o}-text: var(--arc-color-mono-black);
-    --${o}-fill: var(--arc-color-mono-white);
-    --${o}-edge: var(--arc-color-border-full);
+    --${mt}-text: var(--arc-color-mono-black);
+    --${mt}-fill: var(--arc-color-mono-white);
+    --${mt}-edge: var(--arc-color-border-full);
 
-    --${D}-base-color: var(--arc-color-neutral-200);
+    --${gt}-base-color: var(--arc-color-neutral-200);
 
-    --${o}-text-active: var(--arc-color-alpha-black-60);
-    --${o}-text-processing: var(--arc-color-alpha-black-60);
-    --${o}-text-disabled: var(--arc-color-alpha-black-30);
+    --${mt}-text-active: var(--arc-color-alpha-black-60);
+    --${mt}-text-processing: var(--arc-color-alpha-black-60);
+    --${mt}-text-disabled: var(--arc-color-alpha-black-30);
 
-    --${o}-fill-hover: var(--arc-color-neutral-100);
-    --${o}-fill-active: var(--arc-color-neutral-200);
-    --${o}-fill-processing: var(--arc-color-alpha-white-30);
-    --${o}-fill-disabled: var(--arc-color-alpha-white-60);
+    --${mt}-fill-hover: var(--arc-color-neutral-100);
+    --${mt}-fill-active: var(--arc-color-neutral-200);
+    --${mt}-fill-processing: var(--arc-color-alpha-white-30);
+    --${mt}-fill-disabled: var(--arc-color-alpha-white-60);
 
-    --${o}-edge-active: var(--arc-color-border-stark);
-    --${o}-edge-processing: var(--arc-color-border-stark);
-    --${o}-edge-disabled: var(--arc-color-border-standard);
+    --${mt}-edge-active: var(--arc-color-border-stark);
+    --${mt}-edge-processing: var(--arc-color-border-stark);
+    --${mt}-edge-disabled: var(--arc-color-border-standard);
 
     &[data-layout=icon] {
-      --${o}-edge: var(--arc-color-border-standard);
-      --${o}-edge-hover: var(--arc-color-border-stark);
-      --${o}-edge-focus: var(--arc-color-border-standard);
+      --${mt}-edge: var(--arc-color-border-standard);
+      --${mt}-edge-hover: var(--arc-color-border-stark);
+      --${mt}-edge-focus: var(--arc-color-border-standard);
     }
   }
 
   &[data-variant=tertiary] {
-    --${o}-text: var(--arc-color-mono-black);
-    --${o}-fill: transparent;
-    --${o}-edge: transparent;
+    --${mt}-text: var(--arc-color-mono-black);
+    --${mt}-fill: transparent;
+    --${mt}-edge: transparent;
 
-    --${D}-base-color: var(--arc-color-neutral-200);
+    --${gt}-base-color: var(--arc-color-neutral-200);
 
-    --${o}-text-active: var(--arc-color-alpha-black-60);
-    --${o}-text-processing: var(--arc-color-alpha-black-60);
-    --${o}-text-disabled: var(--arc-color-alpha-black-30);
+    --${mt}-text-active: var(--arc-color-alpha-black-60);
+    --${mt}-text-processing: var(--arc-color-alpha-black-60);
+    --${mt}-text-disabled: var(--arc-color-alpha-black-30);
 
-    --${o}-fill-hover: var(--arc-color-alpha-black-05);
-    --${o}-fill-focus: var(--arc-color-alpha-white-05);
-    --${o}-fill-active: var(--arc-color-alpha-black-10);
-    --${o}-fill-processing: var(--arc-color-alpha-black-03);
+    --${mt}-fill-hover: var(--arc-color-alpha-black-05);
+    --${mt}-fill-focus: var(--arc-color-alpha-white-05);
+    --${mt}-fill-active: var(--arc-color-alpha-black-10);
+    --${mt}-fill-processing: var(--arc-color-alpha-black-03);
   }
 
   &[data-variant=plain] {
-    --${o}-text: var(--arc-color-mono-black);
-    --${o}-fill: transparent;
-    --${o}-edge: transparent;
+    --${mt}-text: var(--arc-color-mono-black);
+    --${mt}-fill: transparent;
+    --${mt}-edge: transparent;
 
-    --${D}-base-color: var(--arc-color-neutral-200);
+    --${gt}-base-color: var(--arc-color-neutral-200);
 
-    --${o}-text-hover: var(--arc-color-neutral-700);
-    --${o}-text-active: var(--arc-color-alpha-black-40);
-    --${o}-text-processing: var(--arc-color-alpha-black-60);
-    --${o}-text-disabled: var(--arc-color-alpha-black-30);
+    --${mt}-text-hover: var(--arc-color-neutral-700);
+    --${mt}-text-active: var(--arc-color-alpha-black-40);
+    --${mt}-text-processing: var(--arc-color-alpha-black-60);
+    --${mt}-text-disabled: var(--arc-color-alpha-black-30);
 
-    --${o}-fill-hover: transparent;
-    --${o}-fill-focus: var(--arc-color-alpha-white-05);
-    --${o}-fill-active: transparent;
-    --${o}-fill-processing: transparent;
+    --${mt}-fill-hover: transparent;
+    --${mt}-fill-focus: var(--arc-color-alpha-white-05);
+    --${mt}-fill-active: transparent;
+    --${mt}-fill-processing: transparent;
   }
 
 `,
-        Si = u`
+        wt = P`
   &[data-variant=primary-inverse] {
-    --${o}-text: var(--arc-color-mono-black);
-    --${o}-fill: var(--arc-color-mono-white);
-    --${o}-edge: transparent;
+    --${mt}-text: var(--arc-color-mono-black);
+    --${mt}-fill: var(--arc-color-mono-white);
+    --${mt}-edge: transparent;
 
-    --${o}-text-active: var(--arc-color-alpha-black-80);
-    --${o}-text-processing: var(--arc-color-neutral-200);
-    --${o}-text-disabled: var(--arc-color-alpha-white-40);
+    --${mt}-text-active: var(--arc-color-alpha-black-80);
+    --${mt}-text-processing: var(--arc-color-neutral-200);
+    --${mt}-text-disabled: var(--arc-color-alpha-white-40);
 
-    --${o}-fill-hover: var(--arc-color-alpha-white-80);
-    --${o}-fill-active: var(--arc-color-alpha-white-60);
-    --${o}-fill-processing: var(--arc-color-alpha-white-30);
-    --${o}-fill-disabled: var(--arc-color-alpha-white-20);
+    --${mt}-fill-hover: var(--arc-color-alpha-white-80);
+    --${mt}-fill-active: var(--arc-color-alpha-white-60);
+    --${mt}-fill-processing: var(--arc-color-alpha-white-30);
+    --${mt}-fill-disabled: var(--arc-color-alpha-white-20);
 
     &[data-layout=icon] {
-      --${o}-fill-hover: var(--arc-color-alpha-white-70);
+      --${mt}-fill-hover: var(--arc-color-alpha-white-70);
     }
   }
 
   &[data-variant=secondary-inverse] {
-    --${o}-text: var(--arc-color-alpha-white-95);
-    --${o}-fill: transparent;
-    --${o}-edge: var(--arc-color-alpha-white-60);
+    --${mt}-text: var(--arc-color-alpha-white-95);
+    --${mt}-fill: transparent;
+    --${mt}-edge: var(--arc-color-alpha-white-60);
 
-    --${o}-text-active: var(--arc-color-alpha-white-95);
-    --${o}-text-processing: var(--arc-color-neutral-200);
-    --${o}-text-disabled: var(--arc-color-alpha-white-40);
+    --${mt}-text-active: var(--arc-color-alpha-white-95);
+    --${mt}-text-processing: var(--arc-color-neutral-200);
+    --${mt}-text-disabled: var(--arc-color-alpha-white-40);
 
-    --${o}-fill-hover: var(--arc-color-alpha-white-20);
-    --${o}-fill-focus: var(--arc-color-alpha-black-05);
-    --${o}-fill-active: var(--arc-color-alpha-white-40);
-    --${o}-fill-processing: transparent;
+    --${mt}-fill-hover: var(--arc-color-alpha-white-20);
+    --${mt}-fill-focus: var(--arc-color-alpha-black-05);
+    --${mt}-fill-active: var(--arc-color-alpha-white-40);
+    --${mt}-fill-processing: transparent;
 
-    --${o}-edge-hover: var(--arc-color-alpha-white-80);
-    --${o}-edge-focus: var(--arc-color-alpha-white-60);
-    --${o}-edge-active: var(--arc-color-alpha-white-50);
-    --${o}-edge-processing: var(--arc-color-alpha-white-60);
-    --${o}-edge-disabled: var(--arc-color-alpha-white-20);
+    --${mt}-edge-hover: var(--arc-color-alpha-white-80);
+    --${mt}-edge-focus: var(--arc-color-alpha-white-60);
+    --${mt}-edge-active: var(--arc-color-alpha-white-50);
+    --${mt}-edge-processing: var(--arc-color-alpha-white-60);
+    --${mt}-edge-disabled: var(--arc-color-alpha-white-20);
 
     &[data-layout=icon] {
-      --${o}-text: var(--arc-color-alpha-white-100);
+      --${mt}-text: var(--arc-color-alpha-white-100);
 
-      --${o}-text-hover: var(--arc-color-alpha-white-100);
-      --${o}-text-focus: var(--arc-color-alpha-white-100);
-      --${o}-text-active: var(--arc-color-alpha-white-80);
+      --${mt}-text-hover: var(--arc-color-alpha-white-100);
+      --${mt}-text-focus: var(--arc-color-alpha-white-100);
+      --${mt}-text-active: var(--arc-color-alpha-white-80);
 
-      --${o}-fill-hover: var(--arc-color-alpha-white-30);
-      --${o}-fill-focus: var(--arc-color-alpha-black-05);
-      --${o}-fill-active: var(--arc-color-alpha-white-30);
+      --${mt}-fill-hover: var(--arc-color-alpha-white-30);
+      --${mt}-fill-focus: var(--arc-color-alpha-black-05);
+      --${mt}-fill-active: var(--arc-color-alpha-white-30);
 
-      --${o}-edge-focus: var(--arc-color-alpha-white-60);
-      --${o}-edge-active: var(--arc-color-alpha-white-40);
+      --${mt}-edge-focus: var(--arc-color-alpha-white-60);
+      --${mt}-edge-active: var(--arc-color-alpha-white-40);
     }
   }
 
   &[data-variant=tertiary-inverse] {
-    --${o}-text: var(--arc-color-alpha-white-95);
-    --${o}-fill: transparent;
-    --${o}-edge: transparent;
+    --${mt}-text: var(--arc-color-alpha-white-95);
+    --${mt}-fill: transparent;
+    --${mt}-edge: transparent;
 
-    --${o}-text-active: var(--arc-color-alpha-white-80);
-    --${o}-text-processing: var(--arc-color-neutral-200);
-    --${o}-text-disabled: var(--arc-color-alpha-white-40);
+    --${mt}-text-active: var(--arc-color-alpha-white-80);
+    --${mt}-text-processing: var(--arc-color-neutral-200);
+    --${mt}-text-disabled: var(--arc-color-alpha-white-40);
 
-    --${o}-fill-hover: var(--arc-color-alpha-white-20);
-    --${o}-fill-active: var(--arc-color-alpha-white-40);
-    --${o}-fill-processing: var(--arc-color-alpha-white-20);
+    --${mt}-fill-hover: var(--arc-color-alpha-white-20);
+    --${mt}-fill-active: var(--arc-color-alpha-white-40);
+    --${mt}-fill-processing: var(--arc-color-alpha-white-20);
 
     &[data-layout=icon] {
-      --${o}-text: var(--arc-color-alpha-white-100);
+      --${mt}-text: var(--arc-color-alpha-white-100);
 
-      --${o}-text-hover: var(--arc-color-alpha-white-100);
-      --${o}-text-focus: var(--arc-color-alpha-white-100);
-      --${o}-text-active: var(--arc-color-alpha-white-80);
+      --${mt}-text-hover: var(--arc-color-alpha-white-100);
+      --${mt}-text-focus: var(--arc-color-alpha-white-100);
+      --${mt}-text-active: var(--arc-color-alpha-white-80);
 
-      --${o}-fill-hover: var(--arc-color-alpha-white-30);
-      --${o}-fill-focus: var(--arc-color-alpha-black-05);
-      --${o}-fill-active: var(--arc-color-alpha-white-30);
+      --${mt}-fill-hover: var(--arc-color-alpha-white-30);
+      --${mt}-fill-focus: var(--arc-color-alpha-black-05);
+      --${mt}-fill-active: var(--arc-color-alpha-white-30);
     }
   }
 
   &[data-variant=plain-inverse] {
-    --${o}-text: var(--arc-color-alpha-white-95);
-    --${o}-fill: transparent;
-    --${o}-edge: transparent;
+    --${mt}-text: var(--arc-color-alpha-white-95);
+    --${mt}-fill: transparent;
+    --${mt}-edge: transparent;
 
-    --${o}-text-hover: var(--arc-color-alpha-white-60);
-    --${o}-text-active: var(--arc-color-alpha-white-40);
-    --${o}-text-processing: var(--arc-color-neutral-200);
-    --${o}-text-disabled: var(--arc-color-alpha-white-30);
+    --${mt}-text-hover: var(--arc-color-alpha-white-60);
+    --${mt}-text-active: var(--arc-color-alpha-white-40);
+    --${mt}-text-processing: var(--arc-color-neutral-200);
+    --${mt}-text-disabled: var(--arc-color-alpha-white-30);
 
-    --${o}-fill-hover: transparent;
-    --${o}-fill-focus: var(--arc-color-alpha-black-05);
-    --${o}-fill-active: transparent;
-    --${o}-fill-processing: transparent;
+    --${mt}-fill-hover: transparent;
+    --${mt}-fill-focus: var(--arc-color-alpha-black-05);
+    --${mt}-fill-active: transparent;
+    --${mt}-fill-processing: transparent;
 
     &[data-layout=icon] {
-      --${o}-text: var(--arc-color-alpha-white-80);
+      --${mt}-text: var(--arc-color-alpha-white-80);
 
-      --${o}-text-hover: var(--arc-color-alpha-white-95);
-      --${o}-text-focus: var(--arc-color-alpha-white-95);
-      --${o}-text-active: var(--arc-color-alpha-white-60);
+      --${mt}-text-hover: var(--arc-color-alpha-white-95);
+      --${mt}-text-focus: var(--arc-color-alpha-white-95);
+      --${mt}-text-active: var(--arc-color-alpha-white-60);
 
-      --${o}-fill-hover: transparent;
-      --${o}-fill-focus: transparent;
-      --${o}-fill-active: transparent;
+      --${mt}-fill-hover: transparent;
+      --${mt}-fill-focus: transparent;
+      --${mt}-fill-active: transparent;
     }
   }
 
 `,
-        ji = u`
+        kt = P`
   &[data-variant=ai-primary] {
-    --${o}-text: var(--arc-color-mono-white);
-    --${o}-fill: var(--arc-gradient-ai-500) padding-box, var(--arc-gradient-ai-200) border-box;
+    --${mt}-text: var(--arc-color-mono-white);
+    --${mt}-fill: var(--arc-gradient-ai-500) padding-box, var(--arc-gradient-ai-200) border-box;
 
-    --${o}-text-active: var(--arc-color-alpha-white-80);
-    --${o}-text-processing: var(--arc-color-alpha-white-70);
+    --${mt}-text-active: var(--arc-color-alpha-white-80);
+    --${mt}-text-processing: var(--arc-color-alpha-white-70);
 
-    --${o}-fill-hover: var(--arc-gradient-ai-400) padding-box, var(--arc-gradient-ai-200) border-box;
-    --${o}-fill-active: var(--arc-gradient-ai-600) padding-box, var(--arc-gradient-ai-200) border-box;
-    --${o}-fill-processing: var(--arc-gradient-ai-400) padding-box, var(--arc-gradient-ai-100) border-box;
-    --${o}-fill-disabled: var(--arc-color-alpha-black-05);
+    --${mt}-fill-hover: var(--arc-gradient-ai-400) padding-box, var(--arc-gradient-ai-200) border-box;
+    --${mt}-fill-active: var(--arc-gradient-ai-600) padding-box, var(--arc-gradient-ai-200) border-box;
+    --${mt}-fill-processing: var(--arc-gradient-ai-400) padding-box, var(--arc-gradient-ai-100) border-box;
+    --${mt}-fill-disabled: var(--arc-color-alpha-black-05);
   }
 
   &[data-variant=ai-secondary] {
-    --${o}-text: var(--arc-color-mono-black);
-    --${o}-fill: linear-gradient(var(--arc-color-mono-white) 0 0) padding-box, var(--arc-gradient-ai-200) border-box;
+    --${mt}-text: var(--arc-color-mono-black);
+    --${mt}-fill: linear-gradient(var(--arc-color-mono-white) 0 0) padding-box, var(--arc-gradient-ai-200) border-box;
 
-    --${D}-base-color: var(--arc-color-neutral-200);
+    --${gt}-base-color: var(--arc-color-neutral-200);
 
-    --${o}-text-active: var(--arc-color-alpha-black-60);
-    --${o}-text-processing: var(--arc-color-alpha-black-60);
+    --${mt}-text-active: var(--arc-color-alpha-black-60);
+    --${mt}-text-processing: var(--arc-color-alpha-black-60);
 
-    --${o}-fill-hover: var(--arc-gradient-ai-050) padding-box, var(--arc-gradient-ai-300) border-box;
-    --${o}-fill-active: var(--arc-gradient-ai-050) padding-box, var(--arc-gradient-ai-100) border-box;
-    --${o}-fill-processing: linear-gradient(var(--arc-color-mono-white) 0 0) padding-box, var(--arc-gradient-ai-100) border-box;
-    --${o}-fill-disabled: var(--arc-color-alpha-white-30);
+    --${mt}-fill-hover: var(--arc-gradient-ai-050) padding-box, var(--arc-gradient-ai-300) border-box;
+    --${mt}-fill-active: var(--arc-gradient-ai-050) padding-box, var(--arc-gradient-ai-100) border-box;
+    --${mt}-fill-processing: linear-gradient(var(--arc-color-mono-white) 0 0) padding-box, var(--arc-gradient-ai-100) border-box;
+    --${mt}-fill-disabled: var(--arc-color-alpha-white-30);
   }
 
   &[data-variant^=ai-] {
-    --${o}-edge: transparent;
+    --${mt}-edge: transparent;
 
-    --${o}-text-disabled: var(--arc-color-alpha-black-30);
-    --${o}-edge-disabled: var(--arc-color-border-standard);
+    --${mt}-text-disabled: var(--arc-color-alpha-black-30);
+    --${mt}-edge-disabled: var(--arc-color-border-standard);
   }
 
 `,
-        Ei = u`
+        zt = P`
   &[data-variant=critical-primary] {
-    --${o}-text: var(--arc-color-mono-white);
-    --${o}-fill: var(--arc-color-critical-dark);
-    --${o}-edge: transparent;
+    --${mt}-text: var(--arc-color-mono-white);
+    --${mt}-fill: var(--arc-color-critical-dark);
+    --${mt}-edge: transparent;
 
-    --${o}-text-active: var(--arc-color-critical-medium);
-    --${o}-text-disabled: var(--arc-color-alpha-black-30);
+    --${mt}-text-active: var(--arc-color-critical-medium);
+    --${mt}-text-disabled: var(--arc-color-alpha-black-30);
 
-    --${o}-fill-hover: var(--arc-color-critical-heavy);
-    --${o}-fill-active: var(--arc-color-critical-heavy);
-    --${o}-fill-processing: var(--arc-color-critical-heavy);
-    --${o}-fill-disabled: var(--arc-color-alpha-black-05);
+    --${mt}-fill-hover: var(--arc-color-critical-heavy);
+    --${mt}-fill-active: var(--arc-color-critical-heavy);
+    --${mt}-fill-processing: var(--arc-color-critical-heavy);
+    --${mt}-fill-disabled: var(--arc-color-alpha-black-05);
   }
 
   &[data-variant=critical-secondary] {
-    --${o}-text: var(--arc-color-critical-dark);
-    --${o}-fill: transparent;
-    --${o}-edge: var(--arc-color-critical-dark);
+    --${mt}-text: var(--arc-color-critical-dark);
+    --${mt}-fill: transparent;
+    --${mt}-edge: var(--arc-color-critical-dark);
 
-    --${D}-base-color: var(--arc-color-neutral-200);
+    --${gt}-base-color: var(--arc-color-neutral-200);
 
-    --${o}-text-active: var(--arc-color-red-300);
-    --${o}-text-processing: var(--arc-color-critical-dark);
-    --${o}-text-disabled: var(--arc-color-alpha-black-30);
+    --${mt}-text-active: var(--arc-color-red-300);
+    --${mt}-text-processing: var(--arc-color-critical-dark);
+    --${mt}-text-disabled: var(--arc-color-alpha-black-30);
 
-    --${o}-fill-hover: var(--arc-color-critical-light);
-    --${o}-fill-focus: var(--arc-color-alpha-white-100);
-    --${o}-fill-active: var(--arc-color-red-100);
-    --${o}-fill-disabled: var(--arc-color-alpha-white-30);
+    --${mt}-fill-hover: var(--arc-color-critical-light);
+    --${mt}-fill-focus: var(--arc-color-alpha-white-100);
+    --${mt}-fill-active: var(--arc-color-red-100);
+    --${mt}-fill-disabled: var(--arc-color-alpha-white-30);
 
-    --${o}-edge-active: var(--arc-color-critical-medium);
-    --${o}-edge-processing: var(--arc-color-critical-medium);
-    --${o}-edge-disabled: var(--arc-color-border-standard);
+    --${mt}-edge-active: var(--arc-color-critical-medium);
+    --${mt}-edge-processing: var(--arc-color-critical-medium);
+    --${mt}-edge-disabled: var(--arc-color-border-standard);
   }
 
   &[data-variant=critical-plain] {
-    --${o}-text: var(--arc-color-critical-dark);
-    --${o}-fill: transparent;
-    --${o}-edge: transparent;
+    --${mt}-text: var(--arc-color-critical-dark);
+    --${mt}-fill: transparent;
+    --${mt}-edge: transparent;
 
-    --${D}-base-color: var(--arc-color-neutral-200);
+    --${gt}-base-color: var(--arc-color-neutral-200);
 
-    --${o}-text-hover: var(--arc-color-red-500);
-    --${o}-text-active: var(--arc-color-red-300);
-    --${o}-text-processing: var(--arc-color-critical-dark);
-    --${o}-text-disabled: var(--arc-color-neutral-300);
+    --${mt}-text-hover: var(--arc-color-red-500);
+    --${mt}-text-active: var(--arc-color-red-300);
+    --${mt}-text-processing: var(--arc-color-critical-dark);
+    --${mt}-text-disabled: var(--arc-color-neutral-300);
 
-    --${o}-fill-hover: transparent;
-    --${o}-fill-focus: var(--arc-color-alpha-white-03);
-    --${o}-fill-active: transparent;
-    --${o}-fill-processing: transparent;
+    --${mt}-fill-hover: transparent;
+    --${mt}-fill-focus: var(--arc-color-alpha-white-03);
+    --${mt}-fill-active: transparent;
+    --${mt}-fill-processing: transparent;
   }
 
 `,
-        _i = u`
-  --${o}-color: var(--${o}-text);
-  --${o}-background: var(--${o}-fill);
-  --${o}-border-color: var(--${o}-edge);
-  --${o}-content-opacity: 1;
-  --${o}-cursor: var(--arc-button-cursor, pointer);
-  --${o}-font-weight: var(--arc-font-weight-600);
-  --${o}-transition: 0.2s ease-out;
+        Ct = P`
+  --${mt}-color: var(--${mt}-text);
+  --${mt}-background: var(--${mt}-fill);
+  --${mt}-border-color: var(--${mt}-edge);
+  --${mt}-content-opacity: 1;
+  --${mt}-cursor: var(--arc-button-cursor, pointer);
+  --${mt}-font-weight: var(--arc-font-weight-600);
+  --${mt}-transition: 0.2s ease-out;
 
   /* MODIFIERS */
 
-  --${F}-base: var(--${F}) * var(--${F}-unit, 1px);
-  --${F}-em: var(--${F}) * 1em;
+  --${ut}-base: var(--${ut}) * var(--${ut}-unit, 1px);
+  --${ut}-em: var(--${ut}) * 1em;
 
   /* COMPUTED */
 
-  --${M}-font-size: calc(var(--${F}-base));
-  --${M}-icon-size: calc(var(--${lr}-size) / var(--${F}-em));
-  --${M}-icon-size-large: calc(var(--${lr}-size-large) / var(--${F}-em));
-  --${M}-border-size: max(var(--arc-border-width-sm), calc(1 / var(--${F}-em)));
-  --${M}-outline-size: max(var(--arc-border-width-md), calc(2 / var(--${F}-em)));
-  --${M}-border-radius-md: max(var(--arc-border-radius-md), calc(4 / var(--${F}-em)));
-  --${M}-border-radius-sm: max(var(--arc-border-radius-sm), calc(2 / var(--${F}-em)));
-  --${M}-height: calc(var(--${o}-height) / var(--${F}-em));
-  --${M}-padding: 0 calc(var(--${o}-padding-inline) / var(--${F}-em));
-  --${M}-spinner-size: calc(var(--${D}-size) / var(--${F}-em));
-  --${M}-gap: max(var(--arc-space-0-5), calc(var(--${o}-gap) / var(--${F}-em)));
+  --${ft}-font-size: calc(var(--${ut}-base));
+  --${ft}-icon-size: calc(var(--${bt}-size) / var(--${ut}-em));
+  --${ft}-icon-size-large: calc(var(--${bt}-size-large) / var(--${ut}-em));
+  --${ft}-border-size: max(var(--arc-border-width-sm), calc(1 / var(--${ut}-em)));
+  --${ft}-outline-size: max(var(--arc-border-width-md), calc(2 / var(--${ut}-em)));
+  --${ft}-border-radius-md: max(var(--arc-border-radius-md), calc(4 / var(--${ut}-em)));
+  --${ft}-border-radius-sm: max(var(--arc-border-radius-sm), calc(2 / var(--${ut}-em)));
+  --${ft}-height: calc(var(--${mt}-height) / var(--${ut}-em));
+  --${ft}-padding: 0 calc(var(--${mt}-padding-inline) / var(--${ut}-em));
+  --${ft}-spinner-size: calc(var(--${gt}-size) / var(--${ut}-em));
+  --${ft}-gap: max(var(--arc-space-0-5), calc(var(--${mt}-gap) / var(--${ut}-em)));
 
-  --${M}-border: var(--${M}-border-size) solid var(--${o}-border-color, transparent);
-  --${M}-outline: var(--${M}-outline-size) solid var(--arc-button-outline-color, var(--arc-color-border-focus));
+  --${ft}-border: var(--${ft}-border-size) solid var(--${mt}-border-color, transparent);
+  --${ft}-outline: var(--${ft}-outline-size) solid var(--arc-button-outline-color, var(--arc-color-border-focus));
 
   /* CONTEXT OVERRIDES */
 
   &[data-variant^=ai-] {
-    --${M}-border-size: max(var(--arc-border-width-md), calc(2 / var(--${F}-em)));
+    --${ft}-border-size: max(var(--arc-border-width-md), calc(2 / var(--${ut}-em)));
   }
 
   &:is(:not([data-shape]), [data-shape=circle]) {
-    --${M}-border-radius: var(--arc-border-radius-pill);
+    --${ft}-border-radius: var(--arc-border-radius-pill);
   }
 
   &:is(
@@ -3401,100 +3369,100 @@
     [data-shape=square],
     [data-shape=narrow]
   ) {
-    --${M}-border-radius: var(--${M}-border-radius-md);
+    --${ft}-border-radius: var(--${ft}-border-radius-md);
   }
 
   &:is(
     [arc-button=custom],
     [data-variant*=plain]
   ) {
-    --${M}-padding: unset;
-    --${M}-height: unset;
+    --${ft}-padding: unset;
+    --${ft}-height: unset;
   }
 
   &[data-variant*=plain] {
-    --${M}-border-radius: var(--${M}-border-radius-sm);
+    --${ft}-border-radius: var(--${ft}-border-radius-sm);
   }
 
   /* Inter-Component Communication */
 
   /** ArcIcon */
   --arc-icon-fa-line-height: 1lh;
-  --arc-icon-size: var(--${M}-icon-size);
+  --arc-icon-size: var(--${ft}-icon-size);
 
   &[has-large-icon] {
-    --arc-icon-size: var(--${M}-icon-size-large);
+    --arc-icon-size: var(--${ft}-icon-size-large);
   }
 
   /** ArcSpinner */
-  --arc-spinner-size: var(--${M}-spinner-size);
-  --arc-spinner-progress-color: var(--${D}-progress-color);
-  --arc-spinner-circle-color: var(--${D}-circle-color);
-  --arc-spinner-circle-opacity: var(--${D}-circle-opacity);
-  --arc-spinner-position: var(--${D}-position, absolute);
-  --arc-spinner-inset: var(--${D}-inset, 50% auto auto 50%);
-  --arc-spinner-translate: var(--${D}-translate, -50% -50%);
+  --arc-spinner-size: var(--${ft}-spinner-size);
+  --arc-spinner-progress-color: var(--${gt}-progress-color);
+  --arc-spinner-circle-color: var(--${gt}-circle-color);
+  --arc-spinner-circle-opacity: var(--${gt}-circle-opacity);
+  --arc-spinner-position: var(--${gt}-position, absolute);
+  --arc-spinner-inset: var(--${gt}-inset, 50% auto auto 50%);
+  --arc-spinner-translate: var(--${gt}-translate, -50% -50%);
 
 `,
-        Ti = u`
+        At = P`
   &:is([is-processing], [is-processing-with-text], :has(input)) {
-    --${o}-position: relative;
+    --${mt}-position: relative;
   }
 
   &:is([is-disabled]) {
-    --${o}-color: var(--${o}-text-disabled, var(--${o}-text));
-    --${o}-background: var(--${o}-fill-disabled, var(--${o}-fill));
-    --${o}-border-color: var(--${o}-edge-disabled, var(--${o}-edge));
-    --${o}-opacity: var(--arc-button-disabled-opacity, unset);
-    --${o}-cursor: var(--arc-button-disabled-cursor, not-allowed);
+    --${mt}-color: var(--${mt}-text-disabled, var(--${mt}-text));
+    --${mt}-background: var(--${mt}-fill-disabled, var(--${mt}-fill));
+    --${mt}-border-color: var(--${mt}-edge-disabled, var(--${mt}-edge));
+    --${mt}-opacity: var(--arc-button-disabled-opacity, unset);
+    --${mt}-cursor: var(--arc-button-disabled-cursor, not-allowed);
   }
 
   &:not([is-disabled], [is-processing], [is-processing-with-text]) {
     &:where(:hover, [data-simulate=hover]) {
-      --${o}-color: var(--${o}-text-hover, var(--${o}-text));
-      --${o}-background: var(--${o}-fill-hover, var(--${o}-fill));
-      --${o}-border-color: var(--${o}-edge-hover, var(--${o}-edge));
+      --${mt}-color: var(--${mt}-text-hover, var(--${mt}-text));
+      --${mt}-background: var(--${mt}-fill-hover, var(--${mt}-fill));
+      --${mt}-border-color: var(--${mt}-edge-hover, var(--${mt}-edge));
     }
 
     &:is(:active, [is-active], [data-simulate=active]) {
-      --${o}-color: var(--${o}-text-active, var(--${o}-text));
-      --${o}-background: var(--${o}-fill-active, var(--${o}-fill));
-      --${o}-border-color: var(--${o}-edge-active, var(--${o}-edge));
+      --${mt}-color: var(--${mt}-text-active, var(--${mt}-text));
+      --${mt}-background: var(--${mt}-fill-active, var(--${mt}-fill));
+      --${mt}-border-color: var(--${mt}-edge-active, var(--${mt}-edge));
     }
   }
 
   &[is-processing] {
-    --${o}-content-visibility: hidden;
-    --${o}-content-opacity: 0;
+    --${mt}-content-visibility: hidden;
+    --${mt}-content-opacity: 0;
 
     /* spinner svg position controls */
-    --${D}-position: absolute;
-    --${D}-inset: 50% auto auto 50%;
-    --${D}-translate: -50% -50%;
+    --${gt}-position: absolute;
+    --${gt}-inset: 50% auto auto 50%;
+    --${gt}-translate: -50% -50%;
   }
 
   &[is-processing-with-text] {
-    --${o}-content-visibility: visible;
+    --${mt}-content-visibility: visible;
 
     /* spinner svg position controls */
-    --${D}-position: relative;
-    --${D}-inset: 0;
-    --${D}-translate: 0;
-    --${M}-spinner-size: 1lh;
+    --${gt}-position: relative;
+    --${gt}-inset: 0;
+    --${gt}-translate: 0;
+    --${ft}-spinner-size: 1lh;
   }
 
   &:is([is-processing], [is-processing-with-text]) {
-    --${o}-opacity: var(--arc-button-processing-opacity, unset);
-    --${o}-cursor: var(--arc-button-processing-cursor, default);
+    --${mt}-opacity: var(--arc-button-processing-opacity, unset);
+    --${mt}-cursor: var(--arc-button-processing-cursor, default);
 
-    --${o}-color: var(--${o}-text-processing, var(--${o}-text));
-    --${o}-background: var(--${o}-fill-processing, var(--${o}-fill));
-    --${o}-border-color: var(--${o}-edge-processing, var(--${o}-edge));
+    --${mt}-color: var(--${mt}-text-processing, var(--${mt}-text));
+    --${mt}-background: var(--${mt}-fill-processing, var(--${mt}-fill));
+    --${mt}-border-color: var(--${mt}-edge-processing, var(--${mt}-edge));
 
     /* spinner svg style controls */
-    --${D}-circle-opacity: var(--arc-alpha-30);
-    --${D}-circle-color: var(--arc-button-color, var(--${D}-base-color, currentcolor));
-    --${D}-progress-color: var(--arc-button-progress-color, var(--${D}-base-color, currentcolor));
+    --${gt}-circle-opacity: var(--arc-alpha-30);
+    --${gt}-circle-color: var(--arc-button-color, var(--${gt}-base-color, currentcolor));
+    --${gt}-progress-color: var(--arc-button-progress-color, var(--${gt}-base-color, currentcolor));
 
     &:is(
       [data-variant*=secondary],
@@ -3503,24 +3471,24 @@
       [data-variant^=ai-],
       [data-variant$=-inverse]
     ) {
-      --${D}-circle-opacity: var(--arc-alpha-100);
-      --${D}-progress-color: var(--arc-color-brand-root);
+      --${gt}-circle-opacity: var(--arc-alpha-100);
+      --${gt}-progress-color: var(--arc-color-brand-root);
     }
   }
 
   &:is(:where(:focus, :focus-within):focus-visible, [data-simulate=focus]) {
-    --${o}-color: var(--${o}-text-focus, var(--${o}-text));
-    --${o}-background: var(--${o}-fill-focus, var(--${o}-fill));
-    --${o}-border-color: var(--${o}-edge-focus, var(--${o}-edge));
-    --${o}-outline-color: var(--arc-color-border-focus);
+    --${mt}-color: var(--${mt}-text-focus, var(--${mt}-text));
+    --${mt}-background: var(--${mt}-fill-focus, var(--${mt}-fill));
+    --${mt}-border-color: var(--${mt}-edge-focus, var(--${mt}-edge));
+    --${mt}-outline-color: var(--arc-color-border-focus);
 
 
     &[data-variant$=-inverse] {
-      --${o}-outline-color: var(--arc-color-border-focus-inverse);
+      --${mt}-outline-color: var(--arc-color-border-focus-inverse);
     }
 
-    --${o}-outline: var(--arc-button-outline, var(--${M}-outline));
-    --${o}-outline-offset: var(--arc-button-outline-offset, var(--${M}-outline-size));
+    --${mt}-outline: var(--arc-button-outline, var(--${ft}-outline));
+    --${mt}-outline-offset: var(--arc-button-outline-offset, var(--${ft}-outline-size));
 
     * {
       outline: none;
@@ -3528,52 +3496,52 @@
   }
 
 `,
-        Ii = u`
+        St = P`
 @layer arc-components {
 
   :where([arc-button]) {
-    ${Ai}
-    ${zi}
+    ${xt}
+    ${$t}
 
     /* VARIANTS */
-    ${Ci}
-    ${Si}
-    ${ji}
-    ${Ei}
+    ${yt}
+    ${wt}
+    ${kt}
+    ${zt}
 
     /* CORE */
-    ${_i}
-    ${Ti}
+    ${Ct}
+    ${At}
 
     appearance: none;
-    cursor: var(--arc-button-cursor, var(--${o}-cursor));
-    position: var(--arc-button-position, var(--${o}-position, unset));
-    transition: var(--arc-button-transition, var(--${o}-transition));
+    cursor: var(--arc-button-cursor, var(--${mt}-cursor));
+    position: var(--arc-button-position, var(--${mt}-position, unset));
+    transition: var(--arc-button-transition, var(--${mt}-transition));
 
     /* FOOTPRINT */
 
     font: inherit;
-    font-weight: var(--arc-button-font-weight, var(--${o}-font-weight));
-    font-size: var(--arc-button-font-size, var(--${M}-font-size, inherit));
-    height: var(--arc-button-height, var(--${M}-height, auto));
-    width: var(--arc-button-width, var(--${o}-width, auto));
-    min-width: var(--arc-button-min-width, var(--${o}-min-width, unset));
-    max-width: var(--arc-button-max-width, var(--${o}-max-width, 100%));
-    aspect-ratio: var(--arc-button-aspect-ratio, var(--${o}-aspect-ratio, unset));
+    font-weight: var(--arc-button-font-weight, var(--${mt}-font-weight));
+    font-size: var(--arc-button-font-size, var(--${ft}-font-size, inherit));
+    height: var(--arc-button-height, var(--${ft}-height, auto));
+    width: var(--arc-button-width, var(--${mt}-width, auto));
+    min-width: var(--arc-button-min-width, var(--${mt}-min-width, unset));
+    max-width: var(--arc-button-max-width, var(--${mt}-max-width, 100%));
+    aspect-ratio: var(--arc-button-aspect-ratio, var(--${mt}-aspect-ratio, unset));
 
-    padding: var(--arc-button-padding, var(--${M}-padding));
+    padding: var(--arc-button-padding, var(--${ft}-padding));
 
     /* VARIANT THEME APPLIED */
 
-    color: var(--arc-button-color, var(--${o}-color));
-    background: var(--arc-button-background, var(--${o}-background));
-    border: var(--arc-button-border, var(--${M}-border));
-    border-radius: var(--arc-button-border-radius, var(--${M}-border-radius));
+    color: var(--arc-button-color, var(--${mt}-color));
+    background: var(--arc-button-background, var(--${mt}-background));
+    border: var(--arc-button-border, var(--${ft}-border));
+    border-radius: var(--arc-button-border-radius, var(--${ft}-border-radius));
 
     opacity: var(--arc-button-opacity, 1);
 
-    outline: var(--arc-button-outline, var(--${o}-outline));
-    outline-offset: var(--arc-button-outline-offset, var(--${o}-outline-offset));
+    outline: var(--arc-button-outline, var(--${mt}-outline));
+    outline-offset: var(--arc-button-outline-offset, var(--${mt}-outline-offset));
 
     &[href] {
       text-decoration: var(--arc-button-text-decoration, none);
@@ -3586,17 +3554,17 @@
       display: flex;
       align-items: var(--arc-button-align-items, center);
       justify-content: var(--arc-button-justify-content, center);
-      gap: var(--arc-button-gap, var(--${M}-gap));
+      gap: var(--arc-button-gap, var(--${ft}-gap));
 
-      opacity: var(--arc-button-content-opacity, var(--${o}-content-opacity));
-      visibility: var(--arc-button-content-visibility, var(--${o}-content-visibility));
+      opacity: var(--arc-button-content-opacity, var(--${mt}-content-opacity));
+      visibility: var(--arc-button-content-visibility, var(--${mt}-content-visibility));
       pointer-events: var(--arc-button-content-pointer-events, none);
 
-      width: var(--arc-button-content-width, var(--${o}-content-width, auto));
+      width: var(--arc-button-content-width, var(--${mt}-content-width, auto));
       max-width: var(--arc-button-content-max-width, 100%);
       overflow: var(--arc-button-content-overflow, visible);
 
-      transition: var(--arc-button-content-transition, var(--${o}-transition));
+      transition: var(--arc-button-content-transition, var(--${mt}-transition));
 
       line-height: normal;
       user-select: none;
@@ -3607,14 +3575,14 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       max-width: 100%;
-      opacity: var(--arc-button-label-opacity, var(--${o}-opacity));
-      transition: var(--arc-button-label-transition, var(--${o}-transition));
+      opacity: var(--arc-button-label-opacity, var(--${mt}-opacity));
+      transition: var(--arc-button-label-transition, var(--${mt}-transition));
     }
 
     [arc-button-icon] {
       width: 1.25em; /** keeping for fontawesome v6 backward compatibility */
-      opacity: var(--arc-button-icon-opacity, var(--${o}-opacity));
-      transition: var(--arc-button-icon-transition, var(--${o}-transition));
+      opacity: var(--arc-button-icon-opacity, var(--${mt}-opacity));
+      transition: var(--arc-button-icon-transition, var(--${mt}-transition));
     }
 
     input {
@@ -3626,150 +3594,150 @@
 
   /* SPECIAL CASES */
   [arc-button=custom] {
-    --${o}-font-weight: normal;
-    --${o}-disabled-opacity: var(--arc-alpha-30);
+    --${mt}-font-weight: normal;
+    --${mt}-disabled-opacity: var(--arc-alpha-30);
 
     /* Default size matches [data-size=lg] */
-    --${F}: 14; /* unitless, desired font size at 100% */
-    --${F}-unit: 0.0625em; /* 1/16th of an em for the computed calcs */
-    --${D}-size: 16;
-    --${lr}-size: 16;
-    --${lr}-size-large: 20;
-    --${o}-gap: 8;
-    --${o}-padding-inline: 4; /* results in 24x24 for icon button @ 100% font size */
+    --${ut}: 14; /* unitless, desired font size at 100% */
+    --${ut}-unit: 0.0625em; /* 1/16th of an em for the computed calcs */
+    --${gt}-size: 16;
+    --${bt}-size: 16;
+    --${bt}-size-large: 20;
+    --${mt}-gap: 8;
+    --${mt}-padding-inline: 4; /* results in 24x24 for icon button @ 100% font size */
   }
 
   [arc-button][data-size=inherit] {
-    --${F}: 16; /* unitless, browser-base font size at 100% */
-    --${F}-unit: 0.0625em; /* 1/16th of an em for the computed calcs */
-    --${D}-size: 16;
-    --${lr}-size: 16;
-    --${lr}-size-large: 20;
-    --${o}-gap: 8;
-    --${o}-padding-inline: 16; /* results in 24x24 for icon button @ 100% font size */
+    --${ut}: 16; /* unitless, browser-base font size at 100% */
+    --${ut}-unit: 0.0625em; /* 1/16th of an em for the computed calcs */
+    --${gt}-size: 16;
+    --${bt}-size: 16;
+    --${bt}-size-large: 20;
+    --${mt}-gap: 8;
+    --${mt}-padding-inline: 16; /* results in 24x24 for icon button @ 100% font size */
 
     &:not([data-variant*=plain]) {
-      --${M}-height: 2.5em;
+      --${ft}-height: 2.5em;
     }
   }
 
   [arc-button]:not([hidden]) {
     flex: var(--arc-button-flex, unset);
-    display: var(--arc-button-display, var(--${o}-display, inline-flex));
+    display: var(--arc-button-display, var(--${mt}-display, inline-flex));
     align-items: center;
     justify-content: center;
   }
 
 }
 `,
-        yo = (0, t.jsx)(Ue, {}),
-        ur = (0, b.forwardRef)(({ children: r, disabled: a, ...e }, n) => {
-          const i = (0, b.useRef)(null),
+        jt = (0, S.jsx)($e, {}),
+        Et = (0, j.forwardRef)(({ children: a, disabled: r, ...e }, t) => {
+          const o = (0, j.useRef)(null),
             {
-              iconEnd: c,
-              iconStart: s,
-              icon: d,
+              iconEnd: i,
+              iconStart: n,
+              icon: c,
               text: l,
-              isActive: p,
-              isDisabled: h,
-              isProcessing: v,
-              isProcessingWithText: f,
-              hasLargeIcon: g,
-              tag: w,
-              href: E,
-              type: j,
-              title: P,
-              layout: A,
-              shape: _,
-              size: S = 'lg',
-              variant: C = 'common',
-              hierarchy: L = 'primary',
-              isInverse: H = !1,
-              _isCustom: J,
-              ...X
+              isActive: s,
+              isDisabled: d,
+              isProcessing: p,
+              isProcessingWithText: v,
+              hasLargeIcon: h,
+              tag: u,
+              href: m,
+              type: g,
+              title: b,
+              layout: f,
+              shape: x,
+              size: $ = 'lg',
+              variant: y = 'common',
+              hierarchy: k = 'primary',
+              isInverse: z = !1,
+              _isCustom: C,
+              ...A
             } = e,
-            V = w ?? (E ? 'a' : 'button'),
-            br = V === 'button' ? j || 'button' : void 0,
-            kr = A === 'icon',
-            Ar = f || v || h || a,
-            Ir = X?.['aria-disabled'] || Ar || void 0,
-            q = !kr && (r || l),
-            xr = (f && yo) || s || d,
-            ra = !kr && (f && !(s || d) ? void 0 : c),
-            Lr = (v || (f && kr)) && yo,
-            Zr = C && $o.includes(C),
-            Gr = (() => {
-              if (Zr || !['common', 'critical', 'ai'].includes(C)) return C
-              const Xr = L || 'primary'
-              return C === 'common' ? (H ? `${Xr}-inverse` : Xr) : `${C}-${Xr}`
+            E = u ?? (m ? 'a' : 'button'),
+            T = 'button' === E ? g || 'button' : void 0,
+            O = 'icon' === f,
+            I = v || p || d || r,
+            _ = A?.['aria-disabled'] || I || void 0,
+            P = !O && (a || l),
+            M = (v && jt) || n || c,
+            R = !O && (!v || n || c ? i : void 0),
+            L = (p || (v && O)) && jt,
+            B = y && pt.includes(y),
+            D = (() => {
+              if (B || !['common', 'critical', 'ai'].includes(y)) return y
+              const a = k || 'primary'
+              return 'common' === y ? (z ? `${a}-inverse` : a) : `${y}-${a}`
             })(),
-            { tooltip: Mr, ...Dr } = X,
-            zr = typeof Mr == 'string' ? Mr : void 0,
-            R = e.tooltip ?? zr,
-            cr = !!R,
-            hr = typeof R == 'string' ? { text: R } : R,
-            er = X['aria-describedby'],
-            W = (0, b.useRef)(void 0),
-            vr = Sr(void 0, 'arc-tooltip')
-          cr && !W.current && (W.current = e.id ? `${e.id}-tooltip` : vr)
-          const Cr = cr ? ho([er, W.current]) : er,
-            { popoverTarget: $r, popoverTargetAction: aa, ...he } = Dr
-          let ve = { popoverTarget: $r || void 0, popoverTargetAction: aa || void 0 }
+            { tooltip: F, ...H } = A,
+            V = 'string' == typeof F ? F : void 0,
+            N = e.tooltip ?? V,
+            U = !!N,
+            Z = 'string' == typeof N ? { text: N } : N,
+            Y = A['aria-describedby'],
+            q = (0, j.useRef)(void 0),
+            W = Pr(void 0, 'arc-tooltip')
+          U && !q.current && (q.current = e.id ? `${e.id}-tooltip` : W)
+          const G = U ? fe([Y, q.current]) : Y,
+            { popoverTarget: X, popoverTargetAction: K, ...J } = H
+          let Q = { popoverTarget: X || void 0, popoverTargetAction: K || void 0 }
           return (
-            b.version.startsWith('18') &&
-              (ve = { popovertarget: $r || void 0, popovertargetaction: aa || void 0 }),
-            (0, t.jsxs)(t.Fragment, {
+            j.version.startsWith('18') &&
+              (Q = { popovertarget: X || void 0, popovertargetaction: K || void 0 }),
+            (0, S.jsxs)(S.Fragment, {
               children: [
-                (0, t.jsxs)(V, {
-                  ...he,
-                  ...ve,
-                  ref: (Xr) => {
-                    ;((i.current = Xr), bt(n, Xr))
+                (0, S.jsxs)(E, {
+                  ...J,
+                  ...Q,
+                  ref: (a) => {
+                    ;((o.current = a), w(t, a))
                   },
-                  'arc-button': J ? 'custom' : '',
-                  disabled: (!E && Ar) || void 0,
-                  href: E || void 0,
-                  title: cr ? void 0 : P || void 0,
-                  type: br,
-                  'data-layout': A,
-                  'data-shape': J ? void 0 : _,
-                  'data-size': J ? void 0 : S,
-                  'data-variant': J ? void 0 : Gr,
-                  'has-large-icon': g ? '' : void 0,
-                  'is-active': p ? '' : void 0,
-                  'is-processing': v || (f && kr) ? '' : void 0,
-                  'is-processing-with-text': f && !kr ? '' : void 0,
-                  'is-disabled': Ar || Ir ? '' : void 0,
-                  'aria-disabled': Ir,
-                  'aria-describedby': Cr || void 0,
+                  'arc-button': C ? 'custom' : '',
+                  disabled: (!m && I) || void 0,
+                  href: m || void 0,
+                  title: U ? void 0 : b || void 0,
+                  type: T,
+                  'data-layout': f,
+                  'data-shape': C ? void 0 : x,
+                  'data-size': C ? void 0 : $,
+                  'data-variant': C ? void 0 : D,
+                  'has-large-icon': h ? '' : void 0,
+                  'is-active': s ? '' : void 0,
+                  'is-processing': p || (v && O) ? '' : void 0,
+                  'is-processing-with-text': v && !O ? '' : void 0,
+                  'is-disabled': I || _ ? '' : void 0,
+                  'aria-disabled': _,
+                  'aria-describedby': G || void 0,
                   children: [
-                    (0, t.jsxs)('span', {
+                    (0, S.jsxs)('span', {
                       'arc-button-content': '',
                       children: [
-                        !!xr && (0, t.jsx)(B, { 'arc-button-icon': '', icon: xr }),
-                        !!q && (0, t.jsx)('span', { 'arc-button-label': '', children: q }),
-                        !!ra && (0, t.jsx)(B, { 'arc-button-icon': '', icon: ra }),
+                        !!M && (0, S.jsx)(xr, { 'arc-button-icon': '', icon: M }),
+                        !!P && (0, S.jsx)('span', { 'arc-button-label': '', children: P }),
+                        !!R && (0, S.jsx)(xr, { 'arc-button-icon': '', icon: R }),
                       ],
                     }),
-                    Lr,
+                    L,
                   ],
                 }),
-                cr &&
-                  (0, t.jsx)(xo, {
-                    ...hr,
-                    id: W.current,
-                    alternateAnchor: hr?.alternateAnchor ?? (() => i.current),
+                U &&
+                  (0, S.jsx)(nt, {
+                    ...Z,
+                    id: q.current,
+                    alternateAnchor: Z?.alternateAnchor ?? (() => o.current),
                   }),
               ],
             })
           )
         })
-      ;((ur.displayName = 'ArcButton'), O('ArcButton', Ii))
-      const Pa = (0, b.forwardRef)((r, a) =>
-          (0, t.jsx)(ur, { ...r, ref: a, 'arc-popover-button': '' }),
+      ;((Et.displayName = 'ArcButton'), Ba('ArcButton', St))
+      const Tt = (0, j.forwardRef)((a, r) =>
+          (0, S.jsx)(Et, { ...a, ref: r, 'arc-popover-button': '' }),
         ),
-        wo = ({ isInverse: r = !1, isOpen: a, ...e }) =>
-          (0, t.jsx)(ur, {
+        Ot = ({ isInverse: a = !1, isOpen: r, ...e }) =>
+          (0, S.jsx)(Et, {
             ...e,
             icon: 'fa-regular fa-xmark',
             text: 'Dismiss',
@@ -3778,313 +3746,313 @@
             size: 'sm',
             variant: 'common',
             hierarchy: 'tertiary',
-            isInverse: r,
+            isInverse: a,
             'arc-popover-dismiss': '',
           }),
-        Li = ({ children: r, showDismiss: a, dismissProps: e, tag: n = 'header', ...i }) =>
-          (0, t.jsxs)(n, {
-            ...i,
+        It = ({ children: a, showDismiss: r, dismissProps: e, tag: t = 'header', ...o }) =>
+          (0, S.jsxs)(t, {
+            ...o,
             'arc-popover-header': '',
-            children: [r, a && (0, t.jsx)(wo, { ...e })],
+            children: [a, r && (0, S.jsx)(Ot, { ...e })],
           }),
-        Mi = ({ tag: r = 'article', ...a }) => (0, t.jsx)(r, { ...a, 'arc-popover-body': '' }),
-        Pi = ({ showDivider: r, tag: a = 'footer', ...e }) =>
-          (0, t.jsx)(a, { ...e, 'arc-popover-footer': '', 'has-divider': r ? '' : void 0 }),
-        Ri = (r) => (0, t.jsx)('span', { ...r, 'arc-popover-tail': '' })
-      Pa.displayName = 'ArcPopoverButton'
-      const m = u`arc•popover`,
-        I = u`${m}•space`,
-        se = u`${m}•font`,
-        mr = u`${m}•shift`,
-        ga = u`${m}•offset`,
-        Yr = u`${m}•outline`,
-        Rr = u`${m}•header`,
-        _r = u`${m}•body`,
-        or = u`${m}•footer`,
-        x = u`${m}•tail`,
-        Bi = u`
-  --${m}-position: absolute;
-  --${m}-border-radius: var(--arc-popover-border-radius, var(--arc-border-radius-lg));
-  --${m}-inner-border-radius: calc(var(--${m}-border-radius) - var(--${Yr}-size));
+        _t = ({ tag: a = 'article', ...r }) => (0, S.jsx)(a, { ...r, 'arc-popover-body': '' }),
+        Pt = ({ showDivider: a, tag: r = 'footer', ...e }) =>
+          (0, S.jsx)(r, { ...e, 'arc-popover-footer': '', 'has-divider': a ? '' : void 0 }),
+        Mt = (a) => (0, S.jsx)('span', { ...a, 'arc-popover-tail': '' })
+      Tt.displayName = 'ArcPopoverButton'
+      const Rt = P`arc•popover`,
+        Lt = P`${Rt}•space`,
+        Bt = P`${Rt}•font`,
+        Dt = P`${Rt}•shift`,
+        Ft = P`${Rt}•offset`,
+        Ht = P`${Rt}•outline`,
+        Vt = P`${Rt}•header`,
+        Nt = P`${Rt}•body`,
+        Ut = P`${Rt}•footer`,
+        Zt = P`${Rt}•tail`,
+        Yt = P`
+  --${Rt}-position: absolute;
+  --${Rt}-border-radius: var(--arc-popover-border-radius, var(--arc-border-radius-lg));
+  --${Rt}-inner-border-radius: calc(var(--${Rt}-border-radius) - var(--${Ht}-size));
 
   /* mix ratio for tail's outline color gradient along popover's perimeter, e.g.: dropdown[variant=ai-outline] */
-  --${m}-trail-mix: 50%;
+  --${Rt}-trail-mix: 50%;
 
   /* local spacing 16px base @ 100% */
-  --${I}-1: max(1px, 0.0625em);
-  --${I}-2: max(2px, 0.125em);
-  --${I}-3: max(3px, 0.1875em);
-  --${I}-4: max(4px, 0.25em);
-  --${I}-6: max(6px, 0.375em);
-  --${I}-8: max(8px, 0.5em);
-  --${I}-10: max(10px, 0.625em);
-  --${I}-12: max(12px, 0.75em);
-  --${I}-14: max(14px, 0.875em);
-  --${I}-16: max(16px, 1em);
-  --${I}-18: max(18px, 1.125em);
-  --${I}-20: max(20px, 1.25em);
-  --${I}-24: max(24px, 1.5em);
+  --${Lt}-1: max(1px, 0.0625em);
+  --${Lt}-2: max(2px, 0.125em);
+  --${Lt}-3: max(3px, 0.1875em);
+  --${Lt}-4: max(4px, 0.25em);
+  --${Lt}-6: max(6px, 0.375em);
+  --${Lt}-8: max(8px, 0.5em);
+  --${Lt}-10: max(10px, 0.625em);
+  --${Lt}-12: max(12px, 0.75em);
+  --${Lt}-14: max(14px, 0.875em);
+  --${Lt}-16: max(16px, 1em);
+  --${Lt}-18: max(18px, 1.125em);
+  --${Lt}-20: max(20px, 1.25em);
+  --${Lt}-24: max(24px, 1.5em);
 
   /* local font sizes 16px base @ 100% */
-  --${se}-12: max(12px, 0.75em);
-  --${se}-14: max(14px, 0.875em);
+  --${Bt}-12: max(12px, 0.75em);
+  --${Bt}-14: max(14px, 0.875em);
 
-  --${Yr}-size: var(--arc-popover-outline-size, var(--${I}-2));
+  --${Ht}-size: var(--arc-popover-outline-size, var(--${Lt}-2));
 
   /* tail metrics */
-  --${x}-base: max(var(--js-t, 10) * 1px, 0.625em);
-  --${x}-size: (var(--${x}-base) + var(--${Yr}-size));
-  --${x}-radius: var(--${Yr}-size);
+  --${Zt}-base: max(var(--js-t, 10) * 1px, 0.625em);
+  --${Zt}-size: (var(--${Zt}-base) + var(--${Ht}-size));
+  --${Zt}-radius: var(--${Ht}-size);
 
   /* 0.707 = sqrt(2)/2 = multiplier for half of rotated tail size (used in offset calcs) */
-  --${x}-shift: (var(--${x}-base) * 0.707 * var(--js-i));
-  --${x}-clamp: clamp(
-    var(--${x}-shift),
-    var(--js-h) - (var(--${x}-shift) * 2),
-    var(--js-cw) - (var(--${Yr}-size) * 2)
+  --${Zt}-shift: (var(--${Zt}-base) * 0.707 * var(--js-i));
+  --${Zt}-clamp: clamp(
+    var(--${Zt}-shift),
+    var(--js-h) - (var(--${Zt}-shift) * 2),
+    var(--js-cw) - (var(--${Ht}-size) * 2)
   );
 
   /* offset */
-  --${ga}-x: calc(var(--js-cw) + var(--js-o) + var(--arc-popover-nudge, 0em));
-  --${ga}-y: calc(var(--js-ch) + var(--js-o) + var(--arc-popover-nudge, 0em));
-  --${mr}-x: calc(var(--js-cw) + var(--${x}-shift));
-  --${mr}-y: calc(var(--js-ch) + var(--${x}-shift));
+  --${Ft}-x: calc(var(--js-cw) + var(--js-o) + var(--arc-popover-nudge, 0em));
+  --${Ft}-y: calc(var(--js-ch) + var(--js-o) + var(--arc-popover-nudge, 0em));
+  --${Dt}-x: calc(var(--js-cw) + var(--${Zt}-shift));
+  --${Dt}-y: calc(var(--js-ch) + var(--${Zt}-shift));
 
   /* padding */
-  --${m}-padding: var(--${I}-12);
-  --${Rr}-gap: var(--${I}-12);
-  --${or}-gap: var(--${I}-12);
+  --${Rt}-padding: var(--${Lt}-12);
+  --${Vt}-gap: var(--${Lt}-12);
+  --${Ut}-gap: var(--${Lt}-12);
 
   &:has([arc-popover-body]) {
-    --${m}-padding: 0;
-    &:has([arc-popover-header]) { --${_r}-padding-block-start: 0; }
-    &:has([arc-popover-footer]:not([has-divider])) { --${_r}-padding-block-end: 0; }
+    --${Rt}-padding: 0;
+    &:has([arc-popover-header]) { --${Nt}-padding-block-start: 0; }
+    &:has([arc-popover-footer]:not([has-divider])) { --${Nt}-padding-block-end: 0; }
   }
 
 `,
-        Oi = u`
+        qt = P`
   &[is-fixed] {
-    --${m}-position: fixed;
+    --${Rt}-position: fixed;
   }
 
   &:where([arc-popover*=top], [arc-popover*=bottom]) {
-    --${m}-min-width: calc(var(--js-w) + ((var(--${x}-shift) - var(--${Yr}-size)) * 2));
-    --${m}-min-height: auto;
+    --${Rt}-min-width: calc(var(--js-w) + ((var(--${Zt}-shift) - var(--${Ht}-size)) * 2));
+    --${Rt}-min-height: auto;
   }
 
   &:where([arc-popover*=right], [arc-popover*=left]) {
-    --${m}-min-width: auto;
-    --${m}-min-height: auto;
+    --${Rt}-min-width: auto;
+    --${Rt}-min-height: auto;
   }
 
   &:where([arc-popover=center]) {
-    --${m}-min-width: auto;
-    --${m}-min-height: auto;
+    --${Rt}-min-width: auto;
+    --${Rt}-min-height: auto;
   }
 
   &:where([arc-popover*=top]) {
-    --${m}-ty: calc(-100% - var(--${ga}-y));
-    --${x}-ty: 50%;
+    --${Rt}-ty: calc(-100% - var(--${Ft}-y));
+    --${Zt}-ty: 50%;
 
     &:where([arc-popover*=-start]) {
-      --${m}-trail-mix: 87.5%;
-      --${m}-tx: calc(0% - var(--${mr}-x));
-      --${x}-inset: auto auto 0% calc(0% + var(--${x}-clamp));
-      --${x}-tx: 50%;
+      --${Rt}-trail-mix: 87.5%;
+      --${Rt}-tx: calc(0% - var(--${Dt}-x));
+      --${Zt}-inset: auto auto 0% calc(0% + var(--${Zt}-clamp));
+      --${Zt}-tx: 50%;
     }
 
     &:where([arc-popover*=-center]) {
-      --${m}-trail-mix: 75%;
-      --${m}-tx: -50%;
-      --${x}-inset: auto auto 0% 50%;
-      --${x}-tx: -50%;
+      --${Rt}-trail-mix: 75%;
+      --${Rt}-tx: -50%;
+      --${Zt}-inset: auto auto 0% 50%;
+      --${Zt}-tx: -50%;
     }
 
     &:where([arc-popover*=-end]) {
-      --${m}-trail-mix: 62.5%;
-      --${m}-tx: calc(-100% + var(--${mr}-x));
-      --${x}-inset: auto auto 0% calc(100% - var(--${x}-clamp));
-      --${x}-tx: -150%;
+      --${Rt}-trail-mix: 62.5%;
+      --${Rt}-tx: calc(-100% + var(--${Dt}-x));
+      --${Zt}-inset: auto auto 0% calc(100% - var(--${Zt}-clamp));
+      --${Zt}-tx: -150%;
     }
   }
 
   &:where([arc-popover*=right]) {
-    --${m}-tx: calc(0% + var(--${ga}-x));
-    --${x}-tx: -50%;
+    --${Rt}-tx: calc(0% + var(--${Ft}-x));
+    --${Zt}-tx: -50%;
 
     &:where([arc-popover*=-start]) {
-      --${m}-trail-mix: 62.5%;
-      --${m}-ty: calc(0% - var(--${mr}-y));
-      --${x}-ty: calc(50% + var(--${mr}-y));
-      --${x}-inset: auto auto 100% 0%;
+      --${Rt}-trail-mix: 62.5%;
+      --${Rt}-ty: calc(0% - var(--${Dt}-y));
+      --${Zt}-ty: calc(50% + var(--${Dt}-y));
+      --${Zt}-inset: auto auto 100% 0%;
     }
 
     &:where([arc-popover*=-center]) {
-      --${m}-trail-mix: 75%;
-      --${m}-ty: -50%;
-      --${x}-ty: 50%;
-      --${x}-inset: auto auto 50% 0%;
+      --${Rt}-trail-mix: 75%;
+      --${Rt}-ty: -50%;
+      --${Zt}-ty: 50%;
+      --${Zt}-inset: auto auto 50% 0%;
     }
 
     &:where([arc-popover*=-end]) {
-      --${m}-trail-mix: 87.5%;
-      --${m}-ty: calc(-100% + var(--${mr}-y));
-      --${x}-ty: calc(50% - var(--${mr}-y));
-      --${x}-inset: auto auto 0% 0%;
+      --${Rt}-trail-mix: 87.5%;
+      --${Rt}-ty: calc(-100% + var(--${Dt}-y));
+      --${Zt}-ty: calc(50% - var(--${Dt}-y));
+      --${Zt}-inset: auto auto 0% 0%;
     }
   }
 
   &:where([arc-popover=center]) {
-    --${m}-trail-mix: 50%;
-    --${m}-tx: -50%;
-    --${m}-ty: -50%;
-    --${x}-size: 0em;
-    --${x}-display: none;
-    --${x}-display-duration: 0ms;
+    --${Rt}-trail-mix: 50%;
+    --${Rt}-tx: -50%;
+    --${Rt}-ty: -50%;
+    --${Zt}-size: 0em;
+    --${Zt}-display: none;
+    --${Zt}-display-duration: 0ms;
   }
 
   &:where([arc-popover*=bottom]) {
-    --${m}-ty: calc(0% + var(--${ga}-y));
-    --${x}-ty: -50%;
+    --${Rt}-ty: calc(0% + var(--${Ft}-y));
+    --${Zt}-ty: -50%;
 
     &:where([arc-popover*=-start]) {
-      --${m}-trail-mix: 37.5%;
-      --${m}-tx: calc(0% - var(--${mr}-x));
-      --${x}-tx: 50%;
-      --${x}-inset: 0% auto auto calc(0% + var(--${x}-clamp));
+      --${Rt}-trail-mix: 37.5%;
+      --${Rt}-tx: calc(0% - var(--${Dt}-x));
+      --${Zt}-tx: 50%;
+      --${Zt}-inset: 0% auto auto calc(0% + var(--${Zt}-clamp));
     }
 
     &:where([arc-popover*=-center]) {
-      --${m}-trail-mix: 25%;
-      --${m}-tx: -50%;
-      --${x}-tx: -50%;
-      --${x}-inset: 0% auto auto 50%;
+      --${Rt}-trail-mix: 25%;
+      --${Rt}-tx: -50%;
+      --${Zt}-tx: -50%;
+      --${Zt}-inset: 0% auto auto 50%;
     }
 
     &:where([arc-popover*=-end]) {
-      --${m}-trail-mix: 12.5%;
-      --${m}-tx: calc(-100% + var(--${mr}-x));
-      --${x}-tx: -150%;
-      --${x}-inset: 0% auto auto calc(100% - var(--${x}-clamp));
+      --${Rt}-trail-mix: 12.5%;
+      --${Rt}-tx: calc(-100% + var(--${Dt}-x));
+      --${Zt}-tx: -150%;
+      --${Zt}-inset: 0% auto auto calc(100% - var(--${Zt}-clamp));
     }
   }
 
   &:where([arc-popover*=left]) {
-    --${m}-tx: calc(-100% - var(--${ga}-x));
-    --${x}-tx: 50%;
+    --${Rt}-tx: calc(-100% - var(--${Ft}-x));
+    --${Zt}-tx: 50%;
 
     &:where([arc-popover*=-start]) {
-      --${m}-trail-mix: 12.5%;
-      --${m}-ty: calc(0% - var(--${mr}-y));
-      --${x}-ty: calc(50% + var(--${mr}-y));
-      --${x}-inset: auto 0% 100% auto;
+      --${Rt}-trail-mix: 12.5%;
+      --${Rt}-ty: calc(0% - var(--${Dt}-y));
+      --${Zt}-ty: calc(50% + var(--${Dt}-y));
+      --${Zt}-inset: auto 0% 100% auto;
     }
 
     &:where([arc-popover*=-center]) {
-      --${m}-trail-mix: 25%;
-      --${m}-ty: -50%;
-      --${x}-ty: 50%;
-      --${x}-inset: auto 0% 50% auto;
+      --${Rt}-trail-mix: 25%;
+      --${Rt}-ty: -50%;
+      --${Zt}-ty: 50%;
+      --${Zt}-inset: auto 0% 50% auto;
     }
 
     &:where([arc-popover*=-end]) {
-      --${m}-trail-mix: 37.5%;
-      --${m}-ty: calc(-100% + var(--${mr}-y));
-      --${x}-ty: calc(50% - var(--${mr}-y));
-      --${x}-inset: auto 0% 0% auto;
+      --${Rt}-trail-mix: 37.5%;
+      --${Rt}-ty: calc(-100% + var(--${Dt}-y));
+      --${Zt}-ty: calc(50% - var(--${Dt}-y));
+      --${Zt}-inset: auto 0% 0% auto;
     }
   }
 
 `,
-        Di = u`
+        Wt = P`
   /* default variant: common */
   &[variant] {
-    --${m}-color: var(--arc-color-text-primary);
-    --${m}-background: var(--arc-color-background-primary);
-    --${m}-content-background: none;
-    --${or}-divider-color: var(--arc-color-border-standard);
-    --${x}-background: var(--arc-color-background-primary);
-    --${x}-outline-color: var(--arc-color-background-primary);
-    --${x}-border: solid var(--${Yr}-size) var(--${x}-outline-color);
-    --${m}-shadow: var(--arc-shadow-light-lg);
+    --${Rt}-color: var(--arc-color-text-primary);
+    --${Rt}-background: var(--arc-color-background-primary);
+    --${Rt}-content-background: none;
+    --${Ut}-divider-color: var(--arc-color-border-standard);
+    --${Zt}-background: var(--arc-color-background-primary);
+    --${Zt}-outline-color: var(--arc-color-background-primary);
+    --${Zt}-border: solid var(--${Ht}-size) var(--${Zt}-outline-color);
+    --${Rt}-shadow: var(--arc-shadow-light-lg);
   }
 
   &[variant=common][is-inverse] {
-    --${m}-color: var(--arc-color-text-inverse);
-    --${m}-background: var(--arc-color-background-inverse);
-    --${m}-shadow: var(--arc-shadow-dark-lg);
-    --${or}-divider-color: var(--arc-color-alpha-white-20);
-    --${x}-background: var(--arc-color-background-inverse);
-    --${x}-outline-color: var(--arc-color-background-inverse);
+    --${Rt}-color: var(--arc-color-text-inverse);
+    --${Rt}-background: var(--arc-color-background-inverse);
+    --${Rt}-shadow: var(--arc-shadow-dark-lg);
+    --${Ut}-divider-color: var(--arc-color-alpha-white-20);
+    --${Zt}-background: var(--arc-color-background-inverse);
+    --${Zt}-outline-color: var(--arc-color-background-inverse);
   }
 
   &[variant=brand] {
-    --${m}-background:
+    --${Rt}-background:
       linear-gradient(to bottom, var(--arc-color-brand-light), var(--arc-color-brand-light)) padding-box,
       linear-gradient(to bottom, var(--arc-color-border-brand), var(--arc-color-border-brand)) border-box;
-    --${m}-content-background: var(--arc-color-brand-light);
-    --${x}-background: var(--arc-color-brand-light);
-    --${x}-outline-color: var(--arc-color-border-brand);
+    --${Rt}-content-background: var(--arc-color-brand-light);
+    --${Zt}-background: var(--arc-color-brand-light);
+    --${Zt}-outline-color: var(--arc-color-border-brand);
   }
 
   &[variant=ai] {
-    --${m}-background:
+    --${Rt}-background:
       var(--arc-gradient-ai-050) padding-box,
       var(--arc-gradient-ai-200) border-box;
-    --${m}-content-background: var(--arc-gradient-ai-050);
-    --${x}-background: color-mix(in srgb,
-      var(--arc-color-ai-purple-050) var(--${m}-trail-mix, 37.5%),
-      var(--arc-color-ai-blue-050) clamp(0%, 100% - var(--${m}-trail-mix, 37.5%), 100%)
+    --${Rt}-content-background: var(--arc-gradient-ai-050);
+    --${Zt}-background: color-mix(in srgb,
+      var(--arc-color-ai-purple-050) var(--${Rt}-trail-mix, 37.5%),
+      var(--arc-color-ai-blue-050) clamp(0%, 100% - var(--${Rt}-trail-mix, 37.5%), 100%)
     );
-    --${x}-outline-color: color-mix(in srgb,
-      var(--arc-color-ai-purple-200) var(--${m}-trail-mix, 37.5%),
-      var(--arc-color-ai-blue-200) clamp(0%, 100% - var(--${m}-trail-mix, 37.5%), 100%)
+    --${Zt}-outline-color: color-mix(in srgb,
+      var(--arc-color-ai-purple-200) var(--${Rt}-trail-mix, 37.5%),
+      var(--arc-color-ai-blue-200) clamp(0%, 100% - var(--${Rt}-trail-mix, 37.5%), 100%)
     );
   }
 `,
-        Hi = u`
+        Gt = P`
   /* default density: compact */
   &[density] {
-    --${Rr}-gap: var(--${I}-12);
-    --${Rr}-padding-block: var(--${I}-12);
-    --${Rr}-padding-inline: var(--${I}-14);
+    --${Vt}-gap: var(--${Lt}-12);
+    --${Vt}-padding-block: var(--${Lt}-12);
+    --${Vt}-padding-inline: var(--${Lt}-14);
 
-    --${_r}-padding-block: var(--${I}-12);
-    --${_r}-padding-inline: var(--${I}-12);
+    --${Nt}-padding-block: var(--${Lt}-12);
+    --${Nt}-padding-inline: var(--${Lt}-12);
 
-    --${or}-gap: var(--${I}-12);
-    --${or}-padding-inline: var(--${I}-12);
-    --${or}-padding-block-start: var(--${I}-12);
-    --${or}-padding-block-end: var(--${I}-12);
+    --${Ut}-gap: var(--${Lt}-12);
+    --${Ut}-padding-inline: var(--${Lt}-12);
+    --${Ut}-padding-block-start: var(--${Lt}-12);
+    --${Ut}-padding-block-end: var(--${Lt}-12);
   }
 
   &[density=comfortable] {
     &:not(:has([arc-popover-body])) {
-      --${m}-padding: var(--${I}-18);
+      --${Rt}-padding: var(--${Lt}-18);
     }
 
-    --${Rr}-gap: var(--${I}-18);
-    --${Rr}-padding-block: var(--${I}-16);
-    --${Rr}-padding-inline: var(--${I}-18);
+    --${Vt}-gap: var(--${Lt}-18);
+    --${Vt}-padding-block: var(--${Lt}-16);
+    --${Vt}-padding-inline: var(--${Lt}-18);
 
-    --${_r}-padding-block: var(--${I}-18);
-    --${_r}-padding-inline: var(--${I}-18);
+    --${Nt}-padding-block: var(--${Lt}-18);
+    --${Nt}-padding-inline: var(--${Lt}-18);
 
-    --${or}-gap: var(--${I}-18);
-    --${or}-padding-inline: var(--${I}-18);
-    --${or}-padding-block-start: var(--${I}-16);
-    --${or}-padding-block-end: var(--${I}-18);
+    --${Ut}-gap: var(--${Lt}-18);
+    --${Ut}-padding-inline: var(--${Lt}-18);
+    --${Ut}-padding-block-start: var(--${Lt}-16);
+    --${Ut}-padding-block-end: var(--${Lt}-18);
 
     [arc-popover-content] {
-      font-size: var(--arc-popover-font-size, var(--${se}-14));
+      font-size: var(--arc-popover-font-size, var(--${Bt}-14));
     }
   }
 `,
-        Vi = u`
+        Xt = P`
   [arc-popover] {
-    position: var(--arc-popover-position, var(--${m}-position));
+    position: var(--arc-popover-position, var(--${Rt}-position));
     inset: var(--js-cy, 50%) auto auto var(--js-cx, 50%);
-    translate: var(--${m}-tx) var(--${m}-ty) 0;
+    translate: var(--${Rt}-tx) var(--${Rt}-ty) 0;
     will-change: translate, opacity;
     overflow: visible; /* For the tail – content overflow is set on '[arc-popover-content]' */
 
@@ -4096,10 +4064,10 @@
     font-size: max(var(--arc-font-size-16), 1em);
 
     padding: 0;
-    background: var(--arc-popover-background, var(--${m}-background));
-    border: var(--${Yr}-size) solid transparent;
-    border-radius: var(--${m}-border-radius);
-    box-shadow: var(--arc-popover-shadow, var(--${m}-shadow));
+    background: var(--arc-popover-background, var(--${Rt}-background));
+    border: var(--${Ht}-size) solid transparent;
+    border-radius: var(--${Rt}-border-radius);
+    box-shadow: var(--arc-popover-shadow, var(--${Rt}-shadow));
     margin: 0;
 
     &::backdrop {
@@ -4123,20 +4091,20 @@
       overflow: var(--arc-popover-overflow, auto);
       overscroll-behavior: var(--arc-popover-overscroll-behavior, contain);
 
-      color: var(--arc-popover-color, var(--${m}-color));
-      padding: var(--arc-popover-padding, var(--${m}-padding));
-      background: var(--arc-popover-content-background, var(--${m}-content-background));
-      border-radius: var(--${m}-inner-border-radius);
-      border: var(--arc-popover-border, var(--${I}-2) solid transparent);
+      color: var(--arc-popover-color, var(--${Rt}-color));
+      padding: var(--arc-popover-padding, var(--${Rt}-padding));
+      background: var(--arc-popover-content-background, var(--${Rt}-content-background));
+      border-radius: var(--${Rt}-inner-border-radius);
+      border: var(--arc-popover-border, var(--${Lt}-2) solid transparent);
 
       width: var(--arc-popover-width, fit-content);
       height: var(--arc-popover-height, fit-content);
-      min-width: var(--arc-popover-min-width, var(--${m}-min-width));
-      min-height: var(--arc-popover-min-height, var(--${m}-min-height));
+      min-width: var(--arc-popover-min-width, var(--${Rt}-min-width));
+      min-height: var(--arc-popover-min-height, var(--${Rt}-min-height));
       max-width: var(--arc-popover-max-width, 100vw);
       max-height: var(--arc-popover-max-height, 65vh);
       resize: var(--arc-popover-resize, none);
-      font-size: var(--arc-popover-font-size, var(--${se}-12));
+      font-size: var(--arc-popover-font-size, var(--${Bt}-12));
     }
 
     [arc-popover-dismiss] {
@@ -4144,7 +4112,7 @@
       display: var(--arc-popover-dismiss-display, inline-flex);
       align-items: var(--arc-popover-dismiss-align-items, center);
       justify-content: var(--arc-popover-dismiss-justify-content, center);
-      margin:  var(--arc-popover-dismiss-margin, calc(-1 * var(--${I}-6)) 0);
+      margin:  var(--arc-popover-dismiss-margin, calc(-1 * var(--${Lt}-6)) 0);
     }
 
     [arc-popover-header] {
@@ -4152,18 +4120,18 @@
       display: var(--arc-popover-header-display, flex);
       justify-content: var(--arc-popover-header-justify-content, space-between);
       align-items: var(--arc-popover-header-align-items, baseline);
-      gap: var(--arc-popover-header-gap, var(--${Rr}-gap));
+      gap: var(--arc-popover-header-gap, var(--${Vt}-gap));
 
       padding: var(--arc-popover-header-padding,
-        var(--${Rr}-padding-block)
-        var(--${Rr}-padding-inline)
+        var(--${Vt}-padding-block)
+        var(--${Vt}-padding-inline)
       );
 
       color: var(--arc-popover-header-color, inherit);
       background: var(--arc-popover-header-background, none);
 
       &:has([arc-popover-dismiss]) {
-        padding-inline-end: var(--${I}-12);
+        padding-inline-end: var(--${Lt}-12);
       }
     }
 
@@ -4173,10 +4141,10 @@
       flex-direction: var(--arc-popover-body-flex-direction, unset);
 
       padding: var(--arc-popover-body-padding,
-        var(--${_r}-padding-block-start, var(--${_r}-padding-block))
-        var(--${_r}-padding-inline)
-        var(--${_r}-padding-block-end, var(--${_r}-padding-block))
-        var(--${_r}-padding-inline)
+        var(--${Nt}-padding-block-start, var(--${Nt}-padding-block))
+        var(--${Nt}-padding-inline)
+        var(--${Nt}-padding-block-end, var(--${Nt}-padding-block))
+        var(--${Nt}-padding-inline)
       );
     }
 
@@ -4186,50 +4154,49 @@
       flex-direction: var(--arc-popover-footer-flex-direction, row-reverse);
       justify-content: var(--arc-popover-footer-justify-content, space-between);
       align-items: var(--arc-popover-footer-align-items, center);
-      gap: var(--arc-popover-footer-gap, var(--${or}-gap));
+      gap: var(--arc-popover-footer-gap, var(--${Ut}-gap));
 
       padding: var(--arc-popover-footer-padding,
-        var(--${or}-padding-block-start)
-        var(--${or}-padding-inline)
-        var(--${or}-padding-block-end)
-        var(--${or}-padding-inline)
+        var(--${Ut}-padding-block-start)
+        var(--${Ut}-padding-inline)
+        var(--${Ut}-padding-block-end)
+        var(--${Ut}-padding-inline)
       );
 
       background: var(--arc-popover-footer-background, none);
       color: var(--arc-popover-footer-color, inherit);
 
       &:where([has-divider]) {
-        border-top: var(--arc-popover-footer-border-top, var(--${I}-1) solid var(--${or}-divider-color));
+        border-top: var(--arc-popover-footer-border-top, var(--${Lt}-1) solid var(--${Ut}-divider-color));
       }
     }
 
     [arc-popover-tail] {
       position: absolute;
-      display: var(--${x}-display, block);
-      width: calc(var(--${x}-size));
-      height: calc(var(--${x}-size));
-      inset: var(--${x}-inset);
-      translate: var(--${x}-tx) var(--${x}-ty);
+      display: var(--${Zt}-display, block);
+      width: calc(var(--${Zt}-size));
+      height: calc(var(--${Zt}-size));
+      inset: var(--${Zt}-inset);
+      translate: var(--${Zt}-tx) var(--${Zt}-ty);
       rotate: 45deg;
 
-      background: var(--arc-popover-outline-color, var(--${x}-background));
-      border: var(--${x}-border, var(--${x}-outline-color) solid var(--${Yr}-size));
-      border-radius: var(--${x}-radius);
+      background: var(--arc-popover-outline-color, var(--${Zt}-background));
+      border: var(--${Zt}-border, var(--${Zt}-outline-color) solid var(--${Ht}-size));
+      border-radius: var(--${Zt}-radius);
     }
   }
 
 `,
-        Ra = { SETUP: Bi, POSITION: Oi, VARIANTS: Di, DENSITIES: Hi, ELEMENTS: Vi },
-        Fi = u`
+        Kt = P`
 @layer arc-components {
   [arc-popover] {
-    ${Ra.SETUP}
-    ${Ra.POSITION}
-    ${Ra.VARIANTS}
-    ${Ra.DENSITIES}
+    ${Yt}
+    ${qt}
+    ${Wt}
+    ${Gt}
   }
 
-  ${Ra.ELEMENTS}
+  ${Xt}
 
   /* POPOVER transition --------------------------------------------• */
 
@@ -4281,167 +4248,159 @@
 }
 
 `,
-        Ni = (r, a) => {
-          const e = document.getElementById(r)
-          ;({
-            toggle: () => e?.togglePopover(),
-            show: () => e?.showPopover(),
-            hide: () => e?.hidePopover(),
-          })[a ?? 'toggle']()
-        },
-        ko = (0, b.forwardRef)(
+        Jt = (0, j.forwardRef)(
           (
             {
-              children: r,
-              popover: a = wr.popover,
+              children: a,
+              popover: r = se.popover,
               alternateAnchor: e,
-              alternateAnchorId: n,
-              anchorProps: i,
-              anchorAt: c,
-              boundary: s,
-              density: d = wr.density,
-              variant: l = wr.variant,
-              isInverse: p,
-              hasTail: h,
-              tailSize: v = wr.tailSize,
-              offset: f = wr.offset,
-              hidePopoverButton: g,
-              headerSlot: w,
-              showDismiss: E,
-              dismissProps: j,
-              footerSlot: P,
-              showFooterDivider: A,
-              tag: _ = 'div',
-              contentTag: S = 'div',
-              onToggle: C,
-              ...L
+              alternateAnchorId: t,
+              anchorProps: o,
+              anchorAt: i,
+              boundary: n,
+              density: c = se.density,
+              variant: l = se.variant,
+              isInverse: s,
+              hasTail: d,
+              tailSize: p = se.tailSize,
+              offset: v = se.offset,
+              hidePopoverButton: h,
+              headerSlot: u,
+              showDismiss: m,
+              dismissProps: g,
+              footerSlot: b,
+              showFooterDivider: f,
+              tag: x = 'div',
+              contentTag: $ = 'div',
+              onToggle: y,
+              ...w
             },
-            H,
+            k,
           ) => {
-            const J = (0, b.useRef)(null),
-              X = (0, b.useRef)(null)
-            ;(0, b.useImperativeHandle)(H, () => X.current)
-            const [V, br] = (0, b.useState)(!1),
-              [kr, Ar] = (0, b.useState)(c || wr.anchorAt),
-              [Ir, q] = (0, b.useState)({}),
-              [xr, ra] = (0, b.useState)(0),
-              [Lr, Zr] = (0, b.useState)(h ? (f ?? 0) : 0),
-              Gr = (0, b.useMemo)(() => p && [...Fe].includes(l), [l, p]),
-              Mr = (0, b.useMemo)(
+            const z = (0, j.useRef)(null),
+              C = (0, j.useRef)(null)
+            ;(0, j.useImperativeHandle)(k, () => C.current)
+            const [E, T] = (0, j.useState)(!1),
+              [O, I] = (0, j.useState)(i || se.anchorAt),
+              [_, P] = (0, j.useState)({}),
+              [M, R] = (0, j.useState)(0),
+              [L, B] = (0, j.useState)(d ? (v ?? 0) : 0),
+              D = (0, j.useMemo)(() => s && [...Br].includes(l), [l, s]),
+              F = (0, j.useMemo)(
                 () => ({
-                  popoverTarget: L.id,
+                  popoverTarget: w.id,
                   'aria-haspopup': !0,
-                  'aria-controls': L.id,
-                  'aria-expanded': V,
+                  'aria-controls': w.id,
+                  'aria-expanded': E,
                 }),
-                [L.id, V],
+                [w.id, E],
               ),
-              Dr = (0, b.useMemo)(
-                () => ({ isInverse: Gr, isOpen: V, 'aria-label': 'Dismiss', ...Mr, ...j }),
-                [j, Gr, V, Mr],
+              H = (0, j.useMemo)(
+                () => ({ isInverse: D, isOpen: E, 'aria-label': 'Dismiss', ...F, ...g }),
+                [g, D, E, F],
               ),
-              zr = (0, b.useMemo)(() => ({ ref: J, ...Mr, ...i }), [J, i, Mr]),
-              pr = (0, b.useCallback)(
+              V = (0, j.useMemo)(() => ({ ref: z, ...F, ...o }), [z, o, F]),
+              N = (0, j.useCallback)(
                 () =>
-                  typeof e == 'function'
-                    ? e(zr)
-                    : n || typeof e == 'string'
-                      ? document.getElementById(n || String(e))
-                      : J.current,
-                [n, e, zr],
+                  'function' == typeof e
+                    ? e(V)
+                    : t || 'string' == typeof e
+                      ? document.getElementById(t || String(e))
+                      : z.current,
+                [t, e, V],
               ),
-              R = (0, b.useCallback)(
-                ({ ...W }) => {
-                  ;(Ar(W.anchorAt), q(W.vars))
+              U = (0, j.useCallback)(
+                ({ ...a }) => {
+                  ;(I(a.anchorAt), P(a.vars))
                 },
-                [Ar, q],
+                [I, P],
               )
-            ;(0, b.useEffect)(() => {
-              const W = h ? (v ?? 0) : 0,
-                vr = Number(f ?? 0) + W * (Math.sqrt(2) / 2)
-              ;(ra(W), Zr(vr))
-            }, [h, v, f])
-            const cr = (0, b.useMemo)(() => uo(pr()), [pr]),
-              { isFixed: hr, rect: er } = (0, b.useMemo)(() => cr(), [cr])
+            ;(0, j.useEffect)(() => {
+              const a = d ? (p ?? 0) : 0,
+                r = Number(v ?? 0) + a * (Math.sqrt(2) / 2)
+              ;(R(a), B(r))
+            }, [d, p, v])
+            const Z = (0, j.useMemo)(() => be(N()), [N]),
+              { isFixed: Y, rect: q } = (0, j.useMemo)(() => Z(), [Z])
             return (
-              (0, b.useEffect)(() => {
-                const W = X?.current,
-                  vr = pr()
-                if (!vr || !V) return
-                let Cr = null,
-                  $r = null
-                const aa = () => {
-                  ;($r && $t({ a: er, b: Cr })
-                    ? ((Cr = er),
-                      R(
-                        Ne({
-                          anchorElement: vr,
-                          popoverElement: W,
-                          anchorAt: c,
-                          boundary: s,
-                          offset: Lr,
-                          tailSize: xr,
-                          isFixed: hr,
+              (0, j.useEffect)(() => {
+                const a = C?.current,
+                  r = N()
+                if (!r || !E) return
+                let e = null,
+                  t = null
+                const o = () => {
+                  ;(t && A({ a: q, b: e })
+                    ? ((e = q),
+                      U(
+                        ge({
+                          anchorElement: r,
+                          popoverElement: a,
+                          anchorAt: i,
+                          boundary: n,
+                          offset: L,
+                          tailSize: M,
+                          isFixed: Y,
                         }),
                       ))
-                    : ($r = null),
-                    ($r = requestAnimationFrame(aa)))
+                    : (t = null),
+                    (t = requestAnimationFrame(o)))
                 }
                 return (
-                  ($r = requestAnimationFrame(aa)),
+                  (t = requestAnimationFrame(o)),
                   () => {
-                    $r && cancelAnimationFrame($r)
+                    t && cancelAnimationFrame(t)
                   }
                 )
-              }, [X, pr, hr, er, V, c, s, Lr, xr, R]),
-              (0, b.useEffect)(() => {
-                const W = X.current
-                if (!W) return
-                const vr = (Cr) => {
-                  const { newState: $r } = Cr
-                  ;(br($r === 'open'),
-                    R(
-                      Ne({
-                        anchorElement: pr(),
-                        popoverElement: W,
-                        anchorAt: c,
-                        boundary: s,
-                        offset: Lr,
-                        tailSize: xr,
-                        isFixed: hr,
+              }, [C, N, Y, q, E, i, n, L, M, U]),
+              (0, j.useEffect)(() => {
+                const a = C.current
+                if (!a) return
+                const r = (r) => {
+                  const { newState: e } = r
+                  ;(T('open' === e),
+                    U(
+                      ge({
+                        anchorElement: N(),
+                        popoverElement: a,
+                        anchorAt: i,
+                        boundary: n,
+                        offset: L,
+                        tailSize: M,
+                        isFixed: Y,
                       }),
                     ),
-                    C?.(Cr))
+                    y?.(r))
                 }
-                return (W.addEventListener('toggle', vr), () => W.removeEventListener('toggle', vr))
-              }, [X, C, pr, hr, er, c, s, Lr, xr, R]),
-              (0, t.jsxs)(t.Fragment, {
+                return (a.addEventListener('toggle', r), () => a.removeEventListener('toggle', r))
+              }, [C, y, N, Y, q, i, n, L, M, U]),
+              (0, S.jsxs)(S.Fragment, {
                 children: [
-                  !((n || e) && g) && (0, t.jsx)(Pa, { ...zr }),
-                  (0, t.jsxs)(_, {
-                    ...L,
-                    role: L.role ?? 'dialog',
-                    'arc-popover': kr,
-                    ref: X,
-                    popover: a,
-                    boundary: s,
+                  !((t || e) && h) && (0, S.jsx)(Tt, { ...V }),
+                  (0, S.jsxs)(x, {
+                    ...w,
+                    role: w.role ?? 'dialog',
+                    'arc-popover': O,
+                    ref: C,
+                    popover: r,
+                    boundary: n,
                     variant: l,
-                    density: d,
-                    'is-fixed': hr ? '' : void 0,
-                    'is-inverse': Gr ? '' : void 0,
-                    'has-tail': h ? '' : void 0,
-                    style: { ...L.style, ...Ir },
+                    density: c,
+                    'is-fixed': Y ? '' : void 0,
+                    'is-inverse': D ? '' : void 0,
+                    'has-tail': d ? '' : void 0,
+                    style: { ...w.style, ..._ },
                     children: [
-                      h && (0, t.jsx)(Ri, {}),
-                      (0, t.jsxs)(S, {
+                      d && (0, S.jsx)(Mt, {}),
+                      (0, S.jsxs)($, {
                         'arc-popover-content': '',
                         children: [
-                          !!w && (0, t.jsx)(Li, { showDismiss: E, dismissProps: Dr, children: w }),
-                          w || P ? (0, t.jsx)(Mi, { children: r }) : r,
-                          !!P && (0, t.jsx)(Pi, { showDivider: A, children: P }),
+                          !!u && (0, S.jsx)(It, { showDismiss: m, dismissProps: H, children: u }),
+                          u || b ? (0, S.jsx)(_t, { children: a }) : a,
+                          !!b && (0, S.jsx)(Pt, { showDivider: f, children: b }),
                         ],
                       }),
-                      E && !w && (0, t.jsx)(wo, { ...Dr }),
+                      m && !u && (0, S.jsx)(Ot, { ...H }),
                     ],
                   }),
                 ],
@@ -4449,12 +4408,20 @@
             )
           },
         )
-      ko.displayName = 'ArcPopover'
-      const qe = ko
-      ;((qe.handlePopover = Ni), (qe.Button = Pa))
-      const Ba = qe
-      O('ArcPopover', Fi)
-      const Ui = u`
+      Jt.displayName = 'ArcPopover'
+      const Qt = Jt
+      ;((Qt.handlePopover = (a, r) => {
+        const e = document.getElementById(a)
+        ;({
+          toggle: () => e?.togglePopover(),
+          show: () => e?.showPopover(),
+          hide: () => e?.hidePopover(),
+        })[r ?? 'toggle']()
+      }),
+        (Qt.Button = Tt))
+      const ao = Qt
+      Ba('ArcPopover', Kt)
+      const ro = P`
 @layer arc-components {
 
   [arc-avatar-overflow] {
@@ -4471,8 +4438,8 @@
 
     /* For Neutral/Anonymous avatars -------------------------------• */
 
-    --${$}-neutral-color: var(--arc-color-alpha-white-70);
-    --${$}-neutral-background: var(--arc-color-alpha-white-20);
+    --${Fa}-neutral-color: var(--arc-color-alpha-white-70);
+    --${Fa}-neutral-background: var(--arc-color-alpha-white-20);
 
     [data-element=list] {
       margin: 0;
@@ -4486,71 +4453,71 @@
       padding: var(--arc-space-0-5) var(--arc-space-1);
     }
 
-    ${Ie}
-    ${Nt}
+    ${ar}
+    ${rr}
 
   }
 
 }
 `,
-        Yi = (r) => (0, t.jsx)('ul', { ...r, 'data-element': 'list' }),
-        Wi = (r) => (0, t.jsx)('li', { ...r, 'data-element': 'list-item' }),
-        Zi = ({ count: r, anchorId: a, overflowId: e, shouldShowOverflow: n, ...i }) =>
-          (0, t.jsx)(He, {
-            title: `+${r}`,
-            children: (0, t.jsx)(Ba.Button, {
-              ...i,
-              id: a,
+        eo = (a) => (0, S.jsx)('ul', { ...a, 'data-element': 'list' }),
+        to = (a) => (0, S.jsx)('li', { ...a, 'data-element': 'list-item' }),
+        oo = ({ count: a, anchorId: r, overflowId: e, shouldShowOverflow: t, ...o }) =>
+          (0, S.jsx)(kr, {
+            title: `+${a}`,
+            children: (0, S.jsx)(ao.Button, {
+              ...o,
+              id: r,
               popoverTarget: e,
-              text: `+${r}`,
+              text: `+${a}`,
               variant: 'common',
               hierarchy: 'primary',
-              disabled: !n,
+              disabled: !t,
               'data-element': 'counter',
               'data-color': 'black',
-              'data-num-length': r?.toString().length,
+              'data-num-length': a?.toString().length,
             }),
           }),
-        Gi = ({
-          children: r,
-          id: a,
+        io = ({
+          children: a,
+          id: r,
           size: e = 'sm',
-          overflowCount: n = 0,
-          shouldShowOverflow: i = !1,
-          anchorAt: c = 'bottom-end',
-          boundary: s = 'flip',
-          ...d
+          overflowCount: t = 0,
+          shouldShowOverflow: o = !1,
+          anchorAt: i = 'bottom-end',
+          boundary: n = 'flip',
+          ...c
         }) => {
-          const l = Math.min(n, 999),
-            p = Sr(a, 'arc-avatar-overflow'),
-            h = (0, b.useMemo)(() => `${p}-anchor`, [p]),
-            v = (0, b.useMemo)(() => b.Children.toArray(r), [r])
-          return (0, t.jsxs)(t.Fragment, {
+          const l = Math.min(t, 999),
+            s = Pr(r, 'arc-avatar-overflow'),
+            d = (0, j.useMemo)(() => `${s}-anchor`, [s]),
+            p = (0, j.useMemo)(() => j.Children.toArray(a), [a])
+          return (0, S.jsxs)(S.Fragment, {
             children: [
               l > 0 &&
-                (0, t.jsx)(Zi, { count: l, anchorId: h, overflowId: p, shouldShowOverflow: i }),
-              i &&
+                (0, S.jsx)(oo, { count: l, anchorId: d, overflowId: s, shouldShowOverflow: o }),
+              o &&
                 l > 0 &&
-                (0, t.jsx)(Ba, {
-                  ...d,
+                (0, S.jsx)(ao, {
+                  ...c,
                   'arc-avatar-overflow': '',
-                  id: p,
-                  anchorAt: c,
-                  boundary: s,
-                  alternateAnchorId: h,
+                  id: s,
+                  anchorAt: i,
+                  boundary: n,
+                  alternateAnchorId: d,
                   hidePopoverButton: !0,
                   variant: 'common',
                   isInverse: !0,
                   'data-size': e,
-                  children: (0, t.jsx)(Yi, {
-                    children: v.map((f, g) => (0, t.jsx)(Wi, { children: f }, g)),
+                  children: (0, S.jsx)(eo, {
+                    children: p.map((a, r) => (0, S.jsx)(to, { children: a }, r)),
                   }),
                 }),
             ],
           })
         }
-      O('ArcAvatarOverflow', Ui)
-      const Xi = u`
+      Ba('ArcAvatarOverflow', ro)
+      const no = P`
 @layer arc-components {
 
 [arc-badge-wrapper] {
@@ -4767,10 +4734,10 @@
 
 }
 `,
-        qi = z(yr, ['inherit', 'lg', 'md', 'sm']),
-        Ki = z(Hr, ['hug', 'fill']),
-        Ji = ['high', 'low'],
-        Qi = z(Q, [
+        co = y(s, ['inherit', 'lg', 'md', 'sm']),
+        lo = y(n, ['hug', 'fill']),
+        so = ['high', 'low'],
+        po = y(o, [
           'brand-black',
           'brand-blue',
           'neutral',
@@ -4782,38 +4749,38 @@
           'overlay-light',
           'overlay-dark',
         ]),
-        rc = ({
-          children: r,
-          icon: a,
+        vo = ({
+          children: a,
+          icon: r,
           text: e,
-          isFlipped: n,
-          isFlexible: i,
-          isUppercase: c,
-          variant: s = 'brand-blue',
-          size: d = 'inherit',
+          isFlipped: t,
+          isFlexible: o,
+          isUppercase: i,
+          variant: n = 'brand-blue',
+          size: c = 'inherit',
           layout: l = 'hug',
-          contrast: p = 'high',
-          ...h
+          contrast: s = 'high',
+          ...d
         }) => {
-          const v = r || (0, t.jsx)(Er, { icon: a, text: e, isFlipped: n, layout: 'gutter' }),
-            f = l === 'fill' && i
-          return (0, t.jsx)('span', {
-            ...h,
+          const p = a || (0, S.jsx)(Pe, { icon: r, text: e, isFlipped: t, layout: 'gutter' }),
+            v = 'fill' === l && o
+          return (0, S.jsx)('span', {
+            ...d,
             'arc-badge-wrapper': '',
-            children: (0, t.jsx)('span', {
+            children: (0, S.jsx)('span', {
               'arc-badge': '',
-              'data-contrast': p,
-              'data-variant': s,
+              'data-contrast': s,
+              'data-variant': n,
               'data-layout': l,
-              'data-size': d,
-              'data-is-flexible': f ? '' : void 0,
-              'data-is-uppercase': c ? '' : void 0,
-              children: v,
+              'data-size': c,
+              'data-is-flexible': v ? '' : void 0,
+              'data-is-uppercase': i ? '' : void 0,
+              children: p,
             }),
           })
         }
-      O('ArcBadge', Xi)
-      const ac = u`
+      Ba('ArcBadge', no)
+      const ho = P`
 @layer arc-components {
 
 [arc-badge-count] {
@@ -4942,32 +4909,32 @@
 }
 
 `,
-        ec = z(yr, ['inherit', 'lg', 'md', 'sm']),
-        tc = z(Q, ['neutral', 'brand', 'critical', 'warning', 'success', 'inverse']),
-        oc = z(ge, ['square', 'circle']),
-        nc = ({
-          children: r,
-          text: a,
+        uo = y(s, ['inherit', 'lg', 'md', 'sm']),
+        mo = y(o, ['neutral', 'brand', 'critical', 'warning', 'success', 'inverse']),
+        go = y(t, ['square', 'circle']),
+        bo = ({
+          children: a,
+          text: r,
           variant: e = 'neutral',
-          size: n = 'inherit',
-          shape: i = 'square',
-          ...c
+          size: t = 'inherit',
+          shape: o = 'square',
+          ...i
         }) => {
-          const s = r || a
-          return (0, t.jsx)('span', {
-            ...c,
+          const n = a || r
+          return (0, S.jsx)('span', {
+            ...i,
             'arc-badge-count-wrapper': '',
-            children: (0, t.jsx)('span', {
+            children: (0, S.jsx)('span', {
               'arc-badge-count': '',
               'data-variant': e,
-              'data-shape': i,
-              'data-size': n,
-              children: s,
+              'data-shape': o,
+              'data-size': t,
+              children: n,
             }),
           })
         }
-      O('ArcBadgeCount', ac)
-      const ic = u`
+      Ba('ArcBadgeCount', ho)
+      const fo = P`
 @layer arc-components {
 
 [arc-label] {
@@ -5006,11 +4973,11 @@
 
 }
 `,
-        cc = z(Hr, ['hug', 'fill']),
-        ca = ({ layout: r, ...a }) =>
-          (0, t.jsx)('label', { ...a, 'arc-label': '', 'data-layout': r })
-      O('ArcLabel', ic)
-      const sc = u`
+        xo = y(n, ['hug', 'fill']),
+        $o = ({ layout: a, ...r }) =>
+          (0, S.jsx)('label', { ...r, 'arc-label': '', 'data-layout': a })
+      Ba('ArcLabel', fo)
+      const yo = P`
 @layer arc-components {
 
 [arc-label-content] {
@@ -5022,42 +4989,44 @@
 
 }
 `,
-        sa = (r) => (0, t.jsx)('span', { ...r, 'arc-label-content': '' })
-      O('LabelContent', sc)
-      const lc = { checkbox: 'checkbox', radio: 'radio', switch: 'radio' },
-        Oa = ({ id: r, indeterminate: a, type: e, onChange: n, ...i }) => {
-          const c = e === 'checkbox' && !!a,
-            s = (0, b.useRef)(null),
-            d = Sr(r, `arc-${e}`),
-            l = (p) => (h) => {
-              if (!(h?.target instanceof HTMLInputElement)) return
-              const v = {
-                checked: h?.target.checked,
-                indeterminate: h?.target?.indeterminate,
-                name: h?.target?.name,
-                value: i?.value,
-              }
-              p?.(v, h)
-            }
+        wo = (a) => (0, S.jsx)('span', { ...a, 'arc-label-content': '' })
+      Ba('LabelContent', yo)
+      const ko = { checkbox: 'checkbox', radio: 'radio', switch: 'radio' },
+        zo = ({ id: a, indeterminate: r, type: e, onChange: t, ...o }) => {
+          const i = 'checkbox' === e && !!r,
+            n = (0, j.useRef)(null),
+            c = Pr(a, `arc-${e}`)
           return (
-            (0, b.useEffect)(() => {
-              s.current?.type === 'checkbox' && (s.current.indeterminate = !!a)
-            }, [a]),
-            (0, t.jsx)('input', {
-              ...i,
-              id: d,
-              ref: s,
-              type: lc[e],
+            (0, j.useEffect)(() => {
+              'checkbox' === n.current?.type && (n.current.indeterminate = !!r)
+            }, [r]),
+            (0, S.jsx)('input', {
+              ...o,
+              id: c,
+              ref: n,
+              type: ko[e],
               'arc-input-type': e,
-              'aria-disabled': i?.disabled || void 0,
-              'data-is-disabled': i?.disabled || void 0,
-              'data-is-checked': i?.checked || void 0,
-              'data-is-indeterminate': c || void 0,
-              onChange: l(n),
+              'aria-disabled': o?.disabled || void 0,
+              'data-is-disabled': o?.disabled || void 0,
+              'data-is-checked': o?.checked || void 0,
+              'data-is-indeterminate': i || void 0,
+              onChange:
+                ((l = t),
+                (a) => {
+                  if (!(a?.target instanceof HTMLInputElement)) return
+                  const r = {
+                    checked: a?.target.checked,
+                    indeterminate: a?.target?.indeterminate,
+                    name: a?.target?.name,
+                    value: o?.value,
+                  }
+                  l?.(r, a)
+                }),
             })
           )
+          var l
         },
-        dc = u`
+        Co = P`
 @layer arc-components {
 
 [arc-input-mask] {
@@ -5130,13 +5099,13 @@
 
 }
 `,
-        le = ({ type: r, ...a }) =>
-          (0, t.jsx)('span', {
+        Ao = ({ type: a, ...r }) =>
+          (0, S.jsx)('span', {
             'arc-input-mask-wrapper': '',
-            children: (0, t.jsx)('span', { ...a, 'arc-input-mask': r }),
+            children: (0, S.jsx)('span', { ...r, 'arc-input-mask': a }),
           })
-      O('ArcBooleanInputMask', dc)
-      const pc = u`
+      Ba('ArcBooleanInputMask', Co)
+      const So = P`
 @layer arc-components {
 
 [arc-checkbox] {
@@ -5251,48 +5220,48 @@
 
 }
 `,
-        uc = z(Hr, ['hug', 'fill']),
-        hc = z(yr, ['inherit', 'md', 'sm']),
-        vc = z(Q, ['primary', 'secondary']),
-        Ao = ({
-          children: r,
-          label: a,
+        jo = y(n, ['hug', 'fill']),
+        Eo = y(s, ['inherit', 'md', 'sm']),
+        To = y(o, ['primary', 'secondary']),
+        Oo = ({
+          children: a,
+          label: r,
           layout: e,
-          size: n = 'md',
-          variant: i = 'primary',
-          useMask: c = !0,
-          ...s
+          size: t = 'md',
+          variant: o = 'primary',
+          useMask: i = !0,
+          ...n
         }) => {
-          const { className: d, title: l, ...p } = s,
-            h = { className: d, title: l },
-            v = r ?? a,
-            f = (0, t.jsx)(Oa, { ...p, type: 'checkbox' }),
-            g =
-              c &&
-              (0, t.jsxs)(le, {
+          const { className: c, title: l, ...s } = n,
+            d = { className: c, title: l },
+            p = a ?? r,
+            v = (0, S.jsx)(zo, { ...s, type: 'checkbox' }),
+            h =
+              i &&
+              (0, S.jsxs)(Ao, {
                 type: 'checkbox',
                 children: [
-                  f,
-                  (0, t.jsx)(B, {
-                    icon: p?.indeterminate
+                  v,
+                  (0, S.jsx)(xr, {
+                    icon: s?.indeterminate
                       ? 'fa-solid fa-minus arc-fw'
                       : 'fa-solid fa-check arc-fw',
                   }),
                 ],
               }),
-            w =
-              !!v &&
-              (0, t.jsxs)(ca, { layout: e, children: [g || f, (0, t.jsx)(sa, { children: v })] })
-          return (0, t.jsx)('span', {
-            ...h,
+            u =
+              !!p &&
+              (0, S.jsxs)($o, { layout: e, children: [h || v, (0, S.jsx)(wo, { children: p })] })
+          return (0, S.jsx)('span', {
+            ...d,
             'arc-checkbox': '',
-            'data-size': n,
-            'data-variant': i,
-            children: w || g || f,
+            'data-size': t,
+            'data-variant': o,
+            children: u || h || v,
           })
         }
-      O('ArcCheckbox', pc)
-      const mc = u`
+      Ba('ArcCheckbox', So)
+      const Io = P`
 @layer arc-components {
 
 [arc-checkbox-bar] {
@@ -5471,34 +5440,34 @@
 
 }
 `,
-        fc = z(Hr, ['hug', 'fill']),
-        gc = z(yr, ['lg', 'md']),
-        bc = ({ children: r, label: a, icon: e, ...n }) => {
-          const i = r || (0, t.jsx)(Er, { icon: e, text: a })
-          return (0, t.jsx)('li', {
+        _o = y(n, ['hug', 'fill']),
+        Po = y(s, ['lg', 'md']),
+        Mo = ({ children: a, label: r, icon: e, ...t }) => {
+          const o = a || (0, S.jsx)(Pe, { icon: e, text: r })
+          return (0, S.jsx)('li', {
             'arc-checkbox-bar-option': '',
-            'data-is-checked': n?.checked || void 0,
-            children: (0, t.jsx)(Ao, { ...n, label: i, layout: 'fill', useMask: !1 }),
+            'data-is-checked': t?.checked || void 0,
+            children: (0, S.jsx)(Oo, { ...t, label: o, layout: 'fill', useMask: !1 }),
           })
         },
-        xc = ({ children: r, size: a = 'lg', layout: e = 'hug', ...n }) =>
-          (0, t.jsx)('ul', {
-            ...n,
+        Ro = ({ children: a, size: r = 'lg', layout: e = 'hug', ...t }) =>
+          (0, S.jsx)('ul', {
+            ...t,
             'arc-checkbox-bar': '',
-            'data-size': a,
+            'data-size': r,
             'data-layout': e,
             role: 'group',
-            children: r,
+            children: a,
           })
-      O('ArcCheckboxBar', mc)
-      const $c = u`arc•menu`,
-        ba = u`${$c}•item`,
-        yc = u`
+      Ba('ArcCheckboxBar', Io)
+      const Lo = P`arc•menu`,
+        Bo = P`${Lo}•item`,
+        Do = P`
 @layer arc-components {
 
   [arc-menu] {
-    --${ba}-gap: max(8px, 0.5em);
-    --${ba}-background: inherit;
+    --${Bo}-gap: max(8px, 0.5em);
+    --${Bo}-background: inherit;
 
     font-size: var(--arc-menu-font-size, max(var(--arc-font-size-14), 0.875em));
     list-style: none;
@@ -5519,9 +5488,9 @@
     flex-direction: var(--arc-menu-item-flex-direction, row);
     justify-content: var(--arc-menu-item-justify-content, space-between);
     align-items: var(--arc-menu-item-align-items, center);
-    gap: var(--arc-menu-item-gap, var(--${ba}-gap));
+    gap: var(--arc-menu-item-gap, var(--${Bo}-gap));
 
-    background: var(--arc-menu-item-background, var(--${ba}-background));
+    background: var(--arc-menu-item-background, var(--${Bo}-background));
     color: var(--arc-menu-item-color, inherit);
     padding: var(--arc-menu-item-padding, 0em);
     border-radius: var(--arc-menu-item-border-radius, var(--arc-border-radius-md));
@@ -5531,7 +5500,7 @@
     transition: var(--arc-menu-item-transition, 120ms ease-out);
 
     &:has(> [arc-button=custom]:not([is-disabled])):hover {
-      --${ba}-background: color-mix(in srgb, currentcolor 7%, transparent);
+      --${Bo}-background: color-mix(in srgb, currentcolor 7%, transparent);
     }
 
     /* Communicates to ArcButton */
@@ -5540,7 +5509,7 @@
       --arc-button-font-size: 1em;
       --arc-button-border: none;
       --arc-button-outline-offset: min(-2px, -0.125em);
-      --arc-button-gap: var(--arc-menu-item-gap, var(--${ba}-gap));
+      --arc-button-gap: var(--arc-menu-item-gap, var(--${Bo}-gap));
       --arc-button-transition: none;
       --arc-button-opacity: var(--arc-menu-item-opacity, unset);
 
@@ -5551,16 +5520,7 @@
   }
 
 `,
-        wc = (r) => [
-          { test: () => !!r.variant, value: r.variant },
-          { test: () => !!r.icon && typeof r.subtext < 'u', value: 'icon-text-detail' },
-          { test: () => !!r.icon, value: 'icon-text' },
-          { test: () => !!r.avatar && typeof r.subtext < 'u', value: 'user-detail' },
-          { test: () => !!r.avatar, value: 'user' },
-          { test: () => typeof r.subtext < 'u', value: 'text-detail' },
-          { test: () => !0, value: 'text' },
-        ],
-        kc = {
+        Fo = {
           divider: 'separator',
           'section-label': 'presentation',
           'icon-text-detail': 'menuitem',
@@ -5570,215 +5530,225 @@
           'text-detail': 'menuitem',
           text: 'menuitem',
         },
-        la = {
+        Ho = {
           layout: 'gutter',
           variant: 'inherit',
           overflow: 'truncate',
           gapSize: 'md',
           size: 'md',
         },
-        Ac = ({ icon: r, ...a }) => {
-          const e = r && typeof r == 'string' ? `${r.replace(' fa-fw', '')} arc-fw` : r
-          return {
-            divider: (0, t.jsx)('hr', {}),
-            'section-label': (0, t.jsx)(Er, { ...a, ...la, icon: e, size: 'sm', isStrong: !0 }),
-            'icon-text': (0, t.jsx)(Er, { ...a, ...la, icon: e }),
-            'icon-text-detail': (0, t.jsx)(Er, { ...a, ...la, icon: e, isStrong: !0 }),
-            text: (0, t.jsx)(Er, { ...a, ...la }),
-            'text-detail': (0, t.jsx)(Er, {
-              ...a,
-              ...la,
-              subtext: a.subtext ?? 'sub',
-              isStrong: !0,
-            }),
-            user: (0, t.jsx)(Ve, { ...a, ...la, size: 'sm' }),
-            'user-detail': (0, t.jsx)(Ve, { ...a, ...la, size: 'md', isStrong: !0 }),
-          }
-        },
-        zc = (r) => r?.role ?? kc[Da(r)] ?? 'menuitem',
-        Da = (r) => wc(r)?.find(({ test: a }) => a())?.value ?? 'text',
-        zo = (r) => (a) => Ac(a)[r],
-        Cc = (r, a, e, n) => {
-          let i = 1,
-            c = r
-          const s = (l) => (l >= e ? 0 : l + 1),
-            d = (l) => (l <= 0 ? e : l - 1)
-          for (; i <= e; ) {
-            const l = s(c),
-              p = d(c),
-              h = { previous: a === 'previous' ? p : c, actual: c, next: a === 'next' ? l : c }[a]
-            if (n(h)) return h
-            ;((c = h), (i += 1))
-          }
-          return -1
-        },
-        Sc = ({ items: r, filterText: a, renderItem: e, isVisible: n, ...i }) => {
-          const c = (0, b.useRef)(null),
-            s = (0, b.useRef)([]),
-            [d, l] = (0, b.useState)(-1),
-            [p, h] = (0, b.useState)(!1),
-            [v, f] = (0, b.useState)(Math.max(r.length - 1, 0))
-          ;(0, b.useEffect)(() => {
-            n &&
-              c.current &&
-              (s.current = Array.from(c.current.querySelectorAll('[arc-button=custom]')))
-          }, [n, r])
-          const g = (0, b.useCallback)((S) => s.current[S] || null, []),
-            w = (0, b.useCallback)(
-              (S, C) => {
-                const L = Cc(S, C, v, g)
-                ;(l(L), g(L)?.focus())
+        Vo = (a) =>
+          ((a) => [
+            { test: () => !!a.variant, value: a.variant },
+            { test: () => !!a.icon && typeof a.subtext < 'u', value: 'icon-text-detail' },
+            { test: () => !!a.icon, value: 'icon-text' },
+            { test: () => !!a.avatar && typeof a.subtext < 'u', value: 'user-detail' },
+            { test: () => !!a.avatar, value: 'user' },
+            { test: () => typeof a.subtext < 'u', value: 'text-detail' },
+            { test: () => !0, value: 'text' },
+          ])(a)?.find(({ test: a }) => a())?.value ?? 'text',
+        No = (a) => (r) =>
+          (({ icon: a, ...r }) => {
+            const e = a && 'string' == typeof a ? `${a.replace(' fa-fw', '')} arc-fw` : a
+            return {
+              divider: (0, S.jsx)('hr', {}),
+              'section-label': (0, S.jsx)(Pe, { ...r, ...Ho, icon: e, size: 'sm', isStrong: !0 }),
+              'icon-text': (0, S.jsx)(Pe, { ...r, ...Ho, icon: e }),
+              'icon-text-detail': (0, S.jsx)(Pe, { ...r, ...Ho, icon: e, isStrong: !0 }),
+              text: (0, S.jsx)(Pe, { ...r, ...Ho }),
+              'text-detail': (0, S.jsx)(Pe, {
+                ...r,
+                ...Ho,
+                subtext: r.subtext ?? 'sub',
+                isStrong: !0,
+              }),
+              user: (0, S.jsx)(jr, { ...r, ...Ho, size: 'sm' }),
+              'user-detail': (0, S.jsx)(jr, { ...r, ...Ho, size: 'md', isStrong: !0 }),
+            }
+          })(r)[a],
+        Uo = ({ items: a, filterText: r, renderItem: e, isVisible: t, ...o }) => {
+          const i = (0, j.useRef)(null),
+            n = (0, j.useRef)([]),
+            [c, l] = (0, j.useState)(-1),
+            [s, d] = (0, j.useState)(!1),
+            [p, v] = (0, j.useState)(Math.max(a.length - 1, 0))
+          ;(0, j.useEffect)(() => {
+            t &&
+              i.current &&
+              (n.current = Array.from(i.current.querySelectorAll('[arc-button=custom]')))
+          }, [t, a])
+          const h = (0, j.useCallback)((a) => n.current[a] || null, []),
+            u = (0, j.useCallback)(
+              (a, r) => {
+                const e = ((a, r, e, t) => {
+                  let o = 1,
+                    i = a
+                  const n = (a) => (a >= e ? 0 : a + 1),
+                    c = (a) => (a <= 0 ? e : a - 1)
+                  for (; o <= e; ) {
+                    const a = n(i),
+                      e = c(i),
+                      l = {
+                        previous: 'previous' === r ? e : i,
+                        actual: i,
+                        next: 'next' === r ? a : i,
+                      }[r]
+                    if (t(l)) return l
+                    ;((i = l), (o += 1))
+                  }
+                  return -1
+                })(a, r, p, h)
+                ;(l(e), h(e)?.focus())
               },
-              [v, g],
+              [p, h],
             ),
-            E = (0, b.useCallback)(
-              (S, C) => () => {
-                !p && C && w(S, 'actual')
+            m = (0, j.useCallback)(
+              (a, r) => () => {
+                !s && r && u(a, 'actual')
               },
-              [p, w],
+              [s, u],
             ),
-            j = {
-              ArrowUp: (S) => w(S, 'previous'),
-              ArrowDown: (S) => w(S, 'next'),
-              Home: () => w(0, 'actual'),
-              End: () => w(v, 'actual'),
+            g = {
+              ArrowUp: (a) => u(a, 'previous'),
+              ArrowDown: (a) => u(a, 'next'),
+              Home: () => u(0, 'actual'),
+              End: () => u(p, 'actual'),
             },
-            P = (S) => (C) => {
-              Object.keys(j).includes(C.key) &&
-                (h(!0), C.stopPropagation(), C.preventDefault(), j[C.key](S))
-            },
-            A = (0, b.useMemo)(() => {
-              const S = a ? r.filter((C) => Object.values(C).some((L) => L === a)) : r
-              return (f(Math.max(S.length - 1, 0)), S)
-            }, [r, a]),
-            _ = (0, b.useMemo)(
+            b = (0, j.useMemo)(() => {
+              const e = r ? a.filter((a) => Object.values(a).some((a) => a === r)) : a
+              return (v(Math.max(e.length - 1, 0)), e)
+            }, [a, r]),
+            f = (0, j.useMemo)(
               () =>
-                A.map(({ itemId: S, role: C, ...L }, H) => {
-                  const J = Da(L) || '',
-                    X = C || zc(L) || 'menuitem',
-                    V = H === d
-                  return (0, t.jsx)(
+                b.map(({ itemId: a, role: t, ...o }, i) => {
+                  const n = Vo(o) || '',
+                    l = t || ((a) => a?.role ?? Fo[Vo(a)] ?? 'menuitem')(o) || 'menuitem',
+                    s = i === c
+                  return (0, S.jsx)(
                     'li',
                     {
-                      'arc-menu-item': J,
-                      role: X,
-                      onMouseEnter: E(H, !!L.onClick),
-                      children: e?.(L, H, { filterText: a, isCurrent: V }),
+                      'arc-menu-item': n,
+                      role: l,
+                      onMouseEnter: m(i, !!o.onClick),
+                      children: e?.(o, i, { filterText: r, isCurrent: s }),
                     },
-                    S,
+                    a,
                   )
                 }),
-              [d, a, A, e, E],
+              [c, r, b, e, m],
             )
           return (
-            (0, b.useEffect)(() => {
-              n && w(-1, 'next')
-            }, [n, w]),
-            (0, t.jsx)('ul', {
-              ...i,
-              ref: c,
+            (0, j.useEffect)(() => {
+              t && u(-1, 'next')
+            }, [t, u]),
+            (0, S.jsx)('ul', {
+              ...o,
+              ref: i,
               'arc-menu': '',
               role: 'menu',
-              onKeyDown: P(d),
+              onKeyDown:
+                ((x = c),
+                (a) => {
+                  Object.keys(g).includes(a.key) &&
+                    (d(!0), a.stopPropagation(), a.preventDefault(), g[a.key](x))
+                }),
               onMouseLeave: () => l(-1),
-              onMouseMove: () => h(!1),
-              tabIndex: n ? 0 : -1,
-              children: _,
+              onMouseMove: () => d(!1),
+              tabIndex: t ? 0 : -1,
+              children: f,
             })
           )
+          var x
         }
-      O('ArcMenu', yc)
-      const Co = (r) => {
+      Ba('ArcMenu', Do)
+      const Zo = (a) => {
           const {
-              startSlot: a,
+              startSlot: r,
               endSlot: e,
-              onClick: n,
-              href: i,
-              target: c,
-              containerProps: s,
-              isDisabled: d,
+              onClick: t,
+              href: o,
+              target: i,
+              containerProps: n,
+              isDisabled: c,
               'aria-disabled': l,
-              tooltip: p,
-              ...h
-            } = r,
-            v = Da(h),
-            f = zo(v),
-            g = l ?? d,
-            w = v === 'divider',
-            E = i || n,
-            j = !w,
-            P = j && a ? '' : void 0,
-            A = j && e ? '' : void 0,
-            _ = (S) => {
-              g || (S.currentTarget.closest('[arc-popover]')?.hidePopover(), n?.(S.nativeEvent))
-            }
-          return E
-            ? (0, t.jsxs)(ur, {
-                ...s,
-                tooltip: p,
-                href: i,
-                target: c,
-                'aria-disabled': g ? 'true' : void 0,
+              tooltip: s,
+              ...d
+            } = a,
+            p = Vo(d),
+            v = No(p),
+            h = l ?? c,
+            u = !('divider' === p),
+            m = u && r ? '' : void 0,
+            g = u && e ? '' : void 0
+          return o || t
+            ? (0, S.jsxs)(Et, {
+                ...n,
+                tooltip: s,
+                href: o,
+                target: i,
+                'aria-disabled': h ? 'true' : void 0,
                 _isCustom: !0,
-                'arc-dropdown-item': v ?? '',
-                'has-start-slot': P,
-                'has-end-slot': A,
-                onClick: _,
+                'arc-dropdown-item': p ?? '',
+                'has-start-slot': m,
+                'has-end-slot': g,
+                onClick: (a) => {
+                  h || (a.currentTarget.closest('[arc-popover]')?.hidePopover(), t?.(a.nativeEvent))
+                },
                 children: [
-                  j && a,
-                  (0, t.jsx)(f, { ...h, 'is-item-content': 'interactive' }),
-                  j && e,
+                  u && r,
+                  (0, S.jsx)(v, { ...d, 'is-item-content': 'interactive' }),
+                  u && e,
                 ],
               })
-            : (0, t.jsxs)('div', {
-                ...s,
-                'arc-dropdown-item': v ?? '',
-                'has-start-slot': P,
-                'has-end-slot': A,
-                children: [j && a, (0, t.jsx)(f, { ...h, 'is-item-content': 'inert' }), j && e],
+            : (0, S.jsxs)('div', {
+                ...n,
+                'arc-dropdown-item': p ?? '',
+                'has-start-slot': m,
+                'has-end-slot': g,
+                children: [u && r, (0, S.jsx)(v, { ...d, 'is-item-content': 'inert' }), u && e],
               })
         },
-        jc = u`arc•dropdown`,
-        Ec = u`${jc}•menu`,
-        K = u`${Ec}•item`,
-        _c = u`
+        Yo = P`arc•dropdown`,
+        qo = P`${Yo}•menu`,
+        Wo = P`${qo}•item`,
+        Go = P`
 @layer arc-components {
 
   /* ITEM SETUP ----------------------------------------------------• */
 
   [arc-dropdown-item] {
-    --${K}-base-padding: max(8px, 0.5em) max(12px, 0.75em);
-    --${K}-padding: var(--${K}-base-padding);
-    --${K}-min-height: max(36px, 2.25em);
-    --${K}-gap: max(8px, 0.5em);
+    --${Wo}-base-padding: max(8px, 0.5em) max(12px, 0.75em);
+    --${Wo}-padding: var(--${Wo}-base-padding);
+    --${Wo}-min-height: max(36px, 2.25em);
+    --${Wo}-gap: max(8px, 0.5em);
 
     &[arc-dropdown-item=text-detail] {
-      --${K}-min-height: max(48px, 3em);
+      --${Wo}-min-height: max(48px, 3em);
     }
 
     &[arc-dropdown-item=section-label] {
-      --${K}-min-height: max(32px, 2em);
+      --${Wo}-min-height: max(32px, 2em);
     }
 
     &[arc-dropdown-item=user] {
-      --${K}-min-height: max(40px, 2.5em);
+      --${Wo}-min-height: max(40px, 2.5em);
 
       &:not([has-start-slot]) {
-        --${K}-padding: var(--${K}-base-padding) max(8px, 0.5em) max(10px, 0.625em);
+        --${Wo}-padding: var(--${Wo}-base-padding) max(8px, 0.5em) max(10px, 0.625em);
       }
     }
 
     &[arc-dropdown-item=user-detail] {
-      --${K}-min-height: max(48px, 3em);
+      --${Wo}-min-height: max(48px, 3em);
 
       &:not([has-start-slot]) {
-        --${K}-padding: var(--${K}-base-padding) max(8px, 0.5em) max(6px, 0.375em);
+        --${Wo}-padding: var(--${Wo}-base-padding) max(8px, 0.5em) max(6px, 0.375em);
       }
     }
 
     &[arc-dropdown-item=divider] {
-      --${K}-min-height: max(8px, 0.5em);
-      --${K}-padding: 0;
+      --${Wo}-min-height: max(8px, 0.5em);
+      --${Wo}-padding: 0;
 
       hr {
         flex: 1;
@@ -5797,7 +5767,7 @@
     --arc-popover-max-width: var(--arc-dropdown-max-width, 50em);
     --arc-popover-padding: var(--arc-dropdown-padding, 0);
 
-    --arc-menu-item-gap: var(--${K}-gap);
+    --arc-menu-item-gap: var(--${Wo}-gap);
     --arc-badge-align-self: center;
     --arc-badge-count-align-self: center;
   }
@@ -5806,14 +5776,14 @@
     flex: 1;
     display: flex;
     align-items: center;
-    gap: var(--${K}-gap);
+    gap: var(--${Wo}-gap);
     text-align: start;
-    padding: var(--${K}-padding);
-    min-height: var(--${K}-min-height);
+    padding: var(--${Wo}-padding);
+    min-height: var(--${Wo}-min-height);
     max-width: 100%;
 
     &[arc-button] {
-      --arc-button-padding: var(--${K}-padding);
+      --arc-button-padding: var(--${Wo}-padding);
 
       &[is-disabled] {
         --arc-button-cursor: not-allowed;
@@ -5828,45 +5798,44 @@
 
 }
 `,
-        So = (0, b.forwardRef)((r, a) =>
-          (0, t.jsx)(Pa, { ...r, ref: a, 'arc-dropdown-menu-button': '' }),
+        Xo = (0, j.forwardRef)((a, r) =>
+          (0, S.jsx)(Tt, { ...a, ref: r, 'arc-dropdown-menu-button': '' }),
         ),
-        Ke = (r) => {
-          const { items: a, renderItem: e, ...n } = r,
-            [i, c] = (0, b.useState)(!1),
-            s = (0, b.useCallback)((...l) => e?.(...l) || (0, t.jsx)(Co, { ...l[0] }), [e]),
-            d = (l) => {
-              ;(c(l.newState === 'open'), r?.onToggle?.(l))
-            }
-          return (0, t.jsx)(Ba, {
-            ...n,
+        Ko = (a) => {
+          const { items: r, renderItem: e, ...t } = a,
+            [o, i] = (0, j.useState)(!1),
+            n = (0, j.useCallback)((...a) => e?.(...a) || (0, S.jsx)(Zo, { ...a[0] }), [e])
+          return (0, S.jsx)(ao, {
+            ...t,
             'arc-dropdown': '',
             variant: 'common',
-            onToggle: d,
-            children: (0, t.jsx)(Sc, {
+            onToggle: (r) => {
+              ;(i('open' === r.newState), a?.onToggle?.(r))
+            },
+            children: (0, S.jsx)(Uo, {
               'arc-dropdown-menu': '',
-              items: a ?? [],
-              renderItem: s,
-              isVisible: i,
+              items: r ?? [],
+              renderItem: n,
+              isVisible: o,
             }),
           })
         }
-      ;((So.displayName = 'ArcDropdownButton'),
-        (Ke.Button = So),
-        (Ke.Item = Co),
-        O('ArcDropdownMenu', _c))
-      const Tc = (r) =>
-          (0, t.jsx)(ur, {
-            ...r,
+      ;((Xo.displayName = 'ArcDropdownButton'),
+        (Ko.Button = Xo),
+        (Ko.Item = Zo),
+        Ba('ArcDropdownMenu', Go))
+      const Jo = (a) =>
+          (0, S.jsx)(Et, {
+            ...a,
             layout: 'icon',
             size: 'md',
             variant: 'common',
             hierarchy: 'tertiary',
           }),
-        fr = u`arc•link`,
-        nr = u`${fr}•icon`,
-        ir = u`${fr}•text`,
-        Ic = u`
+        Qo = P`arc•link`,
+        ai = P`${Qo}•icon`,
+        ri = P`${Qo}•text`,
+        ei = P`
 @layer arc-components {
 
 [arc-link] {
@@ -5874,63 +5843,63 @@
   /* VARIANTS ------------------------------------------------------• */
 
   &[data-variant=inherit] { /* @default */
-    --${nr}-color: currentcolor;
-    --${nr}-color-hover: color-mix(in srgb, currentcolor, transparent 38.75%);
-    --${nr}-color-disabled: color-mix(in srgb, currentcolor, transparent 70%);
+    --${ai}-color: currentcolor;
+    --${ai}-color-hover: color-mix(in srgb, currentcolor, transparent 38.75%);
+    --${ai}-color-disabled: color-mix(in srgb, currentcolor, transparent 70%);
 
-    --${ir}-color: currentcolor;
-    --${ir}-color-hover: color-mix(in srgb, currentcolor, transparent 38.75%);
-    --${ir}-color-disabled: color-mix(in srgb, currentcolor, transparent 70%);
+    --${ri}-color: currentcolor;
+    --${ri}-color-hover: color-mix(in srgb, currentcolor, transparent 38.75%);
+    --${ri}-color-disabled: color-mix(in srgb, currentcolor, transparent 70%);
 
-    --${fr}-focus-color: var(--arc-color-border-focus);
+    --${Qo}-focus-color: var(--arc-color-border-focus);
   }
 
   &[data-variant=primary] {
-    --${nr}-color: var(--arc-color-icon-primary);
-    --${ir}-color: var(--arc-color-text-primary);
-    --${nr}-color-hover: var(--arc-color-icon-primary-hover);
-    --${ir}-color-hover: var(--arc-color-text-primary-hover);
-    --${nr}-color-disabled: var(--arc-color-icon-disabled);
-    --${ir}-color-disabled: var(--arc-color-text-disabled);
-    --${fr}-focus-color: var(--arc-color-border-focus);
+    --${ai}-color: var(--arc-color-icon-primary);
+    --${ri}-color: var(--arc-color-text-primary);
+    --${ai}-color-hover: var(--arc-color-icon-primary-hover);
+    --${ri}-color-hover: var(--arc-color-text-primary-hover);
+    --${ai}-color-disabled: var(--arc-color-icon-disabled);
+    --${ri}-color-disabled: var(--arc-color-text-disabled);
+    --${Qo}-focus-color: var(--arc-color-border-focus);
   }
 
   &[data-variant=secondary] {
-    --${nr}-color: var(--arc-color-icon-secondary);
-    --${ir}-color: var(--arc-color-text-secondary);
-    --${nr}-color-hover: var(--arc-color-icon-secondary-hover);
-    --${ir}-color-hover: var(--arc-color-text-secondary-hover);
-    --${nr}-color-disabled: var(--arc-color-icon-disabled);
-    --${ir}-color-disabled: var(--arc-color-text-disabled);
-    --${fr}-focus-color: var(--arc-color-border-focus);
+    --${ai}-color: var(--arc-color-icon-secondary);
+    --${ri}-color: var(--arc-color-text-secondary);
+    --${ai}-color-hover: var(--arc-color-icon-secondary-hover);
+    --${ri}-color-hover: var(--arc-color-text-secondary-hover);
+    --${ai}-color-disabled: var(--arc-color-icon-disabled);
+    --${ri}-color-disabled: var(--arc-color-text-disabled);
+    --${Qo}-focus-color: var(--arc-color-border-focus);
   }
 
   &[data-variant=inverse] {
-    --${nr}-color: var(--arc-color-icon-inverse);
-    --${ir}-color: var(--arc-color-text-inverse);
-    --${nr}-color-hover: var(--arc-color-icon-inverse-hover);
-    --${ir}-color-hover: var(--arc-color-text-inverse-hover);
-    --${nr}-color-disabled: var(--arc-color-icon-inverse-disabled);
-    --${ir}-color-disabled: var(--arc-color-text-inverse-disabled);
-    --${fr}-focus-color: var(--arc-color-border-focus-inverse);
+    --${ai}-color: var(--arc-color-icon-inverse);
+    --${ri}-color: var(--arc-color-text-inverse);
+    --${ai}-color-hover: var(--arc-color-icon-inverse-hover);
+    --${ri}-color-hover: var(--arc-color-text-inverse-hover);
+    --${ai}-color-disabled: var(--arc-color-icon-inverse-disabled);
+    --${ri}-color-disabled: var(--arc-color-text-inverse-disabled);
+    --${Qo}-focus-color: var(--arc-color-border-focus-inverse);
   }
 
   & {
-    --${fr}-outline-size: 0.125em; /* 2px */
-    --${fr}-outline-offset: 0.0625em; /* 1px */
+    --${Qo}-outline-size: 0.125em; /* 2px */
+    --${Qo}-outline-offset: 0.0625em; /* 1px */
   }
 
 
   /* STATES --------------------------------------------------------• */
 
   &:not([data-is-disabled]):hover {
-    --${ir}-color: var(--arc-link-color-hover, var(--${ir}-color-hover));
-    --${nr}-color: var(--arc-link-color-hover, var(--${nr}-color-hover));
+    --${ri}-color: var(--arc-link-color-hover, var(--${ri}-color-hover));
+    --${ai}-color: var(--arc-link-color-hover, var(--${ai}-color-hover));
   }
 
   &:where(:focus, :focus-within):focus-visible {
-    --${fr}-outline: var(--${fr}-outline-size) solid var(--arc-link-color-focus, var(--${fr}-focus-color));
-    --${fr}-outline-offset: var(--${fr}-outline-offset);
+    --${Qo}-outline: var(--${Qo}-outline-size) solid var(--arc-link-color-focus, var(--${Qo}-focus-color));
+    --${Qo}-outline-offset: var(--${Qo}-outline-offset);
 
     * {
       outline: none;
@@ -5938,16 +5907,16 @@
   }
 
   &[data-is-disabled] {
-    --${ir}-color: var(--arc-link-color-disabled, var(--${ir}-color-disabled));
-    --${nr}-color: var(--arc-link-color-disabled, var(--${nr}-color-disabled));
-    --${fr}-cursor: not-allowed;
+    --${ri}-color: var(--arc-link-color-disabled, var(--${ri}-color-disabled));
+    --${ai}-color: var(--arc-link-color-disabled, var(--${ai}-color-disabled));
+    --${Qo}-cursor: not-allowed;
   }
 
 
   & {
 
     /* Inter-Component Communication -------------------------------• */
-    --arc-icon-color: var(--arc-link-color, var(--${nr}-color));  /** ArcIcon color */
+    --arc-icon-color: var(--arc-link-color, var(--${ai}-color));  /** ArcIcon color */
 
   }
 
@@ -5957,7 +5926,7 @@
 /* CORE STYLES ------------------------------------------------------ */
 
 [arc-link] {
-  color: var(--arc-link-color, var(--${ir}-color));
+  color: var(--arc-link-color, var(--${ri}-color));
   border-radius: var(--arc-border-radius-sm); /* for focus outline */
   text-decoration: var(--arc-link-text-decoration, underline);
 
@@ -5973,49 +5942,49 @@
 
 }
 `,
-        Lc = z(Q, ['inherit', 'primary', 'secondary', 'inverse']),
-        Mc = ({
-          children: r,
-          layout: a = 'gutter',
+        ti = y(o, ['inherit', 'primary', 'secondary', 'inverse']),
+        oi = ({
+          children: a,
+          layout: r = 'gutter',
           size: e = 'inherit',
-          variant: n = 'inherit',
-          tag: i = 'a',
-          href: c,
-          icon: s,
-          text: d,
+          variant: t = 'inherit',
+          tag: o = 'a',
+          href: i,
+          icon: n,
+          text: c,
           overflow: l,
-          iconSize: p,
-          gapSize: h,
-          isFlipped: v,
-          isDisabled: f,
-          ...g
+          iconSize: s,
+          gapSize: d,
+          isFlipped: p,
+          isDisabled: v,
+          ...h
         }) =>
-          (0, t.jsx)(i, {
-            ...g,
-            href: f ? void 0 : c,
+          (0, S.jsx)(o, {
+            ...h,
+            href: v ? void 0 : i,
             'arc-link': '',
-            'data-variant': n,
-            'aria-disabled': f,
-            'data-is-disabled': f ? '' : void 0,
+            'data-variant': t,
+            'aria-disabled': v,
+            'data-is-disabled': v ? '' : void 0,
             children:
-              r ||
-              (0, t.jsx)(Er, {
-                icon: s,
-                text: d,
+              a ||
+              (0, S.jsx)(Pe, {
+                icon: n,
+                text: c,
                 overflow: l,
-                iconSize: p,
-                gapSize: h,
+                iconSize: s,
+                gapSize: d,
                 size: e,
-                layout: a,
-                isFlipped: v,
+                layout: r,
+                isFlipped: p,
               }),
           })
-      O('ArcLink', Ic)
-      const Pc = z(Q, ['common']),
-        Rc = z(Q, ['common', 'critical']),
-        Bc = z(Q, ['common', 'brand', 'info', 'success', 'warning', 'error', 'processing']),
-        Oc = ['auto', 'dark', 'light', 'none'],
-        Dc = [
+      Ba('ArcLink', ei)
+      const ii = y(o, ['common']),
+        ni = y(o, ['common', 'critical']),
+        ci = y(o, ['common', 'brand', 'info', 'success', 'warning', 'error', 'processing']),
+        li = ['auto', 'dark', 'light', 'none'],
+        si = [
           'auto',
           'all',
           'top-bottom',
@@ -6026,8 +5995,8 @@
           'top-bottom-right',
           'none',
         ],
-        Hc = z(yr, ['xl', 'lg', 'md', 'sm', 'custom', 'fullscreen']),
-        Vc = [
+        di = y(s, ['xl', 'lg', 'md', 'sm', 'custom', 'fullscreen']),
+        pi = [
           'cancel',
           'escape',
           'outside',
@@ -6039,30 +6008,30 @@
           'confirm:discard',
           'confirm:cancel',
         ],
-        Ha = u`arc•button•bar`,
-        Fc = u`
+        vi = P`arc•button•bar`,
+        hi = P`
 @layer arc-components {
 
   [arc-button-bar=horizontal] {
-    --${Ha}-axis: row;
+    --${vi}-axis: row;
 
     &[is-flipped] {
-      --${Ha}-axis: row-reverse;
+      --${vi}-axis: row-reverse;
     }
   }
 
   [arc-button-bar=vertical] {
-    --${Ha}-axis: column;
+    --${vi}-axis: column;
 
     &[is-flipped] {
-      --${Ha}-axis: column-reverse;
+      --${vi}-axis: column-reverse;
     }
   }
 
   [arc-button-bar] {
     flex: var(--arc-button-bar-flex, 1);
     display: var(--arc-button-bar-display, flex);
-    flex-direction: var(--arc-button-bar-flex-direction, var(--${Ha}-axis));
+    flex-direction: var(--arc-button-bar-flex-direction, var(--${vi}-axis));
     align-items: var(--arc-button-bar-align-items, center);
     justify-content: var(--arc-button-bar-justify-content, flex-end);
     gap: var(--arc-button-bar-gap, var(--arc-space-1));
@@ -6072,134 +6041,126 @@
 
 }
 `,
-        Je = ({ children: r, ...a }) => {
-          const { Element: e = 'menu', orientation: n = 'horizontal', isFlipped: i = !1, ...c } = a
-          return (0, t.jsx)(e, {
-            ...c,
-            'arc-button-bar': n,
-            'is-flipped': i ? '' : void 0,
-            role: c.role ?? 'group',
-            children: r,
+        ui = ({ children: a, ...r }) => {
+          const { Element: e = 'menu', orientation: t = 'horizontal', isFlipped: o = !1, ...i } = r
+          return (0, S.jsx)(e, {
+            ...i,
+            'arc-button-bar': t,
+            'is-flipped': o ? '' : void 0,
+            role: i.role ?? 'group',
+            children: a,
           })
         }
-      O('ArcButtonBar', Fc)
-      const Qe = (r) => r?.matches(':modal'),
-        rt = (r, a) => a.target === r,
-        Nc = (r, a) =>
-          a.clientX < r.left || a.clientX > r.right || a.clientY < r.top || a.clientY > r.bottom,
-        Va =
-          ({ modalRef: r, shouldConfirm: a, setIsConfirming: e, onCloseOverride: n = void 0 }) =>
-          (i, c) =>
-          (s) => {
-            if ((s?.preventDefault?.(), s?.stopPropagation?.(), !r?.current)) {
-              c?.(s)
-              return
-            }
-            if (n) {
-              ;(n(i, s, r.current), c?.(s))
-              return
-            }
-            if (a && i !== 'confirm:discard') {
-              e?.(!0)
-              return
-            }
-            ;(r.current?.close(i), e?.(!1), c?.(s))
+      Ba('ArcButtonBar', hi)
+      const mi = (a) => a?.matches(':modal'),
+        gi = (a, r) => r.target === a,
+        bi =
+          ({ modalRef: a, shouldConfirm: r, setIsConfirming: e, onCloseOverride: t }) =>
+          (o, i) =>
+          (n) => {
+            if ((n?.preventDefault?.(), n?.stopPropagation?.(), a?.current))
+              return t
+                ? (t(o, n, a.current), void i?.(n))
+                : void (r && 'confirm:discard' !== o
+                    ? e?.(!0)
+                    : (a.current?.close(o), e?.(!1), i?.(n)))
+            i?.(n)
           },
-        at = ({ modalRef: r, shouldConfirm: a, setIsConfirming: e, onClose: n, onToggle: i }) => {
-          ;(0, b.useEffect)(() => {
-            const c = r.current
-            if (!c) return
-            const s = (l) => {
-                Qe(c) &&
-                  rt(c, l) &&
-                  (a ? (l.preventDefault(), l.stopPropagation(), e?.(!0)) : n?.('outside', l))
+        fi = ({ modalRef: a, shouldConfirm: r, setIsConfirming: e, onClose: t, onToggle: o }) => {
+          ;(0, j.useEffect)(() => {
+            const i = a.current
+            if (!i) return
+            const n = (a) => {
+                mi(i) &&
+                  gi(i, a) &&
+                  (r ? (a.preventDefault(), a.stopPropagation(), e?.(!0)) : t?.('outside', a))
               },
-              d = (l) => {
-                rt(c, l) && (e?.(!1), n?.(c.returnValue, l), i?.(!1, l))
+              c = (a) => {
+                gi(i, a) && (e?.(!1), t?.(i.returnValue, a), o?.(!1, a))
               }
             return (
-              c.addEventListener('close', d),
-              c.addEventListener('cancel', s),
+              i.addEventListener('close', c),
+              i.addEventListener('cancel', n),
               () => {
-                ;(c.removeEventListener('close', d), c.removeEventListener('cancel', s))
+                ;(i.removeEventListener('close', c), i.removeEventListener('cancel', n))
               }
             )
-          }, [r, a, e, n, i])
+          }, [a, r, e, t, o])
         },
-        et = ({ modalRef: r, isOpen: a, isTopLayer: e }) => {
-          ;(0, b.useEffect)(() => {
-            const n = r.current
-            n && (a && !n.open && (e ? n.showModal() : n.show()), !a && n.open && n.close())
-          }, [a, e])
+        xi = ({ modalRef: a, isOpen: r, isTopLayer: e }) => {
+          ;(0, j.useEffect)(() => {
+            const t = a.current
+            t && (r && !t.open && (e ? t.showModal() : t.show()), !r && t.open && t.close())
+          }, [r, e])
         },
-        tt = ({ modalRef: r, isOpen: a, autoFocusId: e }) => {
-          ;(0, b.useEffect)(() => {
-            const n = r.current
-            if (!n || !e || !a) return
-            const i = n.querySelector(`#${e}`)
-            if (!i || !(i instanceof HTMLElement)) return
-            const c = setTimeout(() => {
-              i.focus()
+        $i = ({ modalRef: a, isOpen: r, autoFocusId: e }) => {
+          ;(0, j.useEffect)(() => {
+            const t = a.current
+            if (!t || !e || !r) return
+            const o = t.querySelector(`#${e}`)
+            if (!(o && o instanceof HTMLElement)) return
+            const i = setTimeout(() => {
+              o.focus()
             }, 0)
-            return () => clearTimeout(c)
-          }, [r, e, a])
+            return () => clearTimeout(i)
+          }, [a, e, r])
         },
-        jo = (r, a) =>
-          (typeof r.composedPath == 'function' ? r.composedPath() : []).includes(a) ||
-          (r.target instanceof Node && a.contains(r.target)),
-        Eo = ({ modalRef: r, isOpen: a = !1, closeOnBackdrop: e = !1, attemptCloseModal: n }) => {
-          ;(0, b.useEffect)(() => {
-            const i = r.current
-            if (!i || !a || !e || !Qe(i)) return
-            let c = !1
-            const s = (l) => {
-                c = jo(l, i)
+        yi = (a, r) =>
+          ('function' == typeof a.composedPath ? a.composedPath() : []).includes(r) ||
+          (a.target instanceof Node && r.contains(a.target)),
+        wi = ({ modalRef: a, isOpen: r = !1, closeOnBackdrop: e = !1, attemptCloseModal: t }) => {
+          ;(0, j.useEffect)(() => {
+            const o = a.current
+            if (!(o && r && e && mi(o))) return
+            let i = !1
+            const n = (a) => {
+                i = yi(a, o)
               },
-              d = (l) => {
-                if (c || jo(l, i)) return
-                const p = i.getBoundingClientRect()
-                Nc(p, l) && n('outside')(l)
+              c = (a) => {
+                if (i || yi(a, o)) return
+                ;((a, r) =>
+                  r.clientX < a.left ||
+                  r.clientX > a.right ||
+                  r.clientY < a.top ||
+                  r.clientY > a.bottom)(o.getBoundingClientRect(), a) && t('outside')(a)
               }
             return (
-              document.documentElement?.addEventListener('pointerdown', s, { capture: !0 }),
-              document.documentElement?.addEventListener('click', d, { capture: !0 }),
+              document.documentElement?.addEventListener('pointerdown', n, { capture: !0 }),
+              document.documentElement?.addEventListener('click', c, { capture: !0 }),
               () => {
-                ;(document.documentElement?.removeEventListener('pointerdown', s, { capture: !0 }),
-                  document.documentElement?.removeEventListener('click', d, { capture: !0 }))
+                ;(document.documentElement?.removeEventListener('pointerdown', n, { capture: !0 }),
+                  document.documentElement?.removeEventListener('click', c, { capture: !0 }))
               }
             )
-          }, [r, n, a, e])
+          }, [a, t, r, e])
         },
-        _o = ({
-          modalRef: r,
-          isOpen: a = !1,
+        ki = ({
+          modalRef: a,
+          isOpen: r = !1,
           closeOnEsc: e = !1,
-          closedBy: n = 'closerequest',
-          attemptCloseModal: i,
+          closedBy: t = 'closerequest',
+          attemptCloseModal: o,
         }) => {
-          ;(0, b.useEffect)(() => {
-            const c = r.current
-            if (!c || !a || !e || !Qe(c)) return
-            const s = (d) => {
-              if (d.key === 'Escape' && rt(c, d)) {
-                if (n === 'none') {
-                  ;(d.stopPropagation(), d.preventDefault())
-                  return
-                }
-                i('escape')(d)
+          ;(0, j.useEffect)(() => {
+            const i = a.current
+            if (!(i && r && e && mi(i))) return
+            const n = (a) => {
+              if ('Escape' === a.key && gi(i, a)) {
+                if ('none' === t) return (a.stopPropagation(), void a.preventDefault())
+                o('escape')(a)
               }
             }
             return (
-              document.addEventListener('keydown', s),
-              () => document.removeEventListener('keydown', s)
+              document.addEventListener('keydown', n),
+              () => document.removeEventListener('keydown', n)
             )
-          }, [r, i, a, e, n])
+          }, [a, o, r, e, t])
         },
-        ot = (r) =>
-          (0, t.jsx)(ur, {
+        zi = (a) =>
+          (0, S.jsx)(Et, {
             'aria-label': 'Dismiss',
             text: 'Dismiss',
-            ...r,
+            ...a,
             variant: 'common',
             hierarchy: 'tertiary',
             icon: 'fa-regular fa-xmark-large fa-fw',
@@ -6207,179 +6168,174 @@
             shape: 'square',
             size: 'md',
           }),
-        nt = (r) => (0, t.jsx)('div', { ...r, 'arc-modal-content': '' }),
-        To = ({ showDivider: r, ...a }) =>
-          (0, t.jsx)('header', { ...a, 'arc-modal-header': '', 'has-divider': r ? '' : void 0 }),
-        Uc = ({ glyph: r, variant: a = 'common' }) =>
-          (0, t.jsx)(t.Fragment, {
-            children: r && (0, t.jsx)(B, { icon: r, 'arc-modal-glyph': '', 'arc-icon-status': a }),
+        Ci = (a) => (0, S.jsx)('div', { ...a, 'arc-modal-content': '' }),
+        Ai = ({ showDivider: a, ...r }) =>
+          (0, S.jsx)('header', { ...r, 'arc-modal-header': '', 'has-divider': a ? '' : void 0 }),
+        Si = ({ glyph: a, variant: r = 'common' }) =>
+          (0, S.jsx)(S.Fragment, {
+            children: a && (0, S.jsx)(xr, { icon: a, 'arc-modal-glyph': '', 'arc-icon-status': r }),
           }),
-        it = (r) => {
-          const { titleContent: a, TitleElement: e = 'h2', ...n } = r
-          return (0, t.jsx)(t.Fragment, {
+        ji = (a) => {
+          const { titleContent: r, TitleElement: e = 'h2', ...t } = a
+          return (0, S.jsx)(S.Fragment, {
             children:
-              a &&
-              (0, t.jsx)(e, {
-                ...n,
+              r &&
+              (0, S.jsx)(e, {
+                ...t,
                 'arc-modal-title': '',
-                children: typeof a == 'string' ? a : (0, t.jsx)(Er, { ...a }),
+                children: 'string' == typeof r ? r : (0, S.jsx)(Pe, { ...r }),
               }),
           })
         },
-        Yc = ({ message: r, ...a }) =>
-          (0, t.jsx)(t.Fragment, {
-            children: r && (0, t.jsx)('p', { ...a, 'arc-modal-message': '', children: r }),
+        Ei = ({ message: a, ...r }) =>
+          (0, S.jsx)(S.Fragment, {
+            children: a && (0, S.jsx)('p', { ...r, 'arc-modal-message': '', children: a }),
           }),
-        ct = ({ tag: r = 'section', padding: a, ...e }) =>
-          (0, t.jsx)(r, { ...e, 'arc-modal-body': '', 'data-padding': a === 'auto' ? void 0 : a }),
-        st = ({ showDivider: r, ...a }) =>
-          (0, t.jsx)('footer', { ...a, 'arc-modal-footer': '', 'has-divider': r ? '' : void 0 }),
-        Wc = (r) => (a) => {
-          if (a.key === 'Escape') {
-            if (r === 'none') {
-              ;(a.stopPropagation(), a.preventDefault())
-              return
-            }
-            return 'escape'
-          }
+        Ti = ({ tag: a = 'section', padding: r, ...e }) =>
+          (0, S.jsx)(a, { ...e, 'arc-modal-body': '', 'data-padding': 'auto' === r ? void 0 : r }),
+        Oi = ({ showDivider: a, ...r }) =>
+          (0, S.jsx)('footer', { ...r, 'arc-modal-footer': '', 'has-divider': a ? '' : void 0 }),
+        Ii = (a) => (r) => {
+          if ('Escape' === r.key)
+            return 'none' === a ? (r.stopPropagation(), void r.preventDefault()) : 'escape'
         },
-        y = u`arc•modal`,
-        xa = u`${y}•layout`,
-        Zc = u`${y}•header`,
-        de = u`${y}•body`,
-        Fa = u`${y}•footer`,
-        Br = u`${y}•backdrop`,
-        dr = u`${y}•transition`,
-        pe = u`${y}•size`,
-        k = u`${y}•padding`,
-        $a = u`${Zc}•padding`,
-        N = u`${de}•padding`,
-        Kr = u`${Fa}•padding`,
-        Gc = u`
-  --${pe}-1: max(1px, 0.0625em);
-  --${pe}-48: max(48px, 3em);
+        _i = P`arc•modal`,
+        Pi = P`${_i}•layout`,
+        Mi = P`${_i}•header`,
+        Ri = P`${_i}•body`,
+        Li = P`${_i}•footer`,
+        Bi = P`${_i}•backdrop`,
+        Di = P`${_i}•transition`,
+        Fi = P`${_i}•size`,
+        Hi = P`${_i}•padding`,
+        Vi = P`${Mi}•padding`,
+        Ni = P`${Ri}•padding`,
+        Ui = P`${Li}•padding`,
+        Zi = P`
+  --${Fi}-1: max(1px, 0.0625em);
+  --${Fi}-48: max(48px, 3em);
 
-  --${k}--8: min(-8px, -0.5em);
-  --${k}--4: min(-4px, -0.25em);
-  --${k}-8: max(8px, 0.5em);
-  --${k}-10: max(10px, 0.625em);
-  --${k}-12: max(12px, 0.75em);
-  --${k}-16: max(16px, 1em);
-  --${k}-20: max(20px, 1.25em);
-  --${k}-24: max(24px, 1.5em);
-  --${k}-32: max(32px, 2em);
-  --${k}-40: max(40px, 2.5em);
+  --${Hi}--8: min(-8px, -0.5em);
+  --${Hi}--4: min(-4px, -0.25em);
+  --${Hi}-8: max(8px, 0.5em);
+  --${Hi}-10: max(10px, 0.625em);
+  --${Hi}-12: max(12px, 0.75em);
+  --${Hi}-16: max(16px, 1em);
+  --${Hi}-20: max(20px, 1.25em);
+  --${Hi}-24: max(24px, 1.5em);
+  --${Hi}-32: max(32px, 2em);
+  --${Hi}-40: max(40px, 2.5em);
 
-  --${y}-font-size: max(var(--arc-font-size-14), 0.875em); /* 14px */
-  --${y}-gap: var(--${k}-16);
+  --${_i}-font-size: max(var(--arc-font-size-14), 0.875em); /* 14px */
+  --${_i}-gap: var(--${Hi}-16);
 
-  --${xa}-rows: auto 1fr auto;
-  --${xa}-columns: auto;
+  --${Pi}-rows: auto 1fr auto;
+  --${Pi}-columns: auto;
 
   &:not(:has([arc-modal-footer])):has([arc-modal-header]) {
-    --${xa}-rows: auto 1fr;
+    --${Pi}-rows: auto 1fr;
   }
 
   &:not(:has([arc-modal-header])):has([arc-modal-footer]) {
-    --${xa}-rows: 1fr auto;
+    --${Pi}-rows: 1fr auto;
   }
 
   &:not(:has([arc-modal-header])):not(:has([arc-modal-footer])) {
-    --${xa}-rows: auto;
+    --${Pi}-rows: auto;
   }
 
-  --${y}-color: var(--arc-color-text-primary);
-  --${y}-background: var(--arc-color-background-primary);
-  --${y}-border: none;
-  --${y}-border-radius: var(--arc-border-radius-lg);
-  --${y}-box-shadow: var(--arc-shadow-light-lg);
-  --${y}-divider-color: var(--arc-color-alpha-black-10);
-  --${y}-divider: var(--${pe}-1) solid var(--${y}-divider-color);
+  --${_i}-color: var(--arc-color-text-primary);
+  --${_i}-background: var(--arc-color-background-primary);
+  --${_i}-border: none;
+  --${_i}-border-radius: var(--arc-border-radius-lg);
+  --${_i}-box-shadow: var(--arc-shadow-light-lg);
+  --${_i}-divider-color: var(--arc-color-alpha-black-10);
+  --${_i}-divider: var(--${Fi}-1) solid var(--${_i}-divider-color);
 
-  --${y}-max-width: calc(100vw - var(--${k}-32));
-  --${y}-min-width: unset;
-  --${y}-width: auto;
+  --${_i}-max-width: calc(100vw - var(--${Hi}-32));
+  --${_i}-min-width: unset;
+  --${_i}-width: auto;
 
-  --${y}-max-height: calc(100vh - var(--${k}-32));
-  --${y}-min-height: unset;
-  --${y}-height: auto;
+  --${_i}-max-height: calc(100vh - var(--${Hi}-32));
+  --${_i}-min-height: unset;
+  --${_i}-height: auto;
 
   @supports (appearance: base-select) {
-    --${y}-height: max-content;
+    --${_i}-height: max-content;
   }
 
 
-  --${dr}-y: 1vh;
-  --${dr}-start-y: 2.5vh;
-  --${dr}-scale: 1;
-  --${dr}-start-scale: 0.975;
+  --${Di}-y: 1vh;
+  --${Di}-start-y: 2.5vh;
+  --${Di}-scale: 1;
+  --${Di}-start-scale: 0.975;
 
-  --${de}-text-align: unset;
-  --${Fa}-justify-content: flex-end;
+  --${Ri}-text-align: unset;
+  --${Li}-justify-content: flex-end;
 
-  --${Br}-background: var(--arc-color-overlay-dark);
-  --${Br}-pointer-events: none;
-  --${Br}-cursor: default;
+  --${Bi}-background: var(--arc-color-overlay-dark);
+  --${Bi}-pointer-events: none;
+  --${Bi}-cursor: default;
 
   &:where([is-backdrop=light]) {
-    --${Br}-background: var(--arc-color-overlay-light);
+    --${Bi}-background: var(--arc-color-overlay-light);
   }
 
   &:where([is-backdrop=dark]) {
-    --${Br}-background: var(--arc-color-overlay-dark);
+    --${Bi}-background: var(--arc-color-overlay-dark);
   }
 
   &:where([is-backdrop=none]) {
-    --${Br}-background: transparent;
+    --${Bi}-background: transparent;
   }
 
   &:where([is-inverse]) {
-    --${y}-color: var(--arc-color-text-inverse);
-    --${y}-background: var(--arc-color-background-inverse);
-    --${y}-divider-color: var(--arc-color-alpha-white-10);
-    --${y}-box-shadow: var(--arc-shadow-dark-lg);
+    --${_i}-color: var(--arc-color-text-inverse);
+    --${_i}-background: var(--arc-color-background-inverse);
+    --${_i}-divider-color: var(--arc-color-alpha-white-10);
+    --${_i}-box-shadow: var(--arc-shadow-dark-lg);
   }
 `,
-        Xc = u`
+        Yi = P`
   &[data-size=sm] {
-    --${y}-width: 28em;
+    --${_i}-width: 28em;
   }
 
   &[data-size=md] {
-    --${y}-width: 40em;
+    --${_i}-width: 40em;
   }
 
   &[data-size=lg] {
-    --${y}-width: 50em;
+    --${_i}-width: 50em;
   }
 
   &[data-size=xl] {
-    --${y}-width: 64em;
+    --${_i}-width: 64em;
   }
 
   &[data-size=custom] {
-    --${y}-width: auto;
-    --${y}-height: auto;
+    --${_i}-width: auto;
+    --${_i}-height: auto;
   }
 
   &[data-size=fullscreen] {
-    --${y}-width: 100vw;
-    --${y}-height: 100vh;
-    --${y}-min-width: 100vw;
-    --${y}-min-height: 100vh;
-    --${y}-max-width: 100vw;
-    --${y}-max-height: 100vh;
-    --${y}-border-radius: var(--arc-border-radius-none);
+    --${_i}-width: 100vw;
+    --${_i}-height: 100vh;
+    --${_i}-min-width: 100vw;
+    --${_i}-min-height: 100vh;
+    --${_i}-max-width: 100vw;
+    --${_i}-max-height: 100vh;
+    --${_i}-border-radius: var(--arc-border-radius-none);
 
-    --${dr}-y: 0;
-    --${dr}-start-y: 0;
-    --${dr}-scale: 1.125;
-    --${dr}-start-scale: 1.125;
+    --${Di}-y: 0;
+    --${Di}-start-y: 0;
+    --${Di}-scale: 1.125;
+    --${Di}-start-scale: 1.125;
   }
 `,
-        qc = u`
+        qi = P`
   &[is-confirm] {
-    --${Fa}-justify-content: flex-end;
+    --${Li}-justify-content: flex-end;
 
     &[is-confirm=critical] [arc-modal-title] {
       --arc-icon-text-icon-color: var(--arc-color-critical-root);
@@ -6387,16 +6343,16 @@
   }
 
   &[is-alert] {
-    --${de}-text-align: center;
-    --${Fa}-justify-content: center;
+    --${Ri}-text-align: center;
+    --${Li}-justify-content: center;
 
-    --${N}-block-start: var(--${k}-40);
-    --${N}-block-end: var(--${k}-20);
+    --${Ni}-block-start: var(--${Hi}-40);
+    --${Ni}-block-end: var(--${Hi}-20);
 
-    --${Kr}-block-start: var(--${k}-12);
-    --${Kr}-block-end: var(--${k}-40);
+    --${Ui}-block-start: var(--${Hi}-12);
+    --${Ui}-block-end: var(--${Hi}-40);
 
-    --arc-modal-glyph-size: var(--${pe}-48);
+    --arc-modal-glyph-size: var(--${Fi}-48);
 
     [arc-modal-spinner] {
       --arc-spinner-circle-opacity: 9.8%; /* 9.8% = neutral-200 on white */
@@ -6415,7 +6371,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: var(--${k}-12);
+      gap: var(--${Hi}-12);
     }
   }
 
@@ -6444,88 +6400,88 @@
     z-index: var(--arc-modal-z-index, 1000);
   }
 `,
-        Kc = u`
+        Wi = P`
   [arc-modal-content] {
     &:has([arc-modal-header]) {
-      --${N}-block-start: var(--${k}-10);
+      --${Ni}-block-start: var(--${Hi}-10);
     }
 
     &:has([arc-modal-footer]) {
-      --${N}-block-end: var(--${k}-10);
+      --${Ni}-block-end: var(--${Hi}-10);
     }
 
     &:has([arc-modal-header][has-divider]) {
-      --${$a}-block-end: var(--${k}-20);
-      --${N}-block-start: var(--${k}-20);
+      --${Vi}-block-end: var(--${Hi}-20);
+      --${Ni}-block-start: var(--${Hi}-20);
     }
 
     &:has([arc-modal-footer][has-divider]) {
-      --${N}-block-end: var(--${k}-20);
-      --${Kr}-block-start: var(--${k}-12);
-      --${Kr}-block-end: var(--${k}-12);
+      --${Ni}-block-end: var(--${Hi}-20);
+      --${Ui}-block-start: var(--${Hi}-12);
+      --${Ui}-block-end: var(--${Hi}-12);
     }
 
     &:has([arc-modal-body][data-padding=top-bottom]) {
-      --${N}-inline-start: 0;
-      --${N}-inline-end: 0;
+      --${Ni}-inline-start: 0;
+      --${Ni}-inline-end: 0;
     }
 
     &:has([arc-modal-body][data-padding=left-right]) {
-      --${N}-block-start: 0;
-      --${N}-block-end: 0;
+      --${Ni}-block-start: 0;
+      --${Ni}-block-end: 0;
     }
 
     &:has([arc-modal-body][data-padding=left-right-top]) {
-      --${N}-block-end: 0;
+      --${Ni}-block-end: 0;
     }
 
     &:has([arc-modal-body][data-padding=left-right-bottom]) {
-      --${N}-block-start: 0;
+      --${Ni}-block-start: 0;
     }
 
     &:has([arc-modal-body][data-padding=top-bottom-left]) {
-      --${N}-inline-end: 0;
+      --${Ni}-inline-end: 0;
     }
 
     &:has([arc-modal-body][data-padding=top-bottom-right]) {
-      --${N}-inline-start: 0;
+      --${Ni}-inline-start: 0;
     }
 
     &:has([arc-modal-body][data-padding=all]) {
-      --${N}-block-start: var(--${k}-20);
-      --${N}-inline-end: var(--${k}-24);
-      --${N}-block-end: var(--${k}-20);
-      --${N}-inline-start: var(--${k}-24);
+      --${Ni}-block-start: var(--${Hi}-20);
+      --${Ni}-inline-end: var(--${Hi}-24);
+      --${Ni}-block-end: var(--${Hi}-20);
+      --${Ni}-inline-start: var(--${Hi}-24);
     }
 
     &:has([arc-modal-go-back]) {
-      --${$a}-inline-start: var(--${k}-20);
+      --${Vi}-inline-start: var(--${Hi}-20);
     }
 
-    --${$a}:
-      var(--${k}-20)
-      var(--${k}-24)
-      var(--${$a}-block-end, var(--${k}-10))
-      var(--${$a}-inline-start, var(--${k}-24));
+    --${Vi}:
+      var(--${Hi}-20)
+      var(--${Hi}-24)
+      var(--${Vi}-block-end, var(--${Hi}-10))
+      var(--${Vi}-inline-start, var(--${Hi}-24));
 
-    --${N}:
-      var(--${N}-block-start, var(--${k}-20))
-      var(--${N}-inline-end, var(--${k}-24))
-      var(--${N}-block-end, var(--${k}-20))
-      var(--${N}-inline-start, var(--${k}-24));
+    --${Ni}:
+      var(--${Ni}-block-start, var(--${Hi}-20))
+      var(--${Ni}-inline-end, var(--${Hi}-24))
+      var(--${Ni}-block-end, var(--${Hi}-20))
+      var(--${Ni}-inline-start, var(--${Hi}-24));
 
-    --${Kr}:
-      var(--${Kr}-block-start, var(--${k}-10))
-      var(--${k}-24)
-      var(--${Kr}-block-end, var(--${k}-20))
-      var(--${k}-24);
+    --${Ui}:
+      var(--${Ui}-block-start, var(--${Hi}-10))
+      var(--${Hi}-24)
+      var(--${Ui}-block-end, var(--${Hi}-20))
+      var(--${Hi}-24);
 
     &:has([arc-modal-body][data-padding=none]) {
-      --${N}: 0;
+      --${Ni}: 0;
     }
   }
 `,
-        Jc = u`
+        Gi = P`
   [arc-modal] {
     transition-behavior: allow-discrete, smooth;
     transition-duration: var(--arc-modal-transition-duration, 240ms);
@@ -6548,13 +6504,13 @@
     }
   }
 `,
-        Qc = u`
+        Xi = P`
   [arc-modal] {
     display: none;
     opacity: 0;
     transform:
-      translateY(var(--${dr}-y))
-      scale(var(--${dr}-scale));
+      translateY(var(--${Di}-y))
+      scale(var(--${Di}-scale));
 
     /* ArcSelect Issue */
     @supports (appearance: base-select) {
@@ -6599,8 +6555,8 @@
     [arc-modal][open] {
       opacity: 0;
       transform:
-        translateY(var(--${dr}-start-y))
-        scale(var(--${dr}-start-scale));
+        translateY(var(--${Di}-start-y))
+        scale(var(--${Di}-start-scale));
 
       /* ArcSelect Issue */
       @supports (appearance: base-select) {
@@ -6619,26 +6575,26 @@
     }
   }
 `,
-        lt = u`
+        Ki = P`
 @layer arc-components {
 
   /* SETUP ---------------------------------------------------------• */
 
   [arc-modal] {
-    ${Gc}
-    ${Xc}
-    ${qc}
-    ${Kc}
+    ${Zi}
+    ${Yi}
+    ${qi}
+    ${Wi}
   }
 
   /* REDUCED MOTION ------------------------------------------------• */
 
   @media (prefers-reduced-motion: reduce) {
     [arc-modal] {
-      --${dr}-y: 0;
-      --${dr}-scale: 1;
-      --${dr}-start-y: 0;
-      --${dr}-start-scale: 1;
+      --${Di}-y: 0;
+      --${Di}-scale: 1;
+      --${Di}-start-y: 0;
+      --${Di}-start-scale: 1;
     }
   }
 
@@ -6649,33 +6605,33 @@
     contain: layout style paint;
 
     padding: 0;
-    color: var(--arc-modal-color, var(--${y}-color));
-    background: var(--arc-modal-background, var(--${y}-background));
-    border: var(--arc-modal-border, var(--${y}-border));
-    border-radius: var(--arc-modal-border-radius, var(--${y}-border-radius));
-    box-shadow: var(--arc-modal-box-shadow, var(--${y}-box-shadow));
+    color: var(--arc-modal-color, var(--${_i}-color));
+    background: var(--arc-modal-background, var(--${_i}-background));
+    border: var(--arc-modal-border, var(--${_i}-border));
+    border-radius: var(--arc-modal-border-radius, var(--${_i}-border-radius));
+    box-shadow: var(--arc-modal-box-shadow, var(--${_i}-box-shadow));
     outline: var(--arc-modal-outline, none);
 
-    width: var(--arc-modal-width, var(--${y}-width));
-    height: var(--arc-modal-height, var(--${y}-height));
-    min-width: var(--arc-modal-min-width, var(--${y}-min-width));
-    min-height: var(--arc-modal-min-height, var(--${y}-min-height));
-    max-width: var(--arc-modal-max-width, var(--${y}-max-width));
-    max-height: var(--arc-modal-max-height, var(--${y}-max-height));
+    width: var(--arc-modal-width, var(--${_i}-width));
+    height: var(--arc-modal-height, var(--${_i}-height));
+    min-width: var(--arc-modal-min-width, var(--${_i}-min-width));
+    min-height: var(--arc-modal-min-height, var(--${_i}-min-height));
+    max-width: var(--arc-modal-max-width, var(--${_i}-max-width));
+    max-height: var(--arc-modal-max-height, var(--${_i}-max-height));
 
     &::backdrop {
       will-change: opacity;
       contain: layout style paint;
 
-      background: var(--arc-modal-backdrop-background, var(--${Br}-background));
-      pointer-events: var(--${Br}-pointer-events, none);
-      cursor: var(--${Br}-cursor, default);
+      background: var(--arc-modal-backdrop-background, var(--${Bi}-background));
+      pointer-events: var(--${Bi}-pointer-events, none);
+      cursor: var(--${Bi}-cursor, default);
     }
 
     [arc-modal-content] {
-      font-size: var(--arc-modal-font-size, var(--${y}-font-size));
+      font-size: var(--arc-modal-font-size, var(--${_i}-font-size));
       display: grid;
-      grid-template-rows: var(--arc-modal-layout-rows, var(--${xa}-rows));
+      grid-template-rows: var(--arc-modal-layout-rows, var(--${Pi}-rows));
       grid-template-columns: var(--arc-modal-layout-columns, auto);
       overflow: hidden;
       position: relative;
@@ -6692,14 +6648,14 @@
       display: flex;
       align-items: var(--arc-modal-header-align-items, unset);
       justify-content: space-between;
-      gap: var(--arc-modal-header-gap, var(--${y}-gap));
+      gap: var(--arc-modal-header-gap, var(--${_i}-gap));
 
-      padding: var(--${$a});
-      background: var(--arc-modal-header-background, var(--${y}-background));
+      padding: var(--${Vi});
+      background: var(--arc-modal-header-background, var(--${_i}-background));
       max-width: 100%;
 
       &:where([has-divider]) {
-        border-bottom: var(--arc-modal-header-divider, var(--${y}-divider));
+        border-bottom: var(--arc-modal-header-divider, var(--${_i}-divider));
       }
 
       :where([header-slot]) {
@@ -6714,16 +6670,16 @@
       }
 
       :where([header-slot=dismiss]) {
-        margin: var(--${k}--4) var(--${k}--8) var(--${k}--4) var(--${k}--4);
+        margin: var(--${Hi}--4) var(--${Hi}--8) var(--${Hi}--4) var(--${Hi}--4);
       }
 
       :where([header-slot=go-back]) {
-        margin: var(--${k}--4) 0 var(--${k}--4) var(--${k}--4);
+        margin: var(--${Hi}--4) 0 var(--${Hi}--4) var(--${Hi}--4);
       }
     }
 
     [arc-modal-title] {
-      --arc-icon-text-gap: var(--${k}-8);
+      --arc-icon-text-gap: var(--${Hi}-8);
       --arc-icon-text-line-height: normal;
 
       [data-element=subtext] {
@@ -6736,11 +6692,11 @@
     }
 
     [arc-modal-body] {
-      padding: var(--${N});
+      padding: var(--${Ni});
       overflow: auto;
       overscroll-behavior: var(--arc-modal-overscroll-behavior, contain);
       min-height: var(--arc-modal-body-min-height, 3em);
-      text-align: var(--arc-modal-body-text-align, var(--${de}-text-align));
+      text-align: var(--arc-modal-body-text-align, var(--${Ri}-text-align));
     }
 
     [arc-modal-footer] {
@@ -6750,15 +6706,15 @@
       display: flex;
       flex-direction: var(--arc-modal-footer-flex-direction, unset);
       align-items: var(--arc-modal-footer-align-items, center);
-      justify-content: var(--arc-modal-footer-justify-content, var(--${Fa}-justify-content));
-      gap: var(--arc-modal-footer-gap, var(--${y}-gap));
+      justify-content: var(--arc-modal-footer-justify-content, var(--${Li}-justify-content));
+      gap: var(--arc-modal-footer-gap, var(--${_i}-gap));
 
-      background: var(--arc-modal-footer-background, var(--${y}-background));
-      padding: var(--arc-modal-footer-padding, var(--${Kr}));
+      background: var(--arc-modal-footer-background, var(--${_i}-background));
+      padding: var(--arc-modal-footer-padding, var(--${Ui}));
       max-width: 100%;
 
       &[has-divider] {
-        border-top: var(--arc-modal-footer-divider, var(--${y}-divider));
+        border-top: var(--arc-modal-footer-divider, var(--${_i}-divider));
       }
 
       [footer-slot=content] {
@@ -6770,7 +6726,7 @@
 
     [arc-modal-dismiss] {
       position: var(--arc-modal-dismiss-position, absolute);
-      inset: var(--arc-modal-dismiss-inset, var(--${k}-16) var(--${k}-16) auto auto);
+      inset: var(--arc-modal-dismiss-inset, var(--${Hi}-16) var(--${Hi}-16) auto auto);
       width: var(--arc-modal-dismiss-width, auto);
       overflow: visible;
       z-index: 2;
@@ -6781,7 +6737,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: var(--arc-modal-backdrop-background, var(--${Br}-background));
+      background: var(--arc-modal-backdrop-background, var(--${Bi}-background));
       z-index: var(--arc-modal-confirm-z-index, 2);
     }
 
@@ -6802,7 +6758,7 @@
       --arc-modal-height: var(--arc-modal-confirm-height, auto);
       --arc-modal-min-width: var(--arc-modal-confirm-min-width, none);
       --arc-modal-min-height: var(--arc-modal-confirm-min-height, none);
-      --arc-modal-max-width: var(--arc-modal-confirm-max-width, calc(100% - var(--${k}-32)));
+      --arc-modal-max-width: var(--arc-modal-confirm-max-width, calc(100% - var(--${Hi}-32)));
       --arc-button-bar-flex: none;
 
       inset: var(--arc-modal-confirm-inset, 50% auto auto 50%);
@@ -6820,10 +6776,10 @@
     }
   }
 
-  ${Jc}
-  ${Qc}
+  ${Gi}
+  ${Xi}
 `,
-        da = {
+        Ji = {
           variant: 'common',
           backdropColor: 'auto',
           message: 'You have unsaved changes. Discard them?',
@@ -6831,86 +6787,90 @@
           isTopLayer: !0,
           isInverse: !1,
         },
-        Io = ({ children: r, headerProps: a, bodyProps: e, footerProps: n, ...i }) => {
-          const c = (0, b.useRef)(null),
+        Qi = ({ children: a, headerProps: r, bodyProps: e, footerProps: t, ...o }) => {
+          const i = (0, j.useRef)(null),
             {
-              isOpen: s,
-              autoFocusId: d,
-              isTopLayer: l = da.isTopLayer,
-              isInverse: p = da.isInverse,
-              backdropColor: h = da.backdropColor,
-              variant: v = da.variant,
-              message: f = da.message,
-              onCloseOverride: g = da.onCloseOverride,
-              onConfirmDiscard: w,
-              onConfirmCancel: E,
-              ...j
-            } = i,
-            { slotStart: P, TitleElement: A, titleContent: _, slotEnd: S, ...C } = a || {},
-            { primaryButton: L, secondaryButton: H, ...J } = n || {},
-            X = !!(_ || P || S),
-            V = !!g,
-            br = (q) =>
-              V ? g?.('confirm:discard', q, c.current ?? void 0) : w?.('confirm:discard', q),
-            kr = (q) =>
-              V ? g?.('confirm:cancel', q, c.current ?? void 0) : E?.('confirm:cancel', q)
-          ;(at({ modalRef: c, onClose: g }),
-            et({ modalRef: c, isOpen: s, isTopLayer: l }),
-            tt({ modalRef: c, isOpen: s, autoFocusId: d }))
-          const Ar = (q) => {
-              ;(kr(q), H?.onClick?.(q))
-            },
-            Ir = (q) => {
-              ;(br(q), L?.onClick?.(q))
-            }
-          return (0, t.jsx)('dialog', {
-            ...j,
-            ref: c,
+              isOpen: n,
+              autoFocusId: c,
+              isTopLayer: l = Ji.isTopLayer,
+              isInverse: s = Ji.isInverse,
+              backdropColor: d = Ji.backdropColor,
+              variant: p = Ji.variant,
+              message: v = Ji.message,
+              onCloseOverride: h = Ji.onCloseOverride,
+              onConfirmDiscard: u,
+              onConfirmCancel: m,
+              ...g
+            } = o,
+            { slotStart: b, TitleElement: f, titleContent: x, slotEnd: $, ...y } = r || {},
+            { primaryButton: w, secondaryButton: k, ...z } = t || {},
+            C = !!(x || b || $),
+            A = !!h
+          ;(fi({ modalRef: i, onClose: h }),
+            xi({ modalRef: i, isOpen: n, isTopLayer: l }),
+            $i({ modalRef: i, isOpen: n, autoFocusId: c }))
+          return (0, S.jsx)('dialog', {
+            ...g,
+            ref: i,
             'arc-modal': '',
-            'is-confirm': v || '',
-            'is-inverse': p ? '' : void 0,
+            'is-confirm': p || '',
+            'is-inverse': s ? '' : void 0,
             'is-top-layer': l ? '' : void 0,
-            'is-backdrop': h === 'auto' ? void 0 : h,
+            'is-backdrop': 'auto' === d ? void 0 : d,
             'data-size': 'sm',
             closedby: 'none',
-            onKeyDown: Wc('none'),
-            children: (0, t.jsxs)(nt, {
+            onKeyDown: Ii('none'),
+            children: (0, S.jsxs)(Ci, {
               children: [
-                X &&
-                  (0, t.jsxs)(To, {
-                    ...C,
+                C &&
+                  (0, S.jsxs)(Ai, {
+                    ...y,
                     children: [
-                      P && (0, t.jsx)('div', { 'header-slot': 'start', children: P }),
-                      (0, t.jsx)('div', {
+                      b && (0, S.jsx)('div', { 'header-slot': 'start', children: b }),
+                      (0, S.jsx)('div', {
                         'header-slot': 'content',
-                        children: (0, t.jsx)(it, { TitleElement: A, titleContent: _ }),
+                        children: (0, S.jsx)(ji, { TitleElement: f, titleContent: x }),
                       }),
-                      S && (0, t.jsx)('div', { 'header-slot': 'end', children: S }),
+                      $ && (0, S.jsx)('div', { 'header-slot': 'end', children: $ }),
                     ],
                   }),
-                (0, t.jsx)(ct, {
+                (0, S.jsx)(Ti, {
                   ...e,
-                  children: r || (f && (0, t.jsx)('p', { style: { margin: 0 }, children: f })),
+                  children: a || (v && (0, S.jsx)('p', { style: { margin: 0 }, children: v })),
                 }),
-                (0, t.jsx)(st, {
-                  ...J,
-                  children: (0, t.jsxs)(Je, {
+                (0, S.jsx)(Oi, {
+                  ...z,
+                  children: (0, S.jsxs)(ui, {
                     children: [
-                      (0, t.jsx)(ur, {
-                        ...H,
-                        text: H?.text || 'Cancel',
+                      (0, S.jsx)(Et, {
+                        ...k,
+                        text: k?.text || 'Cancel',
                         variant: 'common',
                         hierarchy: 'secondary',
-                        isInverse: p,
-                        onClick: Ar,
+                        isInverse: s,
+                        onClick: (a) => {
+                          ;(((a) => {
+                            A
+                              ? h?.('confirm:cancel', a, i.current ?? void 0)
+                              : m?.('confirm:cancel', a)
+                          })(a),
+                            k?.onClick?.(a))
+                        },
                       }),
-                      (0, t.jsx)(ur, {
-                        ...L,
-                        text: L?.text || 'Discard',
-                        variant: v ?? 'common',
+                      (0, S.jsx)(Et, {
+                        ...w,
+                        text: w?.text || 'Discard',
+                        variant: p ?? 'common',
                         hierarchy: 'primary',
-                        isInverse: p,
-                        onClick: Ir,
+                        isInverse: s,
+                        onClick: (a) => {
+                          ;(((a) => {
+                            A
+                              ? h?.('confirm:discard', a, i.current ?? void 0)
+                              : u?.('confirm:discard', a)
+                          })(a),
+                            w?.onClick?.(a))
+                        },
                       }),
                     ],
                   }),
@@ -6919,8 +6879,8 @@
             }),
           })
         }
-      O('ArcModalConfirm', lt)
-      const gr = {
+      Ba('ArcModalConfirm', Ki)
+      const an = {
           size: 'md',
           variant: 'common',
           backdropColor: 'auto',
@@ -6945,208 +6905,205 @@
           bodyProps: { padding: 'auto' },
           footerProps: { showDivider: !1 },
         },
-        rs = ({
-          children: r,
-          confirmProps: a,
+        rn = ({
+          children: a,
+          confirmProps: r,
           headerProps: e,
-          bodyProps: n,
-          dismissProps: i,
-          footerProps: c,
-          ...s
+          bodyProps: t,
+          dismissProps: o,
+          footerProps: i,
+          ...n
         }) => {
-          const d = (0, b.useRef)(null),
-            [l, p] = (0, b.useState)(!1),
+          const c = (0, j.useRef)(null),
+            [l, s] = (0, j.useState)(!1),
             {
-              isOpen: h,
-              autoFocusId: v,
-              isTopLayer: f = gr.isTopLayer,
-              isInverse: g = gr.isInverse,
-              backdropColor: w = gr.backdropColor,
-              hasConfirmFlow: E = gr.hasConfirmFlow,
-              hasUnsavedChanges: j = gr.hasUnsavedChanges,
-              onCloseOverride: P = gr.onCloseOverride,
-              bypassConfirmWhen: A = gr.bypassConfirmWhen ?? {},
-              size: _ = gr.size,
-              closeOnBackdrop: S = gr.closeOnBackdrop,
-              closeOnEsc: C = gr.closeOnEsc,
-              showDismiss: L = gr.showDismiss,
-              onActionError: H,
-              onClose: J,
-              onToggle: X,
-              width: V,
-              height: br,
-              style: kr,
-              ...Ar
-            } = s,
+              isOpen: d,
+              autoFocusId: p,
+              isTopLayer: v = an.isTopLayer,
+              isInverse: h = an.isInverse,
+              backdropColor: u = an.backdropColor,
+              hasConfirmFlow: m = an.hasConfirmFlow,
+              hasUnsavedChanges: g = an.hasUnsavedChanges,
+              onCloseOverride: b = an.onCloseOverride,
+              bypassConfirmWhen: f = an.bypassConfirmWhen ?? {},
+              size: x = an.size,
+              closeOnBackdrop: $ = an.closeOnBackdrop,
+              closeOnEsc: y = an.closeOnEsc,
+              showDismiss: w = an.showDismiss,
+              onActionError: k,
+              onClose: z,
+              onToggle: C,
+              width: A,
+              height: E,
+              style: T,
+              ...O
+            } = n,
             {
-              showGoBack: Ir,
-              goBackProps: q,
-              slotStart: xr,
-              TitleElement: ra,
-              titleContent: Lr,
-              slotEnd: Zr,
-              showDivider: Gr = gr.headerProps?.showDivider,
-              ...Mr
+              showGoBack: I,
+              goBackProps: _,
+              slotStart: P,
+              TitleElement: M,
+              titleContent: R,
+              slotEnd: L,
+              showDivider: B = an.headerProps?.showDivider,
+              ...D
             } = e ?? {},
             {
-              slotStart: Dr,
-              primaryButton: zr,
-              secondaryButton: pr,
-              tertiaryButton: R,
-              showDivider: cr = gr.footerProps?.showDivider,
-              ...hr
-            } = c ?? {},
-            er = !!(Ir || Lr || xr || Zr),
-            W = !!(zr || pr || R),
-            vr = !!(W || Dr),
-            Cr = !!(E && j),
-            $r = C ? 'closerequest' : 'none',
+              slotStart: F,
+              primaryButton: H,
+              secondaryButton: V,
+              tertiaryButton: N,
+              showDivider: U = an.footerProps?.showDivider,
+              ...Z
+            } = i ?? {},
+            Y = !!(I || R || P || L),
+            q = !!(H || V || N),
+            W = !(!q && !F),
+            G = !(!m || !g),
+            X = y ? 'closerequest' : 'none',
             {
-              didPressEscapeKey: aa,
-              didClickBackdrop: he,
-              didClickGoBackButton: ve,
-              didClickDismissButton: Xr,
-              didClickPrimaryButton: vl,
-              didClickSecondaryButton: ml,
-              didClickTertiaryButton: fl,
-            } = A,
-            me = Va({ modalRef: d, shouldConfirm: Cr, setIsConfirming: p, onCloseOverride: P })
-          ;(at({ modalRef: d, shouldConfirm: Cr, setIsConfirming: p, onClose: J, onToggle: X }),
-            et({ modalRef: d, isOpen: h, isTopLayer: f }),
-            tt({ modalRef: d, isOpen: h, autoFocusId: v }),
-            Eo({
-              modalRef: d,
-              isOpen: h,
-              closeOnBackdrop: S,
-              attemptCloseModal: he
-                ? Va({ modalRef: d, shouldConfirm: Cr && !he, setIsConfirming: p })
-                : me,
+              didPressEscapeKey: K,
+              didClickBackdrop: J,
+              didClickGoBackButton: Q,
+              didClickDismissButton: aa,
+              didClickPrimaryButton: ra,
+              didClickSecondaryButton: ea,
+              didClickTertiaryButton: ta,
+            } = f,
+            oa = bi({ modalRef: c, shouldConfirm: G, setIsConfirming: s, onCloseOverride: b })
+          ;(fi({ modalRef: c, shouldConfirm: G, setIsConfirming: s, onClose: z, onToggle: C }),
+            xi({ modalRef: c, isOpen: d, isTopLayer: v }),
+            $i({ modalRef: c, isOpen: d, autoFocusId: p }),
+            wi({
+              modalRef: c,
+              isOpen: d,
+              closeOnBackdrop: $,
+              attemptCloseModal: J
+                ? bi({ modalRef: c, shouldConfirm: G && !J, setIsConfirming: s })
+                : oa,
             }),
-            _o({
-              modalRef: d,
-              isOpen: h,
-              closeOnEsc: C,
-              closedBy: $r,
-              attemptCloseModal: aa
-                ? Va({ modalRef: d, shouldConfirm: Cr && !aa, setIsConfirming: p })
-                : me,
+            ki({
+              modalRef: c,
+              isOpen: d,
+              closeOnEsc: y,
+              closedBy: X,
+              attemptCloseModal: K
+                ? bi({ modalRef: c, shouldConfirm: G && !K, setIsConfirming: s })
+                : oa,
             }))
-          const gl = () => p(!1),
-            bl = (Ya, fe) => me(Ya)(fe),
-            ka = (Ya, fe, pt) => async (Aa) => {
-              ;(Aa?.preventDefault?.(), Aa?.stopPropagation?.())
-              const xl = () =>
-                fe
-                  ? Va({ modalRef: d, shouldConfirm: Cr && !fe, setIsConfirming: p })(
-                      Ya,
-                      pt?.onCloseCallback,
-                    )(Aa)
-                  : me(Ya, pt?.onCloseCallback)(Aa)
-              try {
-                ;(await pt?.onClick?.(Aa), xl())
-              } catch ($l) {
-                H?.($l, { reason: Ya, event: Aa })
-              }
+          const ia = (a, r, e) => async (t) => {
+            ;(t?.preventDefault?.(), t?.stopPropagation?.())
+            try {
+              ;(await e?.onClick?.(t),
+                r
+                  ? bi({ modalRef: c, shouldConfirm: G && !r, setIsConfirming: s })(
+                      a,
+                      e?.onCloseCallback,
+                    )(t)
+                  : oa(a, e?.onCloseCallback)(t))
+            } catch (r) {
+              k?.(r, { reason: a, event: t })
             }
-          return (0, t.jsxs)('dialog', {
-            ...Ar,
-            ref: d,
+          }
+          return (0, S.jsxs)('dialog', {
+            ...O,
+            ref: c,
             'arc-modal': '',
-            'is-inverse': g ? '' : void 0,
-            'is-top-layer': f ? '' : void 0,
-            'is-backdrop': w === 'auto' ? void 0 : w,
-            'data-size': _,
-            closedby: $r,
-            style: { '--arc-modal-width': V ?? '', '--arc-modal-height': br ?? '', ...kr },
+            'is-inverse': h ? '' : void 0,
+            'is-top-layer': v ? '' : void 0,
+            'is-backdrop': 'auto' === u ? void 0 : u,
+            'data-size': x,
+            closedby: X,
+            style: { '--arc-modal-width': A ?? '', '--arc-modal-height': E ?? '', ...T },
             children: [
-              !er &&
-                L &&
-                (0, t.jsx)('div', {
+              !Y &&
+                w &&
+                (0, S.jsx)('div', {
                   'arc-modal-dismiss': '',
-                  children: (0, t.jsx)(ot, {
-                    ...i,
-                    isInverse: g,
-                    onClick: ka('button:dismiss', Xr, i),
+                  children: (0, S.jsx)(zi, {
+                    ...o,
+                    isInverse: h,
+                    onClick: ia('button:dismiss', aa, o),
                   }),
                 }),
-              (0, t.jsxs)(nt, {
+              (0, S.jsxs)(Ci, {
                 inert: l ? '' : void 0,
                 children: [
-                  er &&
-                    (0, t.jsxs)(To, {
-                      ...Mr,
-                      showDivider: Gr,
+                  Y &&
+                    (0, S.jsxs)(Ai, {
+                      ...D,
+                      showDivider: B,
                       children: [
-                        Ir &&
-                          (0, t.jsx)('div', {
+                        I &&
+                          (0, S.jsx)('div', {
                             'header-slot': 'go-back',
-                            children: (0, t.jsx)(ur, {
+                            children: (0, S.jsx)(Et, {
                               'arc-modal-go-back': '',
                               icon: 'fa-regular fa-arrow-left fa-fw',
                               text: 'Go Back',
                               'aria-label': 'Go Back',
-                              ...q,
+                              ..._,
                               layout: 'icon',
                               size: 'md',
                               variant: 'common',
                               hierarchy: 'secondary',
-                              isInverse: g,
-                              onClick: ka('button:back', ve, q),
+                              isInverse: h,
+                              onClick: ia('button:back', Q, _),
                             }),
                           }),
-                        xr && (0, t.jsx)('div', { 'header-slot': 'start', children: xr }),
-                        (0, t.jsx)('div', {
+                        P && (0, S.jsx)('div', { 'header-slot': 'start', children: P }),
+                        (0, S.jsx)('div', {
                           'header-slot': 'content',
-                          children: (0, t.jsx)(it, { TitleElement: ra, titleContent: Lr }),
+                          children: (0, S.jsx)(ji, { TitleElement: M, titleContent: R }),
                         }),
-                        Zr && (0, t.jsx)('div', { 'header-slot': 'end', children: Zr }),
-                        L &&
-                          (0, t.jsx)('div', {
+                        L && (0, S.jsx)('div', { 'header-slot': 'end', children: L }),
+                        w &&
+                          (0, S.jsx)('div', {
                             'header-slot': 'dismiss',
-                            children: (0, t.jsx)(ot, {
-                              ...i,
-                              isInverse: g,
-                              onClick: ka('button:dismiss', Xr, i),
+                            children: (0, S.jsx)(zi, {
+                              ...o,
+                              isInverse: h,
+                              onClick: ia('button:dismiss', aa, o),
                             }),
                           }),
                       ],
                     }),
-                  (0, t.jsx)(ct, { ...n, children: r }),
-                  vr &&
-                    (0, t.jsxs)(st, {
-                      ...hr,
-                      showDivider: cr,
+                  (0, S.jsx)(Ti, { ...t, children: a }),
+                  W &&
+                    (0, S.jsxs)(Oi, {
+                      ...Z,
+                      showDivider: U,
                       children: [
-                        Dr && (0, t.jsx)('div', { 'footer-slot': 'content', children: Dr }),
-                        W &&
-                          (0, t.jsxs)(Je, {
+                        F && (0, S.jsx)('div', { 'footer-slot': 'content', children: F }),
+                        q &&
+                          (0, S.jsxs)(ui, {
                             children: [
-                              R &&
-                                (0, t.jsx)(ur, {
-                                  ...R,
-                                  text: R?.text || 'Button',
-                                  isInverse: g,
+                              N &&
+                                (0, S.jsx)(Et, {
+                                  ...N,
+                                  text: N?.text || 'Button',
+                                  isInverse: h,
                                   variant: 'common',
                                   hierarchy: 'tertiary',
-                                  onClick: ka('button:tertiary', fl, R),
+                                  onClick: ia('button:tertiary', ta, N),
                                 }),
-                              pr &&
-                                (0, t.jsx)(ur, {
-                                  ...pr,
-                                  text: pr?.text || 'Cancel',
-                                  isInverse: g,
+                              V &&
+                                (0, S.jsx)(Et, {
+                                  ...V,
+                                  text: V?.text || 'Cancel',
+                                  isInverse: h,
                                   variant: 'common',
                                   hierarchy: 'secondary',
-                                  onClick: ka('button:secondary', ml, pr),
+                                  onClick: ia('button:secondary', ea, V),
                                 }),
-                              zr &&
-                                (0, t.jsx)(ur, {
-                                  ...zr,
-                                  text: zr?.text || 'Action',
-                                  isInverse: g,
+                              H &&
+                                (0, S.jsx)(Et, {
+                                  ...H,
+                                  text: H?.text || 'Action',
+                                  isInverse: h,
                                   variant: 'common',
                                   hierarchy: 'primary',
-                                  onClick: ka('button:primary', vl, zr),
+                                  onClick: ia('button:primary', ra, H),
                                 }),
                             ],
                           }),
@@ -7154,21 +7111,21 @@
                     }),
                 ],
               }),
-              E &&
-                (0, t.jsx)(Io, {
+              m &&
+                (0, S.jsx)(Qi, {
                   isOpen: l,
-                  isInverse: g,
-                  isTopLayer: f,
-                  backdropColor: w,
-                  ...a,
-                  onConfirmDiscard: bl,
-                  onConfirmCancel: gl,
+                  isInverse: h,
+                  isTopLayer: v,
+                  backdropColor: u,
+                  ...r,
+                  onConfirmDiscard: (a, r) => oa(a)(r),
+                  onConfirmCancel: () => s(!1),
                 }),
             ],
           })
         }
-      O('ArcModal', lt)
-      const Jr = {
+      Ba('ArcModal', Ki)
+      const en = {
           variant: 'common',
           backdropColor: 'auto',
           showDismiss: !0,
@@ -7178,91 +7135,91 @@
           isTopLayer: !0,
           isInverse: !1,
         },
-        as = {
+        tn = {
           common: 'fa-solid fa-cat-space',
           brand: 'fa-kit fa-articulate',
           success: 'fa-solid fa-badge-check',
           warning: 'fa-solid fa-triangle-exclamation',
           error: 'fa-duotone fa-light-emergency-on',
           info: 'fa-solid fa-circle-info',
-          processing: (0, t.jsx)(Ue, { 'arc-modal-spinner': '' }),
+          processing: (0, S.jsx)($e, { 'arc-modal-spinner': '' }),
         },
-        es = ({ children: r, dismissProps: a, bodyProps: e, footerProps: n, ...i }) => {
-          const c = (0, b.useRef)(null),
+        on = ({ children: a, dismissProps: r, bodyProps: e, footerProps: t, ...o }) => {
+          const i = (0, j.useRef)(null),
             {
-              isOpen: s,
-              autoFocusId: d,
-              isTopLayer: l = Jr.isTopLayer,
-              isInverse: p = Jr.isInverse,
-              backdropColor: h = Jr.backdropColor,
-              closeOnBackdrop: v = Jr.closeOnBackdrop,
-              closeOnEsc: f = Jr.closeOnEsc,
-              variant: g = Jr.variant,
-              icon: w,
-              TitleElement: E,
-              titleContent: j,
-              message: P,
-              showDismiss: A,
-              onCloseOverride: _ = Jr.onCloseOverride,
-              onClose: S,
-              onToggle: C,
-              ...L
-            } = i,
-            { primaryButton: H, ...J } = n ?? {},
-            X = w || as[g],
-            V = f ? 'closerequest' : 'none',
-            br = Va({ modalRef: c, onCloseOverride: _ })
+              isOpen: n,
+              autoFocusId: c,
+              isTopLayer: l = en.isTopLayer,
+              isInverse: s = en.isInverse,
+              backdropColor: d = en.backdropColor,
+              closeOnBackdrop: p = en.closeOnBackdrop,
+              closeOnEsc: v = en.closeOnEsc,
+              variant: h = en.variant,
+              icon: u,
+              TitleElement: m,
+              titleContent: g,
+              message: b,
+              showDismiss: f,
+              onCloseOverride: x = en.onCloseOverride,
+              onClose: $,
+              onToggle: y,
+              ...w
+            } = o,
+            { primaryButton: k, ...z } = t ?? {},
+            C = u || tn[h],
+            A = v ? 'closerequest' : 'none',
+            E = bi({ modalRef: i, onCloseOverride: x })
           return (
-            at({ modalRef: c, onClose: S, onToggle: C }),
-            et({ modalRef: c, isOpen: s, isTopLayer: l }),
-            tt({ modalRef: c, isOpen: s, autoFocusId: d }),
-            Eo({ modalRef: c, isOpen: s, closeOnBackdrop: v, attemptCloseModal: br }),
-            _o({ modalRef: c, isOpen: s, closeOnEsc: f, closedBy: V, attemptCloseModal: br }),
-            (0, t.jsxs)('dialog', {
-              ...L,
-              ref: c,
+            fi({ modalRef: i, onClose: $, onToggle: y }),
+            xi({ modalRef: i, isOpen: n, isTopLayer: l }),
+            $i({ modalRef: i, isOpen: n, autoFocusId: c }),
+            wi({ modalRef: i, isOpen: n, closeOnBackdrop: p, attemptCloseModal: E }),
+            ki({ modalRef: i, isOpen: n, closeOnEsc: v, closedBy: A, attemptCloseModal: E }),
+            (0, S.jsxs)('dialog', {
+              ...w,
+              ref: i,
               'arc-modal': '',
-              'is-alert': g || '',
-              'is-inverse': p ? '' : void 0,
+              'is-alert': h || '',
+              'is-inverse': s ? '' : void 0,
               'is-top-layer': l ? '' : void 0,
-              'is-backdrop': h === 'auto' ? void 0 : h,
+              'is-backdrop': 'auto' === d ? void 0 : d,
               'data-size': 'sm',
-              closedby: V,
+              closedby: A,
               children: [
-                A &&
-                  (0, t.jsx)('div', {
+                f &&
+                  (0, S.jsx)('div', {
                     'arc-modal-dismiss': '',
-                    children: (0, t.jsx)(ot, {
-                      ...a,
-                      isInverse: p,
-                      onClick: br('button:dismiss', a?.onClick),
+                    children: (0, S.jsx)(zi, {
+                      ...r,
+                      isInverse: s,
+                      onClick: E('button:dismiss', r?.onClick),
                     }),
                   }),
-                (0, t.jsxs)(nt, {
+                (0, S.jsxs)(Ci, {
                   children: [
-                    (0, t.jsx)(ct, {
+                    (0, S.jsx)(Ti, {
                       ...e,
                       children:
-                        r ||
-                        (0, t.jsxs)(t.Fragment, {
+                        a ||
+                        (0, S.jsxs)(S.Fragment, {
                           children: [
-                            (0, t.jsx)(Uc, { glyph: X, variant: g }),
-                            (0, t.jsx)(it, { TitleElement: E, titleContent: j }),
-                            (0, t.jsx)(Yc, { message: P }),
+                            (0, S.jsx)(Si, { glyph: C, variant: h }),
+                            (0, S.jsx)(ji, { TitleElement: m, titleContent: g }),
+                            (0, S.jsx)(Ei, { message: b }),
                           ],
                         }),
                     }),
-                    (0, t.jsx)(st, {
-                      ...J,
-                      children: (0, t.jsx)(Je, {
+                    (0, S.jsx)(Oi, {
+                      ...z,
+                      children: (0, S.jsx)(ui, {
                         orientation: 'vertical',
-                        children: (0, t.jsx)(ur, {
-                          ...H,
-                          text: H?.text || 'Close',
+                        children: (0, S.jsx)(Et, {
+                          ...k,
+                          text: k?.text || 'Close',
                           variant: 'common',
                           hierarchy: 'primary',
-                          isInverse: p,
-                          onClick: br('button:primary', H?.onClick),
+                          isInverse: s,
+                          onClick: E('button:primary', k?.onClick),
                         }),
                       }),
                     }),
@@ -7272,8 +7229,8 @@
             })
           )
         }
-      O('ArcModalAlert', lt)
-      const ts = u`
+      Ba('ArcModalAlert', Ki)
+      const nn = P`
 @layer arc-components {
 
 [arc-radio] {
@@ -7374,31 +7331,31 @@
 
 }
 `,
-        os = z(Hr, ['hug', 'fill']),
-        ns = z(yr, ['inherit', 'md', 'sm']),
-        Lo = ({ children: r, label: a, layout: e, size: n = 'md', useMask: i = !0, ...c }) => {
-          const { className: s, title: d, ...l } = c,
-            p = { className: s, title: d },
-            h = r ?? a,
-            v = (0, t.jsx)(Oa, { ...l, type: 'radio' }),
-            f =
-              i &&
-              (0, t.jsxs)(le, {
+        cn = y(n, ['hug', 'fill']),
+        ln = y(s, ['inherit', 'md', 'sm']),
+        sn = ({ children: a, label: r, layout: e, size: t = 'md', useMask: o = !0, ...i }) => {
+          const { className: n, title: c, ...l } = i,
+            s = { className: n, title: c },
+            d = a ?? r,
+            p = (0, S.jsx)(zo, { ...l, type: 'radio' }),
+            v =
+              o &&
+              (0, S.jsxs)(Ao, {
                 type: 'radio',
-                children: [v, (0, t.jsx)(B, { icon: 'fa-solid fa-circle-small arc-fw' })],
+                children: [p, (0, S.jsx)(xr, { icon: 'fa-solid fa-circle-small arc-fw' })],
               }),
-            g =
-              !!h &&
-              (0, t.jsxs)(ca, { layout: e, children: [f || v, (0, t.jsx)(sa, { children: h })] })
-          return (0, t.jsx)('span', {
-            ...p,
+            h =
+              !!d &&
+              (0, S.jsxs)($o, { layout: e, children: [v || p, (0, S.jsx)(wo, { children: d })] })
+          return (0, S.jsx)('span', {
+            ...s,
             'arc-radio': '',
-            'data-size': n,
-            children: g || f || v,
+            'data-size': t,
+            children: h || v || p,
           })
         }
-      O('ArcRadio', ts)
-      const is = u`
+      Ba('ArcRadio', nn)
+      const dn = P`
 @layer arc-components {
 
 [arc-radio-bar] {
@@ -7578,59 +7535,69 @@
 
 }
 `,
-        cs = z(Hr, ['hug', 'fill']),
-        ss = z(yr, ['lg', 'md']),
-        ls = ({ children: r, label: a, icon: e, ...n }) => {
-          const i = r || (0, t.jsx)(Er, { icon: e, text: a })
-          return (0, t.jsx)('li', {
+        pn = y(n, ['hug', 'fill']),
+        vn = y(s, ['lg', 'md']),
+        hn = ({ children: a, label: r, icon: e, ...t }) => {
+          const o = a || (0, S.jsx)(Pe, { icon: e, text: r })
+          return (0, S.jsx)('li', {
             'arc-radio-bar-option': '',
-            'data-is-checked': n?.checked || void 0,
-            children: (0, t.jsx)(Lo, { ...n, label: i, layout: 'fill', useMask: !1 }),
+            'data-is-checked': t?.checked || void 0,
+            children: (0, S.jsx)(sn, { ...t, label: o, layout: 'fill', useMask: !1 }),
           })
         },
-        ds = ({ children: r, size: a = 'lg', layout: e = 'hug', ...n }) =>
-          (0, t.jsx)('ul', {
-            ...n,
+        un = ({ children: a, size: r = 'lg', layout: e = 'hug', ...t }) =>
+          (0, S.jsx)('ul', {
+            ...t,
             'arc-radio-bar': '',
-            'data-size': a,
+            'data-size': r,
             'data-layout': e,
             role: 'radiogroup',
-            children: r,
+            children: a,
           })
-      O('ArcRadioBar', is)
-      const Mo = z(Hr, ['fill', 'hug']),
-        Po = z(yr, ['inherit', 'xl', 'lg', 'md']),
-        ps = z(Q, ['outline', 'solid', 'plain']),
-        us = Mo,
-        hs = Po,
-        vs = z(Q, ['outline', 'solid', 'plain']),
-        ya = (r) =>
-          (0, t.jsx)(t.Fragment, { children: !!r.children && (0, t.jsx)('span', { ...r }) }),
-        ms = (r) =>
-          (0, t.jsx)(t.Fragment, { children: !!r.children && (0, t.jsx)('span', { ...r }) }),
-        dt = ({ children: r, ...a }) =>
-          (0, t.jsx)(t.Fragment, {
-            children: !!r && (0, t.jsx)(ca, { ...a, children: (0, t.jsx)(sa, { children: r }) }),
+      Ba('ArcRadioBar', dn)
+      const mn = y(n, ['fill', 'hug']),
+        gn = y(s, ['inherit', 'xl', 'lg', 'md']),
+        bn = y(o, ['outline', 'solid', 'plain']),
+        fn = mn,
+        xn = gn,
+        $n = y(o, ['outline', 'solid', 'plain']),
+        yn = (a) =>
+          (0, S.jsx)(S.Fragment, { children: !!a.children && (0, S.jsx)('span', { ...a }) }),
+        wn = (a) =>
+          (0, S.jsx)(S.Fragment, { children: !!a.children && (0, S.jsx)('span', { ...a }) }),
+        kn = ({ children: a, ...r }) =>
+          (0, S.jsx)(S.Fragment, {
+            children: !!a && (0, S.jsx)($o, { ...r, children: (0, S.jsx)(wo, { children: a }) }),
           }),
-        fs = ({ children: r, layout: a, size: e, variant: n, tag: i = 'span', ...c }) =>
-          (0, t.jsx)(i, { ...c, 'data-layout': a, 'data-size': e, 'data-variant': n, children: r }),
-        gs = () => (0, t.jsx)('span', { 'input-element': 'spacer' }),
-        bs = (r) => (0, t.jsx)(ya, { ...r, 'input-element': 'header' }),
-        xs = (r) => (0, t.jsx)(dt, { ...r, 'input-element': 'header-label' }),
-        $s = (r) => (0, t.jsx)(ya, { ...r, 'input-element': 'header-slot' }),
-        ys = (r) => (0, t.jsx)(ya, { ...r, 'input-element': 'body' }),
-        ws = (r) => (0, t.jsx)(dt, { ...r, 'input-element': 'input-prefix' }),
-        ks = (r) => (0, t.jsx)(dt, { ...r, 'input-element': 'input-suffix' }),
-        As = (r) => (0, t.jsx)(ms, { ...r, 'input-element': 'input-action' }),
-        zs = (r) => (0, t.jsx)(ya, { ...r, 'input-element': 'footer' }),
-        Cs = (r) => (0, t.jsx)(ya, { ...r, 'input-element': 'footer-caption' }),
-        Ss = (r) => (0, t.jsx)(ya, { ...r, 'input-element': 'footer-slot' }),
-        js = (r) => (a) => {
-          if (!(a?.target instanceof HTMLInputElement)) return
-          const e = { name: a?.target?.name, value: a?.target?.value }
-          r?.(e, a)
-        },
-        Es = u`
+        zn = {
+          onChangeHandler: (a) => (r) => {
+            if (!(r?.target instanceof HTMLInputElement)) return
+            const e = { name: r?.target?.name, value: r?.target?.value }
+            a?.(e, r)
+          },
+          Wrapper: ({ children: a, layout: r, size: e, variant: t, tag: o = 'span', ...i }) =>
+            (0, S.jsx)(o, {
+              ...i,
+              'data-layout': r,
+              'data-size': e,
+              'data-variant': t,
+              children: a,
+            }),
+          Spacer: () => (0, S.jsx)('span', { 'input-element': 'spacer' }),
+          Header: (a) => (0, S.jsx)(yn, { ...a, 'input-element': 'header' }),
+          HeaderLabel: (a) => (0, S.jsx)(kn, { ...a, 'input-element': 'header-label' }),
+          HeaderSlot: (a) => (0, S.jsx)(yn, { ...a, 'input-element': 'header-slot' }),
+          InputBody: (a) => (0, S.jsx)(yn, { ...a, 'input-element': 'body' }),
+          InputPrefix: (a) => (0, S.jsx)(kn, { ...a, 'input-element': 'input-prefix' }),
+          InputSuffix: (a) => (0, S.jsx)(kn, { ...a, 'input-element': 'input-suffix' }),
+          InputAction: (a) => (0, S.jsx)(wn, { ...a, 'input-element': 'input-action' }),
+          Footer: (a) => (0, S.jsx)(yn, { ...a, 'input-element': 'footer' }),
+          FooterCaption: (a) => (0, S.jsx)(yn, { ...a, 'input-element': 'footer-caption' }),
+          FooterSlot: (a) => (0, S.jsx)(yn, { ...a, 'input-element': 'footer-slot' }),
+        }
+      Ba(
+        'ArcInput',
+        P`
 @layer arc-components {
 
 /* --arc[-internal, -modifier, -computed] • NOT FOR CONSUMER USE ---• */
@@ -7974,53 +7941,38 @@
 
 }
 `,
-        _s = {
-          onChangeHandler: js,
-          Wrapper: fs,
-          Spacer: gs,
-          Header: bs,
-          HeaderLabel: xs,
-          HeaderSlot: $s,
-          InputBody: ys,
-          InputPrefix: ws,
-          InputSuffix: ks,
-          InputAction: As,
-          Footer: zs,
-          FooterCaption: Cs,
-          FooterSlot: Ss,
-        }
-      O('ArcInput', Es)
-      const U = _s,
-        ue = u`arc•select`,
-        Qr = u`${ue}•picker`,
-        Or = u`${ue}•option`,
-        Na = u`${ue}size`,
-        Wr = u`${ue}•space`,
-        Ts = u`
+      )
+      const Cn = zn,
+        An = P`arc•select`,
+        Sn = P`${An}•picker`,
+        jn = P`${An}•option`,
+        En = P`${An}size`,
+        Tn = P`${An}•space`,
+        On = P`
 @layer arc-components {
 
   /* SETUP ---------------------------------------------------------• */
 
   [arc-select] {
-    --${Na}-12: max(12px, 0.75em);
-    --${Na}-24: max(24px, 1.5em);
+    --${En}-12: max(12px, 0.75em);
+    --${En}-24: max(24px, 1.5em);
 
-    --${Wr}-4: max(4px, 0.25em);
-    --${Wr}-8: max(8px, 0.5em);
-    --${Wr}-40: max(40px, 2.5em);
+    --${Tn}-4: max(4px, 0.25em);
+    --${Tn}-8: max(8px, 0.5em);
+    --${Tn}-40: max(40px, 2.5em);
 
-    --${Or}-background: transparent;
-    --${Or}-icon-display: none;
-    --${Or}-icon-color: currentcolor;
+    --${jn}-background: transparent;
+    --${jn}-icon-display: none;
+    --${jn}-icon-color: currentcolor;
 
-    --${Qr}-width: auto;
-    --${Qr}-min-width: 3em;
+    --${Sn}-width: auto;
+    --${Sn}-min-width: 3em;
 
     /* LAYOUTS -----------------------------------------------------• */
 
     &[data-layout=fill] {
-      --${Qr}-width: 100%; /* fallback */
-      --${Qr}-width: anchor-size(inline);
+      --${Sn}-width: 100%; /* fallback */
+      --${Sn}-width: anchor-size(inline);
     }
 
     select,
@@ -8030,21 +7982,21 @@
 
     ::picker(select) {
       flex: 1;
-      display: var(--${Qr}-display, none);
+      display: var(--${Sn}-display, none);
       flex-direction: column;
-      gap: var(--${Wr}-4);
+      gap: var(--${Tn}-4);
       border: none;
-      width: var(--arc-select-picker-width, var(--${Qr}-width));
-      min-width: var(--arc-select-picker-min-width, var(--${Qr}-min-width));
-      margin: var(--arc-select-picker-margin, var(--${Wr}-4) 0);
-      padding: var(--arc-select-picker-padding, var(--${Wr}-4));
+      width: var(--arc-select-picker-width, var(--${Sn}-width));
+      min-width: var(--arc-select-picker-min-width, var(--${Sn}-min-width));
+      margin: var(--arc-select-picker-margin, var(--${Tn}-4) 0);
+      padding: var(--arc-select-picker-padding, var(--${Tn}-4));
       background: var(--arc-select-picker-background, var(--arc-color-background-primary));
       border-radius: var(--arc-select-picker-border-radius, var(--arc-border-radius-lg));
       box-shadow: var(--arc-select-picker-shadow, var(--arc-shadow-light-lg));
     }
 
     ::picker(select):popover-open {
-      --${Qr}-display: flex;
+      --${Sn}-display: flex;
     }
 
     /* Hide default picker icon */
@@ -8061,13 +8013,13 @@
       border: none;
       padding: 0;
       margin: 0;
-      padding-inline: var(--${Na}-12);
+      padding-inline: var(--${En}-12);
     }
 
     [arc-select-button] {
       display: flex;
       align-items: center;
-      gap: var(--${Wr}-8);
+      gap: var(--${Tn}-8);
       width: 100%;
     }
 
@@ -8077,8 +8029,8 @@
       --arc-icon-text-subtext-display: none;
       --arc-avatar-text-font-weight: normal;
       --arc-avatar-subtext-display: none;
-      --arc-avatar-size: var(--${Na}-24);
-      --arc-avatar-initial-font-size: var(--${Na}-12);
+      --arc-avatar-size: var(--${En}-24);
+      --arc-avatar-initial-font-size: var(--${En}-12);
 
       flex: 1;
       display: flex;
@@ -8096,31 +8048,31 @@
       display: grid;
       grid-template-columns: 1fr auto;
       align-items: center;
-      gap: var(--${Wr}-8);
+      gap: var(--${Tn}-8);
       width: 100%;
       min-width: 0;
 
-      background: var(--arc-select-option-background, var(--${Or}-background));
+      background: var(--arc-select-option-background, var(--${jn}-background));
       border-radius: var(--arc-select-option-border-radius, var(--arc-border-radius-md));
-      padding: var(--arc-select-option-padding, var(--${Wr}-8));
+      padding: var(--arc-select-option-padding, var(--${Tn}-8));
 
       &::checkmark {
         display: none;
       }
 
       &:hover {
-        --${Or}-background: var(--arc-color-background-primary-hover);
+        --${jn}-background: var(--arc-color-background-primary-hover);
       }
 
       &:checked {
-        --${Or}-background: var(--arc-color-background-primary-selected);
-        --${Or}-icon-display: flex;
-        --${Or}-icon-color: var(--arc-select-option-selected-icon-color, currentcolor);
+        --${jn}-background: var(--arc-color-background-primary-selected);
+        --${jn}-icon-display: flex;
+        --${jn}-icon-color: var(--arc-select-option-selected-icon-color, currentcolor);
       }
 
       [data-element=selected-icon] {
-        display: var(--${Or}-icon-display, none);
-        color: var(--${Or}-icon-color, currentcolor);
+        display: var(--${jn}-icon-display, none);
+        color: var(--${jn}-icon-color, currentcolor);
       }
     }
 
@@ -8177,163 +8129,162 @@
 
 }
 `,
-        Is = (0, b.forwardRef)(
+        In = (0, j.forwardRef)(
           (
             {
-              layout: r = 'hug',
-              size: a = 'inherit',
+              layout: a = 'hug',
+              size: r = 'inherit',
               variant: e = 'outline',
-              items: n,
-              renderItem: i,
-              headerLabel: c,
-              headerSlot: s,
-              footerCaption: d,
+              items: t,
+              renderItem: o,
+              headerLabel: i,
+              headerSlot: n,
+              footerCaption: c,
               footerSlot: l,
-              readOnly: p,
-              id: h,
-              onChange: v,
-              onBlur: f,
-              onFocus: g,
-              onKeyDown: w,
-              onKeyUp: E,
-              onInput: j,
-              onInvalid: P,
-              onClick: A,
-              name: _,
-              value: S,
-              defaultValue: C,
-              required: L,
-              disabled: H,
-              autoComplete: J,
-              autoFocus: X,
-              form: V,
-              ...br
+              readOnly: s,
+              id: d,
+              onChange: p,
+              onBlur: v,
+              onFocus: h,
+              onKeyDown: u,
+              onKeyUp: m,
+              onInput: g,
+              onInvalid: b,
+              onClick: f,
+              name: x,
+              value: $,
+              defaultValue: y,
+              required: w,
+              disabled: k,
+              autoComplete: z,
+              autoFocus: C,
+              form: A,
+              ...j
             },
-            kr,
+            E,
           ) => {
-            const Ar = Sr(h, 'arc-select'),
-              Ir = e === 'plain' && r === 'fill' ? 'hug' : r,
-              q = H || void 0,
-              xr = p || void 0,
-              ra = L || void 0,
-              Lr = !!(
-                globalThis?.CSS &&
-                typeof CSS.supports == 'function' &&
-                CSS.supports('appearance', 'base-select')
+            const T = Pr(d, 'arc-select'),
+              O = 'plain' === e && 'fill' === a ? 'hug' : a,
+              I = k || void 0,
+              _ = s || void 0,
+              P = w || void 0,
+              M = !(
+                !globalThis?.CSS ||
+                'function' != typeof CSS.supports ||
+                !CSS.supports('appearance', 'base-select')
               ),
-              Zr = e !== 'plain' && !!(c || s),
-              Gr = e !== 'plain' && !!(d || l),
-              Mr =
-                n?.filter((R) => R?.variant !== 'divider' && R?.variant !== 'section-label') ?? [],
-              Dr = (R) => {
-                const cr = (er) => typeof er == 'string' && er.trim().length > 0
-                return [R?.text, R?.avatar?.name, R?.['aria-label']].find(cr) ?? 'Anonymous'
+              R = 'plain' !== e && !(!i && !n),
+              L = 'plain' !== e && !(!c && !l),
+              B =
+                t?.filter((a) => 'divider' !== a?.variant && 'section-label' !== a?.variant) ?? [],
+              D = (a, r) => {
+                if (o) return o(a, r)
+                const e = Vo(a),
+                  t = No(e),
+                  { itemId: i, ...n } = a
+                return t(n)
               },
-              zr = (R, cr) => {
-                if (i) return i(R, cr)
-                const hr = Da(R),
-                  er = zo(hr),
-                  { itemId: W, ...vr } = R
-                return er(vr)
-              },
-              pr = xr && (S != null || C != null) ? String(S ?? C) : void 0
-            return (0, t.jsxs)(U.Wrapper, {
-              ...br,
+              F = !_ || (null == $ && null == y) ? void 0 : String($ ?? y)
+            return (0, S.jsxs)(Cn.Wrapper, {
+              ...j,
               'arc-select': '',
               'arc-input': 'select',
-              layout: Ir,
-              size: a,
+              layout: O,
+              size: r,
               variant: e,
               children: [
-                Zr &&
-                  (0, t.jsxs)(U.Header, {
+                R &&
+                  (0, S.jsxs)(Cn.Header, {
                     children: [
-                      (0, t.jsx)(U.HeaderLabel, { htmlFor: Ar, children: c }),
-                      !!s &&
-                        (0, t.jsxs)(t.Fragment, {
+                      (0, S.jsx)(Cn.HeaderLabel, { htmlFor: T, children: i }),
+                      !!n &&
+                        (0, S.jsxs)(S.Fragment, {
                           children: [
-                            (0, t.jsx)(U.Spacer, {}),
-                            (0, t.jsx)(U.HeaderSlot, { children: s }),
+                            (0, S.jsx)(Cn.Spacer, {}),
+                            (0, S.jsx)(Cn.HeaderSlot, { children: n }),
                           ],
                         }),
                     ],
                   }),
-                (0, t.jsx)(U.InputBody, {
-                  children: (0, t.jsxs)('select', {
-                    name: _,
-                    value: S,
-                    defaultValue: C,
-                    required: L,
-                    disabled: H,
-                    autoComplete: J,
-                    autoFocus: X,
-                    form: V,
-                    ref: kr,
-                    id: Ar,
-                    onChange: v,
-                    onBlur: f,
-                    onFocus: g,
-                    onKeyDown: w,
-                    onKeyUp: E,
-                    onInput: j,
-                    onInvalid: P,
-                    onClick: A,
-                    'aria-disabled': q,
-                    'aria-required': ra,
-                    'data-readonly': xr,
+                (0, S.jsx)(Cn.InputBody, {
+                  children: (0, S.jsxs)('select', {
+                    name: x,
+                    value: $,
+                    defaultValue: y,
+                    required: w,
+                    disabled: k,
+                    autoComplete: z,
+                    autoFocus: C,
+                    form: A,
+                    ref: E,
+                    id: T,
+                    onChange: p,
+                    onBlur: v,
+                    onFocus: h,
+                    onKeyDown: u,
+                    onKeyUp: m,
+                    onInput: g,
+                    onInvalid: b,
+                    onClick: f,
+                    'aria-disabled': I,
+                    'aria-required': P,
+                    'data-readonly': _,
                     children: [
-                      (0, t.jsxs)('button', {
+                      (0, S.jsxs)('button', {
                         children: [
-                          (0, t.jsx)('selectedcontent', {}),
-                          (0, t.jsx)('span', {
+                          (0, S.jsx)('selectedcontent', {}),
+                          (0, S.jsx)('span', {
                             'data-element': 'picker-icon',
                             'aria-hidden': !0,
-                            children: (0, t.jsx)(B, { icon: 'fa-regular fa-angle-down arc-fw' }),
+                            children: (0, S.jsx)(xr, { icon: 'fa-regular fa-angle-down arc-fw' }),
                           }),
                         ],
                       }),
-                      Mr.map((R, cr) => {
-                        const hr = R['aria-disabled'] === !0 || R.disabled === !0,
-                          er = String(R?.value ?? R?.itemId ?? cr),
-                          W = Da(R),
-                          vr = Dr(R)
-                        return (0, t.jsx)(
+                      B.map((a, r) => {
+                        const e = !0 === a['aria-disabled'] || !0 === a.disabled,
+                          t = String(a?.value ?? a?.itemId ?? r),
+                          o = Vo(a),
+                          i = ((a) =>
+                            [a?.text, a?.avatar?.name, a?.['aria-label']].find(
+                              (a) => 'string' == typeof a && a.trim().length > 0,
+                            ) ?? 'Anonymous')(a)
+                        return (0, S.jsx)(
                           'option',
                           {
-                            value: er,
-                            disabled: hr || (pr !== void 0 && er !== pr) || void 0,
+                            value: t,
+                            disabled: e || (void 0 !== F && t !== F) || void 0,
                             'arc-select-option': '',
-                            'arc-select-option-role': W,
-                            children: Lr
-                              ? (0, t.jsxs)(t.Fragment, {
+                            'arc-select-option-role': o,
+                            children: M
+                              ? (0, S.jsxs)(S.Fragment, {
                                   children: [
-                                    zr(R, cr),
-                                    (0, t.jsx)('span', {
+                                    D(a, r),
+                                    (0, S.jsx)('span', {
                                       'data-element': 'selected-icon',
                                       'aria-hidden': !0,
-                                      children: (0, t.jsx)(B, {
+                                      children: (0, S.jsx)(xr, {
                                         icon: 'fa-regular fa-check arc-fw',
                                       }),
                                     }),
                                   ],
                                 })
-                              : vr,
+                              : i,
                           },
-                          R.itemId ?? cr,
+                          a.itemId ?? r,
                         )
                       }),
                     ],
                   }),
                 }),
-                Gr &&
-                  (0, t.jsxs)(U.Footer, {
+                L &&
+                  (0, S.jsxs)(Cn.Footer, {
                     children: [
-                      (0, t.jsx)(U.FooterCaption, { children: d }),
+                      (0, S.jsx)(Cn.FooterCaption, { children: c }),
                       !!l &&
-                        (0, t.jsxs)(t.Fragment, {
+                        (0, S.jsxs)(S.Fragment, {
                           children: [
-                            (0, t.jsx)(U.Spacer, {}),
-                            (0, t.jsx)(U.FooterSlot, { children: l }),
+                            (0, S.jsx)(Cn.Spacer, {}),
+                            (0, S.jsx)(Cn.FooterSlot, { children: l }),
                           ],
                         }),
                     ],
@@ -8342,99 +8293,98 @@
             })
           },
         )
-      O('ArcSelect', Ts)
-      const Ls = z(yr, ['inherit', 'md', 'sm']),
-        ar = { On: 'on', Off: 'off' },
-        wa = { Before: 'before', After: 'after' },
-        Ms = ({
-          disabled: r,
-          id: a,
+      Ba('ArcSelect', On)
+      const _n = y(s, ['inherit', 'md', 'sm']),
+        Pn = { On: 'on', Off: 'off' },
+        Mn = { Before: 'before', After: 'after' },
+        Rn = ({
+          disabled: a,
+          id: r,
           name: e,
-          size: n = 'md',
-          value: i,
-          labelOff: c,
-          labelOn: s,
-          onChange: d,
+          size: t = 'md',
+          value: o,
+          labelOff: i,
+          labelOn: n,
+          onChange: c,
           ...l
         }) => {
-          const p = Sr(e, 'arc-switch-name'),
-            h = Sr(a ? `${a}-off` : void 0, 'arc-switch-off'),
-            v = Sr(a ? `${a}-on` : void 0, 'arc-switch-on'),
-            f = (A) => {
-              if (A.code === 'Space') {
-                ;(A.preventDefault(), A.stopPropagation())
-                const _ = i === ar.On ? ar.Off : ar.On
-                d?.({ value: _ }, A)
-              }
+          const s = Pr(e, 'arc-switch-name'),
+            d = Pr(r ? `${r}-off` : void 0, 'arc-switch-off'),
+            p = Pr(r ? `${r}-on` : void 0, 'arc-switch-on'),
+            v = (a) => {
+              const r = { on: Or(n), off: Or(i) }
+              return r?.on && r?.off
+                ? r[a]
+                : !r?.on && r?.off
+                  ? `${r?.off}: ${a}`
+                  : r?.on && !r?.off
+                    ? `${r?.on}: ${a}`
+                    : r[a]
             },
-            g = (A) => {
-              const _ = { on: Ta(s), off: Ta(c) }
-              return _?.on && _?.off
-                ? _[A]
-                : !_?.on && _?.off
-                  ? `${_?.off}: ${A}`
-                  : _?.on && !_?.off
-                    ? `${_?.on}: ${A}`
-                    : _[A]
-            },
-            w = (0, t.jsxs)(le, {
+            h = (0, S.jsxs)(Ao, {
               type: 'switch',
-              onKeyDown: f,
+              onKeyDown: (a) => {
+                if ('Space' === a.code) {
+                  ;(a.preventDefault(), a.stopPropagation())
+                  const r = o === Pn.On ? Pn.Off : Pn.On
+                  c?.({ value: r }, a)
+                }
+              },
               children: [
-                (0, t.jsx)(Oa, {
+                (0, S.jsx)(zo, {
                   type: 'switch',
-                  name: p,
-                  id: h,
-                  value: ar.Off,
-                  checked: i === ar.Off,
-                  disabled: r,
-                  'aria-label': g(ar.Off)?.trim(),
-                  onChange: d,
+                  name: s,
+                  id: d,
+                  value: Pn.Off,
+                  checked: o === Pn.Off,
+                  disabled: a,
+                  'aria-label': v(Pn.Off)?.trim(),
+                  onChange: c,
                 }),
-                (0, t.jsx)(Oa, {
+                (0, S.jsx)(zo, {
                   type: 'switch',
-                  name: p,
-                  id: v,
-                  value: ar.On,
-                  checked: i === ar.On,
-                  disabled: r,
-                  'aria-label': g(ar.On)?.trim(),
-                  onChange: d,
+                  name: s,
+                  id: p,
+                  value: Pn.On,
+                  checked: o === Pn.On,
+                  disabled: a,
+                  'aria-label': v(Pn.On)?.trim(),
+                  onChange: c,
                 }),
-                (0, t.jsx)('span', { 'data-element': 'mask' }),
+                (0, S.jsx)('span', { 'data-element': 'mask' }),
               ],
             }),
-            E = !s && i === ar.Off ? v : h,
-            j = !c && i === ar.On ? h : v,
-            P =
-              !!(s || c) &&
-              (0, t.jsxs)(t.Fragment, {
+            u = n || o !== Pn.Off ? d : p,
+            m = i || o !== Pn.On ? p : d,
+            g =
+              !(!n && !i) &&
+              (0, S.jsxs)(S.Fragment, {
                 children: [
-                  !!c &&
-                    (0, t.jsx)(ca, {
-                      htmlFor: E,
-                      'arc-switch-label': s ? ar.Off : '',
-                      children: (0, t.jsx)(sa, { children: c }),
+                  !!i &&
+                    (0, S.jsx)($o, {
+                      htmlFor: u,
+                      'arc-switch-label': n ? Pn.Off : '',
+                      children: (0, S.jsx)(wo, { children: i }),
                     }),
-                  w,
-                  !!s &&
-                    (0, t.jsx)(ca, {
-                      htmlFor: j,
-                      'arc-switch-label': c ? ar.On : '',
-                      children: (0, t.jsx)(sa, { children: s }),
+                  h,
+                  !!n &&
+                    (0, S.jsx)($o, {
+                      htmlFor: m,
+                      'arc-switch-label': i ? Pn.On : '',
+                      children: (0, S.jsx)(wo, { children: n }),
                     }),
                 ],
               })
-          return (0, t.jsx)('span', {
+          return (0, S.jsx)('span', {
             ...l,
             'arc-switch': '',
-            'data-state': i,
-            'data-size': n,
+            'data-state': o,
+            'data-size': t,
             role: 'radiogroup',
-            children: P || w,
+            children: g || h,
           })
         },
-        Ps = u`
+        Ln = P`
 @layer arc-components {
 
 [arc-switch] {
@@ -8611,83 +8561,82 @@
 
 }
 `,
-        Rs = ({
-          disabled: r,
-          id: a,
+        Bn = ({
+          disabled: a,
+          id: r,
           name: e,
-          size: n = 'md',
-          value: i,
-          label: c,
-          labelPosition: s = wa.After,
-          onChange: d,
+          size: t = 'md',
+          value: o,
+          label: i,
+          labelPosition: n = Mn.After,
+          onChange: c,
           labelOff: l,
-          labelOn: p,
-          ...h
+          labelOn: s,
+          ...d
         }) => {
-          const v = Sr(e, 'arc-switch-name'),
-            f = Sr(a, 'arc-switch'),
-            g = (j, P) => {
-              const A = j.checked ? ar.On : ar.Off
-              d?.({ ...j, value: A }, P)
-            }
-          !c && (p || l) && ((c = p || l), (s = p ? wa.After : wa.Before))
-          const w = (0, t.jsxs)(le, {
+          const p = Pr(e, 'arc-switch-name'),
+            v = Pr(r, 'arc-switch')
+          !i && (s || l) && ((i = s || l), (n = s ? Mn.After : Mn.Before))
+          const h = (0, S.jsxs)(Ao, {
               type: 'checkbox',
               children: [
-                (0, t.jsx)(Oa, {
+                (0, S.jsx)(zo, {
                   type: 'checkbox',
-                  name: v,
-                  id: f,
-                  checked: i === ar.On,
-                  disabled: r,
+                  name: p,
+                  id: v,
+                  checked: o === Pn.On,
+                  disabled: a,
                   role: 'switch',
-                  'aria-checked': i === ar.On,
-                  'aria-label': c ? void 0 : 'Toggle switch',
+                  'aria-checked': o === Pn.On,
+                  'aria-label': i ? void 0 : 'Toggle switch',
                   tabIndex: 0,
-                  onChange: g,
+                  onChange: (a, r) => {
+                    const e = a.checked ? Pn.On : Pn.Off
+                    c?.({ ...a, value: e }, r)
+                  },
                 }),
-                (0, t.jsx)('span', { 'data-element': 'mask', 'aria-hidden': 'true', tabIndex: -1 }),
+                (0, S.jsx)('span', { 'data-element': 'mask', 'aria-hidden': 'true', tabIndex: -1 }),
               ],
             }),
-            E = (0, t.jsx)(ca, {
-              htmlFor: f,
-              'arc-switch-label': s,
-              children: (0, t.jsx)(sa, { children: c }),
+            u = (0, S.jsx)($o, {
+              htmlFor: v,
+              'arc-switch-label': n,
+              children: (0, S.jsx)(wo, { children: i }),
             })
-          return l && p
-            ? (0, t.jsx)(Ms, {
-                ...h,
-                disabled: r,
-                id: a,
+          return l && s
+            ? (0, S.jsx)(Rn, {
+                ...d,
+                disabled: a,
+                id: r,
                 name: e,
                 labelOff: l,
-                labelOn: p,
-                size: n,
-                value: i,
-                onChange: d,
+                labelOn: s,
+                size: t,
+                value: o,
+                onChange: c,
               })
-            : (0, t.jsxs)('span', {
-                ...h,
+            : (0, S.jsxs)('span', {
+                ...d,
                 'arc-switch': '',
-                'data-state': i,
-                'data-size': n,
-                'data-label-position': s,
+                'data-state': o,
+                'data-size': t,
+                'data-label-position': n,
                 role: 'presentation',
                 'aria-live': 'off',
-                children: [c && s === wa.Before && E, w, c && s === wa.After && E],
+                children: [i && n === Mn.Before && u, h, i && n === Mn.After && u],
               })
         }
-      O('ArcSwitch', Ps)
-      const Bs = ['title', 'heading', 'subheading', 'body'],
-        Ro = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
-        Bo = ['code', 'div', 'li', 'p', 'pre', 'span'],
-        Oo = [...Ro, ...Bo],
-        Os = ['title-inherit', 'title-lg', 'title-md', 'title-sm'],
-        Ds = ['heading-inherit', 'heading-lg', 'heading-md', 'heading-sm'],
-        Hs = ['subheading-inherit', 'subheading-lg', 'subheading-md', 'subheading-sm'],
-        Vs = z(Q, ['inherit', 'primary', 'primary-inverse']),
-        Fs = ['body-inherit', 'body-lg', 'body-md', 'body-sm', 'body-xs'],
-        Ns = z(Q, [
+      Ba('ArcSwitch', Ln)
+      const Dn = ['title', 'heading', 'subheading', 'body'],
+        Fn = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+        Hn = ['code', 'div', 'li', 'p', 'pre', 'span'],
+        Vn = [...Fn, ...Hn],
+        Nn = ['title-inherit', 'title-lg', 'title-md', 'title-sm'],
+        Un = ['heading-inherit', 'heading-lg', 'heading-md', 'heading-sm'],
+        Zn = ['subheading-inherit', 'subheading-lg', 'subheading-md', 'subheading-sm'],
+        Yn = y(o, ['inherit', 'primary', 'primary-inverse']),
+        qn = ['body-inherit', 'body-lg', 'body-md', 'body-sm', 'body-xs'],
+        Wn = y(o, [
           'inherit',
           'primary',
           'secondary',
@@ -8698,9 +8647,9 @@
           'success',
           'info',
         ]),
-        Us = z(vt, ['inherit', 'start', 'center', 'justify', 'end']),
-        Ys = z(mt, ['inherit', 'loose', 'standard', 'tight']),
-        Ws = {
+        Gn = y(c, ['inherit', 'start', 'center', 'justify', 'end']),
+        Xn = y(l, ['inherit', 'loose', 'standard', 'tight']),
+        Kn = {
           h1: 'title',
           h2: 'heading',
           h3: 'heading',
@@ -8714,20 +8663,19 @@
           pre: 'body',
           li: 'body',
         },
-        Zs = (r) => {
-          const { align: a, lineHeight: e, size: n, variant: i, isMonospace: c, tag: s, ...d } = r,
-            l = Ws?.[s] ?? 'body',
-            p = n?.includes('inherit') ? n?.split('-')?.[0] : n
+        Jn = (a) => {
+          const { align: r, lineHeight: e, size: t, variant: o, isMonospace: i, tag: n, ...c } = a,
+            l = Kn?.[n] ?? 'body'
           return {
-            ...d,
-            'arc-text': p || l,
-            'data-is-monospace': c ? '' : void 0,
-            'data-align': a?.includes('inherit') ? void 0 : a,
-            'data-variant': i?.includes('inherit') ? void 0 : i,
+            ...c,
+            'arc-text': (t?.includes('inherit') ? t?.split('-')?.[0] : t) || l,
+            'data-is-monospace': i ? '' : void 0,
+            'data-align': r?.includes('inherit') ? void 0 : r,
+            'data-variant': o?.includes('inherit') ? void 0 : o,
             'data-line-height': e?.includes('inherit') ? void 0 : e,
           }
         },
-        Gs = u`
+        Qn = P`
 @layer arc-components {
 
 [arc-text] {
@@ -8920,99 +8868,99 @@
 
 }
 `,
-        Xs = (r) =>
-          (0, b.forwardRef)((a, e) => (0, b.createElement)(r, { ...Zs({ ...a, tag: r }), ref: e })),
-        qs = [...Oo].reduce((r, a) => ({ ...r, [a]: Xs(a) }), {})
-      O('Arc', Gs)
-      const Ks = Mo,
-        Js = Po,
-        Qs = z(ps, ['outline', 'solid']),
-        rl = ['text', 'number', 'password', 'email', 'url'],
-        al = (0, b.forwardRef)(
+        ac = (a) =>
+          (0, j.forwardRef)((r, e) => (0, j.createElement)(a, { ...Jn({ ...r, tag: a }), ref: e })),
+        rc = [...Vn].reduce((a, r) => ({ ...a, [r]: ac(r) }), {})
+      Ba('Arc', Qn)
+      const ec = mn,
+        tc = gn,
+        oc = y(bn, ['outline', 'solid']),
+        ic = ['text', 'number', 'password', 'email', 'url'],
+        nc = (0, j.forwardRef)(
           (
             {
-              layout: r = 'hug',
-              size: a = 'inherit',
+              layout: a = 'hug',
+              size: r = 'inherit',
               variant: e = 'outline',
-              inputProps: n,
-              headerLabel: i,
-              headerSlot: c,
-              inputPrefix: s,
-              inputAction: d,
+              inputProps: t,
+              headerLabel: o,
+              headerSlot: i,
+              inputPrefix: n,
+              inputAction: c,
               inputSuffix: l,
-              footerCaption: p,
-              footerSlot: h,
-              ...v
+              footerCaption: s,
+              footerSlot: d,
+              ...p
             },
-            f,
+            v,
           ) => {
-            const { id: g, onChange: w, ...E } = n,
-              j = E?.type || 'text',
-              P = E?.disabled || void 0,
-              A = E?.readOnly || void 0,
-              _ = E?.required || void 0,
-              S = !!(i || c),
-              C = !!(p || h)
-            return (0, t.jsxs)(U.Wrapper, {
-              ...v,
+            const { id: h, onChange: u, ...m } = t,
+              g = m?.type || 'text',
+              b = m?.disabled || void 0,
+              f = m?.readOnly || void 0,
+              x = m?.required || void 0,
+              $ = !(!o && !i),
+              y = !(!s && !d)
+            return (0, S.jsxs)(Cn.Wrapper, {
+              ...p,
               'arc-text-input': '',
-              'arc-input': j,
-              layout: r,
-              size: a,
+              'arc-input': g,
+              layout: a,
+              size: r,
               variant: e,
               children: [
-                S &&
-                  (0, t.jsxs)(U.Header, {
+                $ &&
+                  (0, S.jsxs)(Cn.Header, {
                     children: [
-                      (0, t.jsx)(U.HeaderLabel, { htmlFor: g, children: i }),
-                      !!c && (0, t.jsx)(U.Spacer, {}),
-                      (0, t.jsx)(U.HeaderSlot, { children: c }),
+                      (0, S.jsx)(Cn.HeaderLabel, { htmlFor: h, children: o }),
+                      !!i && (0, S.jsx)(Cn.Spacer, {}),
+                      (0, S.jsx)(Cn.HeaderSlot, { children: i }),
                     ],
                   }),
-                (0, t.jsxs)(U.InputBody, {
+                (0, S.jsxs)(Cn.InputBody, {
                   children: [
-                    (0, t.jsx)(U.InputPrefix, { htmlFor: g, children: s }),
-                    (0, t.jsx)('input', {
-                      ...E,
-                      ref: f,
-                      id: g,
-                      'arc-input-type': j,
-                      onChange: U.onChangeHandler(w),
-                      'aria-disabled': P,
-                      'aria-readonly': A,
-                      'aria-required': _,
+                    (0, S.jsx)(Cn.InputPrefix, { htmlFor: h, children: n }),
+                    (0, S.jsx)('input', {
+                      ...m,
+                      ref: v,
+                      id: h,
+                      'arc-input-type': g,
+                      onChange: Cn.onChangeHandler(u),
+                      'aria-disabled': b,
+                      'aria-readonly': f,
+                      'aria-required': x,
                     }),
-                    (0, t.jsx)(U.InputSuffix, { htmlFor: g, children: l }),
-                    (0, t.jsx)(U.InputAction, { children: d }),
+                    (0, S.jsx)(Cn.InputSuffix, { htmlFor: h, children: l }),
+                    (0, S.jsx)(Cn.InputAction, { children: c }),
                   ],
                 }),
-                C &&
-                  (0, t.jsxs)(U.Footer, {
+                y &&
+                  (0, S.jsxs)(Cn.Footer, {
                     children: [
-                      (0, t.jsx)(U.FooterCaption, { children: p }),
-                      !!h && (0, t.jsx)(U.Spacer, {}),
-                      (0, t.jsx)(U.FooterSlot, { children: h }),
+                      (0, S.jsx)(Cn.FooterCaption, { children: s }),
+                      !!d && (0, S.jsx)(Cn.Spacer, {}),
+                      (0, S.jsx)(Cn.FooterSlot, { children: d }),
                     ],
                   }),
               ],
             })
           },
         ),
-        Do = u`arc•progress`,
-        Ho = u`${Do}•bar`,
-        Ua = u`${Do}•value`,
-        el = u`
+        cc = P`arc•progress`,
+        lc = P`${cc}•bar`,
+        sc = P`${cc}•value`,
+        dc = P`
 @layer arc-components {
 [arc-progress-bar] {
-  --${Ho}-background: var(--arc-color-alpha-white-20);
-  --${Ua}-background: var(--arc-color-brand-root);
+  --${lc}-background: var(--arc-color-alpha-white-20);
+  --${sc}-background: var(--arc-color-brand-root);
 
   &[data-variant=ai] {
-    --${Ua}-background: linear-gradient(to right, var(--arc-color-ai-purple-200), var(--arc-color-ai-blue-200));
+    --${sc}-background: linear-gradient(to right, var(--arc-color-ai-purple-200), var(--arc-color-ai-blue-200));
   }
 
   &[data-variant=critical] {
-    --${Ua}-background: var(--arc-color-critical-root);
+    --${sc}-background: var(--arc-color-critical-root);
   }
 }
 
@@ -9023,7 +8971,7 @@
   height: max(var(--arc-space-1), 0.5em);
 
   /* firefox needs these at this level, other browsers can use these too */
-  background: var(--arc-progress-bar-background, var(--${Ho}-background));
+  background: var(--arc-progress-bar-background, var(--${lc}-background));
   border-radius: var(--arc-border-radius-pill);
   border: none;
 
@@ -9033,31 +8981,31 @@
   /* firefox's progress-value bar */
   &::-moz-progress-bar {
     border-radius: var(--arc-border-radius-pill);
-    background: var(--arc-progress-bar-value-background, var(--${Ua}-background));
+    background: var(--arc-progress-bar-value-background, var(--${sc}-background));
   }
 
   /* all the others' progress-value bar */
   &::-webkit-progress-value {
     border-radius: var(--arc-border-radius-pill);
-    background: var(--arc-progress-bar-value-background, var(--${Ua}-background));
+    background: var(--arc-progress-bar-value-background, var(--${sc}-background));
   }
 }
 
 }
 `,
-        tl = ({ progress: r = 0, variant: a = 'common', ...e }) =>
-          (0, t.jsxs)('progress', {
+        pc = ({ progress: a = 0, variant: r = 'common', ...e }) =>
+          (0, S.jsxs)('progress', {
             ...e,
             'arc-progress-bar': '',
-            'data-variant': a,
-            value: r,
+            'data-variant': r,
+            value: a,
             max: e.max || 100,
-            'aria-valuenow': r,
+            'aria-valuenow': a,
             'aria-valuemax': e.max || 100,
-            children: [r, '% '],
+            children: [a, '% '],
           })
-      O('ArcProgressBar', el)
-      const ol = u`
+      Ba('ArcProgressBar', dc)
+      const vc = P`
 @layer arc-components {
 
   [arc-toast] {
@@ -9228,13 +9176,13 @@
   }
 }
 `,
-        nl = z(Q, ['common', 'ai', 'critical']),
-        il = ['default', 'success', 'warning', 'error'],
-        cl = z(yr, ['inherit', 'md']),
-        sl = z(Q, ['common']),
-        ll = [...xe],
-        dl = [...Za],
-        pl = [
+        hc = y(o, ['common', 'ai', 'critical']),
+        uc = ['default', 'success', 'warning', 'error'],
+        mc = y(s, ['inherit', 'md']),
+        gc = y(o, ['common']),
+        bc = [...p],
+        fc = [...v],
+        xc = [
           'top-left',
           'top-center',
           'top-right',
@@ -9243,82 +9191,71 @@
           'bottom-center',
           'bottom-right',
         ],
-        ul = nl.filter((r) => r !== 'critical'),
-        hl = (r, a = 'toggle') => {
-          const e = document.getElementById(r)
-          ;({
-            toggle: () => e?.togglePopover(),
-            show: () => e?.showPopover(),
-            hide: () => e?.hidePopover(),
-          })[a]()
-        },
-        Vo = ({
-          id: r,
-          children: a,
+        $c = hc.filter((a) => 'critical' !== a),
+        yc = ({
+          id: a,
+          children: r,
           icon: e,
-          heading: n,
-          subtext: i,
-          dismissProps: c,
-          showDismiss: s = !0,
-          onClose: d,
+          heading: t,
+          subtext: o,
+          dismissProps: i,
+          showDismiss: n = !0,
+          onClose: c,
           actionSlot: l,
-          size: p = 'md',
-          variant: h = 'common',
-          placement: v = 'bottom-left',
-          getToastId: f,
-          progressBarProps: g,
-          severity: w,
-          ...E
+          size: s = 'md',
+          variant: d = 'common',
+          placement: p = 'bottom-left',
+          getToastId: v,
+          progressBarProps: h,
+          severity: u,
+          ...m
         }) => {
-          const j = () => {
-              d?.()
-            },
-            P = !!l || s,
-            A = Sr(r, 'arc-toast'),
-            { variant: _, hierarchy: S, ...C } = c || {}
-          ;(0, b.useEffect)(() => {
-            f?.(A)
-          }, [f, A])
-          const L = Gt(e)
-          return (0, t.jsx)('div', {
-            ...E,
+          const g = !!l || n,
+            b = Pr(a, 'arc-toast'),
+            { variant: f, hierarchy: x, ...$ } = i || {}
+          ;(0, j.useEffect)(() => {
+            v?.(b)
+          }, [v, b])
+          const y = gr(e)
+          return (0, S.jsx)('div', {
+            ...m,
             'arc-toast': '',
-            'data-size': p,
-            'data-variant': h,
-            'data-placement': v,
-            'data-severity': w || void 0,
-            id: A,
-            children: (0, t.jsxs)('div', {
+            'data-size': s,
+            'data-variant': d,
+            'data-placement': p,
+            'data-severity': u || void 0,
+            id: b,
+            children: (0, S.jsxs)('div', {
               'arc-toast-content-grid': '',
               children: [
-                (0, t.jsxs)('div', {
+                (0, S.jsxs)('div', {
                   'arc-toast-body': '',
                   children: [
-                    e && (0, t.jsx)(B, { icon: L, 'arc-toast-icon': '' }),
-                    (0, t.jsx)('div', {
+                    e && (0, S.jsx)(xr, { icon: y, 'arc-toast-icon': '' }),
+                    (0, S.jsx)('div', {
                       'arc-toast-content': '',
                       children:
-                        a ||
-                        (0, t.jsxs)(t.Fragment, {
+                        r ||
+                        (0, S.jsxs)(S.Fragment, {
                           children: [
-                            n &&
-                              (0, t.jsx)('header', {
+                            t &&
+                              (0, S.jsx)('header', {
                                 'arc-toast-heading': '',
-                                children: (0, t.jsx)('strong', { children: n }),
+                                children: (0, S.jsx)('strong', { children: t }),
                               }),
-                            i && (0, t.jsx)('p', { 'arc-toast-subtext': '', children: i }),
+                            o && (0, S.jsx)('p', { 'arc-toast-subtext': '', children: o }),
                           ],
                         }),
                     }),
                   ],
                 }),
-                P &&
-                  (0, t.jsxs)('div', {
+                g &&
+                  (0, S.jsxs)('div', {
                     'arc-toast-actions': '',
                     children: [
                       l,
-                      s &&
-                        (0, t.jsx)(ur, {
+                      n &&
+                        (0, S.jsx)(Et, {
                           icon: 'fa-regular fa-xmark-large',
                           layout: 'icon',
                           variant: 'common',
@@ -9327,23 +9264,33 @@
                           size: 'md',
                           shape: 'square',
                           'aria-label': 'Dismiss',
-                          ...C,
-                          popoverTarget: A,
-                          onClick: j,
+                          ...$,
+                          popoverTarget: b,
+                          onClick: () => {
+                            c?.()
+                          },
                         }),
                     ],
                   }),
-                g &&
-                  (0, t.jsx)(tl, {
-                    ...g,
-                    variant: w === 'error' ? 'critical' : g.variant,
+                h &&
+                  (0, S.jsx)(pc, {
+                    ...h,
+                    variant: 'error' === u ? 'critical' : h.variant,
                     'arc-toast-progress-bar': '',
                   }),
               ],
             }),
           })
         }
-      ;((Vo.handleToast = hl), O('ArcToast', ol))
+      ;((yc.handleToast = (a, r = 'toggle') => {
+        const e = document.getElementById(a)
+        ;({
+          toggle: () => e?.togglePopover(),
+          show: () => e?.showPopover(),
+          hide: () => e?.hidePopover(),
+        })[r]()
+      }),
+        Ba('ArcToast', vc))
     },
   },
 ])
