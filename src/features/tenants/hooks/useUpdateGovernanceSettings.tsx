@@ -42,6 +42,8 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
           name: 'reminderSchedule',
           label: 'Reminder Schedule',
           type: 'array',
+          description:
+            'Choose the day offsets when StyreIQ sends reminders to the assigned user for any open compliance task.',
           children: [
             {
               name: 'day',
@@ -57,6 +59,8 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
           name: 'escalationDays',
           label: 'Escalation Days',
           type: 'array',
+          description:
+            'When a task is overdue, escalation notifies Unit and Central Admins based on the schedule set here.',
           children: [
             {
               name: 'day',
@@ -72,6 +76,8 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
           name: 'rollCallFrequency',
           label: 'Roll Call Frequency',
           type: 'select',
+          description:
+            'How often users must confirm which social media accounts they are connected to.',
           options: [
             { value: 'monthly', label: 'Monthly' },
             { value: 'quarterly', label: 'Quarterly' },
@@ -85,6 +91,8 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
           name: 'passwordUpdateCadenceDays',
           label: 'Password Update Cadence (Days)',
           type: 'number',
+          description:
+            'How often users will be asked to update passwords used to access their assigned social media accounts, whether through individual login access or shared credentials.',
           placeholder: 'Enter days (30-365)',
           size: 'half',
         },

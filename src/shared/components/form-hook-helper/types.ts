@@ -65,6 +65,7 @@ export type FieldData<TFieldValues extends FieldValues = FieldValues> = {
     value: string | number | boolean | Array<string | number | boolean>
   }
   placeholder?: string
+  description?: string
   tree?: Tree[]
   disabled?: boolean
   required?: boolean

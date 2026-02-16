@@ -26,6 +26,14 @@ import { FieldData } from '@/shared/components/form-hook-helper/types'
 import { cn } from '@/shared/utils/cn'
 import { Button } from '@/shared/components/ui/button'
 import { TreeSelectHelper } from '@/shared/components/form-hook-helper/fields/tree-select'
+import { useFieldRequired } from './utils'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/shared/components/ui/tooltip'
+import { HelpCircle } from 'lucide-react'
 
 interface FieldResolverProps<TFieldValues extends FieldValues> {
   form: UseFormReturn<TFieldValues>
@@ -183,12 +191,41 @@ export const InputListHelper = <TFieldValues extends FieldValues>({
     control: form.control,
     name: fieldData.name as ArrayPath<TFieldValues>,
   })
+
+  const isRequired = useFieldRequired(form, fieldData.name, fieldData.required)
   return (
     <fieldset className={cn('space-y-3', className)}>
       <FormFieldUncontrolled name={fieldData.name}>
         <FormItem className={cn('col-span-12', className)}>
           <div className="flex w-full items-center gap-4">
-            <FormLabel>{fieldData.label}</FormLabel>
+            <FormLabel className="flex items-center gap-2">
+              <span>
+                {fieldData.label}
+                {isRequired && <span className="text-red-500 ml-1">*</span>}
+              </span>
+              {fieldData.description && (
+                <TooltipProvider delayDuration={200}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span className="inline-flex">
+                        <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help hover:text-primary transition-colors" />
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      side="right"
+                      align="start"
+                      className="max-w-xs bg-white shadow-lg border p-3"
+                      sideOffset={8}
+                      hideArrow={true}
+                    >
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {fieldData.description}
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
+            </FormLabel>
             <Button
               type="button"
               onClick={(): void => {

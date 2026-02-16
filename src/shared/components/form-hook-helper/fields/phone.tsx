@@ -3,15 +3,12 @@
 import React from 'react'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
-import {
-  FormFieldUncontrolled,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/shared/components/ui/form'
+import { FormFieldUncontrolled, FormItem, FormMessage } from '@/shared/components/ui/form'
 import PhoneInput from 'react-phone-number-input'
 import { cn } from '@/shared/utils/cn'
 import { FieldData } from '../types'
+import { useFieldRequired } from '../utils'
+import { FieldLabel } from '../field-label'
 
 export type PhoneInputHelperProps<TFieldValues extends FieldValues> = {
   form: UseFormReturn<TFieldValues>
@@ -24,10 +21,15 @@ export const PhoneInputHelper = <TFieldValues extends FieldValues>({
   fieldData,
   className,
 }: PhoneInputHelperProps<TFieldValues>) => {
+  const isRequired = useFieldRequired(form, fieldData.name, fieldData.required)
   return (
     <FormFieldUncontrolled name={fieldData.name}>
       <FormItem className={cn('col-span-12', className)}>
-        <FormLabel>{fieldData.label}</FormLabel>
+        <FieldLabel
+          label={fieldData.label}
+          description={fieldData.description}
+          required={isRequired}
+        />
         <Controller
           name={fieldData.name}
           control={form.control}

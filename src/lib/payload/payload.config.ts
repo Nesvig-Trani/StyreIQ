@@ -114,9 +114,8 @@ export default buildConfig({
     ],
     autoRun: [
       {
-        //Every sunday at midnight
-        cron: '0 0 * * 0',
-        queue: 'default',
+        cron: '0 9 * * *',
+        queue: 'reminders',
         limit: 1,
       },
     ],
