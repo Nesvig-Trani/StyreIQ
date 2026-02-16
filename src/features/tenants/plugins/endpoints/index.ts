@@ -11,6 +11,7 @@ import {
   COOKIE_MAX_AGE_SECONDS,
   createTenantSchema,
   SELECTED_TENANT_COOKIE_NAME,
+  updateTenantSchema,
 } from '../../schemas'
 import { UnitTypeEnum } from '@/features/units'
 import { AuditLogActionEnum } from '@/features/audit-log/plugins/types'
@@ -441,5 +442,97 @@ export const getSelectedTenant: Endpoint = {
       }),
       { status: 200, headers: JSON_HEADERS },
     )
+  },
+}
+
+export const updateTenant: Endpoint = {
+  path: '/:id',
+  method: 'patch',
+  handler: async (req) => {
+    if (!req.json) {
+      throw new EndpointError('Missing JSON body', 400)
+    }
+
+    const user = req.user
+    if (!user) {
+      throw new EndpointError('Unauthorized', 401)
+    }
+
+    const effectiveRole = getEffectiveRoleFromUser(user)
+    if (effectiveRole !== UserRolesEnum.SuperAdmin) {
+      throw new EndpointError('Only Super Admins can update tenants', 403)
+    }
+
+    const tenantId = parseInt(req.routeParams?.id as string, 10)
+    if (isNaN(tenantId)) {
+      throw new EndpointError('Invalid tenant ID', 400)
+    }
+
+    const data = await req.json()
+    const dataParsed = updateTenantSchema.parse(data)
+    const existingTenant = await req.payload.findByID({
+      collection: 'tenants',
+      id: tenantId,
+    })
+
+    if (dataParsed.domain !== existingTenant.domain) {
+      const domainCheck = await req.payload.find({
+        collection: 'tenants',
+        where: {
+          and: [
+            {
+              domain: {
+                equals: dataParsed.domain,
+              },
+            },
+            {
+              id: {
+                not_equals: tenantId,
+              },
+            },
+          ],
+        },
+        limit: 1,
+      })
+
+      if (domainCheck.docs.length > 0) {
+        throw new EndpointError('A tenant with this domain already exists', 409)
+      }
+    }
+
+    const updatedTenant = await req.payload.update({
+      collection: 'tenants',
+      id: tenantId,
+      data: {
+        name: dataParsed.name,
+        domain: dataParsed.domain,
+        adminContactName: dataParsed.adminContactName,
+        adminContactEmail: dataParsed.adminContactEmail,
+        metadata: {
+          timezone: dataParsed.timezone || 'America/New_York',
+          notes: dataParsed.notes || '',
+        },
+        enabledTrainings: dataParsed.enabledTrainings,
+      },
+    })
+
+    await req.payload.create({
+      collection: 'audit_log',
+      data: {
+        user: user.id,
+        action: AuditLogActionEnum.Update,
+        entity: 'tenants',
+        metadata: {
+          tenantName: updatedTenant.name,
+          tenantDomain: updatedTenant.domain,
+        },
+        tenant: tenantId,
+      },
+    })
+
+    return new Response(JSON.stringify(updatedTenant), {
+      status: 200,
+      headers: JSON_HEADERS,
+    })
   },
 }

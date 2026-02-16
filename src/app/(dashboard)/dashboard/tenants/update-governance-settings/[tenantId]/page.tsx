@@ -1,10 +1,11 @@
-import UpdateTenantForm from '@/features/tenants/forms/update-tenant'
-import { getTenantById } from '@/features/tenants/plugins/queries'
+import React from 'react'
 import { Card, CardContent } from '@/shared'
 import { ChevronRight, Home } from 'lucide-react'
 import Link from 'next/link'
+import { getTenantById } from '@/features/tenants/plugins/queries'
+import { UpdateTenantSettingsForm } from '@/features/tenants/forms/update-governance-settings'
 
-export default async function UpdateTenantPage({
+export default async function UpdateTenantSettingsPage({
   params,
 }: {
   params: Promise<{ tenantId: string }>
@@ -12,8 +13,8 @@ export default async function UpdateTenantPage({
   const { tenantId } = await params
   if (!tenantId) return <div>404</div>
 
-  const tenant = await getTenantById({ id: Number(tenantId) })
-  if (!tenant) {
+  const data = await getTenantById({ id: Number(tenantId) })
+  if (!data) {
     return (
       <div>
         <h1>404</h1>
@@ -38,17 +39,17 @@ export default async function UpdateTenantPage({
         </nav>
 
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Update Tenant</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Governance Settings</h1>
           <p className="text-lg text-gray-600">
-            Update organization details, contact information, and training configurations for{' '}
-            {tenant.name}.
+            Configure when compliance tasks are created, when assignees are reminded, and what
+            happens when tasks become overdue.
           </p>
         </div>
 
         <Card className="shadow-lg border-0">
           <CardContent className="p-6">
             <div className="max-w-4xl">
-              <UpdateTenantForm tenantId={Number(tenantId)} initialData={tenant} />
+              <UpdateTenantSettingsForm tenant={data} />
             </div>
           </CardContent>
         </Card>
