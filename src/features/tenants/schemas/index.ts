@@ -69,3 +69,43 @@ export const tenantGovernanceSettingsSchema = z.object({
 })
 
 export type TenantGovernanceSettingsSchema = z.infer<typeof tenantGovernanceSettingsSchema>
+
+export const updateTenantSchema = z.object({
+  name: z.string().min(1, 'Organization name is required'),
+  domain: z
+    .string()
+    .min(1, 'Domain is required')
+    .regex(
+      /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,}$/,
+      'Invalid domain format (e.g., example.edu)',
+    ),
+  adminContactName: z.string().min(1, 'Admin contact name is required'),
+  adminContactEmail: z.string().email('Invalid email address'),
+  timezone: z
+    .enum(['America/New_York', 'America/Chicago', 'America/Denver', 'America/Los_Angeles'])
+    .default('America/New_York'),
+  notes: z.string().optional(),
+  enabledTrainings: z
+    .array(
+      z.object({
+        trainingId: z.enum(['training-governance', 'training-risk', 'training-leadership']),
+        assignedRoles: z.array(z.enum(['social_media_manager', 'unit_admin', 'central_admin'])),
+      }),
+    )
+    .default([
+      {
+        trainingId: 'training-governance',
+        assignedRoles: ['social_media_manager', 'unit_admin'],
+      },
+      {
+        trainingId: 'training-risk',
+        assignedRoles: ['social_media_manager', 'unit_admin'],
+      },
+      {
+        trainingId: 'training-leadership',
+        assignedRoles: ['unit_admin'],
+      },
+    ]),
+})
+
+export type UpdateTenantFormSchema = z.infer<typeof updateTenantSchema>

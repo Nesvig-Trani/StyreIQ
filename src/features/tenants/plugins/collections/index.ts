@@ -6,6 +6,7 @@ import {
   getTenantMetrics,
   selectTenant,
   updateGovernanceSettings,
+  updateTenant,
 } from '../endpoints'
 
 export const Tenants: CollectionConfig = {
@@ -267,5 +268,6 @@ export const Tenants: CollectionConfig = {
     createTenant,
     selectTenant,
     getSelectedTenant,
+    updateTenant,
   ],
 }

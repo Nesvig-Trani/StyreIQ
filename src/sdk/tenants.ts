@@ -1,5 +1,9 @@
 import { env } from '@/config/env'
-import { CreateTenantFormSchema, TenantGovernanceSettingsSchema } from '@/features/tenants/schemas'
+import {
+  CreateTenantFormSchema,
+  TenantGovernanceSettingsSchema,
+  UpdateTenantFormSchema,
+} from '@/features/tenants/schemas'
 import { EndpointError } from '@/shared'
 import { JSON_HEADERS } from '@/shared/constants'
 
@@ -71,6 +75,32 @@ export const selectTenantRequest = async (tenantId: number | null) => {
       errorData.error || errorData.message || 'Failed to select tenant',
       response.status,
     )
+  }
+
+  return response.json()
+}
+
+export const updateTenant = async (tenantId: number, data: UpdateTenantFormSchema) => {
+  const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/tenants/${tenantId}`, {
+    method: 'PATCH',
+    headers: JSON_HEADERS,
+    credentials: 'include',
+    body: JSON.stringify({
+      name: data.name,
+      domain: data.domain,
+      adminContactName: data.adminContactName,
+      adminContactEmail: data.adminContactEmail,
+      metadata: {
+        timezone: data.timezone,
+        notes: data.notes,
+      },
+      enabledTrainings: data.enabledTrainings,
+    }),
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}))
+    throw new EndpointError(errorData.error || 'Failed to update tenant', response.status)
   }
 
   return response.json()
