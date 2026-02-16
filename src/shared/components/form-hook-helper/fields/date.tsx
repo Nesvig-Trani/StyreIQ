@@ -1,16 +1,11 @@
 import React from 'react'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/shared/components/ui/form'
+import { FormControl, FormField, FormItem, FormMessage } from '@/shared/components/ui/form'
 import { cn } from '@/shared/utils/cn'
 import { FieldData } from '@/shared/components/form-hook-helper'
 import { DatePicker } from '@/shared/components/ui/datepicker'
 import { useFieldRequired } from '../utils'
+import { FieldLabel } from '../field-label'
 
 export type DateInputHelperProps<TFieldValues extends FieldValues> = {
   form: UseFormReturn<TFieldValues>
@@ -32,14 +27,15 @@ export const DateInputHelper = <TFieldValues extends FieldValues>({
       key={fieldData.name}
       render={({ field: { onChange, value } }): React.ReactElement => (
         <FormItem className={cn('col-span-12', className)}>
-          <FormLabel className={cn(fieldData.disabled && 'text-muted-foreground')}>
-            {fieldData.label}
-            {isRequired && <span className="text-red-500 ml-1">*</span>}
-          </FormLabel>
+          <FieldLabel
+            label={fieldData.label}
+            description={fieldData.description}
+            required={isRequired}
+          />
           <FormControl>
             <DatePicker
               className={cn('w-full', fieldData.disabled && 'opacity-60 cursor-not-allowed')}
-              {...fieldData.dateInputProps} // TODO - Find a better way to do this
+              {...fieldData.dateInputProps}
               disabled={fieldData.disabled}
               selected={value ? value : undefined}
               onSelect={(newValue: Date | undefined) => {

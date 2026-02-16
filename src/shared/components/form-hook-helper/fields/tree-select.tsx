@@ -1,18 +1,12 @@
 'use client'
 import React from 'react'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/shared/components/ui/form'
-
+import { FormControl, FormField, FormItem, FormMessage } from '@/shared/components/ui/form'
 import { TreeSelect } from '@/shared/components/tree-select'
 import { FieldData } from '@/shared/components/form-hook-helper/types'
 import { cn } from '@/shared/utils/cn'
 import { useFieldRequired } from '../utils'
+import { FieldLabel } from '../field-label'
 
 export type TreeSelectHelperProps<TFieldValues extends FieldValues> = {
   form: UseFormReturn<TFieldValues>
@@ -40,10 +34,11 @@ export const TreeSelectHelper = <TFieldValues extends FieldValues>({
       name={fieldData.name}
       render={({ field }) => (
         <FormItem className={cn('col-span-12', className)}>
-          <FormLabel>
-            {fieldData.label}
-            {isRequired && <span className="text-red-500 ml-1">*</span>}
-          </FormLabel>
+          <FieldLabel
+            label={fieldData.label}
+            description={fieldData.description}
+            required={isRequired}
+          />
           <FormControl className="w-full">
             <TreeSelect
               options={fieldData.options || []}

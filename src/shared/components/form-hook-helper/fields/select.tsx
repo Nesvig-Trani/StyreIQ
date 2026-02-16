@@ -1,13 +1,6 @@
 import React from 'react'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
-
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/shared/components/ui/form'
+import { FormControl, FormField, FormItem, FormMessage } from '@/shared/components/ui/form'
 import { FieldData } from '@/shared/components/form-hook-helper'
 import {
   Select,
@@ -21,6 +14,7 @@ import { cn } from '@/shared/utils/cn'
 import { SelectScrollUpButton } from '@radix-ui/react-select'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useFieldRequired } from '../utils'
+import { FieldLabel } from '../field-label'
 
 export type SelectInputHelperProps<TFieldValues extends FieldValues> = {
   form: UseFormReturn<TFieldValues>
@@ -46,10 +40,11 @@ export const SelectInputHelper = <TFieldValues extends FieldValues>({
       key={fieldData.name}
       render={({ field: { onChange, ...field } }): React.ReactElement => (
         <FormItem className={cn('col-span-12', className)}>
-          <FormLabel>
-            {fieldData.label}
-            {isRequired && <span className="text-red-500 ml-1">*</span>}
-          </FormLabel>
+          <FieldLabel
+            label={fieldData.label}
+            description={fieldData.description}
+            required={isRequired}
+          />
           <Select
             {...field}
             onValueChange={(value): void => {

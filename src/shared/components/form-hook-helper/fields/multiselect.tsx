@@ -1,16 +1,11 @@
 import React from 'react'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/shared/components/ui/form'
+import { FormControl, FormField, FormItem, FormMessage } from '@/shared/components/ui/form'
 import { FieldData } from '@/shared/components/form-hook-helper'
 import { MultiSelect, MultiSelectOption } from '@/shared/components/multiselect'
 import { cn } from '@/shared/utils/cn'
 import { useFieldRequired } from '../utils'
+import { FieldLabel } from '../field-label'
 
 export type MultiSelectInputHelperProps<TFieldValues extends FieldValues> = {
   form: UseFormReturn<TFieldValues>
@@ -32,10 +27,11 @@ export const MultiSelectInputHelper = <TFieldValues extends FieldValues>({
       key={fieldData.name}
       render={({ field: { ...field } }): React.ReactElement => (
         <FormItem className={cn('col-span-12', className)}>
-          <FormLabel>
-            {fieldData.label}
-            {isRequired && <span className="text-red-500 ml-1">*</span>}
-          </FormLabel>
+          <FieldLabel
+            label={fieldData.label}
+            description={fieldData.description}
+            required={isRequired}
+          />
           <FormControl>
             <MultiSelect
               options={
