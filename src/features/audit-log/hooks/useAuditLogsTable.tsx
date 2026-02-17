@@ -42,6 +42,9 @@ function getActionLabel(action: AuditLogActionEnum): string {
     [AuditLogActionEnum.EmailFailed]: 'Email Failed',
     [AuditLogActionEnum.TaskCreationFailed]: 'Task Creation Failed',
     [AuditLogActionEnum.CriticalError]: 'Critical Error',
+    [AuditLogActionEnum.OverdueNoticeSent]: 'Overdue Notice Sent',
+    [AuditLogActionEnum.EscalatedToUnitAdmin]: 'Escalated to Unit Admin',
+    [AuditLogActionEnum.EscalatedToCentralAdmin]: 'Escalated to Central Admin',
   }
   return labels[action] || action
 }
@@ -60,6 +63,7 @@ function getActionBadgeVariant(action: string): string {
     case AuditLogActionEnum.EmailFailed:
     case AuditLogActionEnum.TaskCreationFailed:
     case AuditLogActionEnum.CriticalError:
+    case AuditLogActionEnum.OverdueNoticeSent:
       return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
     case AuditLogActionEnum.Approval:
     case AuditLogActionEnum.RoleRequestApproved:
@@ -75,6 +79,8 @@ function getActionBadgeVariant(action: string): string {
     case AuditLogActionEnum.FlagResolution:
       return 'bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200'
     case AuditLogActionEnum.TaskEscalation:
+    case AuditLogActionEnum.EscalatedToUnitAdmin:
+    case AuditLogActionEnum.EscalatedToCentralAdmin:
       return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200'
     case AuditLogActionEnum.PasswordRecovery:
     case AuditLogActionEnum.PasswordReset:
