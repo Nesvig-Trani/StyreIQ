@@ -32,4 +32,7 @@ export const actionLabels = {
   [AuditLogActionEnum.EmailFailed]: 'Email Failed',
   [AuditLogActionEnum.TaskCreationFailed]: 'Task Creation Failed',
   [AuditLogActionEnum.CriticalError]: 'Critical Error',
+  [AuditLogActionEnum.OverdueNoticeSent]: 'Overdue Notice Sent',
+  [AuditLogActionEnum.EscalatedToUnitAdmin]: 'Task Escalated to Unit Admin',
+  [AuditLogActionEnum.EscalatedToCentralAdmin]: 'Task Escalated to Central Admin',
 }

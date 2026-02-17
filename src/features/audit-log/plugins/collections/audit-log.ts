@@ -153,6 +153,15 @@ export const AuditLogs: CollectionConfig = {
           label: 'Critical Error',
           value: AuditLogActionEnum.CriticalError,
         },
+        { label: 'Overdue Notice Sent', value: AuditLogActionEnum.OverdueNoticeSent },
+        {
+          label: 'Task Escalated to Unit Admin',
+          value: AuditLogActionEnum.EscalatedToUnitAdmin,
+        },
+        {
+          label: 'Task Escalated to Central Admin',
+          value: AuditLogActionEnum.EscalatedToCentralAdmin,
+        },
       ],
       required: true,
     },

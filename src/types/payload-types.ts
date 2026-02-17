@@ -732,6 +732,9 @@ export interface AuditLog {
     | 'email_failed'
     | 'task_creation_failed'
     | 'critical_error'
+    | 'overdue_notice_sent'
+    | 'escalated_to_unit_admin'
+    | 'escalated_to_central_admin'
   entity: string
   prev?:
     | {

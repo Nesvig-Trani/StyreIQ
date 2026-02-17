@@ -3,6 +3,7 @@ import { createRecurringPasswordTasks } from '.'
 
 export const createRecurringPasswordTasksTask = {
   slug: 'createRecurringPasswordTasks',
+  queue: 'daily',
   retries: 2,
   outputSchema: [
     {
