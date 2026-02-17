@@ -1,7 +1,7 @@
 import { flagSourceLabels } from '@/features/flags/constants/flagSourceLabels'
 import { FlagSourceEnum, FlagStatusEnum } from '@/features/flags/schemas'
 import { getStatusColor, isActivityStale } from '@/features/flags/utils'
-import { Flag, Organization, SocialMedia, User } from '@/types/payload-types'
+import { ComplianceTask, Flag, Organization, SocialMedia, User } from '@/types/payload-types'
 import { Badge, Button, Separator } from '@/shared'
 import {
   Dialog,
@@ -24,7 +24,13 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { UnitCell } from '@/features/units/components/unit-cell'
 
-export function FlagDetails({ flag }: { flag: Flag }) {
+export function FlagDetails({
+  flag,
+  userComplianceTasks,
+}: {
+  flag: Flag
+  userComplianceTasks: Map<number, ComplianceTask[]>
+}) {
   const searchParams = useSearchParams()
   const currentFilters = searchParams.toString()
 
@@ -57,7 +63,7 @@ export function FlagDetails({ flag }: { flag: Flag }) {
 
         return (
           <>
-            <ViewUser user={user} />
+            <ViewUser user={user} userComplianceTasks={userComplianceTasks} />
             <Link
               href={`/dashboard/users/update/${user.id}?returnTo=${encodeURIComponent(`/dashboard/flags?${currentFilters}`)}`}
             >

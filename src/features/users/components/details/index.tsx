@@ -1,15 +1,7 @@
 'use client'
 
-import React from 'react'
-import {
-  CircleCheck,
-  User as UserIcon,
-  Key,
-  GraduationCap,
-  AlertTriangle,
-  CheckCircle,
-  XCircle,
-} from 'lucide-react'
+import React, { useMemo } from 'react'
+import { CircleCheck, User as UserIcon, Key, GraduationCap, AlertTriangle } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -27,14 +19,16 @@ import {
   statusLabelMap,
   UserStatusEnum,
 } from '@/features/users'
-import type { User } from '@/types/payload-types'
+import type { User, ComplianceTask } from '@/types/payload-types'
 import { normalizeRoles } from '@/shared/utils/role-hierarchy'
+import { TaskStatusIcon } from './task-status-icon'
 
 interface UserDetailsDialogProps {
   user: User
   trigger: React.ReactNode
   isOpen: boolean
   onOpenChange: (open: boolean) => void
+  userComplianceTasks: Map<number, ComplianceTask[]>
 }
 
 export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
@@ -42,31 +36,25 @@ export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
   trigger,
   isOpen,
   onOpenChange,
+  userComplianceTasks,
 }) => {
   const status = user.status as UserStatusEnum
   const color = statusColorMap[status] ?? 'yellow'
 
-  const StatusIcon = ({ value }: { value?: boolean | null }) => (
-    <span className="flex items-center gap-1">
-      {value ? (
-        <CheckCircle className="h-4 w-4 text-green-600" />
-      ) : (
-        <XCircle className="h-4 w-4 text-red-600" />
-      )}
-      {value ? 'Yes' : 'No'}
-    </span>
-  )
+  const { trainingTasks, securityTasks, policyTask, rollCallTask } = useMemo(() => {
+    const userTasks = userComplianceTasks.get(user.id) || []
 
-  const TrainingStatus = ({ value }: { value?: boolean | null }) => (
-    <span className="flex items-center gap-1">
-      {value ? (
-        <CheckCircle className="h-4 w-4 text-green-600" />
-      ) : (
-        <XCircle className="h-4 w-4 text-gray-400" />
-      )}
-      {value ? 'Completed' : 'Incomplete'}
-    </span>
-  )
+    return {
+      trainingTasks: userTasks.filter((task) => task.type === 'TRAINING_COMPLETION'),
+      securityTasks: {
+        twoFA: userTasks.find((task) => task.type === 'CONFIRM_2FA'),
+        userPassword: userTasks.find((task) => task.type === 'CONFIRM_USER_PASSWORD'),
+        sharedPassword: userTasks.find((task) => task.type === 'CONFIRM_SHARED_PASSWORD'),
+      },
+      policyTask: userTasks.find((task) => task.type === 'POLICY_ACKNOWLEDGMENT'),
+      rollCallTask: userTasks.find((task) => task.type === 'USER_ROLL_CALL'),
+    }
+  }, [user.id, userComplianceTasks])
 
   const userRoles = normalizeRoles(user.roles)
 
@@ -126,41 +114,27 @@ export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
               <div className="space-y-4">
                 <InfoField
                   label="Two-Factor Authentication"
-                  value={<StatusIcon value={user.isEnabledTwoFactor} />}
+                  value={<TaskStatusIcon task={securityTasks.twoFA} />}
                 />
                 <InfoField
-                  label="Secure Password"
-                  value={<StatusIcon value={user.isInUseSecurePassword} />}
+                  label="User Password Confirmation"
+                  value={<TaskStatusIcon task={securityTasks.userPassword} />}
                 />
-                <InfoField
-                  label="Admin Policy Agreement"
-                  value={<StatusIcon value={user.admin_policy_agreement} />}
-                />
+                {securityTasks.sharedPassword && (
+                  <InfoField
+                    label="Shared Password Confirmation"
+                    value={<TaskStatusIcon task={securityTasks.sharedPassword} />}
+                  />
+                )}
               </div>
               <div className="space-y-4">
                 <InfoField
-                  label="Password Last Updated"
-                  value={
-                    user.passwordUpdatedAt
-                      ? new Date(user.passwordUpdatedAt).toLocaleDateString()
-                      : 'Never updated'
-                  }
+                  label="Policy Acknowledgment"
+                  value={<TaskStatusIcon task={policyTask} />}
                 />
                 <InfoField
-                  label="Last Training Date"
-                  value={
-                    user.date_of_last_training
-                      ? new Date(user.date_of_last_training).toLocaleDateString()
-                      : 'No training recorded'
-                  }
-                />
-                <InfoField
-                  label="Last Policy Review"
-                  value={
-                    user.date_of_last_policy_review
-                      ? new Date(user.date_of_last_policy_review).toLocaleDateString()
-                      : 'No review recorded'
-                  }
+                  label="Roll Call Confirmation"
+                  value={<TaskStatusIcon task={rollCallTask} />}
                 />
               </div>
             </div>
@@ -170,20 +144,19 @@ export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
             icon={<GraduationCap className="h-4 w-4 text-black" />}
             title="Training & Compliance"
           >
-            <div className="grid grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <InfoField
-                  label="Accessibility Training"
-                  value={<TrainingStatus value={user.isCompletedTrainingAccessibility} />}
-                />
+            {trainingTasks.length > 0 ? (
+              <div className="space-y-3">
+                {trainingTasks.map((task) => (
+                  <InfoField
+                    key={task.id}
+                    label={task.description || 'Training Task'}
+                    value={<TaskStatusIcon task={task} />}
+                  />
+                ))}
               </div>
-              <div className="space-y-4">
-                <InfoField
-                  label="Risk Training"
-                  value={<TrainingStatus value={user.isCompletedTrainingRisk} />}
-                />
-              </div>
-            </div>
+            ) : (
+              <p className="text-sm text-gray-500">No training assigned.</p>
+            )}
           </InfoCard>
 
           {user.reject_reason && (

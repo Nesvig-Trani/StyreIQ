@@ -1,3 +1,6 @@
+'use client'
+
+import { useMemo } from 'react'
 import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Separator } from '@/shared'
 import {
   Dialog,
@@ -8,18 +11,17 @@ import {
 } from '@/shared/components/ui/dialog'
 import { UserRolesEnum, UserStatusEnum } from '@/features/users'
 import {
-  CalendarIcon,
   CheckCircleIcon,
   ClockIcon,
   EyeIcon,
-  FileCheckIcon,
   GraduationCapIcon,
   LockIcon,
   ShieldIcon,
   XCircleIcon,
 } from 'lucide-react'
-import { User } from '@/types/payload-types'
+import { User, ComplianceTask } from '@/types/payload-types'
 import { normalizeRoles } from '@/shared/utils/role-hierarchy'
+import { getTaskStatus } from '@/features/users/components/details/task-status-icon'
 
 const getRoleLabel = (role: UserRolesEnum) => {
   switch (role) {
@@ -90,17 +92,47 @@ const formatDate = (dateString?: string) => {
   })
 }
 
-const formatTrainingStatus = (completed: boolean) => {
-  return completed ? 'Completed' : 'Pending'
+interface ViewUserProps {
+  user: User
+  userComplianceTasks: Map<number, ComplianceTask[]>
 }
 
-const getTrainingStatusColor = (completed: boolean) => {
-  return completed ? 'text-green-600' : 'text-orange-600'
-}
-
-export function ViewUser({ user }: { user: User }) {
+export function ViewUser({ user, userComplianceTasks }: ViewUserProps) {
   const userRoles = normalizeRoles(user.roles)
   const activeRole = user.active_role as UserRolesEnum | undefined
+
+  const { trainingTasks, securityTasks, policyTask, rollCallTask } = useMemo(() => {
+    if (!userComplianceTasks) {
+      return {
+        trainingTasks: [],
+        securityTasks: {
+          twoFA: undefined,
+          userPassword: undefined,
+          sharedPassword: undefined,
+        },
+        policyTask: undefined,
+        rollCallTask: undefined,
+      }
+    }
+
+    const userTasks = userComplianceTasks.get(user.id) || []
+
+    return {
+      trainingTasks: userTasks.filter((task) => task.type === 'TRAINING_COMPLETION'),
+      securityTasks: {
+        twoFA: userTasks.find((task) => task.type === 'CONFIRM_2FA'),
+        userPassword: userTasks.find((task) => task.type === 'CONFIRM_USER_PASSWORD'),
+        sharedPassword: userTasks.find((task) => task.type === 'CONFIRM_SHARED_PASSWORD'),
+      },
+      policyTask: userTasks.find((task) => task.type === 'POLICY_ACKNOWLEDGMENT'),
+      rollCallTask: userTasks.find((task) => task.type === 'USER_ROLL_CALL'),
+    }
+  }, [user.id, userComplianceTasks])
+
+  const twoFAStatus = getTaskStatus(securityTasks.twoFA)
+  const userPasswordStatus = getTaskStatus(securityTasks.userPassword)
+  const policyStatus = getTaskStatus(policyTask)
+  const rollCallStatus = getTaskStatus(rollCallTask)
 
   return (
     <Dialog>
@@ -153,62 +185,48 @@ export function ViewUser({ user }: { user: User }) {
               <div>
                 <h5 className="font-medium mb-1">Two-Factor Authentication</h5>
                 <div className="flex items-center gap-1">
-                  <ShieldIcon
-                    className={`h-4 w-4 ${user.isEnabledTwoFactor ? 'text-green-600' : 'text-red-600'}`}
-                  />
-                  <span
-                    className={`text-sm ${user.isEnabledTwoFactor ? 'text-green-600' : 'text-red-600'}`}
-                  >
-                    {user.isEnabledTwoFactor ? 'Enabled' : 'Disabled'}
-                  </span>
+                  <twoFAStatus.icon className={`h-4 w-4 ${twoFAStatus.color}`} />
+                  <span className={`text-sm ${twoFAStatus.color}`}>{twoFAStatus.label}</span>
                 </div>
               </div>
               <div>
-                <h5 className="font-medium mb-1">Secure Password</h5>
+                <h5 className="font-medium mb-1">User Password Confirmation</h5>
                 <div className="flex items-center gap-1">
-                  <LockIcon
-                    className={`h-4 w-4 ${user.isInUseSecurePassword ? 'text-green-600' : 'text-red-600'}`}
-                  />
-                  <span
-                    className={`text-sm ${user.isInUseSecurePassword ? 'text-green-600' : 'text-red-600'}`}
-                  >
-                    {user.isInUseSecurePassword ? 'Secure' : 'Needs Update'}
+                  <userPasswordStatus.icon className={`h-4 w-4 ${userPasswordStatus.color}`} />
+                  <span className={`text-sm ${userPasswordStatus.color}`}>
+                    {userPasswordStatus.label}
                   </span>
                 </div>
               </div>
+              {securityTasks.sharedPassword && user.roles.includes('social_media_manager') && (
+                <div>
+                  <h5 className="font-medium mb-1">Shared Password Confirmation</h5>
+                  <div className="flex items-center gap-1">
+                    {(() => {
+                      const status = getTaskStatus(securityTasks.sharedPassword)
+                      return (
+                        <>
+                          <status.icon className={`h-4 w-4 ${status.color}`} />
+                          <span className={`text-sm ${status.color}`}>{status.label}</span>
+                        </>
+                      )
+                    })()}
+                  </div>
+                </div>
+              )}
+
               <div>
-                <h5 className="font-medium mb-1">Password Last Updated</h5>
+                <h5 className="font-medium mb-1">Policy Acknowledgment</h5>
                 <div className="flex items-center gap-1">
-                  <CalendarIcon className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">
-                    {user.passwordUpdatedAt ? formatDate(user.passwordUpdatedAt) : 'Never'}
-                  </span>
+                  <policyStatus.icon className={`h-4 w-4 ${policyStatus.color}`} />
+                  <span className={`text-sm ${policyStatus.color}`}>{policyStatus.label}</span>
                 </div>
               </div>
               <div>
-                <h5 className="font-medium mb-1">Policies Accepted</h5>
+                <h5 className="font-medium mb-1">Roll Call Confirmation</h5>
                 <div className="flex items-center gap-1">
-                  <FileCheckIcon
-                    className={`h-4 w-4 ${user.admin_policy_agreement ? 'text-green-600' : 'text-red-600'}`}
-                  />
-                  <span
-                    className={`text-sm ${user.admin_policy_agreement ? 'text-green-600' : 'text-red-600'}`}
-                  >
-                    {user.admin_policy_agreement ? 'Accepted' : 'Not Accepted'}
-                  </span>
-                </div>
-              </div>
-              <div>
-                <h5 className="font-medium mb-1">Last Policy Review</h5>
-                <div className="flex items-center gap-1">
-                  <CalendarIcon className="h-4 w-4 text-muted-foreground" />
-                  <span className={`text-sm `}>
-                    {user.date_of_last_policy_review ? (
-                      <span className="text-sm !mt-1">
-                        {formatDate(user.date_of_last_policy_review)}
-                      </span>
-                    ) : null}
-                  </span>
+                  <rollCallStatus.icon className={`h-4 w-4 ${rollCallStatus.color}`} />
+                  <span className={`text-sm ${rollCallStatus.color}`}>{rollCallStatus.label}</span>
                 </div>
               </div>
             </div>
@@ -219,42 +237,26 @@ export function ViewUser({ user }: { user: User }) {
           <div>
             <h4 className="font-semibold mb-3 flex items-center gap-2">
               <GraduationCapIcon className="h-4 w-4" />
-              Training Status
+              Training & Compliance
             </h4>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <h5 className="font-medium mb-1">Accessibility Training</h5>
-                <span
-                  className={`text-sm ${getTrainingStatusColor(user.isCompletedTrainingAccessibility || false)}`}
-                >
-                  {formatTrainingStatus(user.isCompletedTrainingAccessibility || false)}
-                </span>
+            {trainingTasks.length > 0 ? (
+              <div className="grid grid-cols-2 gap-4">
+                {trainingTasks.map((task) => {
+                  const status = getTaskStatus(task)
+                  return (
+                    <div key={task.id}>
+                      <h5 className="font-medium mb-1">{task.description || 'Training Task'}</h5>
+                      <div className="flex items-center gap-1">
+                        <status.icon className={`h-4 w-4 ${status.color}`} />
+                        <span className={`text-sm ${status.color}`}>{status.label}</span>
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
-              <div>
-                <h5 className="font-medium mb-1">Risk Training</h5>
-                <span
-                  className={`text-sm ${getTrainingStatusColor(user.isCompletedTrainingRisk || false)}`}
-                >
-                  {formatTrainingStatus(user.isCompletedTrainingRisk || false)}
-                </span>
-              </div>
-              <div>
-                <h5 className="font-medium mb-1">Brand Training</h5>
-                <span
-                  className={`text-sm ${getTrainingStatusColor(user.isCompletedTrainingBrand || false)}`}
-                >
-                  {formatTrainingStatus(user.isCompletedTrainingBrand || false)}
-                </span>
-              </div>
-              <div>
-                <h5 className="font-medium mb-1">Knowledge Standards</h5>
-                <span
-                  className={`text-sm ${getTrainingStatusColor(user.hasKnowledgeStandards || false)}`}
-                >
-                  {user.hasKnowledgeStandards ? 'Met' : 'Not Met'}
-                </span>
-              </div>
-            </div>
+            ) : (
+              <p className="text-sm text-gray-500">No training assigned.</p>
+            )}
           </div>
 
           {user.status === UserStatusEnum.Rejected && user.reject_reason && (

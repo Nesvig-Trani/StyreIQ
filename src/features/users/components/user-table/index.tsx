@@ -1,7 +1,6 @@
 'use client'
 
-import { Tenant, User } from '@/types/payload-types'
-
+import { Tenant, User, ComplianceTask } from '@/types/payload-types'
 import { DataTable } from '@/shared'
 import useUserTable from '@/features/users/hooks/useUserTable'
 import { useState, useMemo } from 'react'
@@ -13,6 +12,7 @@ export function UserTable({
   user,
   tenants = [],
   isViewingAllTenants = false,
+  userComplianceTasks,
 }: {
   data: User[]
   pagination: {
@@ -24,6 +24,7 @@ export function UserTable({
   user: User | null
   tenants?: Tenant[]
   isViewingAllTenants?: boolean
+  userComplianceTasks: Map<number, ComplianceTask[]>
 }) {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
 
@@ -39,6 +40,7 @@ export function UserTable({
     userRollCallStatus: statusMap,
     tenants,
     isViewingAllTenants,
+    userComplianceTasks,
   })
 
   return (

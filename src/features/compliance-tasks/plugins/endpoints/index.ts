@@ -432,14 +432,6 @@ export const getRollCallStatusEndpoint: Endpoint = {
       throw new EndpointError('Unauthorized', 401)
     }
 
-    const effectiveRole = getEffectiveRoleFromUser(user)
-    if (
-      effectiveRole !== UserRolesEnum.CentralAdmin &&
-      effectiveRole !== UserRolesEnum.SuperAdmin
-    ) {
-      throw new EndpointError('Only Central Admin or Super Admin can check Roll Call status', 403)
-    }
-
     if (!req.json) {
       throw new EndpointError('Missing JSON body', 400)
     }
