@@ -1,7 +1,6 @@
 import { ComplianceTask, Organization, Tenant, User } from '@/types/payload-types'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { UserRolesEnum } from '@/features/users'
-import { complianceReminderEmailBody } from '../../constants/complianceReminderEmailBody'
 import { Payload } from 'payload'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
@@ -32,22 +31,22 @@ async function processTenantReminders(payload: Payload, tenant: Tenant): Promise
     ?.reminderSchedule as ReminderCadence[]) || [{ day: 3 }, { day: 7 }, { day: 14 }]
 
   const escalationDays: ReminderCadence[] = (tenant.governanceSettings
-    ?.escalationDays as ReminderCadence[]) || [{ day: 15 }, { day: 30 }, { day: 45 }]
+    ?.escalationDays as ReminderCadence[]) || [{ day: 3 }, { day: 7 }, { day: 14 }]
 
   const pendingTasks = await payload.find({
     collection: 'compliance_tasks',
     where: {
-      and: [{ tenant: { equals: tenant.id } }, { status: { in: ['PENDING', 'OVERDUE'] } }],
+      and: [
+        { tenant: { equals: tenant.id } },
+        { status: { in: ['PENDING', 'OVERDUE', 'ESCALATED'] } },
+      ],
     },
     limit: 0,
   })
 
   for (const task of pendingTasks.docs) {
     try {
-      await processTask(payload, task, tenant, {
-        reminderSchedule,
-        escalationDays,
-      })
+      await processTask(payload, task, tenant, { reminderSchedule, escalationDays })
     } catch (error) {
       console.error(`Failed to process task ${task.id} for tenant ${tenant.id}:`, error)
     }
@@ -65,44 +64,153 @@ async function processTask(
 ): Promise<{ reminderSent: boolean; escalated: boolean }> {
   const now = new Date()
   const dueDate = new Date(task.dueDate)
+
+  const daysUntilDue = Math.floor((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
   const daysSinceDue = Math.floor((now.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24))
 
-  const reminderDays = cadences.reminderSchedule.map((d) => d.day)
-
-  const shouldSendReminder = reminderDays.includes(daysSinceDue)
-
-  if (!shouldSendReminder) {
-    return { reminderSent: false, escalated: false }
-  }
-
-  const alreadySent = task.remindersSent?.some((r) => r.daysSinceDue === daysSinceDue)
-
-  if (alreadySent) {
-    return { reminderSent: false, escalated: false }
-  }
-
   const userId = typeof task.assignedUser === 'object' ? task.assignedUser.id : task.assignedUser
+  const user = await payload.findByID({ collection: 'users', id: userId })
 
-  const user = await payload.findByID({
-    collection: 'users',
-    id: userId,
+  if (!user?.email) return { reminderSent: false, escalated: false }
+
+  if (daysUntilDue > 0) {
+    const reminderDays = cadences.reminderSchedule.map((d) => d.day)
+    const shouldSendReminder = reminderDays.includes(daysUntilDue)
+
+    if (shouldSendReminder) {
+      const alreadySent = task.remindersSent?.some((r) => r.daysSinceDue === daysUntilDue)
+
+      if (!alreadySent) {
+        const taskUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/compliance`
+        const formattedDueDate = new Date(task.dueDate).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+
+        await payload.sendEmail({
+          to: user.email,
+          subject: `Reminder: ${getTaskTypeLabel(task.type)} Due ${formattedDueDate}`,
+          html: reminderEmailTemplate({
+            userName: user.name || 'User',
+            taskName: getTaskTypeLabel(task.type),
+            dueDate: formattedDueDate,
+            taskUrl,
+          }),
+        })
+
+        await payload.update({
+          collection: 'compliance_tasks',
+          id: task.id,
+          data: {
+            remindersSent: [
+              ...(task.remindersSent || []),
+              { sentAt: now.toISOString(), daysSinceDue: daysUntilDue },
+            ],
+          },
+        })
+
+        await payload.create({
+          collection: 'audit_log',
+          data: {
+            user: user.id,
+            action: 'reminder_sent',
+            entity: 'compliance_tasks',
+            metadata: {
+              taskId: task.id,
+              taskType: task.type,
+              daysUntilDue,
+              dueDate: task.dueDate,
+            },
+            organizations: user.organizations || [],
+            tenant: tenant.id,
+          },
+        })
+
+        return { reminderSent: true, escalated: false }
+      }
+    }
+  }
+
+  if (daysSinceDue > 0) {
+    const [level1, level2, level3] = cadences.escalationDays.map((d) => d.day)
+
+    const isAlreadyEscalated = (level: number): boolean => {
+      return (
+        task.escalations?.some((e) => {
+          if (!e.escalatedAt) return false
+          const escalationDaySinceDue = Math.floor(
+            (new Date(e.escalatedAt).getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24),
+          )
+          return escalationDaySinceDue === level
+        }) ?? false
+      )
+    }
+
+    let escalationLevel: 1 | 2 | 3 | null = null
+    if (daysSinceDue === level1) escalationLevel = 1
+    else if (daysSinceDue === level2) escalationLevel = 2
+    else if (daysSinceDue === level3) escalationLevel = 3
+
+    if (
+      escalationLevel &&
+      !isAlreadyEscalated(escalationLevel === 1 ? level1 : escalationLevel === 2 ? level2 : level3)
+    ) {
+      switch (escalationLevel) {
+        case 1:
+          await sendOverdueNoticeToAssignee(payload, task, user, tenant, daysSinceDue)
+          return { reminderSent: false, escalated: true }
+
+        case 2:
+          await escalateToUnitAdmin(payload, task, user, tenant, daysSinceDue)
+          return { reminderSent: false, escalated: true }
+
+        case 3:
+          await escalateToCentralAdmin(payload, task, user, tenant, daysSinceDue)
+          return { reminderSent: false, escalated: true }
+      }
+    }
+  }
+
+  return { reminderSent: false, escalated: false }
+}
+
+async function sendOverdueNoticeToAssignee(
+  payload: Payload,
+  task: ComplianceTask,
+  user: User,
+  tenant: Tenant,
+  daysSinceDue: number,
+): Promise<void> {
+  const taskUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/compliance`
+  const formattedDueDate = new Date(task.dueDate).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
   })
 
-  if (!user?.email) {
-    return { reminderSent: false, escalated: false }
-  }
-
-  await sendReminderEmail(payload, task, user, daysSinceDue)
+  await payload.sendEmail({
+    to: user.email,
+    subject: `Overdue: ${getTaskTypeLabel(task.type)}`,
+    html: overdueNoticeEmailTemplate({
+      userName: user.name || 'User',
+      taskName: getTaskTypeLabel(task.type),
+      dueDate: formattedDueDate,
+      taskUrl,
+    }),
+  })
 
   await payload.update({
     collection: 'compliance_tasks',
     id: task.id,
     data: {
-      remindersSent: [
-        ...(task.remindersSent || []),
+      status: 'OVERDUE',
+      escalations: [
+        ...(task.escalations || []),
         {
-          sentAt: now.toISOString(),
-          daysSinceDue: daysSinceDue,
+          escalatedAt: new Date().toISOString(),
+          escalatedTo: user.id,
+          reason: `Overdue notice sent to assignee after ${daysSinceDue} days`,
         },
       ],
     },
@@ -112,65 +220,116 @@ async function processTask(
     collection: 'audit_log',
     data: {
       user: user.id,
-      action: 'reminder_sent',
+      action: 'overdue_notice_sent',
       entity: 'compliance_tasks',
-      metadata: {
-        taskId: task.id,
-        taskType: task.type,
-        daysSinceDue: daysSinceDue,
-        reminderNumber: (task.remindersSent?.length || 0) + 1,
-        dueDate: task.dueDate,
-      },
+      metadata: { taskId: task.id, taskType: task.type, daysSinceDue },
       organizations: user.organizations || [],
       tenant: tenant.id,
     },
   })
-
-  const escalationSchedule = cadences.escalationDays.map((d) => d.day)
-  const lastEscalationDay = escalationSchedule[escalationSchedule.length - 1]
-  const shouldEscalate = daysSinceDue === lastEscalationDay
-
-  if (shouldEscalate) {
-    await escalateTask(payload, task, user, tenant, daysSinceDue)
-    return { reminderSent: true, escalated: true }
-  }
-
-  return { reminderSent: true, escalated: false }
 }
 
-async function sendReminderEmail(
-  payload: Payload,
-  task: ComplianceTask,
-  user: User,
-  daysSinceDue: number,
-): Promise<void> {
-  await payload.sendEmail({
-    to: user.email,
-    subject: `Reminder: ${getTaskTypeLabel(task.type)} ${daysSinceDue > 0 ? '(OVERDUE)' : ''}`,
-    html: complianceReminderEmailBody({
-      userName: user.name || 'User',
-      taskType: getTaskTypeLabel(task.type),
-      taskDescription: task.description || 'No description provided',
-      dueDate: task.dueDate,
-      daysSinceDue: daysSinceDue,
-      isEscalation: false,
-    }),
-  })
-}
-
-async function escalateTask(
+async function escalateToUnitAdmin(
   payload: Payload,
   task: ComplianceTask,
   user: User,
   tenant: Tenant,
   daysSinceDue: number,
 ): Promise<void> {
-  const escalationTarget = await findEscalationTarget(payload, user, tenant)
-
-  if (!escalationTarget) {
-    console.warn(`No escalation target found for user ${user.id} in tenant ${tenant.id}`)
+  const unitAdmin = await findUnitAdmin(payload, user, tenant)
+  if (!unitAdmin) {
+    console.warn(`No unit admin found for user ${user.id}, skipping escalation 2`)
     return
   }
+
+  const taskUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/compliance`
+  const formattedDueDate = new Date(task.dueDate).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+
+  await payload.sendEmail({
+    to: unitAdmin.email,
+    subject: `Escalation: Overdue Compliance Task`,
+    html: escalationUnitAdminEmailTemplate({
+      adminName: unitAdmin.name || 'Unit Admin',
+      assigneeName: user.name || user.email,
+      taskName: getTaskTypeLabel(task.type),
+      dueDate: formattedDueDate,
+      taskUrl,
+    }),
+  })
+
+  await payload.update({
+    collection: 'compliance_tasks',
+    id: task.id,
+    data: {
+      escalations: [
+        ...(task.escalations || []),
+        {
+          escalatedAt: new Date().toISOString(),
+          escalatedTo: unitAdmin.id,
+          reason: `Escalated to Unit Admin after ${daysSinceDue} days overdue`,
+        },
+      ],
+    },
+  })
+
+  await createOrUpdateRiskFlag(payload, task, user, tenant, daysSinceDue)
+
+  await payload.create({
+    collection: 'audit_log',
+    data: {
+      user: user.id,
+      action: 'escalated_to_unit_admin',
+      entity: 'compliance_tasks',
+      metadata: { taskId: task.id, taskType: task.type, escalatedTo: unitAdmin.id, daysSinceDue },
+      organizations: user.organizations || [],
+      tenant: tenant.id,
+    },
+  })
+}
+
+async function escalateToCentralAdmin(
+  payload: Payload,
+  task: ComplianceTask,
+  user: User,
+  tenant: Tenant,
+  daysSinceDue: number,
+): Promise<void> {
+  const centralAdmin = await findCentralAdmin(payload, tenant)
+  if (!centralAdmin) {
+    console.warn(`No central admin found for tenant ${tenant.id}, skipping escalation 3`)
+    return
+  }
+
+  const taskUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/compliance`
+  const formattedDueDate = new Date(task.dueDate).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+
+  const userOrgs = user.organizations || []
+  const primaryOrgId =
+    typeof userOrgs[0] === 'object' ? (userOrgs[0] as Organization).id : userOrgs[0]
+  const unit = primaryOrgId
+    ? await payload.findByID({ collection: 'organization', id: primaryOrgId })
+    : null
+
+  await payload.sendEmail({
+    to: centralAdmin.email,
+    subject: `Central Escalation: Overdue Compliance Task`,
+    html: escalationCentralAdminEmailTemplate({
+      adminName: centralAdmin.name || 'Central Admin',
+      assigneeName: user.name || user.email,
+      unitName: unit?.name || 'Unknown Unit',
+      taskName: getTaskTypeLabel(task.type),
+      dueDate: formattedDueDate,
+      taskUrl,
+    }),
+  })
 
   await payload.update({
     collection: 'compliance_tasks',
@@ -181,8 +340,8 @@ async function escalateTask(
         ...(task.escalations || []),
         {
           escalatedAt: new Date().toISOString(),
-          escalatedTo: escalationTarget.id,
-          reason: `Task overdue - escalated after final reminder`,
+          escalatedTo: centralAdmin.id,
+          reason: `Escalated to Central Admin after ${daysSinceDue} days overdue`,
         },
       ],
     },
@@ -190,9 +349,22 @@ async function escalateTask(
 
   await createOrUpdateRiskFlag(payload, task, user, tenant, daysSinceDue)
 
-  await sendEscalationEmail(payload, task, user, escalationTarget, daysSinceDue)
-
-  await createEscalationAuditLog(payload, task, user, escalationTarget, tenant, daysSinceDue)
+  await payload.create({
+    collection: 'audit_log',
+    data: {
+      user: user.id,
+      action: 'escalated_to_central_admin',
+      entity: 'compliance_tasks',
+      metadata: {
+        taskId: task.id,
+        taskType: task.type,
+        escalatedTo: centralAdmin.id,
+        daysSinceDue,
+      },
+      organizations: user.organizations || [],
+      tenant: tenant.id,
+    },
+  })
 }
 
 async function createOrUpdateRiskFlag(
@@ -212,15 +384,12 @@ async function createOrUpdateRiskFlag(
   const primaryOrg = userOrgs[0]
   const primaryOrgId = typeof primaryOrg === 'object' ? (primaryOrg as Organization).id : primaryOrg
 
-  let flagType = 'OVERDUE_COMPLIANCE_TASK'
-
-  if (
+  const flagType =
     task.type === 'CONFIRM_USER_PASSWORD' ||
     task.type === 'CONFIRM_SHARED_PASSWORD' ||
     task.type === 'CONFIRM_2FA'
-  ) {
-    flagType = 'OVERDUE_SECURITY_TASK'
-  }
+      ? 'OVERDUE_SECURITY_TASK'
+      : 'OVERDUE_COMPLIANCE_TASK'
 
   const existingFlags = await payload.find({
     collection: 'flags',
@@ -241,82 +410,51 @@ async function createOrUpdateRiskFlag(
       },
     })
   } else {
-    try {
-      await payload.create({
-        collection: 'flags',
-        data: {
-          flagType: flagType,
-          description: `Compliance task "${task.description || getTaskTypeLabel(task.type)}" is ${daysSinceDue} days overdue and has been escalated. Immediate action required.`,
-          status: 'pending',
-          assignedTo: user.id,
-          organizations: [primaryOrgId],
-          tenant: typeof tenant === 'object' ? tenant.id : tenant,
-          detectionDate: new Date().toISOString(),
-          lastActivity: new Date().toISOString(),
-          source: 'automated',
-          affectedEntity: {
-            relationTo: 'users',
-            value: user.id,
-          },
-          dueDate: task.dueDate,
-        },
-      })
-    } catch (error) {
-      console.error(`Failed to create risk flag for task ${task.id}:`, error)
-      throw new Error('Risk flag creation failed')
-    }
+    await payload.create({
+      collection: 'flags',
+      data: {
+        flagType,
+        description: `Compliance task "${task.description || getTaskTypeLabel(task.type)}" is ${daysSinceDue} days overdue and has been escalated. Immediate action required.`,
+        status: 'pending',
+        assignedTo: user.id,
+        organizations: [primaryOrgId],
+        tenant: typeof tenant === 'object' ? tenant.id : tenant,
+        detectionDate: new Date().toISOString(),
+        lastActivity: new Date().toISOString(),
+        source: 'automated',
+        affectedEntity: { relationTo: 'users', value: user.id },
+        dueDate: task.dueDate,
+      },
+    })
   }
 }
 
-async function findEscalationTarget(
-  payload: Payload,
-  user: User,
-  tenant: Tenant,
-): Promise<User | null> {
+async function findUnitAdmin(payload: Payload, user: User, tenant: Tenant): Promise<User | null> {
   const effectiveRole = getEffectiveRoleFromUser(user)
-  switch (effectiveRole) {
-    case UserRolesEnum.SocialMediaManager: {
-      const userOrgs = user.organizations || []
 
-      if (userOrgs.length === 0) {
-        return findCentralAdmin(payload, tenant)
-      }
-
-      const primaryOrg = userOrgs[0]
-      const primaryOrgId =
-        typeof primaryOrg === 'object' ? (primaryOrg as Organization).id : primaryOrg
-
-      const organization = await payload.findByID({
-        collection: 'organization',
-        id: primaryOrgId,
-      })
-
-      if (organization?.admin) {
-        const adminId =
-          typeof organization.admin === 'object' ? organization.admin.id : organization.admin
-
-        const unitAdmin = await payload.findByID({
-          collection: 'users',
-          id: adminId,
-        })
-
-        if (unitAdmin?.email) {
-          return unitAdmin
-        }
-      }
-
-      return findCentralAdmin(payload, tenant)
-    }
-
-    case UserRolesEnum.UnitAdmin:
-      return findCentralAdmin(payload, tenant)
-
-    case UserRolesEnum.CentralAdmin:
-      return null
-
-    default:
-      return null
+  if (effectiveRole === UserRolesEnum.UnitAdmin) {
+    return findCentralAdmin(payload, tenant)
   }
+
+  const userOrgs = user.organizations || []
+  if (userOrgs.length === 0) return findCentralAdmin(payload, tenant)
+
+  const primaryOrgId =
+    typeof userOrgs[0] === 'object' ? (userOrgs[0] as Organization).id : userOrgs[0]
+
+  const organization = await payload.findByID({
+    collection: 'organization',
+    id: primaryOrgId,
+  })
+
+  if (organization?.admin) {
+    const adminId =
+      typeof organization.admin === 'object' ? organization.admin.id : organization.admin
+    const unitAdmin = await payload.findByID({ collection: 'users', id: adminId })
+    if (unitAdmin?.email) return unitAdmin
+  }
+
+  return findCentralAdmin(payload, tenant)
 }
 
 async function findCentralAdmin(payload: Payload, tenant: Tenant): Promise<User | null> {
@@ -328,61 +466,146 @@ async function findCentralAdmin(payload: Payload, tenant: Tenant): Promise<User 
     limit: 1,
   })
 
-  if (centralAdmins.docs.length > 0) {
-    return centralAdmins.docs[0]
-  }
-
-  return null
+  return centralAdmins.docs.length > 0 ? centralAdmins.docs[0] : null
 }
 
-async function sendEscalationEmail(
-  payload: Payload,
-  task: ComplianceTask,
-  fromUser: User,
-  toUser: User,
-  daysSinceDue: number,
-): Promise<void> {
-  await payload.sendEmail({
-    to: toUser.email,
-    subject: `ESCALATION: Overdue compliance task from ${fromUser.name || fromUser.email}`,
-    html: complianceReminderEmailBody({
-      userName: toUser.name || 'Administrator',
-      taskType: getTaskTypeLabel(task.type),
-      taskDescription: task.description || 'No description provided',
-      dueDate: task.dueDate,
-      daysSinceDue: daysSinceDue,
-      isEscalation: true,
-      escalatedFromUser: fromUser.name || fromUser.email,
-    }),
-  })
+function reminderEmailTemplate({
+  userName,
+  taskName,
+  dueDate,
+  taskUrl,
+}: {
+  userName: string
+  taskName: string
+  dueDate: string
+  taskUrl: string
+}): string {
+  return `
+    <html><body style="font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0;">
+      <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: #2563eb; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+          <h2 style="margin: 0;">🔔 Reminder: Action Required</h2>
+        </div>
+        <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 8px 8px;">
+          <p>Hello ${userName},</p>
+          <p>This is a reminder that the following compliance task is due on <strong>${dueDate}</strong>:</p>
+          <div style="background: white; padding: 20px; border-radius: 6px; margin: 20px 0; border-left: 4px solid #2563eb;">
+            <h3 style="margin: 0; color: #2563eb;">${taskName}</h3>
+          </div>
+          <p>Please complete this task before it becomes overdue.</p>
+          <a href="${taskUrl}" style="display: inline-block; background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">Access the task here</a>
+          <p style="color: #6b7280; font-size: 12px; margin-top: 30px;">This is an automated notification from StyreIQ.</p>
+        </div>
+      </div>
+    </body></html>
+  `
 }
 
-async function createEscalationAuditLog(
-  payload: Payload,
-  task: ComplianceTask,
-  fromUser: User,
-  toUser: User,
-  tenant: Tenant,
-  daysSinceDue: number,
-): Promise<void> {
-  await payload.create({
-    collection: 'audit_log',
-    data: {
-      user: toUser.id,
-      action: 'task_escalation',
-      entity: 'compliance_tasks',
-      metadata: {
-        taskId: task.id,
-        taskType: task.type,
-        escalatedFrom: fromUser.id,
-        escalatedTo: toUser.id,
-        daysSinceDue: daysSinceDue,
-        reason: 'Task overdue - escalated after final reminder',
-      },
-      organizations: fromUser.organizations || [],
-      tenant: tenant.id,
-    },
-  })
+function overdueNoticeEmailTemplate({
+  userName,
+  taskName,
+  dueDate,
+  taskUrl,
+}: {
+  userName: string
+  taskName: string
+  dueDate: string
+  taskUrl: string
+}): string {
+  return `
+    <html><body style="font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0;">
+      <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: #dc2626; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+          <h2 style="margin: 0;">⚠️ Overdue: Action Required</h2>
+        </div>
+        <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 8px 8px;">
+          <p>Hello ${userName},</p>
+          <p>The following compliance task is now overdue:</p>
+          <div style="background: white; padding: 20px; border-radius: 6px; margin: 20px 0; border-left: 4px solid #dc2626;">
+            <h3 style="margin: 0; color: #dc2626;">${taskName}</h3>
+            <p style="margin: 10px 0 0;"><strong>Original Due Date:</strong> ${dueDate}</p>
+          </div>
+          <p>Please complete this task as soon as possible. If it remains incomplete, visibility will expand to your Unit Admin based on your organization's governance settings.</p>
+          <a href="${taskUrl}" style="display: inline-block; background: #dc2626; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">Access the task here</a>
+          <p style="color: #6b7280; font-size: 12px; margin-top: 30px;">This is an automated notification from StyreIQ.</p>
+        </div>
+      </div>
+    </body></html>
+  `
+}
+
+function escalationUnitAdminEmailTemplate({
+  adminName,
+  assigneeName,
+  taskName,
+  dueDate,
+  taskUrl,
+}: {
+  adminName: string
+  assigneeName: string
+  taskName: string
+  dueDate: string
+  taskUrl: string
+}): string {
+  return `
+    <html><body style="font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0;">
+      <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: #f59e0b; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+          <h2 style="margin: 0;">🚨 Escalation: Overdue Compliance Task</h2>
+        </div>
+        <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 8px 8px;">
+          <p>Hello ${adminName},</p>
+          <p>A compliance task assigned within your unit is overdue.</p>
+          <div style="background: white; padding: 20px; border-radius: 6px; margin: 20px 0; border-left: 4px solid #f59e0b;">
+            <p style="margin: 0;"><strong>Assignee:</strong> ${assigneeName}</p>
+            <p style="margin: 10px 0 0;"><strong>Task:</strong> ${taskName}</p>
+            <p style="margin: 10px 0 0;"><strong>Due Date:</strong> ${dueDate}</p>
+          </div>
+          <p>This notification is for visibility and follow-up.</p>
+          <a href="${taskUrl}" style="display: inline-block; background: #f59e0b; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">Review here</a>
+          <p style="color: #6b7280; font-size: 12px; margin-top: 30px;">This is an automated notification from StyreIQ.</p>
+        </div>
+      </div>
+    </body></html>
+  `
+}
+
+function escalationCentralAdminEmailTemplate({
+  adminName,
+  assigneeName,
+  unitName,
+  taskName,
+  dueDate,
+  taskUrl,
+}: {
+  adminName: string
+  assigneeName: string
+  unitName: string
+  taskName: string
+  dueDate: string
+  taskUrl: string
+}): string {
+  return `
+    <html><body style="font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0;">
+      <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: #7c3aed; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+          <h2 style="margin: 0;">🚨 Central Escalation: Overdue Compliance Task</h2>
+        </div>
+        <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 8px 8px;">
+          <p>Hello ${adminName},</p>
+          <p>An overdue compliance task has escalated to central visibility.</p>
+          <div style="background: white; padding: 20px; border-radius: 6px; margin: 20px 0; border-left: 4px solid #7c3aed;">
+            <p style="margin: 0;"><strong>Assignee:</strong> ${assigneeName}</p>
+            <p style="margin: 10px 0 0;"><strong>Unit:</strong> ${unitName}</p>
+            <p style="margin: 10px 0 0;"><strong>Task:</strong> ${taskName}</p>
+            <p style="margin: 10px 0 0;"><strong>Due Date:</strong> ${dueDate}</p>
+          </div>
+          <a href="${taskUrl}" style="display: inline-block; background: #7c3aed; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">Review here</a>
+          <p style="color: #6b7280; font-size: 12px; margin-top: 30px;">This is an automated notification from StyreIQ.</p>
+        </div>
+      </div>
+    </body></html>
+  `
 }
 
 function getTaskTypeLabel(type: string): string {

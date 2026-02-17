@@ -30,4 +30,7 @@ export enum AuditLogActionEnum {
   EmailFailed = 'email_failed',
   TaskCreationFailed = 'task_creation_failed',
   CriticalError = 'critical_error',
+  OverdueNoticeSent = 'overdue_notice_sent',
+  EscalatedToUnitAdmin = 'escalated_to_unit_admin',
+  EscalatedToCentralAdmin = 'escalated_to_central_admin',
 }

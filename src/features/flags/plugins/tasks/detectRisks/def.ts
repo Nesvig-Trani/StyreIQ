@@ -3,6 +3,7 @@ import { findRisksAndCreateFlag } from '.'
 
 export const detectRisksTask = {
   slug: 'detectRisks',
+  queue: 'weekly',
   retries: 2,
   outputSchema: [
     {

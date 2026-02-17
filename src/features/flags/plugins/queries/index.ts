@@ -111,24 +111,23 @@ export const getFlags = async ({
         userForQueries as unknown as User,
         selectedTenantId,
       )
+
+      const andConditions = where.and ? [...where.and] : []
+
       if (accessibleOrgIds.length > 0) {
-        const andConditions = where.and ? [...where.and] : []
-        andConditions.push({ organizations: { in: accessibleOrgIds } })
-        where.and = andConditions
+        andConditions.push({
+          or: [
+            { organizations: { in: accessibleOrgIds } },
+            { createdBy: { equals: userForQueries.id } },
+          ],
+        })
       } else {
-        return {
-          docs: [],
-          totalDocs: 0,
-          hasNextPage: false,
-          hasPrevPage: false,
-          totalPages: 0,
-          limit: 0,
-          page: 1,
-          pagingCounter: 0,
-          prevPage: null,
-          nextPage: null,
-        }
+        andConditions.push({
+          createdBy: { equals: userForQueries.id },
+        })
       }
+
+      where.and = andConditions
       break
     }
 
@@ -157,6 +156,9 @@ export const getFlags = async ({
       })
 
       const relevantFlags = allFlags.docs.filter((flag) => {
+        const createdById = typeof flag.createdBy === 'object' ? flag.createdBy?.id : flag.createdBy
+        if (createdById === userForQueries.id) return true
+
         const flagOrgIds = Array.isArray(flag.organizations)
           ? flag.organizations.map((org) => (typeof org === 'number' ? org : org.id))
           : []
