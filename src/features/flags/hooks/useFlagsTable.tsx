@@ -1,5 +1,5 @@
 'use client'
-import { User, Flag, Organization, Tenant } from '@/types/payload-types'
+import { User, Flag, Organization, Tenant, ComplianceTask } from '@/types/payload-types'
 import { ColumnDef } from '@tanstack/table-core'
 import { FlagSourceEnum, flagsSearchSchema, FlagStatusEnum, FlagTypeEnum } from '../schemas'
 import { flagTypeLabels } from '../constants/flagTypeLabels'
@@ -25,11 +25,13 @@ function useFlagsTable({
   organizations,
   tenants,
   isViewingAllTenants,
+  userComplianceTasks,
 }: {
   user: User | null
   organizations: Organization[]
   tenants?: Tenant[]
   isViewingAllTenants?: boolean
+  userComplianceTasks: Map<number, ComplianceTask[]>
 }) {
   const router = useRouter()
   const handleMarkResolved = async (id: number) => {
@@ -215,7 +217,7 @@ function useFlagsTable({
       const { id, status } = row.original
       return (
         <div className="flex gap-2 items-center">
-          <FlagDetails flag={row.original} />
+          <FlagDetails flag={row.original} userComplianceTasks={userComplianceTasks} />
           <FlagHistoryModal flagId={id} />
           <FlagCommentsModal flagId={id} />
           {status === FlagStatusEnum.PENDING && isSuperAdmin && (

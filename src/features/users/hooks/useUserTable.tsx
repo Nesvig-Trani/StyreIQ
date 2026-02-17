@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/table-core'
-import { Organization, Tenant, User } from '@/types/payload-types'
+import { ComplianceTask, Organization, Tenant, User } from '@/types/payload-types'
 import { roleLabelMap, statusLabelMap, UserRolesEnum, UserStatusEnum } from '@/features/users'
 import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
@@ -28,6 +28,7 @@ function useUserTable({
   userRollCallStatus,
   tenants,
   isViewingAllTenants,
+  userComplianceTasks,
 }: {
   user: User | null
   selectedUserId: string | null
@@ -36,6 +37,7 @@ function useUserTable({
   userRollCallStatus?: Map<number, RollCallStatus>
   tenants?: Tenant[]
   isViewingAllTenants?: boolean
+  userComplianceTasks: Map<number, ComplianceTask[]>
 }) {
   const searchParams = useParsedSearchParams(userSearchSchema)
 
@@ -185,6 +187,7 @@ function useUserTable({
             {canViewDetails && (
               <UserDetailsDialog
                 user={row.original}
+                userComplianceTasks={userComplianceTasks}
                 isOpen={isDialogOpen}
                 onOpenChange={(open) => {
                   if (open) {

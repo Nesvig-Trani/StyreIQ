@@ -19,6 +19,7 @@ import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { getServerTenantContext } from '../../server-tenant-context'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 import { Tenant } from '@/types/payload-types'
+import { getComplianceTasksByUserIds } from '@/features/compliance-tasks/plugins/queries'
 
 export default async function UsersPage(props: {
   searchParams?: Promise<{
@@ -46,6 +47,9 @@ export default async function UsersPage(props: {
     pageSize: parsedParams.pagination.pageSize,
     tenant: parsedParams.tenant,
   })
+
+  const userIds = users.docs.map((u) => u.id)
+  const userComplianceTasks = await getComplianceTasksByUserIds(userIds)
 
   let tenants: Tenant[] = []
   if (isSuperAdmin && tenantContext.isViewingAllTenants) {
@@ -152,6 +156,7 @@ export default async function UsersPage(props: {
           user={user}
           tenants={tenants}
           isViewingAllTenants={tenantContext.isViewingAllTenants}
+          userComplianceTasks={userComplianceTasks}
         />
       </CardContent>
     </Card>

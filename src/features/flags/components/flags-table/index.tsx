@@ -1,7 +1,7 @@
 'use client'
 
 import { DataTable } from '@/shared'
-import { Flag, Organization, User, Tenant } from '@/types/payload-types'
+import { Flag, Organization, User, Tenant, ComplianceTask } from '@/types/payload-types'
 import useFlagsTable from '@/features/flags/hooks/useFlagsTable'
 
 export default function FlagsTable({
@@ -11,12 +11,14 @@ export default function FlagsTable({
   organizations,
   tenants = [],
   isViewingAllTenants = false,
+  userComplianceTasks,
 }: {
   data: Flag[]
   user: User | null
   organizations: Organization[]
   tenants?: Tenant[]
   isViewingAllTenants?: boolean
+  userComplianceTasks: Map<number, ComplianceTask[]>
   pagination: {
     pageSize: number
     pageIndex: number
@@ -29,6 +31,7 @@ export default function FlagsTable({
     organizations,
     tenants,
     isViewingAllTenants,
+    userComplianceTasks,
   })
 
   return (

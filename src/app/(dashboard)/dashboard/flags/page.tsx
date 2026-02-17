@@ -12,6 +12,7 @@ import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 import { UserRolesEnum } from '@/features/users'
 import { Tenant } from '@/types/payload-types'
+import { getComplianceTasksByUserIds } from '@/features/compliance-tasks/plugins/queries'
 
 export default async function FlagsPage(props: {
   searchParams?: Promise<{ [key: string]: string }>
@@ -37,6 +38,19 @@ export default async function FlagsPage(props: {
     pageSize: parsedParams.pagination.pageSize,
     pageIndex: parsedParams.pagination.pageIndex,
   })
+
+  const userIds = flags.docs
+    .map((flag) => {
+      const entity = flag.affectedEntity
+      if (entity?.relationTo === 'users') {
+        const value = entity.value
+        return typeof value === 'object' ? value.id : value
+      }
+      return null
+    })
+    .filter((id): id is number => id !== null)
+
+  const userComplianceTasks = await getComplianceTasksByUserIds(userIds)
 
   const organizations = await getAllUnits()
 
@@ -94,6 +108,7 @@ export default async function FlagsPage(props: {
           organizations={organizations.docs}
           tenants={tenants}
           isViewingAllTenants={tenantContext.isViewingAllTenants}
+          userComplianceTasks={userComplianceTasks}
           pagination={{
             pageSize: flags.limit,
             pageIndex: flags.page ? flags.page - 1 : 0,

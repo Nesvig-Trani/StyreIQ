@@ -270,3 +270,33 @@ export async function getTaskForUserWithFlag(taskId: string): Promise<{
     flag,
   }
 }
+
+export const getComplianceTasksByUserIds = async (userIds: number[]) => {
+  const { payload } = await getPayloadContext()
+
+  if (userIds.length === 0) {
+    return new Map<number, ComplianceTask[]>()
+  }
+
+  const tasks = await payload.find({
+    collection: 'compliance_tasks',
+    where: {
+      assignedUser: { in: userIds },
+    },
+    limit: 0,
+    depth: 1,
+  })
+
+  const tasksByUser = new Map<number, ComplianceTask[]>()
+
+  tasks.docs.forEach((task) => {
+    const userId = typeof task.assignedUser === 'object' ? task.assignedUser.id : task.assignedUser
+
+    if (!tasksByUser.has(userId)) {
+      tasksByUser.set(userId, [])
+    }
+    tasksByUser.get(userId)!.push(task)
+  })
+
+  return tasksByUser
+}
