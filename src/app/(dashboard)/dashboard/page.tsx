@@ -91,7 +91,7 @@ export default async function DashboardPage() {
             </div>
 
             <p className="text-sm text-gray-600 !mt-2 !ml-1">
-              Monitor social media governance and risk across your organization
+              Monitor social media governance, compliance, and risk across your organization
             </p>
           </div>
 

@@ -106,13 +106,13 @@ export const platformOptions = Object.values(PlatformEnum).map((platform) => ({
 }))
 
 export enum ThirdPartyManagementEnum {
-  Yes = 'yes',
-  No = 'no',
+  ManagedInternally = 'no_managed_internally',
+  ManagedExternally = 'yes_managed_externally',
 }
 
 export const thirdPartyManagementLabelMap: Record<ThirdPartyManagementEnum, string> = {
-  [ThirdPartyManagementEnum.Yes]: 'Yes',
-  [ThirdPartyManagementEnum.No]: 'No',
+  [ThirdPartyManagementEnum.ManagedInternally]: 'No – Managed internally',
+  [ThirdPartyManagementEnum.ManagedExternally]: 'Yes – Managed by external agency/vendor',
 }
 
 export const thirdPartyManagementOptions = Object.values(ThirdPartyManagementEnum).map(
@@ -123,14 +123,16 @@ export const thirdPartyManagementOptions = Object.values(ThirdPartyManagementEnu
 )
 
 export enum PasswordManagementPracticeEnum {
-  PasswordManager = 'Password Manager',
-  Manual = 'Manual',
-  Other = 'Other',
+  PasswordManager = 'password_manager_shared',
+  SharedManual = 'shared_manual',
+  IndividualLogins = 'individual_logins',
+  Other = 'other',
 }
 
 export const passwordManagementPracticeLabelMap: Record<PasswordManagementPracticeEnum, string> = {
-  [PasswordManagementPracticeEnum.PasswordManager]: 'Password Manager',
-  [PasswordManagementPracticeEnum.Manual]: 'Manual',
+  [PasswordManagementPracticeEnum.PasswordManager]: 'Password Manager (shared via approved tool)',
+  [PasswordManagementPracticeEnum.SharedManual]: 'Shared/Manual (no password manager)',
+  [PasswordManagementPracticeEnum.IndividualLogins]: 'Individual logins only (no shared password)',
   [PasswordManagementPracticeEnum.Other]: 'Other',
 }
 
@@ -142,17 +144,33 @@ export const passwordManagementPracticeOptions = Object.values(PasswordManagemen
 )
 
 export enum LinkedToolsEnum {
-  Hootsuite = 'Hootsuite',
-  Canva = 'Canva',
-  Sprout = 'Sprout',
-  Other = 'Other',
+  Hootsuite = 'hootsuite',
+  SproutSocial = 'sprout_social',
+  Buffer = 'buffer',
+  Later = 'later',
+  Agorapulse = 'agorapulse',
+  Sprinklr = 'sprinklr',
+  MetaBusinessManager = 'meta_business_manager',
+  LinkedInBusinessManager = 'linkedin_business_manager',
+  TikTokBusinessCenter = 'tiktok_business_center',
+  XAdsManager = 'x_ads_manager',
+  YouTubeStudio = 'youtube_studio',
+  Other = 'other',
 }
 
 export const linkedToolsLabelMap: Record<LinkedToolsEnum, string> = {
   [LinkedToolsEnum.Hootsuite]: 'Hootsuite',
-  [LinkedToolsEnum.Canva]: 'Canva',
-  [LinkedToolsEnum.Sprout]: 'Sprout',
-  [LinkedToolsEnum.Other]: 'Other',
+  [LinkedToolsEnum.SproutSocial]: 'Sprout Social',
+  [LinkedToolsEnum.Buffer]: 'Buffer',
+  [LinkedToolsEnum.Later]: 'Later',
+  [LinkedToolsEnum.Agorapulse]: 'Agorapulse',
+  [LinkedToolsEnum.Sprinklr]: 'Sprinklr',
+  [LinkedToolsEnum.MetaBusinessManager]: 'Meta Business Manager / Business Suite',
+  [LinkedToolsEnum.LinkedInBusinessManager]: 'LinkedIn Business Manager',
+  [LinkedToolsEnum.TikTokBusinessCenter]: 'TikTok Business Center',
+  [LinkedToolsEnum.XAdsManager]: 'X (Twitter) Business / Ads Manager',
+  [LinkedToolsEnum.YouTubeStudio]: 'YouTube Studio',
+  [LinkedToolsEnum.Other]: 'Other (please specify in notes)',
 }
 
 export const linkedToolsOptions = Object.values(LinkedToolsEnum).map((tool) => ({
