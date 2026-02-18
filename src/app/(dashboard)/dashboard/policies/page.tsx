@@ -32,7 +32,7 @@ export default async function PoliciesPage() {
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="space-y-2">
               <div className="flex items-center gap-3">
-                <h2 className="text-2xl font-bold">Governance Policy Editor</h2>
+                <h2 className="text-2xl font-bold">Policy & Guidelines</h2>
                 {!isViewingAllTenants && lastPolicy && (
                   <Badge variant="secondary" className="text-xs">
                     Current Version {lastPolicy.version}
@@ -45,7 +45,7 @@ export default async function PoliciesPage() {
                     ? 'Select a tenant to manage policies'
                     : canEditPolicies
                       ? 'Keep your rules in one place.'
-                      : 'Check current policies and rules.'}
+                      : "View your organization's approved social media policies or guidelines."}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {isViewingAllTenants

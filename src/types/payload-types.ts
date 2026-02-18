@@ -416,12 +416,29 @@ export interface SocialMedia {
       }[]
     | null
   backupContactInfo?: string | null
-  thirdPartyManagement?: ('yes' | 'no') | null
+  thirdPartyManagement?: ('no_managed_internally' | 'yes_managed_externally') | null
   thirdPartyProvider?: string | null
   thirdPartyContact?: string | null
-  passwordManagementPractice?: ('Password Manager' | 'Manual' | 'Other') | null
+  passwordManagementPractice?:
+    | ('password_manager_shared' | 'shared_manual' | 'individual_logins' | 'other')
+    | null
   creationDate?: string | null
-  linkedTools?: ('Hootsuite' | 'Canva' | 'Sprout' | 'Other')[] | null
+  linkedTools?:
+    | (
+        | 'hootsuite'
+        | 'sprout_social'
+        | 'buffer'
+        | 'later'
+        | 'agorapulse'
+        | 'sprinklr'
+        | 'meta_business_manager'
+        | 'linkedin_business_manager'
+        | 'tiktok_business_center'
+        | 'x_ads_manager'
+        | 'youtube_studio'
+        | 'other'
+      )[]
+    | null
   verificationStatus?: ('verified' | 'notVerified' | 'pending') | null
   platformSupportDetails?: string | null
   notes?: string | null

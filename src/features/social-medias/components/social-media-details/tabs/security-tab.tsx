@@ -15,25 +15,29 @@ export const SecurityTab: React.FC<SecurityTabProps> = ({ socialMedia }) => {
         <InfoCard icon={<ShieldIcon />} title="Security Status">
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Risk Level</span>
+              <span className="text-sm text-gray-600">Password & Access Model</span>
               <span className="text-sm px-2 py-1 bg-gray-100 rounded text-gray-700">
-                Coming Soon
+                {socialMedia.passwordManagementPractice || 'Not specified'}
               </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Password Management</span>
+              <span className="text-sm text-gray-600">External Management</span>
               <span className="text-sm px-2 py-1 bg-gray-100 rounded text-gray-700">
-                {socialMedia.passwordManagementPractice}
+                {socialMedia.thirdPartyManagement === 'yes_managed_externally'
+                  ? 'Yes – Managed by external agency/vendor'
+                  : socialMedia.thirdPartyManagement === 'no_managed_internally'
+                    ? 'No – Managed internally'
+                    : 'Not specified'}
               </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Third Party Management</span>
+              <span className="text-sm text-gray-600">Verification Status</span>
               <span className="text-sm px-2 py-1 bg-gray-100 rounded text-gray-700">
-                {socialMedia.thirdPartyManagement || 'Not specified'}
+                {socialMedia.verificationStatus || 'Not specified'}
               </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Business ID</span>
+              <span className="text-sm text-gray-600">Business Manager ID</span>
               <span className="text-sm px-2 py-1 bg-gray-100 rounded text-gray-700">
                 {socialMedia.businessId || 'Not specified'}
               </span>

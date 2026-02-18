@@ -1,6 +1,12 @@
 import { ThirdPartyManagementEnum } from '../schemas'
 
 export const thirdPartyManagementOptions = [
-  { label: 'Yes', value: ThirdPartyManagementEnum.Yes },
-  { label: 'No', value: ThirdPartyManagementEnum.No },
+  {
+    label: 'No – Managed internally',
+    value: ThirdPartyManagementEnum.ManagedInternally,
+  },
+  {
+    label: 'Yes – Managed by external agency/vendor',
+    value: ThirdPartyManagementEnum.ManagedExternally,
+  },
 ]

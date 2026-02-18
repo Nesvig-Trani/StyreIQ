@@ -42,21 +42,32 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ socialMedia }) => {
         >
           <div className="grid grid-cols-2 gap-6">
             <div className="space-y-4">
-              <InfoField label="Platform" value={socialMedia.platform} />
-              <InfoField label="Business ID" value={socialMedia.businessId} />
+              <InfoField
+                label="Platform"
+                value={socialMedia.platform.charAt(0).toUpperCase() + socialMedia.platform.slice(1)}
+              />
+              <InfoField label="Business Manager ID" value={socialMedia.businessId} />
               <InfoField label="Profile URL" value={renderValue(socialMedia.profileUrl)} />
-            </div>
-            <div className="space-y-4">
-              <InfoField label="Handle" value={renderValue(socialMedia.accountHandle)} />
-              <InfoField label="Verification" value={socialMedia.verificationStatus} />
               <InfoField
                 label="Creation Date"
                 value={
                   socialMedia.creationDate
                     ? new Date(socialMedia.creationDate).toLocaleDateString()
-                    : null
+                    : 'Not specified'
                 }
               />
+            </div>
+            <div className="space-y-4">
+              <InfoField label="Handle" value={renderValue(socialMedia.accountHandle)} />
+              <InfoField
+                label="Verification Status"
+                value={socialMedia.verificationStatus || 'Not specified'}
+              />
+              <InfoField
+                label="Platform Support Info"
+                value={socialMedia.platformSupportDetails || 'Not specified'}
+              />
+              <InfoField label="Additional Notes" value={socialMedia.notes || 'Not specified'} />
             </div>
           </div>
         </InfoCard>
@@ -77,7 +88,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ socialMedia }) => {
               }
             />
             <InfoField
-              label="Primary Administrator"
+              label="Primary Unit Admin"
               value={
                 typeof socialMedia.primaryAdmin === 'object' && socialMedia.primaryAdmin !== null
                   ? socialMedia.primaryAdmin.name
@@ -85,7 +96,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ socialMedia }) => {
               }
             />
             <InfoField
-              label="Backup Administrator"
+              label="Backup Unit Admin"
               value={
                 typeof socialMedia.backupAdmin === 'object' && socialMedia.backupAdmin !== null
                   ? socialMedia.backupAdmin.name
@@ -93,21 +104,38 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ socialMedia }) => {
               }
             />
             <InfoField
-              label="Management Type"
+              label="Social Media Managers"
               value={
-                socialMedia.thirdPartyManagement === 'yes' ? (
-                  <>
-                    Yes
-                    <br />
-                    {renderValue(socialMedia.thirdPartyProvider) || 'Not specified'}
-                    <br />
-                    {renderValue(socialMedia.thirdPartyContact) || 'Not specified'}
-                  </>
-                ) : (
-                  socialMedia.thirdPartyManagement
-                )
+                Array.isArray(socialMedia.socialMediaManagers) &&
+                socialMedia.socialMediaManagers.length > 0
+                  ? socialMedia.socialMediaManagers
+                      .map((manager) =>
+                        typeof manager === 'object' && manager !== null ? manager.name : 'Unknown',
+                      )
+                      .join(', ')
+                  : 'Not specified'
               }
             />
+            <InfoField
+              label="External Management"
+              value={
+                socialMedia.thirdPartyManagement === 'yes_managed_externally'
+                  ? 'Yes – Managed by external agency/vendor'
+                  : 'No – Managed internally'
+              }
+            />
+            {socialMedia.thirdPartyManagement === 'yes_managed_externally' && (
+              <>
+                <InfoField
+                  label="Agency / Vendor Name"
+                  value={socialMedia.thirdPartyProvider || 'Not specified'}
+                />
+                <InfoField
+                  label="Agency Contact"
+                  value={socialMedia.thirdPartyContact || 'Not specified'}
+                />
+              </>
+            )}
           </div>
         </InfoCard>
       </div>

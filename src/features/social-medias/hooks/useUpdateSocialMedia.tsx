@@ -218,7 +218,7 @@ export function useUpdateSocialMedia({
         // Third Party Management - Row 6
         {
           name: 'thirdPartyManagement',
-          label: 'Third-Party Management',
+          label: 'External Management',
           type: 'select',
           options: thirdPartyManagementOptions,
           placeholder: 'Select management type',
@@ -229,24 +229,24 @@ export function useUpdateSocialMedia({
         {
           name: 'thirdPartyProvider',
           type: 'text',
-          label: 'Third Party Provider',
+          label: 'Agency / Vendor Name',
           placeholder: 'Enter vendor name',
           size: 'half',
           dependsOn: {
             field: 'thirdPartyManagement',
-            value: 'yes',
+            value: 'yes_managed_externally',
           },
           required: true,
         },
         {
           name: 'thirdPartyContact',
           type: 'text',
-          label: 'Third Party Contact',
+          label: 'Agency Contact (Name + Email)',
           placeholder: 'Enter contact information',
           size: 'half',
           dependsOn: {
             field: 'thirdPartyManagement',
-            value: 'yes',
+            value: 'yes_managed_externally',
           },
           required: true,
         },
@@ -261,8 +261,10 @@ export function useUpdateSocialMedia({
         {
           name: 'passwordManagementPractice',
           type: 'select',
-          label: 'Password Management',
+          label: 'Password & Access Model',
           placeholder: 'Select Management Type',
+          description:
+            'Select how login access is managed for this account. This helps identify security and handoff risk.',
           options: passwordManagementPracticeOptions,
           size: 'half',
           required: true,
