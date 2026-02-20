@@ -69,14 +69,10 @@ export default async function RoleRequestsPage(props: {
               <p className="text-sm text-gray-600">{pageContent.description}</p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto text-white!">
               {!isSuperAdmin && !tenantContext.isViewingAllTenants && (
-                <Button size="sm" className="w-full sm:w-auto">
-                  <Link
-                    className="flex items-center justify-center gap-2"
-                    href="/dashboard/role-request/create"
-                    prefetch
-                  >
+                <Button size="sm" className="w-full sm:w-auto" asChild>
+                  <Link href="/dashboard/role-request/create" prefetch>
                     <CirclePlus className="h-4 w-4" />
                     {pageContent.buttonText}
                   </Link>

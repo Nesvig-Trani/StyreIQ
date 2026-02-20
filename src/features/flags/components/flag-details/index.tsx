@@ -48,14 +48,14 @@ export function FlagDetails({
         return (
           <>
             <ViewSocialMedia account={social} />
-            <Link
-              href={`/dashboard/social-media-accounts/update/${social.id}?returnTo=${encodeURIComponent(`/dashboard/flags?${currentFilters}`)}`}
-            >
-              <Button variant="outline">
-                <EditIcon className="h-4 w-4 mr-2" />
+            <Button variant="outline" asChild>
+              <Link
+                href={`/dashboard/social-media-accounts/update/${social.id}?returnTo=${encodeURIComponent(`/dashboard/flags?${currentFilters}`)}`}
+              >
+                <EditIcon className="h-4 w-4 mr-2" aria-hidden="true" />
                 Edit Account
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </>
         )
       case 'users':
@@ -64,14 +64,14 @@ export function FlagDetails({
         return (
           <>
             <ViewUser user={user} userComplianceTasks={userComplianceTasks} />
-            <Link
-              href={`/dashboard/users/update/${user.id}?returnTo=${encodeURIComponent(`/dashboard/flags?${currentFilters}`)}`}
-            >
-              <Button variant="outline">
-                <EditIcon className="h-4 w-4 mr-2" />
+            <Button variant="outline" asChild>
+              <Link
+                href={`/dashboard/users/update/${user.id}?returnTo=${encodeURIComponent(`/dashboard/flags?${currentFilters}`)}`}
+              >
+                <EditIcon className="h-4 w-4 mr-2" aria-hidden="true" />
                 Edit Account
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </>
         )
       default:
@@ -82,8 +82,8 @@ export function FlagDetails({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
-          <EyeIcon className="h-4 w-4" />
+        <Button aria-label="View flag details">
+          <EyeIcon className="h-4 w-4" aria-hidden="true" />
         </Button>
       </DialogTrigger>
       <DialogContent className="!max-w-4xl max-h-[80vh] w-full overflow-y-auto">

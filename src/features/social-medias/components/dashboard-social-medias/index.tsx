@@ -66,14 +66,10 @@ export const DashboardSocialMedias: React.FC<DashboardSocialMediasProps> = ({
                 </p>
               </div>
             </div>
-            <div className="w-full sm:w-auto">
+            <div className="w-full sm:w-auto text-white!">
               {can('create', 'SOCIAL_MEDIAS') && !isViewingAllTenants && (
-                <Button size="sm" className="w-full sm:w-auto">
-                  <Link
-                    title="create social media account"
-                    className="flex items-center justify-center gap-2"
-                    href="/dashboard/social-media-accounts/create"
-                  >
+                <Button size="sm" className="w-full sm:w-auto" asChild>
+                  <Link href="/dashboard/social-media-accounts/create">
                     <CirclePlus className="h-4 w-4" />
                     Create Social Media Account
                   </Link>

@@ -85,14 +85,10 @@ export default async function FlagsPage(props: {
                 </p>
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto text-white! ">
               {!tenantContext.isViewingAllTenants && (
-                <Button size="sm" className="w-full sm:w-auto">
-                  <Link
-                    className="flex items-center justify-center gap-2"
-                    href="/dashboard/flags/create"
-                    prefetch
-                  >
+                <Button size="sm" className="w-full sm:w-auto" asChild>
+                  <Link href="/dashboard/flags/create">
                     <CirclePlus className="h-4 w-4" />
                     Create Risk Flag
                   </Link>

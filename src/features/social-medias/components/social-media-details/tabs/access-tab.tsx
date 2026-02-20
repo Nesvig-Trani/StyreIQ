@@ -22,7 +22,7 @@ const AccessItem: React.FC<AccessItemProps> = ({
     <div>
       <div className="text-sm font-medium text-gray-900">{name || 'Not assigned'}</div>
       <div className="text-xs text-gray-500">{roleLabel}</div>
-      {email && <div className="text-xs text-gray-400">{email}</div>}
+      {email && <div className="text-xs text-gray-600">{email}</div>}
     </div>
     <span className={`px-3 py-1 text-xs font-medium rounded-full ${badgeClasses}`}>
       {roleBadge}

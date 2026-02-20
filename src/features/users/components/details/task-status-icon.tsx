@@ -12,7 +12,7 @@ export const getTaskStatus = (task?: ComplianceTask): TaskStatusResult => {
   if (!task) {
     return {
       label: 'Not Assigned',
-      color: 'text-gray-400',
+      color: 'text-gray-600',
       icon: XCircle,
     }
   }
@@ -20,7 +20,7 @@ export const getTaskStatus = (task?: ComplianceTask): TaskStatusResult => {
   if (task.status === 'COMPLETED') {
     return {
       label: 'Completed',
-      color: 'text-green-600',
+      color: 'text-green-700',
       icon: CheckCircle,
     }
   }
@@ -28,14 +28,14 @@ export const getTaskStatus = (task?: ComplianceTask): TaskStatusResult => {
   if (task.status === 'OVERDUE') {
     return {
       label: 'Overdue',
-      color: 'text-red-600',
+      color: 'text-red-700',
       icon: XCircle,
     }
   }
 
   return {
     label: 'Pending',
-    color: 'text-orange-600',
+    color: 'text-orange-700',
     icon: Clock,
   }
 }

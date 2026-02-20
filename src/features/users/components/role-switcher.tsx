@@ -133,7 +133,7 @@ export const RoleSwitcher: FC<RoleSwitcherProps> = ({ userRoles, activeRole }) =
                         <span className={cn('truncate', isSelected && 'font-medium')}>
                           {roleLabelMap[role]}
                         </span>
-                        <span className="text-xs text-gray-500">{getRoleDescription(role)}</span>
+                        <span className="text-xs text-gray-600">{getRoleDescription(role)}</span>
                       </div>
                       {isSelected && <Check className="ml-2 h-4 w-4 text-blue-600" />}
                     </CommandItem>

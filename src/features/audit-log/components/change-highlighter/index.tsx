@@ -105,7 +105,7 @@ export const ChangeHighlighter = ({
 
               if (!hasChanged) {
                 return (
-                  <div key={key} className="text-xs text-muted-foreground">
+                  <div key={key} className="text-xs text-gray-700">
                     <span className="font-medium">{collectionFieldLabels[key]}:</span>{' '}
                     {formatValue(currentValue)}
                   </div>

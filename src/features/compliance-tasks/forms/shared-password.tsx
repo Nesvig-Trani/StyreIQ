@@ -108,7 +108,7 @@ export const SharedPasswordForm = ({ task }: SharedPasswordFormProps) => {
           </div>
 
           <div className="border-t pt-6">
-            <div className="bg-muted p-3 rounded text-xs text-muted-foreground mb-4">
+            <div className="bg-muted p-3 rounded text-xs text-gray-600 mb-4">
               This confirmation will be recorded in the audit system. You are attesting that the
               shared password has been updated and securely redistributed.
             </div>

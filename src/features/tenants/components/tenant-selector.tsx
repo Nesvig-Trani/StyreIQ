@@ -97,7 +97,7 @@ export const TenantSelector: FC = () => {
                   <Globe className="mr-2 h-4 w-4 text-gray-500" />
                   <div className="flex flex-col flex-1 min-w-0">
                     <span className="font-medium">All Tenants</span>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-gray-600">
                       View aggregate data from all tenants
                     </span>
                   </div>
@@ -129,7 +129,7 @@ export const TenantSelector: FC = () => {
                           {tenant.name}
                         </span>
                         {tenant.domain && (
-                          <span className="text-xs text-gray-500 truncate">{tenant.domain}</span>
+                          <span className="text-xs text-gray-600 truncate">{tenant.domain}</span>
                         )}
                       </div>
                       {isSelected && <Check className="ml-2 h-4 w-4 text-blue-600" />}

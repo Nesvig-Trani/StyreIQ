@@ -86,15 +86,21 @@ function useReviewRequestTable() {
         return (
           <div className="flex gap-2">
             <RejectApplicationButton id={id} />
-            <Button size="sm" onClick={() => handleApprove({ id })}>
-              <Check />
+            <Button
+              size="sm"
+              onClick={() => handleApprove({ id })}
+              aria-label="Approve user request"
+            >
+              <Check className="h-4 w-4" aria-hidden="true" />
             </Button>
 
-            <Button size="sm">
-              <Link href={`/dashboard/users/update/${id}`}>
-                <PencilIcon />
-              </Link>
-            </Button>
+            <div className="text-white!">
+              <Button size="sm" aria-label="Edit user" asChild>
+                <Link href={`/dashboard/users/update/${id}`}>
+                  <PencilIcon className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              </Button>
+            </div>
           </div>
         )
       },

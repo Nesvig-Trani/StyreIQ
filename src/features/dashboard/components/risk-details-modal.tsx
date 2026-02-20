@@ -80,7 +80,12 @@ export const RiskDetailsModal: React.FC<RiskDetailsModalProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-sm w-full max-h-[80vh] p-0 m-4 overflow-hidden">
-        <div className="overflow-y-auto max-h-[80vh] p-4">
+        <div
+          className="overflow-y-auto max-h-[80vh] p-4"
+          tabIndex={0}
+          role="region"
+          aria-label="Risk details list"
+        >
           <div className="flex items-center space-x-3 mb-4">
             <div className={`p-2 rounded-lg ${getIconWrapper(color)}`}>
               <Icon size={20} />
@@ -113,7 +118,7 @@ export const RiskDetailsModal: React.FC<RiskDetailsModalProps> = ({
                     <h3 className="text-base font-medium text-gray-900 leading-tight flex-1 pr-2">
                       {issue.title}
                     </h3>
-                    <div className="flex items-center space-x-1 text-sm text-gray-400 flex-shrink-0">
+                    <div className="flex items-center space-x-1 text-sm text-gray-600 flex-shrink-0">
                       <Calendar size={12} />
                       <span>{formatDate(issue.dueDate)}</span>
                     </div>

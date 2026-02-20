@@ -42,8 +42,8 @@ export default function RejectApplicationButton({ id }: RejectApplicationButtonP
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="destructive" size="sm">
-          <X className="w-4 h-4 " />
+        <Button variant="destructive" size="sm" aria-label="Reject user request">
+          <X className="w-4 h-4" aria-hidden="true" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
