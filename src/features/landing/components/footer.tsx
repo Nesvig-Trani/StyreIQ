@@ -45,16 +45,17 @@ export const Footer: React.FC<{
           <div className="flex items-center space-x-3">
             <a
               href="mailto:info@styreiq.com"
-              className="text-gray-400 hover:text-white
-              transition-colors"
+              className="text-gray-400 hover:text-white transition-colors"
+              aria-label="Send email to StyreIQ"
             >
-              <Mail size={20} />
+              <Mail size={20} aria-hidden="true" />
             </a>
             <Link
               href="https://www.linkedin.com/company/nesvig-trani-llc/?viewAsMember=true"
               className="text-gray-400 hover:text-white transition-colors"
+              aria-label="StyreIQ on LinkedIn"
             >
-              <Linkedin size={20} />
+              <Linkedin size={20} aria-hidden="true" />
             </Link>
           </div>
         </div>

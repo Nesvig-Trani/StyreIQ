@@ -96,7 +96,7 @@ export const TwoFactorForm = ({ task }: TwoFactorFormProps) => {
           </div>
 
           <div className="border-t pt-6">
-            <div className="bg-muted p-3 rounded text-xs text-muted-foreground mb-4">
+            <div className="bg-muted p-3 rounded text-xs text-gray-600 mb-4">
               This confirmation will be recorded in the audit system. You are attesting that 2FA is
               enabled on all applicable accounts.
             </div>

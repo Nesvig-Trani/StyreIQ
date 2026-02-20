@@ -37,8 +37,8 @@ export function FlagHistoryModal({ flagId }: { flagId: number }) {
     <div>
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
-          <Button>
-            <HistoryIcon className="h-4 w-4" />
+          <Button aria-label="View flag history">
+            <HistoryIcon className="h-4 w-4" aria-hidden="true" />
           </Button>
         </DialogTrigger>
         <DialogContent title="Risk flag history">

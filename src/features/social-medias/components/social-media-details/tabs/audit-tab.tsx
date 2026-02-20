@@ -66,7 +66,7 @@ export const AuditTab: React.FC<AuditTabProps> = ({ socialMedia }) => {
                         hour12: true,
                       })}{' '}
                     </div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-gray-600">
                       by{' '}
                       {typeof audit.user === 'object' && audit.user !== null
                         ? audit.user.name
@@ -143,8 +143,8 @@ export const AuditTab: React.FC<AuditTabProps> = ({ socialMedia }) => {
                           <div key={key} className="text-xs">
                             <span className="font-medium">{key}:</span>
                             <div className="ml-2">
-                              <div className="text-red-600">- {String(prevValue || 'null')}</div>
-                              <div className="text-green-600">
+                              <div className="text-red-700">- {String(prevValue || 'null')}</div>
+                              <div className="text-green-700">
                                 + {String(currentValue || 'null')}
                               </div>
                             </div>
@@ -159,7 +159,11 @@ export const AuditTab: React.FC<AuditTabProps> = ({ socialMedia }) => {
 
               <div>
                 <div className="text-sm font-medium text-gray-600 mb-1">Full Record</div>
-                <div className="bg-gray-50 p-3 rounded text-xs font-mono text-gray-600 max-h-48 overflow-y-auto">
+                <div
+                  className="bg-gray-50 p-3 rounded text-xs font-mono text-gray-600 max-h-48 overflow-y-auto"
+                  tabIndex={0}
+                  aria-label="Full audit record"
+                >
                   <pre>
                     {JSON.stringify(
                       {

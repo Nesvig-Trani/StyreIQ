@@ -16,6 +16,7 @@ import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
 } from 'lucide-react'
+import { useId } from 'react'
 
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 20, 30, 40, 50]
 
@@ -27,6 +28,9 @@ type DataTablePaginationProps<TData> = {
 export const DataTablePagination = <TData,>(
   props: DataTablePaginationProps<TData>,
 ): React.ReactNode => {
+  const id = useId()
+  const labelId = `rows-per-page-${id}`
+
   const { table, pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS } = props
 
   const tableState = table.getState()
@@ -53,9 +57,11 @@ export const DataTablePagination = <TData,>(
 
       <div className="flex flex-col items-end space-y-2 md:flex-row md:space-x-6 md:space-y-0 lg:space-x-4">
         <div className="flex items-center gap-4">
-          <p className="text-sm font-medium !my-0 ">Rows per page</p>
+          <p className="text-sm font-medium !my-0" id={labelId}>
+            Rows per page
+          </p>
           <Select value={pageSize.toString()} onValueChange={handlePageSizeChange}>
-            <SelectTrigger className="h-8 w-[80px]">
+            <SelectTrigger className="h-8 w-[80px]" aria-labelledby={labelId}>
               <SelectValue placeholder={pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
@@ -79,36 +85,47 @@ export const DataTablePagination = <TData,>(
               className="hidden h-8 w-8 p-0 lg:flex"
               onClick={(): void => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
+              aria-disabled={!table.getCanPreviousPage()}
+              aria-label="Go to first page"
             >
               <span className="sr-only">Go to first page</span>
-              <ChevronsLeftIcon className="h-4 w-4" />
+              <ChevronsLeftIcon className="h-4 w-4" aria-hidden="true" />
             </Button>
+
             <Button
               variant="outline"
               className="h-8 w-8 p-0"
               onClick={(): void => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
+              aria-disabled={!table.getCanPreviousPage()}
+              aria-label="Go to previous page"
             >
               <span className="sr-only">Go to previous page</span>
-              <ChevronLeftIcon className="h-4 w-4" />
+              <ChevronLeftIcon className="h-4 w-4" aria-hidden="true" />
             </Button>
+
             <Button
               variant="outline"
               className="h-8 w-8 p-0"
               onClick={(): void => table.nextPage()}
               disabled={!table.getCanNextPage()}
+              aria-disabled={!table.getCanNextPage()}
+              aria-label="Go to next page"
             >
               <span className="sr-only">Go to next page</span>
-              <ChevronRightIcon className="h-4 w-4" />
+              <ChevronRightIcon className="h-4 w-4" aria-hidden="true" />
             </Button>
+
             <Button
               variant="outline"
               className="hidden h-8 w-8 p-0 lg:flex"
               onClick={(): void => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
+              aria-disabled={!table.getCanNextPage()}
+              aria-label="Go to last page"
             >
               <span className="sr-only">Go to last page</span>
-              <ChevronsRightIcon className="h-4 w-4" />
+              <ChevronsRightIcon className="h-4 w-4" aria-hidden="true" />
             </Button>
           </div>
         </div>

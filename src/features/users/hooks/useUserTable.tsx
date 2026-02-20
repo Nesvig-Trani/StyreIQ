@@ -214,20 +214,22 @@ function useUserTable({
             )}
 
             {canManageAccess && effectiveRole !== UserRolesEnum.SuperAdmin && (
-              <Button size="icon" variant="outline">
+              <Button size="icon" variant="outline" aria-label="Manage user access" asChild>
                 <Link href={`/dashboard/users/access/${id}`}>
-                  <FileLock2 className="h-4 w-4" />
+                  <FileLock2 className="h-4 w-4" aria-hidden="true" />
                 </Link>
               </Button>
             )}
 
-            {canEdit && (
-              <Button size="icon">
-                <Link href={`/dashboard/users/update/${id}`}>
-                  <PencilIcon className="h-4 w-4" />
-                </Link>
-              </Button>
-            )}
+            <div className="text-white!">
+              {canEdit && (
+                <Button size="icon" aria-label="Edit user" asChild>
+                  <Link href={`/dashboard/users/update/${id}`}>
+                    <PencilIcon className="h-4 w-4" aria-hidden="true" />
+                  </Link>
+                </Button>
+              )}
+            </div>
           </div>
         )
       },

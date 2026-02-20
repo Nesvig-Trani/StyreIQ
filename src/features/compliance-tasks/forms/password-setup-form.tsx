@@ -136,7 +136,7 @@ export const PasswordSetupForm = ({ task }: PasswordSetupFormProps) => {
           </div>
 
           <div className="border-t pt-6">
-            <div className="bg-muted p-3 rounded text-xs text-muted-foreground mb-4">
+            <div className="bg-muted p-3 rounded text-xs text-gray-600 mb-4">
               This confirmation will be recorded in the audit system. It is your responsibility to
               maintain the security of your credentials.
             </div>

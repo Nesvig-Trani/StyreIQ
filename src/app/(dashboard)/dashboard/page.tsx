@@ -96,14 +96,16 @@ export default async function DashboardPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-2 sm:space-x-2">
-            <Button variant="outline">
+            <Button variant="outline" asChild>
               <Link href={`/dashboard/social-media-accounts`}>View All Accounts</Link>
             </Button>
-            {!isViewingAllTenants && (
-              <Button variant="default">
-                <Link href={`/dashboard/social-media-accounts/create`}>Create Account</Link>
-              </Button>
-            )}
+            <div className="text-white!">
+              {!isViewingAllTenants && (
+                <Button variant="default" asChild>
+                  <Link href={`/dashboard/social-media-accounts/create`}>Create Account</Link>
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -166,7 +168,7 @@ export default async function DashboardPage() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
             <h2 className="text-lg font-semibold text-gray-900">Risk Categories</h2>
             <div className="flex flex-wrap gap-2">
-              <Button variant="outline">
+              <Button variant="outline" asChild>
                 <Link href={`/dashboard/audit-logs`}>View Audit Log</Link>
               </Button>
             </div>

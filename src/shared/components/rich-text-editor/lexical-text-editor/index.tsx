@@ -157,6 +157,7 @@ export default function LexicalTextEditor({
                 className={`min-h-[200px] p-4 focus:outline-none ${
                   readOnly ? 'bg-gray-50 cursor-not-allowed' : ''
                 }`}
+                aria-label={readOnly ? 'Policy content (read-only)' : 'Policy editor'}
               />
             }
             placeholder={

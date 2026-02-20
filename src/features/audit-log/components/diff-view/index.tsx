@@ -26,8 +26,8 @@ export const DiffView = ({ log }: { log: AuditLog }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="sm">
-          <EyeIcon className="h-4 w-4" />
+        <Button variant="ghost" size="sm" aria-label="View audit log details">
+          <EyeIcon className="h-4 w-4" aria-hidden="true" />
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">

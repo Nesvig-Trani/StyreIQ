@@ -74,7 +74,7 @@ export default function UnitHierarchy({
 
             <div className="flex flex-col sm:flex-row gap-2">
               <Select value={statusFilter} onValueChange={handleStatusChange}>
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-full" aria-label="Filter by status">
                   <SelectValue placeholder="All Status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -86,7 +86,7 @@ export default function UnitHierarchy({
               </Select>
 
               <Select value={typeFilter} onValueChange={handleTypeChange}>
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-full" aria-label="Filter by type">
                   <SelectValue placeholder="All Types" />
                 </SelectTrigger>
                 <SelectContent>
@@ -101,7 +101,7 @@ export default function UnitHierarchy({
 
               {isViewingAllTenants && tenants.length > 0 && (
                 <Select value={tenantFilter} onValueChange={handleTenantChange}>
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger className="w-full" aria-label="Filter by tenant">
                     <SelectValue placeholder="All Tenants" />
                   </SelectTrigger>
                   <SelectContent>
@@ -125,6 +125,8 @@ export default function UnitHierarchy({
             <Button
               variant="outline"
               size="sm"
+              aria-label="Go to previous page"
+              aria-disabled={pagination.pageIndex === 0}
               onClick={() => {
                 if (pagination.pageIndex > 0) {
                   handlePageChange(pagination.pageIndex - 1)
@@ -132,7 +134,7 @@ export default function UnitHierarchy({
               }}
               disabled={pagination.pageIndex === 0}
             >
-              <ChevronLeftIcon className="h-4 w-4" />
+              <ChevronLeftIcon className="h-4 w-4" aria-hidden="true" />
             </Button>
 
             <span className="text-sm text-muted-foreground px-2">
@@ -142,6 +144,8 @@ export default function UnitHierarchy({
             <Button
               variant="outline"
               size="sm"
+              aria-label="Go to next page"
+              aria-disabled={pagination.pageIndex + 1 >= pagination.pageCount}
               onClick={() => {
                 if (pagination.pageIndex + 1 < pagination.pageCount) {
                   handlePageChange(pagination.pageIndex + 1)
@@ -149,7 +153,7 @@ export default function UnitHierarchy({
               }}
               disabled={pagination.pageIndex + 1 >= pagination.pageCount}
             >
-              <ChevronRightIcon className="h-4 w-4" />
+              <ChevronRightIcon className="h-4 w-4" aria-hidden="true" />
             </Button>
           </div>
         </div>

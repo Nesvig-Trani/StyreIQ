@@ -37,14 +37,10 @@ export default async function TenantsPage(props: {
                 </Badge>
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto text-white!">
               {isSuperAdmin && (
-                <Button size="sm" className="w-full sm:w-auto">
-                  <Link
-                    className="flex items-center justify-center gap-2"
-                    href="/dashboard/tenants/create"
-                    prefetch
-                  >
+                <Button size="sm" className="w-full sm:w-auto" asChild>
+                  <Link href="/dashboard/tenants/create" prefetch>
                     <CirclePlus className="h-4 w-4" />
                     Create Tenant
                   </Link>

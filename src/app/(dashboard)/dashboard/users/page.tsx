@@ -122,7 +122,7 @@ export default async function UsersPage(props: {
                   {canManageWelcomeEmail && (
                     <WelcomeEmailModal email={welcomeEmail as WelcomeEmailSchema} />
                   )}
-                  <Button size="sm" variant="outline" className="w-full sm:w-auto">
+                  <Button size="sm" variant="outline" className="w-full sm:w-auto" asChild>
                     <Link href={'/dashboard/review-requests'} prefetch>
                       Review user requests
                     </Link>
@@ -130,18 +130,20 @@ export default async function UsersPage(props: {
                 </>
               )}
 
-              {access.can('create', 'USERS') && !tenantContext.isViewingAllTenants ? (
-                <Button size="sm" className="w-full sm:w-auto">
-                  <Link
-                    className={'flex items-center justify-center gap-2'}
-                    href={'/dashboard/users/create'}
-                    prefetch
-                  >
-                    <CirclePlus className="h-4 w-4" />
-                    Create User
-                  </Link>
-                </Button>
-              ) : null}
+              <div className="text-white!">
+                {access.can('create', 'USERS') && !tenantContext.isViewingAllTenants && (
+                  <Button size="sm" className="w-full sm:w-auto" asChild>
+                    <Link
+                      className={'flex items-center justify-center gap-2'}
+                      href={'/dashboard/users/create'}
+                      prefetch
+                    >
+                      <CirclePlus className="h-4 w-4" />
+                      Create User
+                    </Link>
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>

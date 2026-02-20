@@ -28,8 +28,13 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = (props) => {
               'w-[180px] sm:w-[250px] lg:w-[300px] justify-start text-left font-normal',
               !selected && 'text-muted-foreground',
             )}
+            aria-label={
+              selected?.from && selected?.to
+                ? `Date range selected: ${format(selected.from, 'MMM dd')} to ${format(selected.to, 'MMM dd, y')}`
+                : 'Pick a date range'
+            }
           >
-            <Calendar1 className="mr-2 size-4" />
+            <Calendar1 className="mr-2 size-4" aria-hidden="true" />
             {selected == null && <span className="truncate">Pick a date</span>}
             {selected != null && (
               <span className="truncate">

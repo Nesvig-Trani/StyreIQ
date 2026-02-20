@@ -96,9 +96,9 @@ export default async function UnitsPage(props: {
                   </p>
                 </div>
               </div>
-              <div className="w-full sm:w-auto">
+              <div className="w-full sm:w-auto text-white!">
                 {access.can('create', 'UNITS') && !tenantContext.isViewingAllTenants && (
-                  <Button size="sm" className="w-full sm:w-auto">
+                  <Button size="sm" className="w-full sm:w-auto" asChild>
                     <Link
                       className="flex items-center justify-center gap-2"
                       href="/dashboard/units/create"
