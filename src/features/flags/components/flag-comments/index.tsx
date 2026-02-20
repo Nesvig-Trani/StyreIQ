@@ -57,8 +57,8 @@ export function FlagCommentsModal({ flagId }: { flagId: number }) {
     <div>
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
-          <Button>
-            <MessageSquareIcon className="h-4 w-4" />
+          <Button aria-label="View flag comments">
+            <MessageSquareIcon className="h-4 w-4" aria-hidden="true" />
           </Button>
         </DialogTrigger>
         <DialogContent>

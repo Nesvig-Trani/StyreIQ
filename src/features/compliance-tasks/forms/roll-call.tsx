@@ -82,7 +82,7 @@ export const RollCallForm = ({ task, assignedAccounts = [] }: RollCallFormProps)
           </div>
 
           <div className="bg-muted p-4 rounded-lg space-y-3">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-600">
               Review the accounts below. If an account is incorrect or missing, contact your Unit
               Admin before confirming.
             </p>
@@ -148,7 +148,7 @@ export const RollCallForm = ({ task, assignedAccounts = [] }: RollCallFormProps)
           </div>
 
           <div className="border-t pt-6 space-y-4">
-            <div className="bg-muted p-3 rounded text-xs text-muted-foreground">
+            <div className="bg-muted p-3 rounded text-xs text-gray-600">
               This confirmation will be recorded in the audit system
             </div>
 

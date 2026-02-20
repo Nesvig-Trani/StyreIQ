@@ -221,8 +221,8 @@ function useFlagsTable({
           <FlagHistoryModal flagId={id} />
           <FlagCommentsModal flagId={id} />
           {status === FlagStatusEnum.PENDING && isSuperAdmin && (
-            <Button onClick={() => handleMarkResolved(id)}>
-              <CheckIcon />
+            <Button onClick={() => handleMarkResolved(id)} aria-label="Mark flag as resolved">
+              <CheckIcon aria-hidden="true" />
             </Button>
           )}
         </div>

@@ -145,15 +145,16 @@ export const useUnitHierarchy = ({ originalData, organizations }: UnitHierarchyP
               variant="ghost"
               size="sm"
               className="h-4 w-4 p-0"
+              aria-label={isExpanded ? `Collapse ${org.name}` : `Expand ${org.name}`}
               onClick={(e) => {
                 e.stopPropagation()
                 toggleNode(org.id)
               }}
             >
               {isExpanded ? (
-                <ChevronDown className="h-3 w-3" />
+                <ChevronDown className="h-3 w-3" aria-hidden="true" />
               ) : (
-                <ChevronRight className="h-3 w-3" />
+                <ChevronRight className="h-3 w-3" aria-hidden="true" />
               )}
             </Button>
           ) : (
