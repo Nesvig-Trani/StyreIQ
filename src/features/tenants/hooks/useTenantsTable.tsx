@@ -7,7 +7,7 @@ import { Button, useParsedSearchParams } from '@/shared'
 import Link from 'next/link'
 import { Settings, Pencil } from 'lucide-react'
 
-function useTenantsTable({ canEdit }: { canEdit: boolean }) {
+function useTenantsTable({ canEdit, canEditTenant }: { canEdit: boolean; canEditTenant: boolean }) {
   const searchParams = useParsedSearchParams(tenantSearchSchema)
 
   const columns: ColumnDef<Tenant>[] = [
@@ -30,11 +30,13 @@ function useTenantsTable({ canEdit }: { canEdit: boolean }) {
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-2">
-            <Button className="text-white!" asChild size="icon" aria-label="Edit tenant">
-              <Link href={`/dashboard/tenants/update/${row.original.id}`}>
-                <Pencil className="h-4 w-4" />
-              </Link>
-            </Button>
+            {canEditTenant && (
+              <Button className="text-white!" asChild size="icon" aria-label="Edit tenant">
+                <Link href={`/dashboard/tenants/update/${row.original.id}`}>
+                  <Pencil className="h-4 w-4" />
+                </Link>
+              </Button>
+            )}
             <Button
               className="text-white!"
               asChild
