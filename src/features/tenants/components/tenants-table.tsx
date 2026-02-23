@@ -24,7 +24,10 @@ export default function TenantsTable({
   const effectiveRole = getEffectiveRoleFromUser(user)
   const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
   const isCentralAdmin = effectiveRole === UserRolesEnum.CentralAdmin
-  const { columns } = useTenantsTable({ canEdit: isCentralAdmin || isSuperAdmin })
+  const { columns } = useTenantsTable({
+    canEdit: isCentralAdmin || isSuperAdmin,
+    canEditTenant: isSuperAdmin,
+  })
 
   return (
     <DataTable

@@ -262,14 +262,19 @@ export const updateGovernanceSettings: Endpoint = {
     const user = req.user
 
     const effectiveRole = getEffectiveRoleFromUser(user)
-    if (!user || effectiveRole !== UserRolesEnum.CentralAdmin) {
-      throw new EndpointError('Only Central Admin can modify governance settings', 403)
+    const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
+    const canUpdateGovernance = effectiveRole === UserRolesEnum.CentralAdmin || isSuperAdmin
+    if (!user || !canUpdateGovernance) {
+      throw new EndpointError(
+        'Only Central Admin or Super Admin can modify governance settings',
+        403,
+      )
     }
 
     const targetTenantId = Number(req.routeParams.id)
     const userTenantId = extractTenantId(user)
 
-    if (!userTenantId || userTenantId !== targetTenantId) {
+    if (!isSuperAdmin && (!userTenantId || userTenantId !== targetTenantId)) {
       throw new EndpointError('Cannot modify other tenant settings', 403)
     }
 

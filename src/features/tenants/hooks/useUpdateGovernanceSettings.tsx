@@ -100,7 +100,7 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
       onSubmit: async (data) => {
         await updateGovernanceSettings(tenant.id, data)
         toast.success('Governance settings updated successfully')
-        router.refresh()
+        router.push('/dashboard/tenants')
       },
       onCancel: () => {
         form.reset(currentSettings)
