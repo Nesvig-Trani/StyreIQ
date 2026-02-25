@@ -3,6 +3,8 @@ import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { UserRolesEnum } from '@/features/users'
 import { Payload } from 'payload'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { AuditLogActionEnum } from '@/features/audit-log/plugins/types'
+import { calcDaysFromToday } from '@/features/compliance-tasks/utils'
 
 interface ReminderCadence {
   day: number
@@ -63,10 +65,7 @@ async function processTask(
   },
 ): Promise<{ reminderSent: boolean; escalated: boolean }> {
   const now = new Date()
-  const dueDate = new Date(task.dueDate)
-
-  const daysUntilDue = Math.floor((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
-  const daysSinceDue = Math.floor((now.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24))
+  const { daysUntilDue, daysSinceDue } = calcDaysFromToday(task.dueDate)
 
   const userId = typeof task.assignedUser === 'object' ? task.assignedUser.id : task.assignedUser
   const user = await payload.findByID({ collection: 'users', id: userId })
@@ -88,17 +87,6 @@ async function processTask(
           day: 'numeric',
         })
 
-        await payload.sendEmail({
-          to: user.email,
-          subject: `Reminder: ${getTaskTypeLabel(task.type)} Due ${formattedDueDate}`,
-          html: reminderEmailTemplate({
-            userName: user.name || 'User',
-            taskName: getTaskTypeLabel(task.type),
-            dueDate: formattedDueDate,
-            taskUrl,
-          }),
-        })
-
         await payload.update({
           collection: 'compliance_tasks',
           id: task.id,
@@ -110,11 +98,39 @@ async function processTask(
           },
         })
 
+        try {
+          await payload.sendEmail({
+            to: user.email,
+            subject: `Reminder: ${getTaskTypeLabel(task.type)} Due ${formattedDueDate}`,
+            html: reminderEmailTemplate({
+              userName: user.name || 'User',
+              taskName: getTaskTypeLabel(task.type),
+              dueDate: formattedDueDate,
+              taskUrl,
+            }),
+          })
+        } catch (error) {
+          await payload.create({
+            collection: 'audit_log',
+            data: {
+              user: user.id,
+              action: AuditLogActionEnum.EmailFailed,
+              entity: 'compliance_tasks',
+              metadata: {
+                taskId: task.id,
+                taskType: task.type,
+                error: error instanceof Error ? error.message : String(error),
+              },
+              tenant: tenant.id,
+            },
+          })
+        }
+
         await payload.create({
           collection: 'audit_log',
           data: {
             user: user.id,
-            action: 'reminder_sent',
+            action: AuditLogActionEnum.ReminderSent,
             entity: 'compliance_tasks',
             metadata: {
               taskId: task.id,
@@ -139,9 +155,7 @@ async function processTask(
       return (
         task.escalations?.some((e) => {
           if (!e.escalatedAt) return false
-          const escalationDaySinceDue = Math.floor(
-            (new Date(e.escalatedAt).getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24),
-          )
+          const { daysSinceDue: escalationDaySinceDue } = calcDaysFromToday(e.escalatedAt)
           return escalationDaySinceDue === level
         }) ?? false
       )
@@ -189,17 +203,6 @@ async function sendOverdueNoticeToAssignee(
     day: 'numeric',
   })
 
-  await payload.sendEmail({
-    to: user.email,
-    subject: `Overdue: ${getTaskTypeLabel(task.type)}`,
-    html: overdueNoticeEmailTemplate({
-      userName: user.name || 'User',
-      taskName: getTaskTypeLabel(task.type),
-      dueDate: formattedDueDate,
-      taskUrl,
-    }),
-  })
-
   await payload.update({
     collection: 'compliance_tasks',
     id: task.id,
@@ -216,11 +219,39 @@ async function sendOverdueNoticeToAssignee(
     },
   })
 
+  try {
+    await payload.sendEmail({
+      to: user.email,
+      subject: `Overdue: ${getTaskTypeLabel(task.type)}`,
+      html: overdueNoticeEmailTemplate({
+        userName: user.name || 'User',
+        taskName: getTaskTypeLabel(task.type),
+        dueDate: formattedDueDate,
+        taskUrl,
+      }),
+    })
+  } catch (error) {
+    await payload.create({
+      collection: 'audit_log',
+      data: {
+        user: user.id,
+        action: AuditLogActionEnum.EmailFailed,
+        entity: 'compliance_tasks',
+        metadata: {
+          taskId: task.id,
+          taskType: task.type,
+          error: error instanceof Error ? error.message : String(error),
+        },
+        tenant: tenant.id,
+      },
+    })
+  }
+
   await payload.create({
     collection: 'audit_log',
     data: {
       user: user.id,
-      action: 'overdue_notice_sent',
+      action: AuditLogActionEnum.OverdueNoticeSent,
       entity: 'compliance_tasks',
       metadata: { taskId: task.id, taskType: task.type, daysSinceDue },
       organizations: user.organizations || [],
@@ -249,18 +280,6 @@ async function escalateToUnitAdmin(
     day: 'numeric',
   })
 
-  await payload.sendEmail({
-    to: unitAdmin.email,
-    subject: `Escalation: Overdue Compliance Task`,
-    html: escalationUnitAdminEmailTemplate({
-      adminName: unitAdmin.name || 'Unit Admin',
-      assigneeName: user.name || user.email,
-      taskName: getTaskTypeLabel(task.type),
-      dueDate: formattedDueDate,
-      taskUrl,
-    }),
-  })
-
   await payload.update({
     collection: 'compliance_tasks',
     id: task.id,
@@ -278,11 +297,41 @@ async function escalateToUnitAdmin(
 
   await createOrUpdateRiskFlag(payload, task, user, tenant, daysSinceDue)
 
+  try {
+    await payload.sendEmail({
+      to: unitAdmin.email,
+      subject: `Escalation: Overdue Compliance Task`,
+      html: escalationUnitAdminEmailTemplate({
+        adminName: unitAdmin.name || 'Unit Admin',
+        assigneeName: user.name || user.email,
+        taskName: getTaskTypeLabel(task.type),
+        dueDate: formattedDueDate,
+        taskUrl,
+      }),
+    })
+  } catch (error) {
+    await payload.create({
+      collection: 'audit_log',
+      data: {
+        user: user.id,
+        action: AuditLogActionEnum.EmailFailed,
+        entity: 'compliance_tasks',
+        metadata: {
+          taskId: task.id,
+          taskType: task.type,
+          escalatedTo: unitAdmin.id,
+          error: error instanceof Error ? error.message : String(error),
+        },
+        tenant: tenant.id,
+      },
+    })
+  }
+
   await payload.create({
     collection: 'audit_log',
     data: {
       user: user.id,
-      action: 'escalated_to_unit_admin',
+      action: AuditLogActionEnum.EscalatedToUnitAdmin,
       entity: 'compliance_tasks',
       metadata: { taskId: task.id, taskType: task.type, escalatedTo: unitAdmin.id, daysSinceDue },
       organizations: user.organizations || [],
@@ -318,19 +367,6 @@ async function escalateToCentralAdmin(
     ? await payload.findByID({ collection: 'organization', id: primaryOrgId })
     : null
 
-  await payload.sendEmail({
-    to: centralAdmin.email,
-    subject: `Central Escalation: Overdue Compliance Task`,
-    html: escalationCentralAdminEmailTemplate({
-      adminName: centralAdmin.name || 'Central Admin',
-      assigneeName: user.name || user.email,
-      unitName: unit?.name || 'Unknown Unit',
-      taskName: getTaskTypeLabel(task.type),
-      dueDate: formattedDueDate,
-      taskUrl,
-    }),
-  })
-
   await payload.update({
     collection: 'compliance_tasks',
     id: task.id,
@@ -349,11 +385,42 @@ async function escalateToCentralAdmin(
 
   await createOrUpdateRiskFlag(payload, task, user, tenant, daysSinceDue)
 
+  try {
+    await payload.sendEmail({
+      to: centralAdmin.email,
+      subject: `Central Escalation: Overdue Compliance Task`,
+      html: escalationCentralAdminEmailTemplate({
+        adminName: centralAdmin.name || 'Central Admin',
+        assigneeName: user.name || user.email,
+        unitName: unit?.name || 'Unknown Unit',
+        taskName: getTaskTypeLabel(task.type),
+        dueDate: formattedDueDate,
+        taskUrl,
+      }),
+    })
+  } catch (error) {
+    await payload.create({
+      collection: 'audit_log',
+      data: {
+        user: user.id,
+        action: AuditLogActionEnum.EmailFailed,
+        entity: 'compliance_tasks',
+        metadata: {
+          taskId: task.id,
+          taskType: task.type,
+          escalatedTo: centralAdmin.id,
+          error: error instanceof Error ? error.message : String(error),
+        },
+        tenant: tenant.id,
+      },
+    })
+  }
+
   await payload.create({
     collection: 'audit_log',
     data: {
       user: user.id,
-      action: 'escalated_to_central_admin',
+      action: AuditLogActionEnum.EscalatedToCentralAdmin,
       entity: 'compliance_tasks',
       metadata: {
         taskId: task.id,
@@ -461,7 +528,7 @@ async function findCentralAdmin(payload: Payload, tenant: Tenant): Promise<User 
   const centralAdmins = await payload.find({
     collection: 'users',
     where: {
-      and: [{ tenant: { equals: tenant.id } }, { role: { equals: UserRolesEnum.CentralAdmin } }],
+      and: [{ tenant: { equals: tenant.id } }, { roles: { contains: UserRolesEnum.CentralAdmin } }],
     },
     limit: 1,
   })
