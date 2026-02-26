@@ -4,7 +4,7 @@ import { UserRolesEnum } from '@/features/users'
 import { Payload } from 'payload'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 import { AuditLogActionEnum } from '@/features/audit-log/plugins/types'
-import { calcDaysFromToday } from '@/features/compliance-tasks/utils'
+import { calcDaysFromToday, toDateOnly } from '@/features/compliance-tasks/utils'
 
 interface ReminderCadence {
   day: number
@@ -65,7 +65,7 @@ async function processTask(
   },
 ): Promise<{ reminderSent: boolean; escalated: boolean }> {
   const now = new Date()
-  const { daysUntilDue, daysSinceDue } = calcDaysFromToday(task.dueDate)
+  const { daysUntilDue, daysSinceDue, dueDateOnly } = calcDaysFromToday(task.dueDate)
 
   const userId = typeof task.assignedUser === 'object' ? task.assignedUser.id : task.assignedUser
   const user = await payload.findByID({ collection: 'users', id: userId })
@@ -155,7 +155,9 @@ async function processTask(
       return (
         task.escalations?.some((e) => {
           if (!e.escalatedAt) return false
-          const { daysSinceDue: escalationDaySinceDue } = calcDaysFromToday(e.escalatedAt)
+          const escalationDaySinceDue = Math.floor(
+            (toDateOnly(e.escalatedAt).getTime() - dueDateOnly.getTime()) / (1000 * 60 * 60 * 24),
+          )
           return escalationDaySinceDue === level
         }) ?? false
       )

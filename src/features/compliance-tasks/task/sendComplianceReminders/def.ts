@@ -3,7 +3,6 @@ import { sendComplianceReminders } from '.'
 
 export const sendComplianceRemindersTask = {
   slug: 'sendComplianceReminders',
-  queue: 'daily',
   retries: 2,
   outputSchema: [
     {
