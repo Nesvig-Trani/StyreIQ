@@ -3,7 +3,6 @@ import { createRollCallTasks } from '.'
 
 export const createRollCallTasksTask = {
   slug: 'createRollCallTasks',
-  queue: 'weekly',
   retries: 2,
   outputSchema: [
     {

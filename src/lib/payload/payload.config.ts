@@ -115,12 +115,6 @@ export default buildConfig({
     autoRun: [
       {
         cron: '0 7 * * *',
-        queue: 'daily',
-        limit: 10,
-      },
-      {
-        cron: '0 0 * * 0',
-        queue: 'weekly',
         limit: 10,
       },
     ],

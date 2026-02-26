@@ -3,7 +3,6 @@ import { flagInactiveAccounts } from './flagInactiveAccounts'
 
 export const flagInactiveAccountsTask = {
   slug: 'flagInactiveAccounts',
-  queue: 'weekly',
   retries: 2,
   outputSchema: [
     {
