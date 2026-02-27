@@ -4,7 +4,6 @@ import { createRecurringPasswordTasks } from '.'
 export const createRecurringPasswordTasksTask = {
   slug: 'createRecurringPasswordTasks',
   retries: 2,
-  schedule: [{ cron: '20 21 * * *' }],
   outputSchema: [
     {
       name: 'success',

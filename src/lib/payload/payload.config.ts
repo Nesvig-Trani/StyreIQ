@@ -18,7 +18,6 @@ import { WelcomeEmailsPlugin } from '@/features/welcome-emails/plugins'
 import { flagInactiveAccountsTask } from '../../features/social-medias/plugins/tasks/flagInactiveAccounts/def'
 import { detectRisksTask } from '../../features/flags/plugins/tasks/detectRisks/def'
 import { TenantPlugin } from '@/features/tenants/plugins'
-
 import { ComplianceTasksPlugin } from '@/features/compliance-tasks/plugins'
 import { sendComplianceRemindersTask } from '@/features/compliance-tasks/task/sendComplianceReminders/def'
 import { RoleRequestsPlugin } from '@/features/role-request/plugins'
