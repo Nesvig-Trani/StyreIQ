@@ -105,6 +105,14 @@ export default buildConfig({
   cookiePrefix: 'payload',
   email: EmailAdapter(),
   jobs: {
+    access: {
+      run: ({ req }: { req: import('payload').PayloadRequest }) => {
+        if (req.user) return true
+        const authHeader = req.headers.get('authorization')
+        if (!process.env.CRON_SECRET) return false
+        return authHeader === `Bearer ${process.env.CRON_SECRET}`
+      },
+    },
     tasks: [
       flagInactiveAccountsTask,
       detectRisksTask,
@@ -114,7 +122,7 @@ export default buildConfig({
     ],
     autoRun: [
       {
-        cron: '0 7 * * *',
+        cron: '0 19 * * *',
         limit: 10,
       },
     ],
