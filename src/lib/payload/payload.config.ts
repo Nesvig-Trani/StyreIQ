@@ -62,7 +62,7 @@ export default buildConfig({
   sharp,
   endpoints: [
     ...ALL_METHODS.map((m) => ({
-      path: '/api/*',
+      path: '/api/:slug((?!payload-jobs).*)',
       method: m,
       handler: tenantContextMiddleware,
     })),
