@@ -18,7 +18,7 @@ import { WelcomeEmailsPlugin } from '@/features/welcome-emails/plugins'
 import { flagInactiveAccountsTask } from '../../features/social-medias/plugins/tasks/flagInactiveAccounts/def'
 import { detectRisksTask } from '../../features/flags/plugins/tasks/detectRisks/def'
 import { TenantPlugin } from '@/features/tenants/plugins'
-import { tenantContextMiddleware } from '@/middleware/tenant-context'
+
 import { ComplianceTasksPlugin } from '@/features/compliance-tasks/plugins'
 import { sendComplianceRemindersTask } from '@/features/compliance-tasks/task/sendComplianceReminders/def'
 import { RoleRequestsPlugin } from '@/features/role-request/plugins'
@@ -27,7 +27,6 @@ import { createRollCallTasksTask } from '@/features/compliance-tasks/task/create
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-const ALL_METHODS = ['get', 'post', 'put', 'patch', 'delete', 'options', 'head'] as const
 
 const auditLogCollections = {
   users: true,
@@ -60,13 +59,7 @@ export default buildConfig({
     generateSchemaOutputFile: path.resolve(dirname, '../../types/payload-db-schema.ts'),
   }),
   sharp,
-  endpoints: [
-    ...ALL_METHODS.map((m) => ({
-      path: '/api/:slug((?!payload-jobs).*)',
-      method: m,
-      handler: tenantContextMiddleware,
-    })),
-  ],
+  endpoints: [],
   plugins: [
     OrganizationsPlugin({
       disabled: false,
@@ -120,21 +113,5 @@ export default buildConfig({
       createRecurringPasswordTasksTask,
       createRollCallTasksTask,
     ],
-    autoRun: [
-      {
-        cron: '0 19 * * *',
-        limit: 10,
-      },
-    ],
-    shouldAutoRun(payload) {
-      return payload.config.jobs?.tasks?.some(
-        (task) =>
-          task.slug === flagInactiveAccountsTask.slug ||
-          task.slug === detectRisksTask.slug ||
-          task.slug === sendComplianceRemindersTask.slug ||
-          task.slug === createRecurringPasswordTasksTask.slug ||
-          task.slug === createRollCallTasksTask.slug,
-      )
-    },
   },
 })
