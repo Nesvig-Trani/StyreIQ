@@ -4,6 +4,7 @@ import { sendComplianceReminders } from '.'
 export const sendComplianceRemindersTask = {
   slug: 'sendComplianceReminders',
   retries: 2,
+  schedule: [{ cron: '30 20 * * *' }],
   outputSchema: [
     {
       name: 'success',
