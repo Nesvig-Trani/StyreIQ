@@ -4,6 +4,7 @@ import { createRollCallTasks } from '.'
 export const createRollCallTasksTask = {
   slug: 'createRollCallTasks',
   retries: 2,
+  schedule: [{ cron: '30 20 * * *' }],
   outputSchema: [
     {
       name: 'success',

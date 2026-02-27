@@ -4,6 +4,7 @@ import { findRisksAndCreateFlag } from '.'
 export const detectRisksTask = {
   slug: 'detectRisks',
   retries: 2,
+  schedule: [{ cron: '30 20 * * *' }],
   outputSchema: [
     {
       name: 'success',
