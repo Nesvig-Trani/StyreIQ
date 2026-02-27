@@ -1,12 +1,8 @@
 {
   "crons": [
     {
-      "path": "/api/payload-jobs/handle-schedules",
-      "schedule": "5 22 * * *"
-    },
-    {
-      "path": "/api/payload-jobs/run",
-      "schedule": "10 22 * * *"
+      "path": "/api/run-jobs",
+      "schedule": "0 12 * * *"
     }
   ]
 }
