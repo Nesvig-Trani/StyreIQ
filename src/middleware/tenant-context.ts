@@ -1,6 +1,10 @@
 import type { PayloadHandler } from 'payload'
 
 export const tenantContextMiddleware: PayloadHandler = async (request) => {
+  if (request.url?.includes('payload-jobs')) {
+    return new Response(null, { status: 200 })
+  }
+
   const { user } = request
 
   if (user?.tenant) {

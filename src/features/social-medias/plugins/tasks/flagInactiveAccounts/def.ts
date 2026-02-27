@@ -4,7 +4,7 @@ import { flagInactiveAccounts } from './flagInactiveAccounts'
 export const flagInactiveAccountsTask = {
   slug: 'flagInactiveAccounts',
   retries: 2,
-  schedule: [{ cron: '30 20 * * *' }],
+  schedule: [{ cron: '20 21 * * *' }],
   outputSchema: [
     {
       name: 'success',
