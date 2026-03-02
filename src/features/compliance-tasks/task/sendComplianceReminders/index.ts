@@ -10,6 +10,19 @@ interface ReminderCadence {
   day: number
 }
 
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+async function sendEmailWithRateLimit(
+  payload: Payload,
+  emailData: Parameters<Payload['sendEmail']>[0],
+) {
+  await payload.sendEmail(emailData)
+
+  await sleep(600)
+}
+
 export async function sendComplianceReminders() {
   const { payload } = await getPayloadContext()
 
@@ -87,19 +100,8 @@ async function processTask(
           day: 'numeric',
         })
 
-        await payload.update({
-          collection: 'compliance_tasks',
-          id: task.id,
-          data: {
-            remindersSent: [
-              ...(task.remindersSent || []),
-              { sentAt: now.toISOString(), daysSinceDue: daysUntilDue },
-            ],
-          },
-        })
-
         try {
-          await payload.sendEmail({
+          await sendEmailWithRateLimit(payload, {
             to: user.email,
             subject: `Reminder: ${getTaskTypeLabel(task.type)} Due ${formattedDueDate}`,
             html: reminderEmailTemplate({
@@ -108,6 +110,17 @@ async function processTask(
               dueDate: formattedDueDate,
               taskUrl,
             }),
+          })
+
+          await payload.update({
+            collection: 'compliance_tasks',
+            id: task.id,
+            data: {
+              remindersSent: [
+                ...(task.remindersSent || []),
+                { sentAt: now.toISOString(), daysSinceDue: daysUntilDue },
+              ],
+            },
           })
         } catch (error) {
           await payload.create({
@@ -124,6 +137,8 @@ async function processTask(
               tenant: tenant.id,
             },
           })
+
+          return { reminderSent: false, escalated: false }
         }
 
         await payload.create({
@@ -205,24 +220,8 @@ async function sendOverdueNoticeToAssignee(
     day: 'numeric',
   })
 
-  await payload.update({
-    collection: 'compliance_tasks',
-    id: task.id,
-    data: {
-      status: 'OVERDUE',
-      escalations: [
-        ...(task.escalations || []),
-        {
-          escalatedAt: new Date().toISOString(),
-          escalatedTo: user.id,
-          reason: `Overdue notice sent to assignee after ${daysSinceDue} days`,
-        },
-      ],
-    },
-  })
-
   try {
-    await payload.sendEmail({
+    await sendEmailWithRateLimit(payload, {
       to: user.email,
       subject: `Overdue: ${getTaskTypeLabel(task.type)}`,
       html: overdueNoticeEmailTemplate({
@@ -231,6 +230,22 @@ async function sendOverdueNoticeToAssignee(
         dueDate: formattedDueDate,
         taskUrl,
       }),
+    })
+
+    await payload.update({
+      collection: 'compliance_tasks',
+      id: task.id,
+      data: {
+        status: 'OVERDUE',
+        escalations: [
+          ...(task.escalations || []),
+          {
+            escalatedAt: new Date().toISOString(),
+            escalatedTo: user.id,
+            reason: `Overdue notice sent to assignee after ${daysSinceDue} days`,
+          },
+        ],
+      },
     })
   } catch (error) {
     await payload.create({
@@ -247,6 +262,8 @@ async function sendOverdueNoticeToAssignee(
         tenant: tenant.id,
       },
     })
+
+    return
   }
 
   await payload.create({
@@ -282,25 +299,8 @@ async function escalateToUnitAdmin(
     day: 'numeric',
   })
 
-  await payload.update({
-    collection: 'compliance_tasks',
-    id: task.id,
-    data: {
-      escalations: [
-        ...(task.escalations || []),
-        {
-          escalatedAt: new Date().toISOString(),
-          escalatedTo: unitAdmin.id,
-          reason: `Escalated to Unit Admin after ${daysSinceDue} days overdue`,
-        },
-      ],
-    },
-  })
-
-  await createOrUpdateRiskFlag(payload, task, user, tenant, daysSinceDue)
-
   try {
-    await payload.sendEmail({
+    await sendEmailWithRateLimit(payload, {
       to: unitAdmin.email,
       subject: `Escalation: Overdue Compliance Task`,
       html: escalationUnitAdminEmailTemplate({
@@ -311,6 +311,23 @@ async function escalateToUnitAdmin(
         taskUrl,
       }),
     })
+
+    await payload.update({
+      collection: 'compliance_tasks',
+      id: task.id,
+      data: {
+        escalations: [
+          ...(task.escalations || []),
+          {
+            escalatedAt: new Date().toISOString(),
+            escalatedTo: unitAdmin.id,
+            reason: `Escalated to Unit Admin after ${daysSinceDue} days overdue`,
+          },
+        ],
+      },
+    })
+
+    await createOrUpdateRiskFlag(payload, task, user, tenant, daysSinceDue)
   } catch (error) {
     await payload.create({
       collection: 'audit_log',
@@ -327,6 +344,8 @@ async function escalateToUnitAdmin(
         tenant: tenant.id,
       },
     })
+
+    return
   }
 
   await payload.create({
@@ -369,26 +388,8 @@ async function escalateToCentralAdmin(
     ? await payload.findByID({ collection: 'organization', id: primaryOrgId })
     : null
 
-  await payload.update({
-    collection: 'compliance_tasks',
-    id: task.id,
-    data: {
-      status: 'ESCALATED',
-      escalations: [
-        ...(task.escalations || []),
-        {
-          escalatedAt: new Date().toISOString(),
-          escalatedTo: centralAdmin.id,
-          reason: `Escalated to Central Admin after ${daysSinceDue} days overdue`,
-        },
-      ],
-    },
-  })
-
-  await createOrUpdateRiskFlag(payload, task, user, tenant, daysSinceDue)
-
   try {
-    await payload.sendEmail({
+    await sendEmailWithRateLimit(payload, {
       to: centralAdmin.email,
       subject: `Central Escalation: Overdue Compliance Task`,
       html: escalationCentralAdminEmailTemplate({
@@ -400,6 +401,24 @@ async function escalateToCentralAdmin(
         taskUrl,
       }),
     })
+
+    await payload.update({
+      collection: 'compliance_tasks',
+      id: task.id,
+      data: {
+        status: 'ESCALATED',
+        escalations: [
+          ...(task.escalations || []),
+          {
+            escalatedAt: new Date().toISOString(),
+            escalatedTo: centralAdmin.id,
+            reason: `Escalated to Central Admin after ${daysSinceDue} days overdue`,
+          },
+        ],
+      },
+    })
+
+    await createOrUpdateRiskFlag(payload, task, user, tenant, daysSinceDue)
   } catch (error) {
     await payload.create({
       collection: 'audit_log',
@@ -416,6 +435,8 @@ async function escalateToCentralAdmin(
         tenant: tenant.id,
       },
     })
+
+    return
   }
 
   await payload.create({
