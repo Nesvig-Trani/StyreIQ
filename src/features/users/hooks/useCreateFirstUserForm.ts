@@ -1,4 +1,5 @@
 'use client'
+import { createElement } from 'react'
 import { useFormHelper } from '@/shared/components/form-hook-helper'
 import { createFirstUserFormSchema } from '@/features/users'
 import { createFirstUser } from '@/sdk/users'
@@ -39,9 +40,15 @@ export function useCreateFirstUserForm() {
           router.push(`/login`)
         } catch (error) {
           if (isApiError(error)) {
-            toast.error('An error occurred while creating the user, please try again')
+            toast.error(
+              createElement(
+                'span',
+                { role: 'alert' },
+                'An error occurred while creating the user, please try again',
+              ),
+            )
           } else {
-            toast.error('An unexpected error occurred')
+            toast.error(createElement('span', { role: 'alert' }, 'An unexpected error occurred'))
           }
         }
       },

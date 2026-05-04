@@ -37,7 +37,7 @@ export function useLogin() {
 
         if (lockedError) {
           toast.custom((t) => (
-            <div className="p-4 bg-red-100 rounded-md shadow text-sm">
+            <div role="alert" className="p-4 bg-red-100 rounded-md shadow text-sm">
               <p className="font-semibold text-red-700">
                 Your account is locked for 10 minutes due to too many failed login attempts.
               </p>

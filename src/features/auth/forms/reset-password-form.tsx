@@ -38,7 +38,7 @@ export function ResetPasswordForm() {
               onClick={handleBackToLogin}
               className="p-0 h-auto text-muted-foreground hover:text-foreground"
             >
-              <ArrowLeftIcon className="h-4 w-4 mr-1" />
+              <ArrowLeftIcon className="h-4 w-4 mr-1" aria-hidden="true" />
               Back to login
             </Button>
           </div>
@@ -53,7 +53,10 @@ export function ResetPasswordForm() {
             <div className="space-y-2">
               <Label htmlFor="password">New Password</Label>
               <div className="relative">
-                <LockIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <LockIcon
+                  className="absolute left-3 top-3 h-4 w-4 text-muted-foreground"
+                  aria-hidden="true"
+                />
                 <PasswordInput
                   id="password"
                   autoComplete="new-password"
@@ -69,7 +72,10 @@ export function ResetPasswordForm() {
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">Confirm New Password</Label>
               <div className="relative">
-                <LockIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <LockIcon
+                  className="absolute left-3 top-3 h-4 w-4 text-muted-foreground"
+                  aria-hidden="true"
+                />
                 <PasswordInput
                   id="confirmPassword"
                   autoComplete="new-password"
@@ -97,7 +103,9 @@ export function ResetPasswordForm() {
           <CardContent className="pt-0">
             {apiError && (
               <div className="text-sm text-red-500 text-center space-y-2">
-                <p className="!my-2">{apiError}</p>
+                <p role="alert" className="!my-2">
+                  {apiError}
+                </p>
                 <Link href="/forgot-password">
                   <Button
                     variant="ghost"
