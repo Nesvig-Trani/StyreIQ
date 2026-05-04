@@ -149,7 +149,7 @@ export const FormHelper = <
               </Button>
             )}
             <Button type="submit" disabled={isLoading} className="flex-1">
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />}
               {submitContent || 'Submit'}
             </Button>
           </div>
