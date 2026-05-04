@@ -179,8 +179,8 @@ For any non-trivial change (multi-file or unfamiliar code):
 
 Status of required integrations. If any are disconnected, run `/melt-link` to set up.
 
-- [ ] Ticket tracker — not connected
-- [ ] Browser testing — not connected
+- [x] Ticket tracker — Linear (connected 2026-05-04)
+- [x] Browser testing — Chrome DevTools MCP (connected 2026-05-04; see `.mcp.json` — ensure Cursor loads project MCPs so browser tools appear in chat)
 
 ## Workflow Skills
 
