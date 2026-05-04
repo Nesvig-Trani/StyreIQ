@@ -32,7 +32,11 @@ export const PasswordInputHelper = <TFieldValues extends FieldValues>({
             required={isRequired}
           />
           <FormControl>
-            <PasswordInput {...field} placeholder={fieldData.placeholder} />
+            <PasswordInput
+              {...field}
+              autoComplete={fieldData.autoComplete}
+              placeholder={fieldData.placeholder}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>

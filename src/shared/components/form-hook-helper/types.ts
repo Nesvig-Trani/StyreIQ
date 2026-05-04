@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { HTMLInputAutoCompleteAttribute, ReactNode } from 'react'
 import type { FieldValues, Path } from 'react-hook-form'
 import { DatePickerProps } from 'react-datepicker'
 import { Tree } from '@/features/units'
@@ -70,4 +70,5 @@ export type FieldData<TFieldValues extends FieldValues = FieldValues> = {
   disabled?: boolean
   required?: boolean
   hidden?: boolean
+  autoComplete?: HTMLInputAutoCompleteAttribute
 }

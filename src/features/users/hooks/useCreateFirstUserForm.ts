@@ -22,11 +22,13 @@ export function useCreateFirstUserForm() {
           label: 'Email *',
           name: 'email',
           type: 'text',
+          autoComplete: 'email',
         },
         {
           label: 'Password *',
           name: 'password',
           type: 'password',
+          autoComplete: 'new-password',
         },
       ],
       onSubmit: async (submitData) => {

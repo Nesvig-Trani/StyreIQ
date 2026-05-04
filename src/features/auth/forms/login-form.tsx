@@ -31,6 +31,7 @@ export function LoginForm() {
                   id="email"
                   name="email"
                   type="email"
+                  autoComplete="email"
                   required
                   value={loginFields.email}
                   onChange={handleInputChange}
@@ -49,6 +50,7 @@ export function LoginForm() {
                 <PasswordInput
                   id="password"
                   name="password"
+                  autoComplete="current-password"
                   required
                   value={loginFields.password}
                   onChange={handleInputChange}

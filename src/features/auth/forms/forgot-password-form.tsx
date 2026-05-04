@@ -64,6 +64,7 @@ export function ForgotPasswordForm() {
                   <Input
                     id="email"
                     type="email"
+                    autoComplete="email"
                     placeholder="Enter your email address"
                     disabled={isLoading}
                     className="pl-10"

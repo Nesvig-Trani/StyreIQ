@@ -56,6 +56,7 @@ export function ResetPasswordForm() {
                 <LockIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <PasswordInput
                   id="password"
+                  autoComplete="new-password"
                   placeholder="Enter your new password"
                   {...register('password')}
                   className={`pl-10 ${errors.password ? 'border-red-500' : ''}`}
@@ -71,6 +72,7 @@ export function ResetPasswordForm() {
                 <LockIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <PasswordInput
                   id="confirmPassword"
+                  autoComplete="new-password"
                   placeholder="Confirm your new password"
                   {...register('confirmPassword')}
                   className={`pl-10 ${errors.confirmPassword ? 'border-red-500' : ''}`}

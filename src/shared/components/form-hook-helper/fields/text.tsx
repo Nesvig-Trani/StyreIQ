@@ -33,7 +33,12 @@ export const TextInputHelper = <TFieldValues extends FieldValues>({
             required={isRequired}
           />
           <FormControl>
-            <Input type={fieldData.type} {...field} placeholder={fieldData.placeholder} />
+            <Input
+              type={fieldData.type}
+              {...field}
+              autoComplete={fieldData.autoComplete}
+              placeholder={fieldData.placeholder}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>
