@@ -23,6 +23,7 @@ export default async function CreateUnit() {
   if (!user) {
     return (
       <div className="p-4">
+        <h1 className="text-2xl font-bold mb-2">Create unit</h1>
         <p className="text-center text-muted-foreground">
           You must be logged in to view this page.
         </p>
@@ -45,14 +46,14 @@ export default async function CreateUnit() {
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           <nav className="mb-6 flex items-center space-x-2 text-sm text-gray-500">
             <Link href="/dashboard" className="flex items-center hover:text-gray-700">
-              <Home className="h-4 w-4 mr-1" />
+              <Home className="h-4 w-4 mr-1" aria-hidden="true" />
               Dashboard
             </Link>
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-4 w-4" aria-hidden="true" />
             <Link href="/dashboard/units" className="hover:text-gray-700">
               Units
             </Link>
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-4 w-4" aria-hidden="true" />
             <span className="text-gray-900 font-medium">Create Unit</span>
           </nav>
 
@@ -60,11 +61,11 @@ export default async function CreateUnit() {
             <CardContent className="p-8 sm:p-12">
               <div className="flex flex-col items-center text-center space-y-6">
                 <div className="rounded-full bg-blue-100 p-4">
-                  <UserPlus className="h-12 w-12 text-blue-600" />
+                  <UserPlus className="h-12 w-12 text-blue-600" aria-hidden="true" />
                 </div>
 
                 <div className="space-y-3">
-                  <h2 className="text-2xl font-bold text-gray-900">Create a Unit Admin First</h2>
+                  <h1 className="text-2xl font-bold text-gray-900">Create a Unit Admin First</h1>
                   <p className="text-lg text-gray-600 max-w-xl">
                     Before creating a unit, you need to create at least one user who will serve as
                     the Unit Admin.
@@ -74,9 +75,12 @@ export default async function CreateUnit() {
                 <Card className="max-w-2xl bg-blue-50 border-blue-200">
                   <CardContent className="p-4">
                     <div className="flex gap-3">
-                      <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                      <Info
+                        className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5"
+                        aria-hidden="true"
+                      />
                       <div className="text-left space-y-2">
-                        <h3 className="font-semibold text-blue-900">Why is this required?</h3>
+                        <h2 className="font-semibold text-blue-900">Why is this required?</h2>
                         <p className="text-sm text-blue-800">
                           Every unit must have an assigned administrator who will be responsible for
                           managing the unit, its social media accounts, and team members. This
@@ -90,7 +94,7 @@ export default async function CreateUnit() {
                 <div className="flex flex-col sm:flex-row gap-3 pt-4">
                   <Button asChild size="lg" variant="secondary">
                     <Link href="/dashboard/users/create">
-                      <UserPlus className="h-4 w-4 mr-2" />
+                      <UserPlus className="h-4 w-4 mr-2" aria-hidden="true" />
                       Create User
                     </Link>
                   </Button>
@@ -112,14 +116,14 @@ export default async function CreateUnit() {
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           <nav className="mb-6 flex items-center space-x-2 text-sm text-gray-500">
             <Link href="/dashboard" className="flex items-center hover:text-gray-700">
-              <Home className="h-4 w-4 mr-1" />
+              <Home className="h-4 w-4 mr-1" aria-hidden="true" />
               Dashboard
             </Link>
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-4 w-4" aria-hidden="true" />
             <Link href="/dashboard/units" className="hover:text-gray-700">
               Units
             </Link>
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-4 w-4" aria-hidden="true" />
             <span className="text-gray-900 font-medium">Create Unit</span>
           </nav>
 
@@ -127,11 +131,11 @@ export default async function CreateUnit() {
             <CardContent className="p-8 sm:p-12">
               <div className="flex flex-col items-center text-center space-y-6">
                 <div className="rounded-full bg-yellow-100 p-4">
-                  <AlertCircle className="h-12 w-12 text-yellow-600" />
+                  <AlertCircle className="h-12 w-12 text-yellow-600" aria-hidden="true" />
                 </div>
 
                 <div className="space-y-3">
-                  <h2 className="text-2xl font-bold text-gray-900">No Parent Unit Available</h2>
+                  <h1 className="text-2xl font-bold text-gray-900">No Parent Unit Available</h1>
                   <p className="text-lg text-gray-600 max-w-xl">
                     You need a parent unit before creating a new unit. Please contact your Super
                     Admin to request one.
@@ -154,14 +158,14 @@ export default async function CreateUnit() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <nav className="mb-6 flex items-center space-x-2 text-sm text-gray-500">
           <Link href="/dashboard" className="flex items-center hover:text-gray-700">
-            <Home className="h-4 w-4 mr-1" />
+            <Home className="h-4 w-4 mr-1" aria-hidden="true" />
             Dashboard
           </Link>
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="h-4 w-4" aria-hidden="true" />
           <Link href="/dashboard/units" className="hover:text-gray-700">
             Units
           </Link>
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="h-4 w-4" aria-hidden="true" />
           <span className="text-gray-900 font-medium">Create Unit</span>
         </nav>
 

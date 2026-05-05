@@ -57,7 +57,12 @@ export default async function DashboardPage() {
   const socialMediaAccounts = await getSocialMediaAccountsCount()
 
   if (!data) {
-    return <div className="text-center text-red-500">Failed to load dashboard data</div>
+    return (
+      <div className="text-center">
+        <h1 className="text-xl font-semibold">Dashboard</h1>
+        <p className="mt-2 text-red-500">Failed to load dashboard data</p>
+      </div>
+    )
   }
 
   const accessManagementRisk = getRiskLevel(flags.accessManagement.count, { low: 0, medium: 2 })
@@ -77,12 +82,12 @@ export default async function DashboardPage() {
                 <>
                   {isViewingAllTenants ? (
                     <Badge variant="outline" className="bg-gray-100 text-gray-600">
-                      <Globe className="h-3 w-3 mr-1" />
+                      <Globe className="h-3 w-3 mr-1" aria-hidden="true" />
                       All Tenants
                     </Badge>
                   ) : selectedTenant ? (
                     <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-                      <Building2 className="h-3 w-3 mr-1" />
+                      <Building2 className="h-3 w-3 mr-1" aria-hidden="true" />
                       {selectedTenant.name}
                     </Badge>
                   ) : null}
@@ -110,7 +115,7 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <main className="mx-auto px-0 py-0">
+      <section className="mx-auto px-0 py-0" aria-label="Dashboard content">
         {user && effectiveRole === UserRolesEnum.SuperAdmin && isViewingAllTenants && (
           <AggregateMetricsView />
         )}
@@ -205,7 +210,7 @@ export default async function DashboardPage() {
             />
           </div>
         </div>
-      </main>
+      </section>
     </div>
   )
 }

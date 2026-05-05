@@ -1,7 +1,7 @@
 'use client'
 
 import { ComplianceTask } from '@/types/payload-types'
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/shared/components/ui/card'
 import { Button } from '@/shared/components/ui/button'
 import Link from 'next/link'
 import { ArrowLeft, Shield } from 'lucide-react'
@@ -20,17 +20,17 @@ export const TwoFactorForm = ({ task }: TwoFactorFormProps) => {
     <div className="container mx-auto py-6 max-w-4xl space-y-6">
       <Button variant="ghost" asChild>
         <Link href="/dashboard/compliance">
-          <ArrowLeft className="mr-2 h-4 w-4" />
+          <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" />
           Back to Tasks
         </Link>
       </Button>
 
       <Card className={isOverdue ? 'border-destructive' : ''}>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Shield className="h-6 w-6" />
+          <h1 className="flex items-center gap-2 leading-none font-semibold text-2xl">
+            <Shield className="h-6 w-6" aria-hidden="true" />
             Confirm Two-Factor Authentication (2FA)
-          </CardTitle>
+          </h1>
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
@@ -46,7 +46,7 @@ export const TwoFactorForm = ({ task }: TwoFactorFormProps) => {
           <div className="bg-muted p-6 rounded-lg space-y-4">
             <div className="flex items-center gap-2">
               <Shield className="h-5 w-5 text-primary" />
-              <h3 className="font-semibold text-lg">Two-Factor Authentication (2FA)</h3>
+              <h2 className="font-semibold text-lg">Two-Factor Authentication (2FA)</h2>
             </div>
 
             <div className="space-y-3">

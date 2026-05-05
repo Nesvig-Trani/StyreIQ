@@ -7,7 +7,6 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
   Input,
   Label,
 } from '@/shared'
@@ -46,7 +45,7 @@ export function ForgotPasswordForm() {
               </Button>
             </Link>
           </div>
-          <CardTitle className="text-2xl font-bold">Reset your password</CardTitle>
+          <h1 className="text-2xl font-bold leading-none">Reset your password</h1>
           <CardDescription>
             {isSubmitted
               ? 'Check your email for a password reset link'

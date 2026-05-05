@@ -1,6 +1,6 @@
 import React from 'react'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
-import { Card, CardContent, CardHeader, CardTitle, Button, Badge } from '@/shared'
+import { Card, CardContent, CardHeader, Button, Badge } from '@/shared'
 import { redirect } from 'next/navigation'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { BookOpen, CheckCircle } from 'lucide-react'
@@ -88,8 +88,8 @@ export default async function ResourcesPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-3">
-            <BookOpen className="h-6 w-6 text-primary" />
-            <CardTitle>Training Resources</CardTitle>
+            <BookOpen className="h-6 w-6 text-primary" aria-hidden="true" />
+            <h1 className="text-2xl font-bold leading-none">Training Resources</h1>
           </div>
           <p className="text-sm text-muted-foreground mt-2">
             Review trainings you&apos;ve completed. Assigned trainings appear in My Tasks until
@@ -99,7 +99,10 @@ export default async function ResourcesPage() {
         <CardContent>
           {availableTrainings.length === 0 ? (
             <div className="text-center py-12">
-              <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <BookOpen
+                className="h-12 w-12 text-muted-foreground mx-auto mb-4"
+                aria-hidden="true"
+              />
               <p className="text-lg font-semibold">No completed trainings yet</p>
               <p className="text-muted-foreground">
                 When you complete a training from My Tasks, it will appear here for easy reference.
@@ -114,10 +117,10 @@ export default async function ResourcesPage() {
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
-                            <h3 className="font-semibold text-lg">{training.title}</h3>
+                            <h2 className="font-semibold text-lg">{training.title}</h2>
                             {training.completed && (
                               <Badge variant="secondary" className="flex items-center gap-1">
-                                <CheckCircle className="h-3 w-3" />
+                                <CheckCircle className="h-3 w-3" aria-hidden="true" />
                                 Completed
                               </Badge>
                             )}
@@ -130,7 +133,7 @@ export default async function ResourcesPage() {
                       </div>
                       <Button asChild className="w-full" variant="outline">
                         <a href={training.url} target="_blank" rel="noopener noreferrer">
-                          <BookOpen className="h-4 w-4 mr-2" />
+                          <BookOpen className="h-4 w-4 mr-2" aria-hidden="true" />
                           {training.completed ? 'Review Training' : 'Start Training'}
                         </a>
                       </Button>

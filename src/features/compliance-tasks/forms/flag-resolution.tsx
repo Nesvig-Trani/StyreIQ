@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { ComplianceTask, Flag, Organization, SocialMedia, User } from '@/types/payload-types'
-import { Card, CardContent, CardHeader, CardTitle, Button, Badge } from '@/shared'
+import { Card, CardContent, CardHeader, Button, Badge } from '@/shared'
 import { ArrowLeft, AlertTriangle, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 import { useFlagResolution } from '../hooks/use-flag-resolution'
@@ -66,22 +66,22 @@ export const FlagResolutionForm = ({ task, flag }: FlagResolutionFormProps) => {
     <div className="container mx-auto py-6 max-w-4xl space-y-6">
       <Button variant="ghost" asChild>
         <Link href="/dashboard/compliance">
-          <ArrowLeft className="mr-2 h-4 w-4" />
+          <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" />
           Back to Tasks
         </Link>
       </Button>
 
       <Card className={isOverdue ? 'border-destructive' : ''}>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <AlertTriangle className="h-6 w-6" />
+          <h1 className="flex items-center gap-2 text-2xl font-bold leading-none">
+            <AlertTriangle className="h-6 w-6" aria-hidden="true" />
             Review Risk Flag
-          </CardTitle>
+          </h1>
         </CardHeader>
         <CardContent className="space-y-6">
           {isOverdue && (
             <div className="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 p-3 rounded-lg flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-red-600" />
+              <AlertTriangle className="h-5 w-5 text-red-600" aria-hidden="true" />
               <span className="text-sm font-medium text-red-900 dark:text-red-100">
                 This flag is overdue
               </span>
@@ -160,7 +160,7 @@ export const FlagResolutionForm = ({ task, flag }: FlagResolutionFormProps) => {
           </div>
 
           <div className="bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 p-4 rounded-lg">
-            <h3 className="font-semibold mb-3">What you will do</h3>
+            <h2 className="font-semibold mb-3">What you will do</h2>
             <ul className="space-y-2">
               <li className="flex items-start gap-2 text-sm">
                 <CheckCircle className="h-4 w-4 text-amber-600 mt-0.5 shrink-0" />

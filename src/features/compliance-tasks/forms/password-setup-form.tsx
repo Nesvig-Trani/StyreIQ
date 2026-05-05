@@ -3,7 +3,7 @@
 import React from 'react'
 import { ComplianceTask } from '@/types/payload-types'
 
-import { Card, CardContent, CardHeader, CardTitle, Button } from '@/shared'
+import { Card, CardContent, CardHeader, Button } from '@/shared'
 import { ArrowLeft, Shield, Key, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 import { usePasswordSetupForm } from '../hooks/usePasswordSetup'
@@ -21,17 +21,17 @@ export const PasswordSetupForm = ({ task }: PasswordSetupFormProps) => {
     <div className="container mx-auto py-6 max-w-4xl space-y-6">
       <Button variant="ghost" asChild>
         <Link href="/dashboard/compliance">
-          <ArrowLeft className="mr-2 h-4 w-4" />
+          <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" />
           Back to Tasks
         </Link>
       </Button>
 
       <Card className={isOverdue ? 'border-destructive' : ''}>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Shield className="h-6 w-6" />
+          <h1 className="flex items-center gap-2 text-2xl font-bold leading-none">
+            <Shield className="h-6 w-6" aria-hidden="true" />
             Password & 2FA Setup
-          </CardTitle>
+          </h1>
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
@@ -47,31 +47,46 @@ export const PasswordSetupForm = ({ task }: PasswordSetupFormProps) => {
 
           <div className="bg-muted p-6 rounded-lg space-y-4">
             <div className="flex items-center gap-2">
-              <Key className="h-5 w-5 text-primary" />
-              <h3 className="font-semibold text-lg">1. Secure Password</h3>
+              <Key className="h-5 w-5 text-primary" aria-hidden="true" />
+              <h2 className="font-semibold text-lg">1. Secure Password</h2>
             </div>
 
             <div className="space-y-3 ml-7">
               <p className="text-sm">Your password must meet the following requirements:</p>
               <ul className="space-y-2 text-sm">
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 shrink-0" />
+                  <CheckCircle
+                    className="h-4 w-4 text-green-600 mt-0.5 shrink-0"
+                    aria-hidden="true"
+                  />
                   <span>Minimum 12 characters in length</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 shrink-0" />
+                  <CheckCircle
+                    className="h-4 w-4 text-green-600 mt-0.5 shrink-0"
+                    aria-hidden="true"
+                  />
                   <span>Combination of uppercase and lowercase letters</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 shrink-0" />
+                  <CheckCircle
+                    className="h-4 w-4 text-green-600 mt-0.5 shrink-0"
+                    aria-hidden="true"
+                  />
                   <span>At least one number</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 shrink-0" />
+                  <CheckCircle
+                    className="h-4 w-4 text-green-600 mt-0.5 shrink-0"
+                    aria-hidden="true"
+                  />
                   <span>At least one special character (!@#$%^&*)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 shrink-0" />
+                  <CheckCircle
+                    className="h-4 w-4 text-green-600 mt-0.5 shrink-0"
+                    aria-hidden="true"
+                  />
                   <span>Do not use common passwords or personal information</span>
                 </li>
               </ul>
@@ -87,8 +102,8 @@ export const PasswordSetupForm = ({ task }: PasswordSetupFormProps) => {
 
           <div className="bg-muted p-6 rounded-lg space-y-4">
             <div className="flex items-center gap-2">
-              <Shield className="h-5 w-5 text-primary" />
-              <h3 className="font-semibold text-lg">2. Two-Factor Authentication (2FA)</h3>
+              <Shield className="h-5 w-5 text-primary" aria-hidden="true" />
+              <h2 className="font-semibold text-lg">2. Two-Factor Authentication (2FA)</h2>
             </div>
 
             <div className="space-y-3 ml-7">

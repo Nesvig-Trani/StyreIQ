@@ -31,7 +31,7 @@ export default async function TenantsPage(props: {
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="space-y-2">
               <div className="flex items-center gap-3">
-                <h2 className="text-2xl font-bold">Tenants</h2>
+                <h1 className="text-2xl font-bold">Tenants</h1>
                 <Badge variant="secondary" className="text-xs">
                   {tenants.totalDocs} Total Tenants
                 </Badge>
@@ -41,7 +41,7 @@ export default async function TenantsPage(props: {
               {isSuperAdmin && (
                 <Button size="sm" className="w-full sm:w-auto" asChild>
                   <Link href="/dashboard/tenants/create" prefetch>
-                    <CirclePlus className="h-4 w-4" />
+                    <CirclePlus className="h-4 w-4" aria-hidden="true" />
                     Create Tenant
                   </Link>
                 </Button>

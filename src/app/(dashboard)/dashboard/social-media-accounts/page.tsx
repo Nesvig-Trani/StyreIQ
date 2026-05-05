@@ -22,6 +22,7 @@ export default async function SocialMediasPage(props: AppPageProps) {
   if (!user) {
     return (
       <div className="p-4">
+        <h1 className="text-2xl font-bold mb-4">Social Media Accounts</h1>
         <p className="text-center text-muted-foreground">
           You must be logged in to view this page.
         </p>
