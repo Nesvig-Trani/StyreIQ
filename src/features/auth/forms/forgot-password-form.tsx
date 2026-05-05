@@ -108,11 +108,7 @@ export function ForgotPasswordForm() {
           <CardContent className="space-y-4">
             <div className="text-center py-6">
               <div className="mx-auto w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                <MailIcon
-                  className="h-6 w-6 text-green-600"
-                  aria-label="Password reset email sent"
-                  role="img"
-                />
+                <MailIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
               </div>
               <p className="text-sm text-muted-foreground mb-4">
                 We&#39;ve sent a password reset link to <strong>{email}</strong>
