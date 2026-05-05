@@ -3,7 +3,7 @@
 import React from 'react'
 import { ComplianceTask } from '@/types/payload-types'
 
-import { Card, CardContent, CardHeader, CardTitle, Button } from '@/shared'
+import { Card, CardContent, CardHeader, Button } from '@/shared'
 import { ArrowLeft, BookOpen } from 'lucide-react'
 import Link from 'next/link'
 import { useTrainingForm } from '../hooks/useTraining'
@@ -70,17 +70,17 @@ export const TrainingForm = ({ task }: TrainingFormProps) => {
     <div className="container mx-auto py-6 max-w-4xl space-y-6">
       <Button variant="ghost" asChild>
         <Link href="/dashboard/compliance">
-          <ArrowLeft className="mr-2 h-4 w-4" />
+          <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" />
           Back to Tasks
         </Link>
       </Button>
 
       <Card className={isOverdue ? 'border-destructive' : ''}>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BookOpen className="h-6 w-6" />
+          <h1 className="flex items-center gap-2 text-2xl font-bold leading-none">
+            <BookOpen className="h-6 w-6" aria-hidden="true" />
             {task.description?.replace('Complete: ', '') || 'Training'}
-          </CardTitle>
+          </h1>
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
@@ -94,12 +94,12 @@ export const TrainingForm = ({ task }: TrainingFormProps) => {
           </div>
 
           <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 p-4 rounded-lg">
-            <h3 className="font-semibold mb-2">About this training</h3>
+            <h2 className="font-semibold mb-2">About this training</h2>
             <p className="text-sm">{content.about}</p>
           </div>
 
           <div className="bg-muted p-6 rounded-lg space-y-4">
-            <h3 className="font-semibold text-lg">What you will gain from this training</h3>
+            <h2 className="font-semibold text-lg">What you will gain from this training</h2>
             <ul className="space-y-2">
               {content.objectives.map((objective, index) => (
                 <li key={index} className="flex items-start gap-2 text-sm">
@@ -122,7 +122,7 @@ export const TrainingForm = ({ task }: TrainingFormProps) => {
           )}
 
           <div className="bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 p-4 rounded-lg">
-            <h3 className="font-semibold mb-3">To complete this training</h3>
+            <h2 className="font-semibold mb-3">To complete this training</h2>
             <ol className="space-y-2">
               <li className="flex items-start gap-2 text-sm">
                 <span className="font-semibold">1.</span>

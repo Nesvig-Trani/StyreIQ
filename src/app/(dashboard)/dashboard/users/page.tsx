@@ -73,7 +73,7 @@ export default async function UsersPage(props: {
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="space-y-2">
               <div className="flex items-center gap-3 flex-wrap">
-                <h2 className="text-2xl font-bold">Users</h2>
+                <h1 className="text-2xl font-bold">Users</h1>
                 <Badge variant="secondary" className="text-xs">
                   {users.totalDocs} Total Users
                 </Badge>
@@ -99,9 +99,9 @@ export default async function UsersPage(props: {
                 )}
               </div>
               <div className="space-y-3">
-                <h3 className="text-lg font-semibold">
+                <h2 className="text-lg font-semibold">
                   Add everyone connected to your social media accounts.
-                </h3>
+                </h2>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   This includes admins, back-ups, designers, student workers, or outside partners.
                   Each user is tied to a unit in your org chart so you can see every point of
@@ -138,7 +138,7 @@ export default async function UsersPage(props: {
                       href={'/dashboard/users/create'}
                       prefetch
                     >
-                      <CirclePlus className="h-4 w-4" />
+                      <CirclePlus className="h-4 w-4" aria-hidden="true" />
                       Create User
                     </Link>
                   </Button>

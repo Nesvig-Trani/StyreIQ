@@ -49,15 +49,15 @@ export const DashboardSocialMedias: React.FC<DashboardSocialMediasProps> = ({
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="space-y-2">
               <div className="flex items-center gap-3">
-                <h2 className="text-2xl font-bold">Social Media Accounts</h2>
+                <h1 className="text-2xl font-bold">Social Media Accounts</h1>
                 <Badge variant="secondary" className="text-xs">
                   {socialMedias.totalDocs} Accounts
                 </Badge>
               </div>
               <div className="space-y-3">
-                <h3 className="text-lg font-semibold">
+                <h2 className="text-lg font-semibold">
                   See the full ecosystem of accounts tied to your organization.
-                </h3>
+                </h2>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   Each account is connected to the right unit and users so you know who&apos;s
                   involved, where it fits, and how it contributes to your overall footprint. This
@@ -70,7 +70,7 @@ export const DashboardSocialMedias: React.FC<DashboardSocialMediasProps> = ({
               {can('create', 'SOCIAL_MEDIAS') && !isViewingAllTenants && (
                 <Button size="sm" className="w-full sm:w-auto" asChild>
                   <Link href="/dashboard/social-media-accounts/create">
-                    <CirclePlus className="h-4 w-4" />
+                    <CirclePlus className="h-4 w-4" aria-hidden="true" />
                     Create Social Media Account
                   </Link>
                 </Button>

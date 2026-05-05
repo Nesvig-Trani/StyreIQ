@@ -32,7 +32,7 @@ export default async function PoliciesPage() {
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="space-y-2">
               <div className="flex items-center gap-3">
-                <h2 className="text-2xl font-bold">Policy & Guidelines</h2>
+                <h1 className="text-2xl font-bold">Policy & Guidelines</h1>
                 {!isViewingAllTenants && lastPolicy && (
                   <Badge variant="secondary" className="text-xs">
                     Current Version {lastPolicy.version}
@@ -40,13 +40,13 @@ export default async function PoliciesPage() {
                 )}
               </div>
               <div className="space-y-3">
-                <h3 className="text-lg font-semibold">
+                <h2 className="text-lg font-semibold">
                   {isViewingAllTenants
                     ? 'Select a tenant to manage policies'
                     : canEditPolicies
                       ? 'Keep your rules in one place.'
                       : "View your organization's approved social media policies or guidelines."}
-                </h3>
+                </h2>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {isViewingAllTenants
                     ? 'Policies are tenant-specific. Please select a tenant from the selector to view or edit their governance policies.'
@@ -68,8 +68,8 @@ export default async function PoliciesPage() {
         {isViewingAllTenants ? (
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
             <div className="max-w-md mx-auto space-y-4">
-              <Globe className="h-12 w-12 mx-auto text-gray-400" />
-              <h3 className="text-lg font-semibold text-gray-900">Viewing All Tenants</h3>
+              <Globe className="h-12 w-12 mx-auto text-gray-400" aria-hidden="true" />
+              <h2 className="text-lg font-semibold text-gray-900">Viewing All Tenants</h2>
               <p className="text-sm text-gray-600">
                 To create or edit policies, please select a specific tenant.
               </p>

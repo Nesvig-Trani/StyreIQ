@@ -71,13 +71,13 @@ export default async function FlagsPage(props: {
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="space-y-2">
               <div className="flex items-center gap-3">
-                <h2 className="text-2xl font-bold">Risk Flags</h2>
+                <h1 className="text-2xl font-bold">Risk Flags</h1>
                 <Badge variant="secondary" className="text-xs">
                   {flags.totalDocs} Total Flags
                 </Badge>
               </div>
               <div className="space-y-3">
-                <h3 className="text-lg font-semibold">Spot issues before they become problems.</h3>
+                <h2 className="text-lg font-semibold">Spot issues before they become problems.</h2>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   Flags help you identify risks like inactive accounts, missing connected users, or
                   compliance gaps. Assign them to the right people so nothing is overlooked and
@@ -89,7 +89,7 @@ export default async function FlagsPage(props: {
               {!tenantContext.isViewingAllTenants && (
                 <Button size="sm" className="w-full sm:w-auto" asChild>
                   <Link href="/dashboard/flags/create">
-                    <CirclePlus className="h-4 w-4" />
+                    <CirclePlus className="h-4 w-4" aria-hidden="true" />
                     Create Risk Flag
                   </Link>
                 </Button>

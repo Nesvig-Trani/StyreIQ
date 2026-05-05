@@ -6,7 +6,6 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
   Label,
   PasswordInput,
 } from '@/shared'
@@ -42,7 +41,7 @@ export function ResetPasswordForm() {
               Back to login
             </Button>
           </div>
-          <CardTitle className="text-2xl font-bold">Set new password</CardTitle>
+          <h1 className="text-2xl font-bold leading-none">Set new password</h1>
           <CardDescription>
             Enter your new password below. Make sure it&#39;s strong and secure.
           </CardDescription>
