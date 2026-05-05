@@ -11,9 +11,9 @@ export const TermsSection = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6 transition-colors"
+          className="inline-flex items-center rounded-md text-blue-600 outline-none mb-6 transition-colors hover:text-blue-700 focus-visible:text-blue-800 focus-visible:ring-2 focus-visible:ring-blue-600/50 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50"
         >
-          <ArrowLeft className="h-4 w-4 mr-2" />
+          <ArrowLeft className="h-4 w-4 mr-2 shrink-0" aria-hidden />
           Back to Home
         </Link>
 

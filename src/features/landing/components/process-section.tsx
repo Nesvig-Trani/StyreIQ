@@ -32,7 +32,7 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({
             return (
               <div key={index} className={`text-center ${isLastOdd ? 'md:col-start-2' : ''}`}>
                 <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <step.icon className="w-6 h-6 text-orange-600" />
+                  <step.icon className="w-6 h-6 text-orange-600" aria-hidden="true" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-800 tracking-tight mb-3">
                   {step.title}
