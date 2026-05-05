@@ -179,8 +179,10 @@ For any non-trivial change (multi-file or unfamiliar code):
 
 Status of required integrations. If any are disconnected, run `/melt-link` to set up.
 
-- [x] Ticket tracker — Linear (connected 2026-05-04)
-- [x] Browser testing — Chrome DevTools MCP (connected 2026-05-04; see `.mcp.json` — ensure Cursor loads project MCPs so browser tools appear in chat)
+- [x] Ticket tracker — Linear (connected 2026-05-05; MCP entry `linear` in [`.mcp.json`](.mcp.json) via [`mcp-remote` → Linear hosted MCP](https://linear.app/docs/mcp); first use may prompt OAuth — if auth errors, clear `~/.mcp-auth` per Linear FAQ and retry)
+- [x] Browser testing — Chrome DevTools MCP (connected 2026-05-05; [`chrome-devtools`](.mcp.json) — Google Chrome detected on PATH; reload Cursor MCP if tools do not appear in chat)
+
+Supplementary — GitHub Issues / PR workflows: `gh` CLI authenticated locally (not a substitute for Linear).
 
 ## Workflow Skills
 
