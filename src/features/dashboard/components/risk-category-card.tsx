@@ -1,3 +1,4 @@
+import type { FC } from 'react'
 import { LucideIcon } from 'lucide-react'
 
 interface RiskItem {
@@ -15,7 +16,7 @@ interface RiskCategoryCardProps {
   onClick?: () => void
 }
 
-export const RiskCategoryCard: React.FC<RiskCategoryCardProps> = ({
+export const RiskCategoryCard: FC<RiskCategoryCardProps> = ({
   title,
   subtitle,
   issues,
@@ -37,8 +38,8 @@ export const RiskCategoryCard: React.FC<RiskCategoryCardProps> = ({
     }
   }
 
-  const getIconWrapper = (color: string) => {
-    switch (color) {
+  const getIconWrapper = (colorKey: string) => {
+    switch (colorKey) {
       case 'red':
         return 'bg-red-100 text-red-600'
       case 'orange':
@@ -50,24 +51,28 @@ export const RiskCategoryCard: React.FC<RiskCategoryCardProps> = ({
     }
   }
 
+  const issueWord = issues === 1 ? 'issue' : 'issues'
+
   return (
     <div
       onClick={onClick}
       className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm cursor-pointer hover:shadow-md transition"
     >
-      <div className="flex items-center space-x-3 mb-3">
-        <div className={`p-2 rounded-lg ${getIconWrapper(color)}`}>
-          <Icon size={20} />
+      <div className="flex items-start space-x-3 mb-3">
+        <div className={`p-2 rounded-lg shrink-0 ${getIconWrapper(color)}`} aria-hidden="true">
+          <Icon size={20} aria-hidden="true" />
         </div>
-        <div>
-          <h3 className="font-medium text-gray-900 !m-0">{title}</h3>
-          <p className="text-sm text-gray-600 !m-0">{subtitle}</p>
-        </div>
-      </div>
 
-      <div className="mb-0 flex items-baseline">
-        <p className="text-2xl font-bold text-gray-900">{issues}</p>
-        <p className="pl-1 text-sm text-gray-500">{issues === 1 ? 'issue' : 'issues'}</p>
+        <dl className="m-0 flex-1 min-w-0 space-y-0">
+          <dt className="font-medium text-gray-900">{title}</dt>
+          <dd className="m-0 space-y-3">
+            <span className="block text-sm text-gray-600">{subtitle}</span>
+            <span className="flex items-baseline">
+              <span className="text-2xl font-bold text-gray-900">{issues}</span>
+              <span className="pl-1 text-sm text-gray-500">{issueWord}</span>
+            </span>
+          </dd>
+        </dl>
       </div>
 
       {items.length > 0 && (
@@ -75,8 +80,9 @@ export const RiskCategoryCard: React.FC<RiskCategoryCardProps> = ({
           {items.map((item, index) => (
             <div key={index} className="flex items-center space-x-2">
               <div
-                className={`w-2 h-2 rounded-full flex-shrink-0 ${getSeverityColor(item.severity)}`}
-              ></div>
+                className={`w-2 h-2 rounded-full shrink-0 ${getSeverityColor(item.severity)}`}
+                aria-hidden="true"
+              />
               <span className="text-sm text-gray-700 truncate">{item.label}</span>
             </div>
           ))}
