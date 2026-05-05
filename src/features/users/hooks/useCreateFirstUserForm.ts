@@ -43,12 +43,18 @@ export function useCreateFirstUserForm() {
             toast.error(
               createElement(
                 'span',
-                { role: 'alert' },
+                { role: 'status', 'aria-live': 'polite' as const },
                 'An error occurred while creating the user, please try again',
               ),
             )
           } else {
-            toast.error(createElement('span', { role: 'alert' }, 'An unexpected error occurred'))
+            toast.error(
+              createElement(
+                'span',
+                { role: 'status', 'aria-live': 'polite' as const },
+                'An unexpected error occurred',
+              ),
+            )
           }
         }
       },

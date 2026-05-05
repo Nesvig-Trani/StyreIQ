@@ -97,7 +97,7 @@ export function ForgotPasswordForm() {
         {submitError && (
           <CardContent className="space-y-4">
             <div className="text-center py-6">
-              <p role="alert" className="text-sm text-red-600">
+              <p role="status" aria-live="polite" className="text-sm text-red-600">
                 {submitError}
               </p>
             </div>
