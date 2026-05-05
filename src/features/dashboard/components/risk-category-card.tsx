@@ -1,4 +1,4 @@
-import type { FC } from 'react'
+import type { FC, MouseEventHandler } from 'react'
 import { LucideIcon } from 'lucide-react'
 
 interface RiskItem {
@@ -13,7 +13,7 @@ interface RiskCategoryCardProps {
   color: 'red' | 'orange' | 'yellow' | 'gray'
   icon: LucideIcon
   items?: RiskItem[]
-  onClick?: () => void
+  onClick?: MouseEventHandler<HTMLButtonElement>
 }
 
 export const RiskCategoryCard: FC<RiskCategoryCardProps> = ({
@@ -38,32 +38,45 @@ export const RiskCategoryCard: FC<RiskCategoryCardProps> = ({
     }
   }
 
-  const getIconWrapper = (colorKey: string) => {
+  const getIconBg = (colorKey: string) => {
     switch (colorKey) {
       case 'red':
-        return 'bg-red-100 text-red-600'
+        return 'bg-red-100'
       case 'orange':
-        return 'bg-orange-100 text-orange-600'
+        return 'bg-orange-100'
       case 'yellow':
-        return 'bg-yellow-100 text-yellow-600'
+        return 'bg-yellow-100'
       default:
-        return 'bg-gray-100 text-gray-600'
+        return 'bg-gray-100'
+    }
+  }
+
+  const getIconColor = (colorKey: string) => {
+    switch (colorKey) {
+      case 'red':
+        return 'text-red-600'
+      case 'orange':
+        return 'text-orange-600'
+      case 'yellow':
+        return 'text-yellow-600'
+      default:
+        return 'text-gray-600'
     }
   }
 
   const issueWord = issues === 1 ? 'issue' : 'issues'
 
-  return (
-    <div
-      onClick={onClick}
-      className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm cursor-pointer hover:shadow-md transition"
-    >
-      <div className="flex items-start space-x-3 mb-3">
-        <div className={`p-2 rounded-lg shrink-0 ${getIconWrapper(color)}`} aria-hidden="true">
-          <Icon size={20} aria-hidden="true" />
+  const baseCardClasses =
+    'bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition w-full text-left'
+
+  const body = (
+    <>
+      <div className="mb-3 flex items-start space-x-3">
+        <div className={`shrink-0 rounded-lg p-2 ${getIconBg(color)}`} aria-hidden="true">
+          <Icon size={20} className={getIconColor(color)} />
         </div>
 
-        <dl className="m-0 flex-1 min-w-0 space-y-0">
+        <dl className="m-0 min-w-0 flex-1 space-y-0">
           <dt className="font-medium text-gray-900">{title}</dt>
           <dd className="m-0 space-y-3">
             <span className="block text-sm text-gray-600">{subtitle}</span>
@@ -80,14 +93,29 @@ export const RiskCategoryCard: FC<RiskCategoryCardProps> = ({
           {items.map((item, index) => (
             <div key={index} className="flex items-center space-x-2">
               <div
-                className={`w-2 h-2 rounded-full shrink-0 ${getSeverityColor(item.severity)}`}
+                className={`h-2 w-2 shrink-0 rounded-full ${getSeverityColor(item.severity)}`}
                 aria-hidden="true"
               />
-              <span className="text-sm text-gray-700 truncate">{item.label}</span>
+              <span className="truncate text-sm text-gray-700">{item.label}</span>
             </div>
           ))}
         </div>
       )}
-    </div>
+    </>
   )
+
+  if (onClick) {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        aria-label={`Open category — ${title}`}
+        className={`${baseCardClasses} cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
+      >
+        {body}
+      </button>
+    )
+  }
+
+  return <div className={`${baseCardClasses} cursor-default`}>{body}</div>
 }
