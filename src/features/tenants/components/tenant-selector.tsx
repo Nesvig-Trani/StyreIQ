@@ -2,7 +2,7 @@
 
 import { Building2, Globe, Loader2, Check, ChevronsUpDown } from 'lucide-react'
 import type { FC } from 'react'
-import { useState } from 'react'
+import { useId, useState } from 'react'
 
 import { cn } from '@/shared/utils/cn'
 import { Button } from '@/shared/components/ui/button'
@@ -31,6 +31,8 @@ export const TenantSelector: FC = () => {
 
   const router = useRouter()
   const [open, setOpen] = useState(false)
+  const labelId = useId()
+  const triggerId = useId()
 
   if (!canSwitchTenants || availableTenants.length === 0) {
     return null
@@ -45,15 +47,18 @@ export const TenantSelector: FC = () => {
 
   return (
     <div className="w-full space-y-1.5">
-      <label className="text-xs font-medium text-gray-500">Viewing Tenant</label>
+      <label id={labelId} htmlFor={triggerId} className="text-xs font-medium text-gray-500">
+        Viewing Tenant
+      </label>
 
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
+            id={triggerId}
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            aria-label="Select a tenant"
+            aria-labelledby={labelId}
             disabled={isLoading}
             className={cn(
               'w-full justify-between bg-white hover:bg-gray-50',
@@ -63,22 +68,25 @@ export const TenantSelector: FC = () => {
             <div className="flex items-center gap-2 min-w-0 flex-1">
               {isLoading ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin text-gray-400 flex-shrink-0" />
+                  <Loader2
+                    aria-hidden="true"
+                    className="h-4 w-4 animate-spin text-gray-400 shrink-0"
+                  />
                   <span className="text-sm text-gray-500 truncate">Switching...</span>
                 </>
               ) : isViewingAllTenants ? (
                 <>
-                  <Globe className="h-4 w-4 text-gray-500 flex-shrink-0" />
+                  <Globe aria-hidden="true" className="h-4 w-4 text-gray-500 shrink-0" />
                   <span className="text-sm truncate">All Tenants</span>
                 </>
               ) : (
                 <>
-                  <Building2 className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                  <Building2 aria-hidden="true" className="h-4 w-4 text-blue-600 shrink-0" />
                   <span className="text-sm truncate">{selectedTenant?.name}</span>
                 </>
               )}
             </div>
-            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            <ChevronsUpDown aria-hidden="true" className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
 
@@ -94,14 +102,16 @@ export const TenantSelector: FC = () => {
                   onSelect={() => handleSelect(null)}
                   className="cursor-pointer"
                 >
-                  <Globe className="mr-2 h-4 w-4 text-gray-500" />
+                  <Globe aria-hidden="true" className="mr-2 h-4 w-4 text-gray-500" />
                   <div className="flex flex-col flex-1 min-w-0">
                     <span className="font-medium">All Tenants</span>
                     <span className="text-xs text-gray-600">
                       View aggregate data from all tenants
                     </span>
                   </div>
-                  {isViewingAllTenants && <Check className="ml-2 h-4 w-4 text-blue-600" />}
+                  {isViewingAllTenants && (
+                    <Check aria-hidden="true" className="ml-2 h-4 w-4 text-blue-600" />
+                  )}
                 </CommandItem>
               </CommandGroup>
 
@@ -119,6 +129,7 @@ export const TenantSelector: FC = () => {
                       className="cursor-pointer"
                     >
                       <Building2
+                        aria-hidden="true"
                         className={cn(
                           'mr-2 h-4 w-4',
                           isSelected ? 'text-blue-600' : 'text-gray-400',
@@ -132,7 +143,9 @@ export const TenantSelector: FC = () => {
                           <span className="text-xs text-gray-600 truncate">{tenant.domain}</span>
                         )}
                       </div>
-                      {isSelected && <Check className="ml-2 h-4 w-4 text-blue-600" />}
+                      {isSelected && (
+                        <Check aria-hidden="true" className="ml-2 h-4 w-4 text-blue-600" />
+                      )}
                     </CommandItem>
                   )
                 })}

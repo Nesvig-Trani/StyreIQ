@@ -31,6 +31,7 @@ const SIDEBAR_WIDTH = '12rem'
 const SIDEBAR_WIDTH_MOBILE = '12rem'
 const SIDEBAR_WIDTH_ICON = '3rem'
 const SIDEBAR_KEYBOARD_SHORTCUT = 'b'
+const MOBILE_SIDEBAR_CONTENT_ID = 'mobile-sidebar-content'
 
 type SidebarContextProps = {
   state: 'expanded' | 'collapsed'
@@ -181,6 +182,7 @@ function Sidebar({
     return (
       <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
         <SheetContent
+          id={MOBILE_SIDEBAR_CONTENT_ID}
           data-sidebar="sidebar"
           data-slot="sidebar"
           data-mobile="true"
@@ -251,7 +253,8 @@ function Sidebar({
 }
 
 function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<typeof Button>) {
-  const { toggleSidebar } = useSidebar()
+  const { toggleSidebar, isMobile, openMobile, open } = useSidebar()
+  const isExpanded = isMobile ? openMobile : open
 
   return (
     <Button
@@ -264,9 +267,11 @@ function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<t
         onClick?.(event)
         toggleSidebar()
       }}
+      aria-expanded={isExpanded}
+      aria-controls={isMobile ? MOBILE_SIDEBAR_CONTENT_ID : undefined}
       {...props}
     >
-      <PanelLeftIcon />
+      <PanelLeftIcon aria-hidden="true" />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )
@@ -280,7 +285,6 @@ function SidebarRail({ className, ...props }: React.ComponentProps<'button'>) {
       data-sidebar="rail"
       data-slot="sidebar-rail"
       aria-label="Toggle Sidebar"
-      tabIndex={-1}
       onClick={toggleSidebar}
       title="Toggle Sidebar"
       className={cn(
