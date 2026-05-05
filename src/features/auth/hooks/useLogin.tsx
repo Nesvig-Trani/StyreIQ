@@ -35,10 +35,13 @@ export function useLogin() {
           err.message.includes('locked due to having too many failed login attempts'),
         )
 
-        // Locked account is a rare, security-relevant blocker; keep role=alert per team policy.
         if (lockedError) {
           toast.custom((t) => (
-            <div role="alert" className="p-4 bg-red-100 rounded-md shadow text-sm">
+            <div
+              role="status"
+              aria-live="polite"
+              className="p-4 bg-red-100 rounded-md shadow text-sm"
+            >
               <p className="font-semibold text-red-700">
                 Your account is locked for 10 minutes due to too many failed login attempts.
               </p>
