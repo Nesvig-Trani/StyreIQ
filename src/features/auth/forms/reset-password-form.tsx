@@ -103,7 +103,7 @@ export function ResetPasswordForm() {
           <CardContent className="pt-0">
             {apiError && (
               <div className="text-sm text-red-500 text-center space-y-2">
-                <p role="alert" className="!my-2">
+                <p role="status" aria-live="polite" className="!my-2">
                   {apiError}
                 </p>
                 <Link href="/forgot-password">
