@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { RiskCategoryCard } from '@/features/dashboard/components/risk-category-card'
 import { RiskDetailsModal } from '@/features/dashboard/components/risk-details-modal'
 import { Shield, ShieldAlert, ClipboardList, LucideIcon, Flag as FlagIcon } from 'lucide-react'
@@ -8,6 +8,7 @@ import { flagTypeLabels } from '@/features/flags/constants/flagTypeLabels'
 import { ComplianceTask, Flag } from '@/types/payload-types'
 import { FlagTypeEnum } from '@/features/flags/schemas'
 import { getUsersByIds } from '@/features/users'
+import { toast } from 'sonner'
 
 interface IssueUser {
   id: number
@@ -44,6 +45,9 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
     icon: Shield,
     color: 'red' as 'red' | 'yellow' | 'orange' | 'gray',
   })
+
+  // Tracks the card button that opened the modal so focus can be returned to it on close.
+  const triggerRef = useRef<HTMLButtonElement>(null)
 
   const convertFlagsToIssues = async (data: (Flag | ComplianceTask)[]): Promise<Issue[]> => {
     const isFlag = (item: Flag | ComplianceTask): item is Flag => {
@@ -254,14 +258,15 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
           color="red"
           icon={Shield}
           items={[]}
-          onClick={() =>
+          onClick={(e) => {
+            triggerRef.current = e.currentTarget
             openModal(
               'Access Management',
               'Review and confirm access to assigned social media accounts',
               Shield,
               'red',
-            )
-          }
+            ).catch(() => toast.error('Failed to load risk details. Please try again.'))
+          }}
         />
 
         <RiskCategoryCard
@@ -271,14 +276,17 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
           color="red"
           icon={ShieldAlert}
           items={[]}
-          onClick={() =>
+          onClick={(e) => {
+            triggerRef.current = e.currentTarget
             openModal(
               'Security Requirements',
               'Confirm required security practices for users and accounts',
               ShieldAlert,
               'red',
+            ).catch(() =>
+              toast.error('Failed to load security requirements details. Please try again.'),
             )
-          }
+          }}
         />
 
         <RiskCategoryCard
@@ -288,14 +296,15 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
           color="yellow"
           icon={ClipboardList}
           items={[]}
-          onClick={() =>
+          onClick={(e) => {
+            triggerRef.current = e.currentTarget
             openModal(
               'Policies & Training',
               'Acknowledge required policies and complete required training',
               ClipboardList,
               'yellow',
-            )
-          }
+            ).catch(() => toast.error('Failed to load risk details. Please try again.'))
+          }}
         />
 
         <RiskCategoryCard
@@ -305,9 +314,12 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
           color="red"
           icon={FlagIcon}
           items={[]}
-          onClick={() =>
-            openModal('Flagged Issues', 'Resolve manually flagged issues', FlagIcon, 'red')
-          }
+          onClick={(e) => {
+            triggerRef.current = e.currentTarget
+            openModal('Flagged Issues', 'Resolve manually flagged issues', FlagIcon, 'red').catch(
+              () => toast.error('Failed to load flagged issues details. Please try again.'),
+            )
+          }}
         />
       </div>
 
@@ -319,6 +331,7 @@ export const DashboardRiskSection: React.FC<DashboardRiskSectionProps> = ({ flag
         issues={modalState.issues}
         icon={modalState.icon}
         color={modalState.color}
+        returnFocusRef={triggerRef as React.RefObject<HTMLButtonElement>}
       />
     </>
   )
