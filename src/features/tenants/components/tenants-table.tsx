@@ -31,6 +31,7 @@ export default function TenantsTable({
 
   return (
     <DataTable
+      tableAccessibleName="Tenants"
       columns={columns}
       data={data}
       pagination={pagination}

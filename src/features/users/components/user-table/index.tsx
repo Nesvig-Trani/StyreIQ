@@ -45,6 +45,7 @@ export function UserTable({
 
   return (
     <DataTable
+      tableAccessibleName={isViewingAllTenants ? 'Users across tenants' : 'Users'}
       columns={columns}
       data={data}
       pagination={pagination}

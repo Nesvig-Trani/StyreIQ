@@ -7,6 +7,12 @@ import { Button, useParsedSearchParams } from '@/shared'
 import Link from 'next/link'
 import { Settings, Pencil } from 'lucide-react'
 
+function tenantRowLabel(tenant: Tenant): string {
+  const name = tenant.name?.trim()
+  if (name) return name
+  return `Tenant #${tenant.id}`
+}
+
 function useTenantsTable({ canEdit, canEditTenant }: { canEdit: boolean; canEditTenant: boolean }) {
   const searchParams = useParsedSearchParams(tenantSearchSchema)
 
@@ -28,12 +34,18 @@ function useTenantsTable({ canEdit, canEditTenant }: { canEdit: boolean; canEdit
       accessorKey: 'actions',
       header: 'Actions',
       cell: ({ row }) => {
+        const label = tenantRowLabel(row.original)
         return (
           <div className="flex items-center gap-2">
             {canEditTenant && (
-              <Button className="text-white!" asChild size="icon" aria-label="Edit tenant">
+              <Button
+                className="text-white!"
+                asChild
+                size="icon"
+                aria-label={`Edit tenant — ${label}`}
+              >
                 <Link href={`/dashboard/tenants/update/${row.original.id}`}>
-                  <Pencil className="h-4 w-4" />
+                  <Pencil className="h-4 w-4" aria-hidden="true" />
                 </Link>
               </Button>
             )}
@@ -41,10 +53,10 @@ function useTenantsTable({ canEdit, canEditTenant }: { canEdit: boolean; canEdit
               className="text-white!"
               asChild
               size="icon"
-              aria-label="Configure governance settings"
+              aria-label={`Governance settings — ${label}`}
             >
               <Link href={`/dashboard/tenants/update-governance-settings/${row.original.id}`}>
-                <Settings className="h-4 w-4" />
+                <Settings className="h-4 w-4" aria-hidden="true" />
               </Link>
             </Button>
           </div>

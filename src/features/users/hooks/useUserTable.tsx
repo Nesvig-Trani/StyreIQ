@@ -147,6 +147,7 @@ function useUserTable({
       header: 'Actions',
       cell: ({ row }) => {
         const id = row.original.id
+        const entityLabel = row.original.name?.trim() || row.original.email
         const effectiveRole = getEffectiveRoleFromUser(user)
         const isOwnRecord = user?.id === id
         const isDialogOpen = selectedUserId === id.toString()
@@ -197,8 +198,12 @@ function useUserTable({
                   }
                 }}
                 trigger={
-                  <Button size="icon" variant="outline" aria-label="View user details">
-                    <EyeIcon className="h-4 w-4" />
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    aria-label={`View user details — ${entityLabel}`}
+                  >
+                    <EyeIcon className="h-4 w-4" aria-hidden="true" />
                   </Button>
                 }
               />
@@ -214,7 +219,12 @@ function useUserTable({
             )}
 
             {canManageAccess && effectiveRole !== UserRolesEnum.SuperAdmin && (
-              <Button size="icon" variant="outline" aria-label="Manage user access" asChild>
+              <Button
+                size="icon"
+                variant="outline"
+                aria-label={`Manage user access — ${entityLabel}`}
+                asChild
+              >
                 <Link href={`/dashboard/users/access/${id}`}>
                   <FileLock2 className="h-4 w-4" aria-hidden="true" />
                 </Link>
@@ -223,7 +233,7 @@ function useUserTable({
 
             <div className="text-white!">
               {canEdit && (
-                <Button size="icon" aria-label="Edit user" asChild>
+                <Button size="icon" aria-label={`Edit user — ${entityLabel}`} asChild>
                   <Link href={`/dashboard/users/update/${id}`}>
                     <PencilIcon className="h-4 w-4" aria-hidden="true" />
                   </Link>
