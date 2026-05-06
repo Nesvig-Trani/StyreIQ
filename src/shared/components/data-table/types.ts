@@ -6,6 +6,8 @@ export type DataTableSorting<TData> = {
 export type DataTableSearchFilter = {
   type: 'search'
   id: string
+  /** Accessible name when there is no visible `<label>` (preferred over placeholder for SR). */
+  label?: string
   placeholder?: string
 }
 

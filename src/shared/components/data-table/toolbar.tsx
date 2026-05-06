@@ -61,6 +61,7 @@ export const DataTableToolbar = <TData,>(props: DataTableToolbarProps<TData>): R
                   key={filter.id}
                   table={table}
                   id={filter.id}
+                  label={filter.label}
                   placeholder={filter.placeholder}
                 />
               )
@@ -147,7 +148,7 @@ export const DataTableToolbar = <TData,>(props: DataTableToolbarProps<TData>): R
               className="h-8 px-2 lg:px-3 w-full sm:w-auto"
             >
               Reset
-              <CrossIcon className="ml-2 h-4 w-4" />
+              <CrossIcon className="ml-2 h-4 w-4" aria-hidden="true" />
             </Button>
           )}
         </div>
