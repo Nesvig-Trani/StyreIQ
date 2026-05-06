@@ -23,6 +23,33 @@ Before starting, determine which mode to operate in:
 2. **If a plan exists** → **Feature mode**: scope the audit to the views created or modified by this feature. Results get appended to the plan file as a `## UX Review` section.
 3. **If no plan exists** → **Full audit mode**: audit the entire application. Results produce a standalone report file (same pattern as `/melt-audit`).
 
+## Status and Severity Vocabulary
+
+Every finding has two orthogonal axes — what the check evaluated to (status) and how bad it is if it failed (severity). These vocabularies are enforced by the dashboard's database; off-vocab values are rejected on submission.
+
+Status (always set):
+
+- ✅ **Pass** — requirement met. Severity: omit.
+- ⚠️ **Warning** — partially met or could be improved. Severity: required (Critical/High/Medium/Low).
+- ❌ **Missing** — requirement not met. Severity: required (Critical/High/Medium/Low).
+- ➖ **N/A** — not applicable. Severity: omit.
+
+Severity (required on every Warning and Missing):
+
+- **Critical** — blocks core flows, makes the product unusable, or hides data the user needs to act on
+- **High** — significant usability gap that frustrates users or hides important affordances
+- **Medium** — notable polish gap that increases friction but doesn't block the flow
+- **Low** — small inconsistency or aesthetic improvement
+
+Format each finding using this line shape:
+
+```
+- {status} [{severity}] **{check label}** {finding title} — {evidence}
+```
+
+Example: `- ❌ [High] **list.back-button** No back button on detail view — clicking browser back resets list to page 1`
+For ✅ Pass and ➖ N/A findings, omit the `[{severity}]` slot.
+
 ---
 
 ## Feature Mode (Active Plan)
