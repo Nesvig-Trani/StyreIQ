@@ -18,6 +18,8 @@ Package scripts are defined in `package.json`. The repo declares **pnpm** in `en
 - Local database: `docker compose up -d` (see README)
 - Run Payload migrations: `pnpm db:migrate` (alias for `payload migrate`)
 - Create a new migration: `pnpm db:create`
+- Generate Payload DB schema artifact: `pnpm db:generate` (`payload generate:db-schema`)
+- Ad hoc Payload CLI: `pnpm payload` (passes through to `payload` with `NODE_OPTIONS=--no-deprecation`)
 - Regenerate Payload TypeScript types: `pnpm generate:types`
 - Regenerate Payload admin import map: `pnpm generate:importmap`
 
@@ -73,7 +75,7 @@ For new frontend code, prefer domain-driven architecture:
 
 #### Testing (React)
 
-- Test files live in `__tests__/` within each domain, mirroring the source structure (e.g., `domains/users/__tests__/hooks/useUsersApi.test.ts`)
+- Test files live in `__tests__/` within each feature, mirroring the source structure (e.g., `src/features/users/__tests__/hooks/useUsersApi.test.ts`)
 
 ### Appendix: Next.js Standards
 
@@ -149,7 +151,7 @@ Also avoid these common agent pitfalls:
 
 For any non-trivial change (multi-file or unfamiliar code):
 
-0. Understand the story — read the full ticket/story and linked PRD before starting. If requirements are unclear, the developer should clarify with the PM or client first.
+0. Understand the story — read the full ticket/story and linked PRD before starting. If requirements are unclear, the developer should clarify with the PM or client first. When a ticket ID is known, check `.plans/` for an existing plan before writing a new one.
 
 1. Plan — explore the codebase, design the approach, define a validation plan, create the working branch, write the plan to `.plans/<sprint>/TICKET-XXX.md`
 2. Implement in small steps, validating continuously as you go
@@ -208,3 +210,5 @@ The following workflows are available as AI skills. When a developer asks you to
 - **Environment boundary (Zod)**: follow `src/config/env.ts`.
 - **App Router shell**: follow `src/app/layout.tsx` and route-group layouts under `src/app/(dashboard)/`, `(auth)/`, `(payload)/`.
 - **Tenant-style collection config**: follow `src/features/tenants/plugins/collections/index.ts` for Payload field and access patterns.
+- **TanStack Table wiring in a feature**: follow `src/features/users/hooks/useUserTable.tsx` (columns, sorting, URL/search-param patterns as used in this app).
+- **Hook-form field primitives**: follow `src/shared/components/form-hook-helper/` for controlled fields paired with `react-hook-form` + Zod.
