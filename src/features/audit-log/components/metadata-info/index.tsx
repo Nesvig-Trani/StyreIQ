@@ -21,24 +21,11 @@ const humanizeKey = (key: string) =>
 const isPlainObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value)
 
-function formatScalar(value: unknown): string {
-  if (value == null) return '—'
+function formatScalar(value: string | number | boolean): string {
   if (typeof value === 'boolean') return value ? 'Yes' : 'No'
   if (typeof value === 'number') return String(value)
-  if (typeof value === 'string') {
-    if (isIsoDateString(value)) return new Date(value).toLocaleString()
-    return value
-  }
-  if (Array.isArray(value)) {
-    return value.map((v) => formatScalar(v)).join(', ')
-  }
-  if (isPlainObject(value)) {
-    if ('name' in value && typeof (value as { name: unknown }).name === 'string') {
-      return (value as { name: string }).name
-    }
-    return JSON.stringify(value)
-  }
-  return String(value)
+  if (isIsoDateString(value)) return new Date(value).toLocaleString()
+  return value
 }
 
 function isEmptyMetadata(value: unknown): boolean {
