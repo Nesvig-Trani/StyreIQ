@@ -41,6 +41,7 @@ export const NumberInputHelper = <TFieldValues extends FieldValues>({
               maxLength={INPUT_MAX_LENGTH}
               type="text"
               inputMode="numeric"
+              aria-required={isRequired || undefined}
               onBeforeInput={(e: React.ChangeEvent<HTMLInputElement>): void => {
                 const currentValue = e.target.value
                 const selectionStart = e.target.selectionStart as number

@@ -15,18 +15,31 @@ interface FieldLabelProps {
 }
 
 export const FieldLabel: React.FC<FieldLabelProps> = ({ label, description, required }) => {
+  const labelText = typeof label === 'string' ? label : 'this field'
+
   return (
     <FormLabel className="flex items-center gap-2">
       <span>
         {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
+        {required && (
+          <>
+            <span className="text-red-500 ml-1" aria-hidden="true">
+              *
+            </span>
+            <span className="sr-only"> required</span>
+          </>
+        )}
       </span>
       {description && (
         <TooltipProvider delayDuration={200}>
           <Tooltip>
             <TooltipTrigger asChild>
               <span className="inline-flex">
-                <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help hover:text-primary transition-colors" />
+                <HelpCircle
+                  className="h-4 w-4 text-muted-foreground cursor-help hover:text-primary transition-colors"
+                  aria-hidden="true"
+                />
+                <span className="sr-only">More information about {labelText}</span>
               </span>
             </TooltipTrigger>
             <TooltipContent

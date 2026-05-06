@@ -58,6 +58,8 @@ export type FieldData<TFieldValues extends FieldValues = FieldValues> = {
    * Specifies the children of every element of a list
    */
   children?: FieldData<FieldValues>[]
+  /** Used when `type` === 'array' to name add/remove controls for each repeated item */
+  arrayItemLabel?: string
   multiple?: boolean
   /** Used to specify that the field is required */
   dependsOn?: {

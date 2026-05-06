@@ -4,12 +4,7 @@ import type { ReactNode } from 'react'
 import React from 'react'
 import type { ArrayPath, FieldValues, Path, UseFormReturn } from 'react-hook-form'
 import { useFieldArray } from 'react-hook-form'
-import {
-  FormFieldUncontrolled,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/shared/components/ui/form'
+import { FormFieldUncontrolled, FormItem, FormMessage } from '@/shared/components/ui/form'
 
 import { CheckboxInputHelper } from './fields/checkbox'
 import { DateInputHelper } from './fields/date'
@@ -193,41 +188,56 @@ export const InputListHelper = <TFieldValues extends FieldValues>({
   })
 
   const isRequired = useFieldRequired(form, fieldData.name, fieldData.required)
+  const groupLabel = typeof fieldData.label === 'string' ? fieldData.label : 'field group'
+  const itemLabel = fieldData.arrayItemLabel ?? groupLabel
+
   return (
     <fieldset className={cn('space-y-3', className)}>
+      <legend className="flex items-center gap-2">
+        <span>
+          {fieldData.label}
+          {isRequired && (
+            <>
+              <span className="text-red-500 ml-1" aria-hidden="true">
+                *
+              </span>
+              <span className="sr-only"> required</span>
+            </>
+          )}
+        </span>
+        {fieldData.description && (
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="inline-flex">
+                  <HelpCircle
+                    className="h-4 w-4 text-muted-foreground cursor-help hover:text-primary transition-colors"
+                    aria-hidden="true"
+                  />
+                  <span className="sr-only">More information about {groupLabel}</span>
+                </span>
+              </TooltipTrigger>
+              <TooltipContent
+                side="right"
+                align="start"
+                className="max-w-xs bg-white shadow-lg border p-3"
+                sideOffset={8}
+                hideArrow={true}
+              >
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {fieldData.description}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
+      </legend>
       <FormFieldUncontrolled name={fieldData.name}>
         <FormItem className={cn('col-span-12', className)}>
           <div className="flex w-full items-center gap-4">
-            <FormLabel className="flex items-center gap-2">
-              <span>
-                {fieldData.label}
-                {isRequired && <span className="text-red-500 ml-1">*</span>}
-              </span>
-              {fieldData.description && (
-                <TooltipProvider delayDuration={200}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <span className="inline-flex">
-                        <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help hover:text-primary transition-colors" />
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent
-                      side="right"
-                      align="start"
-                      className="max-w-xs bg-white shadow-lg border p-3"
-                      sideOffset={8}
-                      hideArrow={true}
-                    >
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {fieldData.description}
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              )}
-            </FormLabel>
             <Button
               type="button"
+              aria-label={`Add ${groupLabel}`}
               onClick={(): void => {
                 const object = getFieldListDefaultValues(fieldData.children || [])
                 // expected type is dependent of some specific types that cannot be easily inferred here
@@ -235,7 +245,7 @@ export const InputListHelper = <TFieldValues extends FieldValues>({
                 append(object as any)
               }}
             >
-              <p>Add</p>
+              <span>Add {groupLabel}</span>
             </Button>
           </div>
           <FormMessage />
@@ -257,8 +267,15 @@ export const InputListHelper = <TFieldValues extends FieldValues>({
                 />
               )) || []}
               <div className="col-span-12">
-                <Button variant="destructive" onClick={(): void => remove(index)} type="button">
-                  <p>Remove</p>
+                <Button
+                  variant="destructive"
+                  onClick={(): void => remove(index)}
+                  type="button"
+                  aria-label={`Remove ${itemLabel} item ${index + 1}`}
+                >
+                  <span>
+                    Remove {itemLabel} {index + 1}
+                  </span>
                 </Button>
               </div>
             </div>
