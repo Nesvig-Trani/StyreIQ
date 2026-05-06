@@ -63,8 +63,12 @@ export default function UnitHierarchy({
         <div className="p-4 border-b">
           <div className="space-y-3">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search
+                className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-muted-foreground"
+                aria-hidden="true"
+              />
               <Input
+                aria-label="Search units by name"
                 placeholder="Search by name..."
                 value={searchTerm}
                 className="pl-10"
@@ -118,7 +122,9 @@ export default function UnitHierarchy({
           </div>
         </div>
 
-        <ScrollArea className="flex-1 p-2">{renderFilteredResults()}</ScrollArea>
+        <ScrollArea className="flex-1 p-2">
+          <section aria-label="Organization units tree">{renderFilteredResults()}</section>
+        </ScrollArea>
 
         <div className="flex justify-center p-2 border-t">
           <div className="flex items-center gap-2">
@@ -175,12 +181,12 @@ export default function UnitHierarchy({
                       <>
                         {isEditing ? (
                           <Button size="sm" variant="outline" onClick={() => setIsEditing(false)}>
-                            <X className="h-4 w-4" />
+                            <X className="h-4 w-4" aria-hidden="true" />
                             <span className="ml-1 hidden sm:inline">Cancel</span>
                           </Button>
                         ) : (
                           <Button size="sm" onClick={() => setIsEditing(true)}>
-                            <EditIcon className="h-4 w-4" />
+                            <EditIcon className="h-4 w-4" aria-hidden="true" />
                             <span className="ml-1 hidden sm:inline">Edit</span>
                           </Button>
                         )}
@@ -190,7 +196,7 @@ export default function UnitHierarchy({
                           className="ml-2"
                           onClick={() => setIsDisableModalOpen(true)}
                         >
-                          <XCircleIcon className="h-4 w-4 mr-2" />
+                          <XCircleIcon className="h-4 w-4 mr-2" aria-hidden="true" />
                           Disable
                         </Button>
                         <DisableUnitButton
@@ -223,7 +229,7 @@ export default function UnitHierarchy({
         ) : (
           <div className="flex-1 flex items-center justify-center text-muted-foreground border rounded-lg">
             <div className="text-center p-8">
-              <Building2 className="h-12 w-12 mx-auto mb-4 opacity-50" />
+              <Building2 className="mx-auto mb-4 h-12 w-12 opacity-50" aria-hidden="true" />
               <p className="text-sm">Select a unit to view details</p>
             </div>
           </div>
