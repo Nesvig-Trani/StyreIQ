@@ -24,7 +24,7 @@ type DataTableDateRangeFilterProps<TData> = {
 export const DataTableDateRangeFilter = <TData,>(
   props: DataTableDateRangeFilterProps<TData>,
 ): React.ReactNode => {
-  const { table, id, isGlobal, disabledDays } = props
+  const { table, id, isGlobal, disabledDays, title } = props
 
   const value = getFilterValue(id, table, isGlobal, dateRangeSchema)
 
@@ -42,6 +42,8 @@ export const DataTableDateRangeFilter = <TData,>(
   return (
     <DateRangePicker
       size="sm"
+      filterLabel={title}
+      triggerId={`data-table-date-range-${id}`}
       onSelect={handleSelect}
       disabled={disabled}
       showOutsideDays={false}
@@ -49,7 +51,6 @@ export const DataTableDateRangeFilter = <TData,>(
         from: value?.from ? new Date(value.from) : undefined,
         to: value?.to ? new Date(value.to) : undefined,
       }}
-      {...props}
     />
   )
 }

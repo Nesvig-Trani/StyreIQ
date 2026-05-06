@@ -7,10 +7,18 @@ import { CalendarIcon, LucideLoader, MessageSquareIcon, UserIcon } from 'lucide-
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-export function FlagCommentsModal({ flagId }: { flagId: number }) {
-  const [flagComments, setFlagComments] = useState<FlagComment[]>()
-  const [open, setOpen] = useState<boolean>(false)
-  const [comment, setComment] = useState<string>('')
+export function FlagCommentsModal({
+  flagId,
+  triggerAriaLabel = 'View flag comments',
+  observationTextareaAriaLabel = 'Add observation',
+}: {
+  flagId: number
+  triggerAriaLabel?: string
+  observationTextareaAriaLabel?: string
+}) {
+  const [flagComments, setFlagComments] = useState<FlagComment[]>([])
+  const [open, setOpen] = useState(false)
+  const [comment, setComment] = useState('')
   const {
     isLoading: isCommentsLoading,
     startLoading: startCommentsLoading,
@@ -28,7 +36,7 @@ export function FlagCommentsModal({ flagId }: { flagId: number }) {
       const response = await getComments(flagId)
       setFlagComments(response.docs)
     } catch {
-      toast.error('An error occurred loading history, please try again later')
+      toast.error('An error occurred loading comments, please try again later')
     } finally {
       stopCommentsLoading()
     }
@@ -54,62 +62,61 @@ export function FlagCommentsModal({ flagId }: { flagId: number }) {
   }
 
   return (
-    <div>
-      <Dialog open={open} onOpenChange={handleOpenChange}>
-        <DialogTrigger asChild>
-          <Button aria-label="View flag comments">
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      <DialogTrigger asChild>
+        <Button aria-label={triggerAriaLabel}>
+          <MessageSquareIcon className="h-4 w-4" aria-hidden="true" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogTitle>
+          <div className="flex gap-2">
             <MessageSquareIcon className="h-4 w-4" aria-hidden="true" />
-          </Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogTitle>
-            <div className="flex gap-2">
-              <MessageSquareIcon className="h-4 w-4" />
-              Flag comments
+            Flag comments
+          </div>
+        </DialogTitle>
+
+        <div className="space-y-3">
+          {isCommentsLoading ? (
+            <div className="flex justify-center items-center h-5 w-5">
+              <LucideLoader className="animate-spin" aria-hidden="true" />
             </div>
-          </DialogTitle>
-
-          <div className="space-y-3">
-            {isCommentsLoading ? (
-              <div className="flex justify-center items-center h-5 w-5">
-                <LucideLoader className="animate-spin" />
-              </div>
-            ) : (
-              flagComments?.map((entry, index) => (
-                <div key={index} className="border rounded-lg p-3">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <UserIcon className="h-4 w-4 text-muted-foreground" />
-                      <span className="font-medium text-sm">
-                        {typeof entry.user === 'object' && entry.user?.name}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <CalendarIcon className="h-3 w-3" />
-                      {new Date(entry.createdAt).toLocaleString()}
-                    </div>
+          ) : flagComments.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No comments yet.</p>
+          ) : (
+            flagComments.map((entry) => (
+              <div key={entry.id} className="border rounded-lg p-3">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <UserIcon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                    <span className="font-medium text-sm">
+                      {typeof entry.user === 'object' && entry.user?.name}
+                    </span>
                   </div>
-                  <div className="mb-2">
-                    <p>{entry.comment}</p>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <CalendarIcon className="h-3 w-3" aria-hidden="true" />
+                    {new Date(entry.createdAt).toLocaleString()}
                   </div>
                 </div>
-              ))
-            )}
-          </div>
-          <div>
-            <Textarea
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              placeholder="Add a new observation"
-              className="mb-2"
-            />
-            <Button loading={isCreateLoading} onClick={handleCreateComment}>
-              Add observation
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </div>
+                <p>{entry.comment}</p>
+              </div>
+            ))
+          )}
+        </div>
+
+        <div>
+          <Textarea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="Add a new observation"
+            aria-label={observationTextareaAriaLabel}
+            className="mb-2"
+          />
+          <Button loading={isCreateLoading} onClick={handleCreateComment}>
+            Add observation
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
   )
 }
