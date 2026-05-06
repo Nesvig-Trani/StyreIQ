@@ -20,6 +20,28 @@ import { flagStatusOptions } from '../constants/flagStatusOptions'
 import { UnitCell } from '@/features/units/components/unit-cell'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 
+const EMPTY_FLAG_TYPE_MESSAGE = 'No risk flag type recorded'
+
+function getFlagRowAriaContext(flag: Flag): string {
+  const parts: string[] = [`flag #${flag.id}`]
+
+  const tenant = flag.tenant
+  if (tenant && typeof tenant === 'object' && 'name' in tenant) {
+    parts.push(`tenant ${(tenant as Tenant).name}`)
+  }
+
+  if (typeof flag.flagType === 'string' && flag.flagType in flagTypeLabels) {
+    parts.push(flagTypeLabels[flag.flagType as FlagTypeEnum])
+  }
+
+  const affectedValue = flag.affectedEntity?.value
+  if (affectedValue && typeof affectedValue === 'object' && 'name' in affectedValue) {
+    parts.push(`affected ${(affectedValue as { name: string }).name}`)
+  }
+
+  return parts.join(', ')
+}
+
 function useFlagsTable({
   user,
   organizations,
@@ -69,9 +91,7 @@ function useFlagsTable({
       title: 'Organizations',
       type: 'select',
       allowMultiple: true,
-      options: organizations.map((org) => {
-        return { label: org.name, value: org.id.toString() }
-      }),
+      options: organizations.map((org) => ({ label: org.name, value: org.id.toString() })),
     },
     {
       id: 'detectionDate',
@@ -106,8 +126,11 @@ function useFlagsTable({
       header: 'Risk Flag Type',
       enableColumnFilter: true,
       cell: ({ row }) => {
-        const flagType = row.original.flagType as FlagTypeEnum
-        return <div>{flagTypeLabels[flagType]}</div>
+        const raw = row.original.flagType
+        if (typeof raw === 'string' && raw in flagTypeLabels) {
+          return <div>{flagTypeLabels[raw as FlagTypeEnum]}</div>
+        }
+        return <span className="text-muted-foreground text-sm">{EMPTY_FLAG_TYPE_MESSAGE}</span>
       },
     },
     {
@@ -117,10 +140,10 @@ function useFlagsTable({
       cell: ({ row }) => {
         const organizations = row.original.organizations
 
-        return organizations && organizations?.length > 0 ? (
+        return organizations && organizations.length > 0 ? (
           <UnitCell organizations={organizations as Organization[]} />
         ) : (
-          <span> - </span>
+          <span>-</span>
         )
       },
     },
@@ -152,9 +175,12 @@ function useFlagsTable({
       header: 'Detection Date',
       enableColumnFilter: true,
       cell: ({ row }) => {
-        const detectionDate = row.original.detectionDate
-        const toDate = detectionDate && new Date(detectionDate)
-        return <div className="flex gap-2 align-center">{toDate?.toLocaleString() || ''}</div>
+        const { detectionDate } = row.original
+        return (
+          <div className="flex gap-2 items-center">
+            {detectionDate ? new Date(detectionDate).toLocaleString() : ''}
+          </div>
+        )
       },
     },
     {
@@ -170,18 +196,15 @@ function useFlagsTable({
       header: 'Last Activity',
       enableColumnFilter: true,
       cell: ({ row }) => {
-        const lastActivity = row.original.lastActivity
-        const toDate = lastActivity && new Date(lastActivity)
+        const { lastActivity } = row.original
+        if (!lastActivity) return null
+        const formatted = new Date(lastActivity).toLocaleString()
         return (
-          <div className="flex gap-2 align-center">
-            {lastActivity && (
-              <>
-                {isActivityStale(lastActivity) ? (
-                  <Badge variant="destructive">{toDate?.toLocaleString()}</Badge>
-                ) : (
-                  <span className="text-sm">{toDate?.toLocaleString()}</span>
-                )}
-              </>
+          <div className="flex gap-2 items-center">
+            {isActivityStale(lastActivity) ? (
+              <Badge variant="destructive">{formatted}</Badge>
+            ) : (
+              <span className="text-sm">{formatted}</span>
             )}
           </div>
         )
@@ -215,13 +238,25 @@ function useFlagsTable({
     header: 'Actions',
     cell: ({ row }) => {
       const { id, status } = row.original
+      const rowCtx = getFlagRowAriaContext(row.original)
       return (
         <div className="flex gap-2 items-center">
-          <FlagDetails flag={row.original} userComplianceTasks={userComplianceTasks} />
-          <FlagHistoryModal flagId={id} />
-          <FlagCommentsModal flagId={id} />
+          <FlagDetails
+            flag={row.original}
+            userComplianceTasks={userComplianceTasks}
+            triggerAriaLabel={`View risk flag details for ${rowCtx}`}
+          />
+          <FlagHistoryModal flagId={id} triggerAriaLabel={`View flag history for ${rowCtx}`} />
+          <FlagCommentsModal
+            flagId={id}
+            triggerAriaLabel={`View flag comments for ${rowCtx}`}
+            observationTextareaAriaLabel={`Add observation for ${rowCtx}`}
+          />
           {status === FlagStatusEnum.PENDING && isSuperAdmin && (
-            <Button onClick={() => handleMarkResolved(id)} aria-label="Mark flag as resolved">
+            <Button
+              onClick={() => handleMarkResolved(id)}
+              aria-label={`Resolve risk flag for ${rowCtx}`}
+            >
               <CheckIcon aria-hidden="true" />
             </Button>
           )}
