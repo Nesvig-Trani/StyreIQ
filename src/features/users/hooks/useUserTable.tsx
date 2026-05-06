@@ -11,6 +11,7 @@ import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 import { GenerateRollCallButton } from '@/features/compliance-tasks/components/generate-roll-call-button'
 import { RollCallStatus } from '@/features/compliance-tasks/hooks/roll-call-status'
 import { userSearchSchema } from '../schemas'
+import { TruncatedValuePopover } from '@/shared/components/truncated-value-popover'
 
 const shouldShowRollCall = (rollCallStatus?: RollCallStatus, cadenceDays = 90): boolean => {
   if (!rollCallStatus) return true
@@ -90,9 +91,12 @@ function useUserTable({
       cell: ({ row }) => {
         const email = row.getValue('email') as string
         return (
-          <span className="block truncate max-w-[200px]" title={email}>
-            {email}
-          </span>
+          <TruncatedValuePopover
+            value={email}
+            expandLabel={`Show full email for ${row.getValue('name') ?? email}`}
+            expandVisibleLabel="View"
+            maxWidthClassName="max-w-[220px]"
+          />
         )
       },
     },

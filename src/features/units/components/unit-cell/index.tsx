@@ -1,6 +1,7 @@
 import { Organization } from '@/types/payload-types'
 import { Badge } from '@/shared'
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/shared/components/ui/hover-card'
+import { Button } from '@/shared/components/ui/button'
+import { Popover, PopoverContent, PopoverTrigger } from '@/shared/components/ui/popover'
 
 export function UnitCell({ organizations }: { organizations: Organization[] }) {
   const maxVisible = 1
@@ -20,22 +21,31 @@ export function UnitCell({ organizations }: { organizations: Organization[] }) {
     )
   }
 
+  const expandLabel =
+    remainingCount === 1 ? 'Show 1 more unit' : `Show ${remainingCount} more units`
+
   return (
-    <div className="flex flex-wrap gap-1">
+    <div className="flex flex-wrap items-center gap-1">
       {visibleOrgs.map((org, index) => (
         <Badge key={index} variant="secondary" className="text-xs">
           {org.name}
         </Badge>
       ))}
-      <HoverCard>
-        <HoverCardTrigger asChild>
-          <Badge variant="outline" className="text-xs cursor-pointer hover:bg-muted">
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="h-auto min-h-0 shrink-0 px-2 py-0.5 text-xs font-medium"
+            aria-label={expandLabel}
+          >
             +{remainingCount} more
-          </Badge>
-        </HoverCardTrigger>
-        <HoverCardContent className="w-80" side="top">
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-80" side="top" align="start">
           <div className="space-y-2">
-            <h4 className="text-sm font-semibold">All Units</h4>
+            <p className="text-sm font-semibold leading-none">All units</p>
             <div className="flex flex-wrap gap-1">
               {filterOrgs.map((org, index) => (
                 <Badge key={index} variant="secondary" className="text-xs">
@@ -44,8 +54,8 @@ export function UnitCell({ organizations }: { organizations: Organization[] }) {
               ))}
             </div>
           </div>
-        </HoverCardContent>
-      </HoverCard>
+        </PopoverContent>
+      </Popover>
     </div>
   )
 }

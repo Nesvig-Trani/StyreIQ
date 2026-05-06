@@ -37,7 +37,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ socialMedia }) => {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <InfoCard
-          icon={<SquareArrowOutUpRight className="h-4 w-4 text-black" />}
+          icon={<SquareArrowOutUpRight className="h-4 w-4 text-black" aria-hidden="true" />}
           title="Account Information"
         >
           <div className="grid grid-cols-2 gap-6">
@@ -73,7 +73,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ socialMedia }) => {
         </InfoCard>
 
         <InfoCard
-          icon={<UsersIcon className="h-4 w-4 text-black" />}
+          icon={<UsersIcon className="h-4 w-4 text-black" aria-hidden="true" />}
           title="Ownership & Management"
         >
           <div className="space-y-4">
@@ -149,7 +149,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ socialMedia }) => {
       )}
 
       <InfoCard
-        icon={<SettingsIcon className="h-4 w-4 text-black" />}
+        icon={<SettingsIcon className="h-4 w-4 text-black" aria-hidden="true" />}
         title="Linked Tools & Integrations"
       >
         <div className="flex gap-2 flex-wrap">
