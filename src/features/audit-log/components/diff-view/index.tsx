@@ -23,6 +23,9 @@ export const DiffView = ({
   detailsTriggerAriaLabel?: string
 }) => {
   const user = typeof log.user === 'object' ? log.user : null
+  const { metadata: logMetadata } = log
+  const metadata =
+    logMetadata === undefined ? null : JSON.parse(JSON.stringify(logMetadata))
 
   return (
     <Dialog>
@@ -41,7 +44,7 @@ export const DiffView = ({
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <h4 className="font-medium text-sm mb-2">User Information</h4>
+              <h3 className="font-medium text-sm mb-2">User Information</h3>
               <div className="space-y-1 text-sm">
                 <div>
                   <strong>Name:</strong> {user?.name}
@@ -52,7 +55,7 @@ export const DiffView = ({
               </div>
             </div>
             <div>
-              <h4 className="font-medium text-sm mb-2">Action Details</h4>
+              <h3 className="font-medium text-sm mb-2">Action Details</h3>
               <div className="space-y-1 text-sm">
                 <div>
                   <strong>Action:</strong> {actionLabels[log.action]}
@@ -68,7 +71,7 @@ export const DiffView = ({
           </div>
 
           <div>
-            <h4 className="font-medium text-sm mb-2">Units</h4>
+            <h3 className="font-medium text-sm mb-2">Units</h3>
             <div className="flex flex-wrap gap-2">
               {log.organizations?.map((org, index) => (
                 <Badge key={index} variant="outline">
@@ -82,12 +85,14 @@ export const DiffView = ({
             {(log.prev || log.current) && (
               <ChangeHighlighter
                 // Payload's JSON fields are typed as wide unions; JSON round-trip narrows to plain objects
-                prev={JSON.parse(JSON.stringify(log.prev))}
-                current={JSON.parse(JSON.stringify(log.current))}
+                prev={JSON.parse(JSON.stringify(log.prev ?? {}))}
+                current={JSON.parse(JSON.stringify(log.current ?? {}))}
                 title="Changes"
               />
             )}
-            {log.metadata && <MetadataInfo metadata={JSON.parse(JSON.stringify(log.metadata))} />}
+            {metadata != null ? (
+              <MetadataInfo metadata={metadata} auditLogId={log.id} />
+            ) : null}
           </div>
         </div>
       </DialogContent>
