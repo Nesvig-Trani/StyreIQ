@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo } from 'react'
-import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Separator } from '@/shared'
+import { Badge, Button, Card, CardContent, CardHeader, Separator } from '@/shared'
 import {
   Dialog,
   DialogContent,
@@ -138,7 +138,7 @@ export function ViewUser({ user, userComplianceTasks }: ViewUserProps) {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline">
-          <EyeIcon className="h-4 w-4 mr-2" />
+          <EyeIcon className="h-4 w-4 mr-2" aria-hidden="true" />
           View Account
         </Button>
       </DialogTrigger>
@@ -156,18 +156,20 @@ export function ViewUser({ user, userComplianceTasks }: ViewUserProps) {
           <div className="flex flex-wrap gap-3">
             <Badge className={getStatusColor(user.status as UserStatusEnum)}>
               {user.status === UserStatusEnum.Active && (
-                <CheckCircleIcon className="w-3 h-3 mr-1" />
+                <CheckCircleIcon className="w-3 h-3 mr-1" aria-hidden="true" />
               )}
-              {user.status === UserStatusEnum.Inactive && <XCircleIcon className="w-3 h-3 mr-1" />}
-              {user.status === UserStatusEnum.Rejected && <XCircleIcon className="w-3 h-3 mr-1" />}
+              {(user.status === UserStatusEnum.Inactive ||
+                user.status === UserStatusEnum.Rejected) && (
+                <XCircleIcon className="w-3 h-3 mr-1" aria-hidden="true" />
+              )}
               {user.status === UserStatusEnum.PendingActivation && (
-                <ClockIcon className="w-3 h-3 mr-1" />
+                <ClockIcon className="w-3 h-3 mr-1" aria-hidden="true" />
               )}
               {getStatusLabel(user.status as UserStatusEnum)}
             </Badge>
             {userRoles.map((role) => (
               <Badge key={role} className={getRoleColor(role)}>
-                <ShieldIcon className="w-3 h-3 mr-1" />
+                <ShieldIcon className="w-3 h-3 mr-1" aria-hidden="true" />
                 {getRoleLabel(role)}
                 {activeRole === role && <span className="ml-1 text-xs">(Active)</span>}
               </Badge>
@@ -177,22 +179,25 @@ export function ViewUser({ user, userComplianceTasks }: ViewUserProps) {
           <Separator />
 
           <div>
-            <h4 className="font-semibold mb-3 flex items-center gap-2">
-              <LockIcon className="h-4 w-4" />
+            <h3 className="font-semibold mb-3 flex items-center gap-2">
+              <LockIcon className="h-4 w-4" aria-hidden="true" />
               Security & Compliance
-            </h4>
+            </h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <h5 className="font-medium mb-1">Two-Factor Authentication</h5>
+                <h4 className="font-medium mb-1">Two-Factor Authentication</h4>
                 <div className="flex items-center gap-1">
-                  <twoFAStatus.icon className={`h-4 w-4 ${twoFAStatus.color}`} />
+                  <twoFAStatus.icon className={`h-4 w-4 ${twoFAStatus.color}`} aria-hidden="true" />
                   <span className={`text-sm ${twoFAStatus.color}`}>{twoFAStatus.label}</span>
                 </div>
               </div>
               <div>
-                <h5 className="font-medium mb-1">User Password Confirmation</h5>
+                <h4 className="font-medium mb-1">User Password Confirmation</h4>
                 <div className="flex items-center gap-1">
-                  <userPasswordStatus.icon className={`h-4 w-4 ${userPasswordStatus.color}`} />
+                  <userPasswordStatus.icon
+                    className={`h-4 w-4 ${userPasswordStatus.color}`}
+                    aria-hidden="true"
+                  />
                   <span className={`text-sm ${userPasswordStatus.color}`}>
                     {userPasswordStatus.label}
                   </span>
@@ -200,13 +205,13 @@ export function ViewUser({ user, userComplianceTasks }: ViewUserProps) {
               </div>
               {securityTasks.sharedPassword && user.roles.includes('social_media_manager') && (
                 <div>
-                  <h5 className="font-medium mb-1">Shared Password Confirmation</h5>
+                  <h4 className="font-medium mb-1">Shared Password Confirmation</h4>
                   <div className="flex items-center gap-1">
                     {(() => {
                       const status = getTaskStatus(securityTasks.sharedPassword)
                       return (
                         <>
-                          <status.icon className={`h-4 w-4 ${status.color}`} />
+                          <status.icon className={`h-4 w-4 ${status.color}`} aria-hidden="true" />
                           <span className={`text-sm ${status.color}`}>{status.label}</span>
                         </>
                       )
@@ -216,16 +221,22 @@ export function ViewUser({ user, userComplianceTasks }: ViewUserProps) {
               )}
 
               <div>
-                <h5 className="font-medium mb-1">Policy Acknowledgment</h5>
+                <h4 className="font-medium mb-1">Policy Acknowledgment</h4>
                 <div className="flex items-center gap-1">
-                  <policyStatus.icon className={`h-4 w-4 ${policyStatus.color}`} />
+                  <policyStatus.icon
+                    className={`h-4 w-4 ${policyStatus.color}`}
+                    aria-hidden="true"
+                  />
                   <span className={`text-sm ${policyStatus.color}`}>{policyStatus.label}</span>
                 </div>
               </div>
               <div>
-                <h5 className="font-medium mb-1">Roll Call Confirmation</h5>
+                <h4 className="font-medium mb-1">Roll Call Confirmation</h4>
                 <div className="flex items-center gap-1">
-                  <rollCallStatus.icon className={`h-4 w-4 ${rollCallStatus.color}`} />
+                  <rollCallStatus.icon
+                    className={`h-4 w-4 ${rollCallStatus.color}`}
+                    aria-hidden="true"
+                  />
                   <span className={`text-sm ${rollCallStatus.color}`}>{rollCallStatus.label}</span>
                 </div>
               </div>
@@ -235,19 +246,19 @@ export function ViewUser({ user, userComplianceTasks }: ViewUserProps) {
           <Separator />
 
           <div>
-            <h4 className="font-semibold mb-3 flex items-center gap-2">
-              <GraduationCapIcon className="h-4 w-4" />
+            <h3 className="font-semibold mb-3 flex items-center gap-2">
+              <GraduationCapIcon className="h-4 w-4" aria-hidden="true" />
               Training & Compliance
-            </h4>
+            </h3>
             {trainingTasks.length > 0 ? (
               <div className="grid grid-cols-2 gap-4">
                 {trainingTasks.map((task) => {
                   const status = getTaskStatus(task)
                   return (
                     <div key={task.id}>
-                      <h5 className="font-medium mb-1">{task.description || 'Training Task'}</h5>
+                      <h4 className="font-medium mb-1">{task.description || 'Training Task'}</h4>
                       <div className="flex items-center gap-1">
-                        <status.icon className={`h-4 w-4 ${status.color}`} />
+                        <status.icon className={`h-4 w-4 ${status.color}`} aria-hidden="true" />
                         <span className={`text-sm ${status.color}`}>{status.label}</span>
                       </div>
                     </div>
@@ -262,10 +273,10 @@ export function ViewUser({ user, userComplianceTasks }: ViewUserProps) {
           {user.status === UserStatusEnum.Rejected && user.reject_reason && (
             <Card className="border-red-200">
               <CardHeader>
-                <CardTitle className="text-base text-red-800 flex items-center gap-2">
-                  <XCircleIcon className="w-4 h-4" />
+                <h3 className="text-base font-semibold leading-none text-red-800 flex items-center gap-2">
+                  <XCircleIcon className="w-4 h-4 shrink-0" aria-hidden="true" />
                   Rejection Reason
-                </CardTitle>
+                </h3>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-red-700 bg-red-50 p-3 rounded-md">

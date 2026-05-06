@@ -31,10 +31,26 @@ Before running checks, determine the project stack so you can skip inapplicable 
 
 For each applicable category, run the checks below. Mark each item:
 
-- ✅ **Pass** — requirement met (include evidence: file path, config value, or command output)
-- ⚠️ **Warning** — partially met or could be improved (explain what's missing)
-- ❌ **Missing** — requirement not met (include actionable fix suggestion)
-- ➖ **N/A** — not applicable to this project type (state why)
+- ✅ **Pass** — requirement met. Severity: omit.
+- ⚠️ **Warning** — partially met or could be improved. Severity: required (Critical/High/Medium/Low).
+- ❌ **Missing** — requirement not met. Severity: required (Critical/High/Medium/Low).
+- ➖ **N/A** — not applicable to this project type. Severity: omit.
+
+Each ⚠️ Warning and ❌ Missing finding gets a **severity level** (do NOT add severity to ✅ Pass or ➖ N/A findings):
+
+- **Critical** — immediate risk of data loss, major outage, or build/deploy break
+- **High** — significant gap that should be fixed urgently (blocks adoption, breaks a key workflow, or hides bugs)
+- **Medium** — notable gap that increases risk but doesn't pose immediate danger
+- **Low** — minor improvement or polish
+
+Format each finding using this line shape:
+
+```
+- {status} [{severity}] **{check id or short label}** {finding title} — {evidence}
+```
+
+Example: `- ❌ [High] **TS-Strict** TypeScript strict mode disabled — tsconfig.json:6 has "strict": false`
+For ✅ Pass and ➖ N/A findings, omit the `[{severity}]` slot: `- ✅ **TS-Strict** strict mode enabled — tsconfig.json:6`
 
 #### Documentation
 

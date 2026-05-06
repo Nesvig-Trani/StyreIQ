@@ -82,10 +82,7 @@ export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
         </DialogHeader>
 
         <div className="space-y-6">
-          <InfoCard
-            icon={<UserIcon className="h-4 w-4 text-black" aria-hidden="true" />}
-            title="Basic Information"
-          >
+          <InfoCard icon={<UserIcon className="h-4 w-4 text-black" />} title="Basic Information">
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-4">
                 <InfoField label="Full Name" value={user.name} />
@@ -114,10 +111,7 @@ export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
             </div>
           </InfoCard>
 
-          <InfoCard
-            icon={<Key className="h-4 w-4 text-black" aria-hidden="true" />}
-            title="Security & Authentication"
-          >
+          <InfoCard icon={<Key className="h-4 w-4 text-black" />} title="Security & Authentication">
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-4">
                 <InfoField
@@ -149,7 +143,7 @@ export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
           </InfoCard>
 
           <InfoCard
-            icon={<GraduationCap className="h-4 w-4 text-black" aria-hidden="true" />}
+            icon={<GraduationCap className="h-4 w-4 text-black" />}
             title="Training & Compliance"
           >
             {trainingTasks.length > 0 ? (
@@ -169,7 +163,7 @@ export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
 
           {user.reject_reason && (
             <InfoCard
-              icon={<AlertTriangle className="h-4 w-4 text-red-600" aria-hidden="true" />}
+              icon={<AlertTriangle className="h-4 w-4 text-red-600" />}
               title="Rejection Information"
             >
               <InfoField

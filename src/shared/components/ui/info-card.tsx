@@ -19,8 +19,8 @@ export const InfoCard: React.FC<InfoCardProps> = ({
     <div className={`bg-white p-4 rounded-lg shadow-sm border ${className}`}>
       <div className="flex justify-between">
         <div className="flex items-center gap-2 mb-3">
-          {icon}
-          <h4 className="font-bold text-black">{title}</h4>
+          {icon ? <span aria-hidden="true">{icon}</span> : null}
+          <h3 className="font-bold text-black">{title}</h3>
         </div>
         {action && <div className="flex justify-end items-center">{action}</div>}
       </div>
