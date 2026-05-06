@@ -45,7 +45,7 @@ export const ChangeHighlighter = ({
   if (prev && Object.keys(prev).length === 0 && current) {
     return (
       <div className="space-y-2">
-        <h4 className="font-medium text-sm text-green-700">{title} (Created)</h4>
+        <h3 className="font-medium text-sm text-green-700">{title} (Created)</h3>
         <ScrollArea className="h-32 w-full rounded border bg-green-50 p-3">
           <div className="space-y-1">
             {Object.entries(current).map(([key, value]) =>
@@ -67,7 +67,7 @@ export const ChangeHighlighter = ({
   if (prev && !current) {
     return (
       <div className="space-y-2">
-        <h4 className="font-medium text-sm text-red-700">{title} (Deleted)</h4>
+        <h3 className="font-medium text-sm text-red-700">{title} (Deleted)</h3>
         <ScrollArea className="h-32 w-full rounded border bg-red-50 p-3">
           <div className="space-y-1">
             {Object.entries(prev).map(([key, value]) =>
@@ -91,7 +91,7 @@ export const ChangeHighlighter = ({
 
     return (
       <div className="space-y-2">
-        <h4 className="font-medium text-sm text-blue-700">{title} (Updated)</h4>
+        <h3 className="font-medium text-sm text-blue-700">{title} (Updated)</h3>
         <ScrollArea className="h-32 w-full rounded border bg-blue-50 p-3">
           <div className="space-y-1">
             {Array.from(allKeys).map((key) => {
