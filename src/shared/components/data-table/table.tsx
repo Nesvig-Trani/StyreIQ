@@ -42,6 +42,9 @@ type DataTableProps<TData> = {
   error?: string | null
   loading?: boolean | null
 
+  /** Accessible name for the underlying `<table>` (WCAG: users know which dataset this is). */
+  tableAccessibleName?: string
+
   // sorting
   sorting?: DataTableSorting<TData>[]
 } & DataTablePaginationProps &
@@ -54,6 +57,7 @@ export const DataTable = <TData,>(props: DataTableProps<TData>): React.ReactNode
     data = [],
     error,
     loading,
+    tableAccessibleName,
     pagination,
     pageSizeOptions,
     pageCount,
@@ -86,7 +90,7 @@ export const DataTable = <TData,>(props: DataTableProps<TData>): React.ReactNode
 
       <div className="rounded-md border overflow-hidden">
         <div className="overflow-x-auto">
-          <Table>
+          <Table aria-label={tableAccessibleName}>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
