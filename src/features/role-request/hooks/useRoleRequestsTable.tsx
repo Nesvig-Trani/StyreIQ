@@ -12,6 +12,7 @@ import { roleLabelMap, UserRolesEnum } from '@/features/users/schemas'
 import { approveRoleRequest } from '@/sdk/request-role'
 import { RoleRequest, Tenant } from '@/types/payload-types'
 import { roleRequestSearchSchema } from '../schemas'
+import { TruncatedValuePopover } from '@/shared/components/truncated-value-popover'
 
 function useRoleRequestsTable({
   userRole,
@@ -103,9 +104,13 @@ function useRoleRequestsTable({
       cell: ({ row }) => {
         const text = row.original.justification
         return (
-          <div className="max-w-md truncate" title={text}>
-            {text}
-          </div>
+          <TruncatedValuePopover
+            value={text}
+            expandLabel="Show full justification text"
+            expandVisibleLabel="View"
+            maxWidthClassName="max-w-md"
+            disclosureMinLength={48}
+          />
         )
       },
     },

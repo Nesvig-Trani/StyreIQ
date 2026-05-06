@@ -16,11 +16,7 @@ export const InfoField: React.FC<InfoFieldProps> = ({ label, value, className = 
 
     const stringValue = String(value)
 
-    return (
-      <span className="truncate block max-w-full" title={stringValue}>
-        {stringValue}
-      </span>
-    )
+    return <span className="block max-w-full wrap-break-word whitespace-normal">{stringValue}</span>
   }
 
   return (

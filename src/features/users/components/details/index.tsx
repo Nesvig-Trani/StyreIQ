@@ -65,7 +65,9 @@ export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             {user.name}
-            {user.status === 'active' && <CircleCheck className="h-4 w-4 text-green-600" />}
+            {user.status === 'active' && (
+              <CircleCheck className="h-4 w-4 text-green-600" aria-hidden="true" />
+            )}
           </DialogTitle>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             {userRoles.map((role) => (
@@ -80,7 +82,10 @@ export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
         </DialogHeader>
 
         <div className="space-y-6">
-          <InfoCard icon={<UserIcon className="h-4 w-4 text-black" />} title="Basic Information">
+          <InfoCard
+            icon={<UserIcon className="h-4 w-4 text-black" aria-hidden="true" />}
+            title="Basic Information"
+          >
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-4">
                 <InfoField label="Full Name" value={user.name} />
@@ -109,7 +114,10 @@ export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
             </div>
           </InfoCard>
 
-          <InfoCard icon={<Key className="h-4 w-4 text-black" />} title="Security & Authentication">
+          <InfoCard
+            icon={<Key className="h-4 w-4 text-black" aria-hidden="true" />}
+            title="Security & Authentication"
+          >
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-4">
                 <InfoField
@@ -141,7 +149,7 @@ export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
           </InfoCard>
 
           <InfoCard
-            icon={<GraduationCap className="h-4 w-4 text-black" />}
+            icon={<GraduationCap className="h-4 w-4 text-black" aria-hidden="true" />}
             title="Training & Compliance"
           >
             {trainingTasks.length > 0 ? (
@@ -161,7 +169,7 @@ export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
 
           {user.reject_reason && (
             <InfoCard
-              icon={<AlertTriangle className="h-4 w-4 text-red-600" />}
+              icon={<AlertTriangle className="h-4 w-4 text-red-600" aria-hidden="true" />}
               title="Rejection Information"
             >
               <InfoField
