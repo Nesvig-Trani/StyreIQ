@@ -115,7 +115,7 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <section className="mx-auto px-0 py-0" aria-label="Dashboard content">
+      <section className="mx-auto px-0 py-0" aria-label="Summary statistics">
         {user && effectiveRole === UserRolesEnum.SuperAdmin && isViewingAllTenants && (
           <AggregateMetricsView />
         )}
@@ -168,47 +168,54 @@ export default async function DashboardPage() {
             color="green"
           />
         </div>
+      </section>
 
-        <div className="mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
-            <h2 className="text-lg font-semibold text-gray-900">Risk Categories</h2>
-            <div className="flex flex-wrap gap-2">
-              <Button variant="outline" asChild>
-                <Link href={`/dashboard/audit-logs`}>View Audit Log</Link>
-              </Button>
-            </div>
+      <section className="mx-auto px-0 py-0 mb-8" aria-labelledby="risk-categories-heading">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+          <h2 id="risk-categories-heading" className="text-lg font-semibold text-gray-900">
+            Risk Categories
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" asChild>
+              <Link href={`/dashboard/audit-logs`}>View Audit Log</Link>
+            </Button>
           </div>
-
-          <DashboardRiskSection flags={flags} />
         </div>
 
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Account Status Overview</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-            <StatusCard
-              title="Active Accounts"
-              value={data.accountsByStatus.active}
-              subtitle="Currently operational"
-              color="green"
-              icon={CheckCircle}
-            />
+        <DashboardRiskSection flags={flags} />
+      </section>
 
-            <StatusCard
-              title="Accounts Needing Review"
-              value={data.pendingApproval}
-              subtitle="Require attention"
-              color="red"
-              icon={XCircle}
-            />
+      <section className="mx-auto px-0 py-0 mb-8" aria-labelledby="account-status-overview-heading">
+        <h2
+          id="account-status-overview-heading"
+          className="text-lg font-semibold text-gray-900 mb-6"
+        >
+          Account Status Overview
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+          <StatusCard
+            title="Active Accounts"
+            value={data.accountsByStatus.active}
+            subtitle="Currently operational"
+            color="green"
+            icon={CheckCircle}
+          />
 
-            <StatusCard
-              title="In Transition"
-              value={data.accountsByStatus.inTransition}
-              subtitle="Status being updated"
-              color="blue"
-              icon={ActivityIcon}
-            />
-          </div>
+          <StatusCard
+            title="Accounts Needing Review"
+            value={data.pendingApproval}
+            subtitle="Require attention"
+            color="red"
+            icon={XCircle}
+          />
+
+          <StatusCard
+            title="In Transition"
+            value={data.accountsByStatus.inTransition}
+            subtitle="Status being updated"
+            color="blue"
+            icon={ActivityIcon}
+          />
         </div>
       </section>
     </div>
