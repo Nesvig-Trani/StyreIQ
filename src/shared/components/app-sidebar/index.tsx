@@ -84,7 +84,7 @@ export function AppSidebar({ user, tenant, ...props }: AppSidebarProps) {
             className="px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg"
           >
             <div className="flex items-center gap-2">
-              <Building2 aria-hidden className="w-4 h-4 text-blue-600 flex-shrink-0" />
+              <Building2 aria-hidden="true" className="w-4 h-4 text-blue-600 flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <div className="text-xs font-medium text-blue-900 truncate">{tenant.name}</div>
                 {tenant.domain && (
@@ -125,7 +125,7 @@ export function AppSidebar({ user, tenant, ...props }: AppSidebarProps) {
                         aria-current={isActive ? 'page' : undefined}
                       >
                         <item.icon
-                          aria-hidden
+                          aria-hidden="true"
                           className={`h-5 w-5 ${isActive ? 'text-blue-700' : 'text-gray-600'}`}
                         />
                         <span className="font-medium text-xs lg:text-sm text-gray-600">
@@ -152,7 +152,7 @@ export function AppSidebar({ user, tenant, ...props }: AppSidebarProps) {
                 onClick={() => router.push('/api/logout')}
                 className="flex w-full items-center space-x-3"
               >
-                <LogOut aria-hidden className="h-5 w-5 text-gray-400" />
+                <LogOut aria-hidden="true" className="h-5 w-5 text-gray-400" />
                 <span className="font-medium text-xs lg:text-sm text-gray-600">Sign Out</span>
               </button>
             </SidebarMenuButton>
