@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
 import { Button } from '@/shared'
@@ -12,6 +12,7 @@ type NavbarProps = {
 
 export const Navbar: React.FC<NavbarProps> = ({ showGetStarted }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const hamburgerRef = useRef<HTMLButtonElement>(null)
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen)
@@ -20,6 +21,18 @@ export const Navbar: React.FC<NavbarProps> = ({ showGetStarted }) => {
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false)
   }
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsMobileMenuOpen(false)
+        hamburgerRef.current?.focus()
+      }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [isMobileMenuOpen])
 
   const navItems = [
     { href: '#benefits', label: 'Benefits' },
@@ -63,39 +76,53 @@ export const Navbar: React.FC<NavbarProps> = ({ showGetStarted }) => {
 
           <div className="md:hidden">
             <Button
+              ref={hamburgerRef}
               variant="ghost"
               className="h-11 w-11 shrink-0 touch-manipulation"
               onClick={toggleMobileMenu}
               aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-controls={isMobileMenuOpen ? 'landing-mobile-menu' : undefined}
+              aria-expanded={isMobileMenuOpen}
             >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMobileMenuOpen ? (
+                <X size={24} aria-hidden="true" />
+              ) : (
+                <Menu size={24} aria-hidden="true" />
+              )}
             </Button>
           </div>
         </div>
 
-        <div className={`md:hidden ${isMobileMenuOpen ? 'block' : 'hidden'} pb-4`}>
-          <div className="flex flex-col space-y-2">
-            {navItems.map((item) => (
-              <a key={item.href} href={item.href} onClick={closeMobileMenu} className={navJumpLink}>
-                {item.label}
-              </a>
-            ))}
-            <div className="flex flex-col space-y-2 pt-2 border-t border-gray-200 mt-2">
-              <Button variant="ghost" asChild>
-                <Link href={'/login'} onClick={closeMobileMenu}>
-                  Log In
-                </Link>
-              </Button>
-              {showGetStarted && (
-                <Button asChild>
-                  <Link href={'/login/create-first-user'} onClick={closeMobileMenu}>
-                    Get Started
+        {isMobileMenuOpen ? (
+          <div id="landing-mobile-menu" className="md:hidden pb-4">
+            <div className="flex flex-col space-y-2">
+              {navItems.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={closeMobileMenu}
+                  className={navJumpLink}
+                >
+                  {item.label}
+                </a>
+              ))}
+              <div className="flex flex-col space-y-2 pt-2 border-t border-gray-200 mt-2">
+                <Button variant="ghost" asChild>
+                  <Link href={'/login'} onClick={closeMobileMenu}>
+                    Log In
                   </Link>
                 </Button>
-              )}
+                {showGetStarted && (
+                  <Button asChild>
+                    <Link href={'/login/create-first-user'} onClick={closeMobileMenu}>
+                      Get Started
+                    </Link>
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        ) : null}
       </div>
     </nav>
   )

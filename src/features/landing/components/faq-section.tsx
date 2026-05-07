@@ -204,7 +204,6 @@ export const FAQSection = ({ id = 'faq' }) => {
             <a
               href="https://www.iubenda.com/privacy-policy/68492162"
               className="rounded-sm outline-none ring-offset-white focus-visible:text-gray-800 focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 iubenda-nostyle no-brand iubenda-embed"
-              title="Privacy Policy"
             >
               Privacy Policy
             </a>
