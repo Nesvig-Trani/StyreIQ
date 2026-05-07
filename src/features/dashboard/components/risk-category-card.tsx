@@ -65,6 +65,7 @@ export const RiskCategoryCard: FC<RiskCategoryCardProps> = ({
   }
 
   const issueWord = issues === 1 ? 'issue' : 'issues'
+  const metricsAnnouncement = `${subtitle}, ${issues} ${issueWord}`
 
   const baseCardClasses =
     'bg-white rounded-lg border border-gray-200 p-4 shadow-sm hover:shadow-md transition w-full text-left'
@@ -78,9 +79,11 @@ export const RiskCategoryCard: FC<RiskCategoryCardProps> = ({
 
         <dl className="m-0 min-w-0 flex-1 space-y-0">
           <dt className="font-medium text-gray-900">{title}</dt>
-          <dd className="m-0 space-y-3">
-            <span className="block text-sm text-gray-600">{subtitle}</span>
-            <span className="flex items-baseline">
+          <dd className="m-0 space-y-3" aria-label={metricsAnnouncement}>
+            <span className="block text-sm text-gray-600" aria-hidden="true">
+              {subtitle}
+            </span>
+            <span className="flex items-baseline" aria-hidden="true">
               <span className="text-2xl font-bold text-gray-900">{issues}</span>
               <span className="pl-1 text-sm text-gray-500">{issueWord}</span>
             </span>

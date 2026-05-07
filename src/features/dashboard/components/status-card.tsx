@@ -42,6 +42,7 @@ export const StatusCard: React.FC<StatusCardProps> = ({
   }
 
   const colors = getColorClasses(color)
+  const valueAnnouncement = `${value}, ${subtitle}`
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm flex items-center space-x-3">
@@ -52,9 +53,13 @@ export const StatusCard: React.FC<StatusCardProps> = ({
       <dl className="py-6 m-0">
         <div>
           <dt className="text-sm font-medium text-gray-600">{title}</dt>
-          <dd className="m-0">
-            <span className="block text-2xl font-bold text-gray-900 !mt-1">{value}</span>
-            <span className="block text-sm text-gray-500 !mt-1">{subtitle}</span>
+          <dd className="m-0" aria-label={valueAnnouncement}>
+            <span className="block text-2xl font-bold text-gray-900 !mt-1" aria-hidden="true">
+              {value}
+            </span>
+            <span className="block text-sm text-gray-500 !mt-1" aria-hidden="true">
+              {subtitle}
+            </span>
           </dd>
         </div>
       </dl>

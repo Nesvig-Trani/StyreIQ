@@ -32,15 +32,21 @@ export const HeaderMetricCard: React.FC<HeaderMetricCardProps> = ({
     }
   }
 
+  const valueAnnouncement = [String(value), subtitle].filter(Boolean).join(', ') || undefined
+
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
       <div className="flex items-center justify-start py-6">
         <dl className="flex-1 flex flex-col gap-1 m-0">
           <div>
             <dt className="text-sm text-gray-600 !m-0">{title}</dt>
-            <dd className="m-0">
-              <span className="block text-2xl font-bold text-gray-900">{value}</span>
-              <span className="block text-xs text-gray-500 !mt-1">{subtitle}</span>
+            <dd className="m-0" aria-label={valueAnnouncement}>
+              <span className="block text-2xl font-bold text-gray-900" aria-hidden="true">
+                {value}
+              </span>
+              <span className="block text-xs text-gray-500 !mt-1" aria-hidden="true">
+                {subtitle}
+              </span>
             </dd>
           </div>
         </dl>
