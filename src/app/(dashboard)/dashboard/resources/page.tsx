@@ -144,10 +144,15 @@ export default async function ResourcesPage() {
             </div>
           )}
 
-          <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg">
+          <div
+            role="note"
+            aria-labelledby="training-resources-note-heading"
+            className="mt-6 p-4 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg"
+          >
             <p className="text-sm">
-              <strong>Note:</strong> Training links stay available here after completion so you can
-              revisit the material anytime. To start an assigned training, go to My Tasks.
+              <strong id="training-resources-note-heading">Note:</strong> Training links stay
+              available here after completion so you can revisit the material anytime. To start an
+              assigned training, go to My Tasks.
             </p>
           </div>
 
