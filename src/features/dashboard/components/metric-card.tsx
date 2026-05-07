@@ -2,7 +2,14 @@ import * as React from 'react'
 
 import { Badge, Card, CardContent } from '@/shared'
 
-const getRiskColor = (level: 'low' | 'medium' | 'high') => {
+type RiskLevel = 'low' | 'medium' | 'high'
+
+const RISK_BADGE_LABELS: Partial<Record<RiskLevel, string>> = {
+  high: 'High Risk',
+  medium: 'Medium Risk',
+}
+
+const getRiskColor = (level: RiskLevel) => {
   switch (level) {
     case 'high':
       return 'text-red-600 bg-red-50 border-red-200'
@@ -13,7 +20,7 @@ const getRiskColor = (level: 'low' | 'medium' | 'high') => {
   }
 }
 
-const getBadgeVariant = (level: 'low' | 'medium' | 'high') => {
+const getBadgeVariant = (level: RiskLevel) => {
   switch (level) {
     case 'high':
       return 'destructive' as const
@@ -22,6 +29,20 @@ const getBadgeVariant = (level: 'low' | 'medium' | 'high') => {
     case 'low':
       return 'default' as const
   }
+}
+
+const getMetricAriaLabel = ({
+  value,
+  subtitle,
+  riskBadgeText,
+}: {
+  value: number | string
+  subtitle?: string
+  riskBadgeText?: string
+}) => {
+  const labelParts = [String(value), subtitle, riskBadgeText].filter(Boolean)
+
+  return labelParts.length > 1 ? labelParts.join(', ') : undefined
 }
 
 export const MetricCard = ({
@@ -34,34 +55,47 @@ export const MetricCard = ({
   title: string
   value: number | string
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
-  riskLevel?: 'low' | 'medium' | 'high'
+  riskLevel?: RiskLevel
   subtitle?: string
-}) => (
-  <Card className={riskLevel ? getRiskColor(riskLevel) : 'border-gray-200'}>
-    <CardContent className="pt-4 sm:pt-6 pb-4 sm:pb-6">
-      <div className="flex flex-row items-start justify-between">
-        <dl className="m-0 space-y-0 flex-1">
-          <div>
-            <dt className="text-sm font-medium leading-tight pb-2">{title}</dt>
-            <dd className="m-0">
-              <span className="block text-xl sm:text-2xl font-bold">{value}</span>
-              {subtitle ? (
-                <span className="block text-xs text-muted-foreground mt-1 line-clamp-2">
-                  {subtitle}
+}) => {
+  const riskBadgeText = riskLevel ? RISK_BADGE_LABELS[riskLevel] : undefined
+  const ddAriaLabel = getMetricAriaLabel({ value, subtitle, riskBadgeText })
+
+  return (
+    <Card className={riskLevel ? getRiskColor(riskLevel) : 'border-gray-200'}>
+      <CardContent className="pt-4 sm:pt-6 pb-4 sm:pb-6">
+        <div className="flex flex-row items-start justify-between">
+          <dl className="m-0 space-y-0 flex-1">
+            <div>
+              <dt className="text-sm font-medium leading-tight pb-2">{title}</dt>
+              <dd className="m-0" aria-label={ddAriaLabel}>
+                <span
+                  className="block text-xl sm:text-2xl font-bold"
+                  aria-hidden={!!ddAriaLabel || undefined}
+                >
+                  {value}
                 </span>
-              ) : null}
-              {riskLevel && riskLevel !== 'low' ? (
-                <span className="mt-2 inline-block">
-                  <Badge variant={getBadgeVariant(riskLevel)} className="text-xs">
-                    {riskLevel === 'high' ? 'High Risk' : 'Medium Risk'}
-                  </Badge>
-                </span>
-              ) : null}
-            </dd>
-          </div>
-        </dl>
-        <Icon className="h-4 w-4 text-muted-foreground shrink-0 ml-3 mt-0.5" aria-hidden="true" />
-      </div>
-    </CardContent>
-  </Card>
-)
+                {subtitle ? (
+                  <span
+                    className="block text-xs text-muted-foreground mt-1 line-clamp-2"
+                    aria-hidden={!!ddAriaLabel || undefined}
+                  >
+                    {subtitle}
+                  </span>
+                ) : null}
+                {riskLevel && riskBadgeText ? (
+                  <span className="mt-2 inline-block" aria-hidden={!!ddAriaLabel || undefined}>
+                    <Badge variant={getBadgeVariant(riskLevel)} className="text-xs">
+                      {riskBadgeText}
+                    </Badge>
+                  </span>
+                ) : null}
+              </dd>
+            </div>
+          </dl>
+          <Icon className="h-4 w-4 text-muted-foreground shrink-0 ml-3 mt-0.5" aria-hidden="true" />
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
