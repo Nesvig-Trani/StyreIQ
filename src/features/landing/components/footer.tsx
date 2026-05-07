@@ -100,7 +100,6 @@ export const Footer: React.FC<{
                 footerLinkInteract,
                 'text-gray-400 hover:text-white focus-visible:text-white iubenda-nostyle no-brand iubenda-embed',
               )}
-              title="Privacy Policy"
             >
               Privacy Policy & Cookie Policy
             </a>
