@@ -209,13 +209,15 @@ export const InputListHelper = <TFieldValues extends FieldValues>({
           <TooltipProvider delayDuration={200}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <span className="inline-flex">
-                  <HelpCircle
-                    className="h-4 w-4 text-muted-foreground cursor-help hover:text-primary transition-colors"
-                    aria-hidden="true"
-                  />
-                  <span className="sr-only">More information about {groupLabel}</span>
-                </span>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 shrink-0 text-muted-foreground cursor-help hover:text-primary"
+                  aria-label={`More information about ${groupLabel}`}
+                >
+                  <HelpCircle className="h-4 w-4" aria-hidden="true" />
+                </Button>
               </TooltipTrigger>
               <TooltipContent
                 side="right"
