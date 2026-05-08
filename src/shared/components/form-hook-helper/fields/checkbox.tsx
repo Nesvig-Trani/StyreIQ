@@ -1,6 +1,12 @@
 import React from 'react'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
-import { FormControl, FormField, FormItem, FormMessage } from '@/shared/components/ui/form'
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/shared/components/ui/form'
 import { Checkbox } from '@/shared/components/ui/checkbox'
 import { cn } from '@/shared/utils/cn'
 import type { FieldData } from '@/shared/components/form-hook-helper/types'
@@ -61,6 +67,9 @@ export const CheckboxInputListHelper = <TFieldValues extends FieldValues>({
                         }}
                       />
                     </FormControl>
+                    {fieldData.description ? (
+                      <FormDescription className="sr-only">{fieldData.description}</FormDescription>
+                    ) : null}
                     <FieldLabel label={item.label} description={fieldData.description} />
                   </FormItem>
                 )
@@ -97,6 +106,9 @@ export const CheckboxInputBooleanHelper = <TFieldValues extends FieldValues>({
               </FormControl>
               <FieldLabel label={fieldData.label} description={fieldData.description} />
             </div>
+            {fieldData.description ? (
+              <FormDescription className="sr-only">{fieldData.description}</FormDescription>
+            ) : null}
             <FormMessage />
           </FormItem>
         )
