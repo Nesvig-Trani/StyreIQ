@@ -2,7 +2,13 @@ import type { ReactElement } from 'react'
 import React from 'react'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
 import { FieldData } from '@/shared/components/form-hook-helper/types'
-import { FormControl, FormField, FormItem, FormMessage } from '@/shared/components/ui/form'
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/shared/components/ui/form'
 import { cn } from '@/shared/utils/cn'
 import { Textarea } from '@/shared/components/ui/textarea'
 import { useFieldRequired } from '../utils'
@@ -35,6 +41,9 @@ export const TextAreaHelper = <TFieldValues extends FieldValues>({
           <FormControl>
             <Textarea {...field} placeholder={fieldData.placeholder} />
           </FormControl>
+          {fieldData.description ? (
+            <FormDescription className="sr-only">{fieldData.description}</FormDescription>
+          ) : null}
           <FormMessage />
         </FormItem>
       )}

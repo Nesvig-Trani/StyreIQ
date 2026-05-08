@@ -1,6 +1,12 @@
 import React from 'react'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
-import { FormControl, FormField, FormItem, FormMessage } from '@/shared/components/ui/form'
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/shared/components/ui/form'
 import { FieldData } from '@/shared/components/form-hook-helper'
 import {
   Select,
@@ -77,6 +83,9 @@ export const SelectInputHelper = <TFieldValues extends FieldValues>({
               </SelectScrollDownButton>
             </SelectContent>
           </Select>
+          {fieldData.description ? (
+            <FormDescription className="sr-only">{fieldData.description}</FormDescription>
+          ) : null}
           <FormMessage />
         </FormItem>
       )}
