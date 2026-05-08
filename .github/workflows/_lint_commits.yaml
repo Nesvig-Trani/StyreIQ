@@ -12,7 +12,7 @@ jobs:
       - name: 'Setup node with cache'
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'yarn'
       - name: Install commitlint
         run: yarn global add @commitlint/cli @commitlint/config-conventional
