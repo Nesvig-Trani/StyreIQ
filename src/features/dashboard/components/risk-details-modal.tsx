@@ -176,9 +176,7 @@ export const RiskDetailsModal: React.FC<RiskDetailsModalProps> = ({
                       </div>
                       <div className="mt-1 flex min-w-0 items-center space-x-2 text-sm">
                         <Mail size={14} className="shrink-0 text-gray-500" aria-hidden="true" />
-                        <span className="truncate text-gray-600" title={issue.user.email}>
-                          {issue.user.email}
-                        </span>
+                        <span className="truncate text-gray-600">{issue.user.email}</span>
                       </div>
                     </div>
                   )}
