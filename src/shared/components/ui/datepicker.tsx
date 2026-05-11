@@ -9,27 +9,48 @@ import { cn } from '@/shared/utils/cn'
 import { Calendar1Icon } from 'lucide-react'
 import { Calendar } from '@/shared/components/ui/calendar'
 
+type DatePickerTriggerProps = Pick<
+  React.ComponentProps<typeof Button>,
+  'id' | 'aria-describedby' | 'aria-invalid' | 'className'
+>
+
 export type DatePickerProps = {
   onGoToToday?: () => void
   size?: React.ComponentProps<typeof Button>['size']
   disabled?: boolean
   disabledDays?: Matcher | Matcher[]
-} & Omit<DayPickerSingleProps, 'mode' | 'disabled'>
+} & Omit<DayPickerSingleProps, 'mode' | 'disabled'> &
+  Partial<DatePickerTriggerProps>
 
 export const DatePicker: React.FC<DatePickerProps> = (props) => {
-  const { selected, onGoToToday, size, disabled, disabledDays } = props
+  const {
+    selected,
+    onGoToToday,
+    size,
+    disabled,
+    disabledDays,
+    id,
+    'aria-describedby': ariaDescribedBy,
+    'aria-invalid': ariaInvalid,
+    className,
+    ...dayPickerRest
+  } = props
   const isSelectedToday = selected != null && isToday(selected)
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
+          id={id}
+          aria-describedby={ariaDescribedBy}
+          aria-invalid={ariaInvalid}
           variant="outline"
           size={size}
           disabled={disabled}
           className={cn(
             'justify-start text-left font-normal',
             !selected && 'text-muted-foreground',
+            className,
           )}
         >
           <Calendar1Icon className="mr-2 h-4 w-4" />
@@ -43,7 +64,8 @@ export const DatePicker: React.FC<DatePickerProps> = (props) => {
             initialFocus
             defaultMonth={selected}
             disabled={disabledDays}
-            {...props}
+            selected={selected}
+            {...dayPickerRest}
           />
           {onGoToToday != null && !isSelectedToday && (
             <div className="flex justify-end p-2">

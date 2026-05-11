@@ -1,5 +1,6 @@
 'use client'
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useId } from 'react'
+import type { ComponentPropsWithoutRef } from 'react'
 import { cn } from '@/shared/utils/cn'
 import { Tree } from '@/features/units'
 import { Command, CommandEmpty, CommandInput, CommandList } from '@/shared/components/ui/command'
@@ -75,7 +76,12 @@ export function TreeNode({ tree, selectedValue, onSelect, multiple = false }: Tr
   )
 }
 
-interface TreeSelectProps {
+type TreeSelectTriggerProps = Pick<
+  ComponentPropsWithoutRef<'button'>,
+  'id' | 'aria-describedby' | 'aria-invalid' | 'className'
+>
+
+interface TreeSelectProps extends Partial<TreeSelectTriggerProps> {
   options: FieldDataOption[]
   tree: Tree[]
   value?: string | string[]
@@ -93,7 +99,12 @@ export function TreeSelect({
   disabled,
   errors,
   multiple,
+  id,
+  'aria-describedby': ariaDescribedBy,
+  'aria-invalid': ariaInvalid,
+  className,
 }: TreeSelectProps) {
+  const listId = useId()
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
 
@@ -141,12 +152,21 @@ export function TreeSelect({
     <Popover open={disabled ? false : open} onOpenChange={(val) => !disabled && setOpen(val)}>
       <PopoverTrigger asChild>
         <button
+          type="button"
+          role="combobox"
+          aria-haspopup="listbox"
+          aria-controls={open ? listId : undefined}
+          aria-expanded={open}
+          id={id}
+          aria-describedby={ariaDescribedBy}
+          aria-invalid={ariaInvalid}
           disabled={disabled}
           className={cn(
             'w-full flex justify-between items-center h-9 px-3 py-2 border text-sm rounded-md text-gray-500 bg-background',
             'min-w-0',
             disabled && 'opacity-50 cursor-not-allowed',
-            errors ? 'border-red-500' : 'border-input',
+            errors || ariaInvalid ? 'border-red-500' : 'border-input',
+            className,
           )}
         >
           <span className="truncate text-left flex-1 min-w-0">
@@ -163,7 +183,7 @@ export function TreeSelect({
         <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
           <Command>
             <CommandInput placeholder="Search…" value={search} onValueChange={setSearch} />
-            <CommandList>
+            <CommandList id={listId}>
               {filteredTree.length > 0 ? (
                 filteredTree.map((tree) => (
                   <TreeNode
