@@ -1,5 +1,14 @@
 import { Building2, CheckCircle, ChevronDown, ChevronRight } from 'lucide-react'
-import { ChangeEvent, KeyboardEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  type RefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { Badge, Button } from '@/shared'
 import {
   FlattenedTree,
@@ -14,7 +23,14 @@ import { typeConfig } from '../constants/typeConfig'
 import { disableUnit } from '@/sdk/organization'
 import { toast } from 'sonner'
 
-export const useUnitHierarchy = ({ originalData, organizations }: UnitHierarchyProps) => {
+export const useUnitHierarchy = ({
+  originalData,
+  organizations,
+  detailHeadingRef,
+}: UnitHierarchyProps & {
+  detailHeadingRef?: RefObject<HTMLHeadingElement | null>
+}) => {
+  const lastSelectedRowTriggerRef = useRef<HTMLButtonElement | null>(null)
   const [expandedNodes, setExpandedNodes] = useState<Set<number>>(new Set())
   const [selectedOrg, setSelectedOrg] = useState<UnitWithDepth | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
@@ -120,7 +136,12 @@ export const useUnitHierarchy = ({ originalData, organizations }: UnitHierarchyP
   }
 
   const selectOrganization = (org: FlattenedTree) => {
-    setSelectedOrg(originalDataMap[org.id] || null)
+    const next = originalDataMap[org.id] || null
+    const reselectSame = selectedOrg?.id != null && selectedOrg.id === next?.id
+    setSelectedOrg(next)
+    if (reselectSame && detailHeadingRef) {
+      queueMicrotask(() => detailHeadingRef.current?.focus())
+    }
   }
 
   const unitRowAccessibleLabel = (org: FlattenedTree) => {
@@ -135,9 +156,10 @@ export const useUnitHierarchy = ({ originalData, organizations }: UnitHierarchyP
     return parts.join(', ')
   }
 
-  const handleUnitRowKeyDown = (e: KeyboardEvent<HTMLElement>, org: FlattenedTree) => {
+  const handleUnitRowKeyDown = (e: KeyboardEvent<HTMLButtonElement>, org: FlattenedTree) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
+      lastSelectedRowTriggerRef.current = e.currentTarget
       selectOrganization(org)
     }
   }
@@ -187,7 +209,10 @@ export const useUnitHierarchy = ({ originalData, organizations }: UnitHierarchyP
             aria-pressed={isSelected}
             aria-label={unitRowAccessibleLabel(org)}
             className="flex min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            onClick={() => selectOrganization(org)}
+            onClick={(e) => {
+              lastSelectedRowTriggerRef.current = e.currentTarget
+              selectOrganization(org)
+            }}
             onKeyDown={(e) => handleUnitRowKeyDown(e, org)}
           >
             <TypeIcon className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
@@ -250,5 +275,6 @@ export const useUnitHierarchy = ({ originalData, organizations }: UnitHierarchyP
     handleConfirmDisable,
     isDisableModalOpen,
     setIsDisableModalOpen,
+    lastSelectedRowTriggerRef,
   }
 }
