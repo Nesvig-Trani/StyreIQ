@@ -139,8 +139,11 @@ function useUserTable({
             </Badge>
           )
         }
+        const expandLabelContext =
+          (row.getValue('name') ?? row.original.email)?.toString().trim() || undefined
+
         return organizations && organizations?.length > 0 ? (
-          <UnitCell organizations={organizations} />
+          <UnitCell organizations={organizations} expandLabelContext={expandLabelContext} />
         ) : (
           <span> - </span>
         )
