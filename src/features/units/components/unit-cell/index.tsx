@@ -3,7 +3,13 @@ import { Badge } from '@/shared'
 import { Button } from '@/shared/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/shared/components/ui/popover'
 
-export function UnitCell({ organizations }: { organizations: Organization[] }) {
+export function UnitCell({
+  organizations,
+  expandLabelContext,
+}: {
+  organizations: Organization[]
+  expandLabelContext?: string
+}) {
   const maxVisible = 1
   const filterOrgs = organizations.filter((org) => org.name)
   const visibleOrgs = filterOrgs.slice(0, maxVisible)
@@ -23,6 +29,9 @@ export function UnitCell({ organizations }: { organizations: Organization[] }) {
 
   const expandLabel =
     remainingCount === 1 ? 'Show 1 more unit' : `Show ${remainingCount} more units`
+  const expandAriaLabel = expandLabelContext
+    ? `${expandLabel} for ${expandLabelContext}`
+    : expandLabel
 
   return (
     <div className="flex flex-wrap items-center gap-1">
@@ -38,7 +47,7 @@ export function UnitCell({ organizations }: { organizations: Organization[] }) {
             variant="outline"
             size="sm"
             className="h-auto min-h-0 shrink-0 px-2 py-0.5 text-xs font-medium"
-            aria-label={expandLabel}
+            aria-label={expandAriaLabel}
           >
             +{remainingCount} more
           </Button>
