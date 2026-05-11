@@ -94,7 +94,7 @@ export const AuditTab: React.FC<AuditTabProps> = ({ socialMedia }) => {
                       ? 'border border-blue-200 bg-blue-50'
                       : 'cursor-pointer bg-gray-50 hover:bg-gray-100'
                   } outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
-                  aria-pressed={isSelected ? true : undefined}
+                  aria-pressed={isSelected}
                   aria-label={auditRowAriaLabel(audit)}
                   onClick={(e) => pickAudit(audit, e.currentTarget)}
                 >
