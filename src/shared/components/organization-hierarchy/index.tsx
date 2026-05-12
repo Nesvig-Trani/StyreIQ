@@ -89,6 +89,7 @@ export default function UnitHierarchy({
                 aria-hidden="true"
               />
               <Input
+                type="search"
                 aria-label="Search units by name"
                 placeholder="Search by name..."
                 value={searchTerm}
