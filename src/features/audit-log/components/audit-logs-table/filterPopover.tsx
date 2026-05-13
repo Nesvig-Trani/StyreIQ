@@ -33,11 +33,21 @@ const FilterPopover = ({
     setLocalValue(selectedValue)
   }, [selectedValue])
 
+  const selectedLabel = localValue ? (options.find((o) => o.value === localValue)?.label ?? '') : ''
+  const triggerAriaLabel = localValue
+    ? `Filter by ${label}, 1 option selected: ${selectedLabel}`
+    : `Filter by ${label}`
+
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8 border-dashed">
-          <PlusCircleIcon className="mr-2 h-4 w-4" />
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-8 border-dashed"
+          aria-label={triggerAriaLabel}
+        >
+          <PlusCircleIcon className="mr-2 h-4 w-4" aria-hidden="true" />
           {label}
           {localValue && (
             <span className="ml-2 rounded bg-primary px-1 text-xs text-primary-foreground">1</span>
@@ -46,7 +56,10 @@ const FilterPopover = ({
       </PopoverTrigger>
       <PopoverContent className="w-[220px] p-0" align="start">
         <Command>
-          <CommandInput placeholder={`Search ${placeholder}...`} />
+          <CommandInput
+            placeholder={`Search ${placeholder}...`}
+            aria-label={`Search ${label} filter options`}
+          />
           <CommandList>
             <CommandGroup>
               <CommandItem
