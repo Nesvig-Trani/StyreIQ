@@ -150,9 +150,9 @@ export const DataTableSelectFilter = <TData,>(
       </PopoverTrigger>
 
       <PopoverContent className="w-[200px] p-0" align="start">
-        <Command>
+        <Command label={`Search ${title}`}>
           <CommandInput placeholder={title} aria-label={`Search ${title} filter options`} />
-          <CommandList>
+          <CommandList label={`${title} list`}>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
               {options.map((option) => (
