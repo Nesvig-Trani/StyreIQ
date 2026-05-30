@@ -22,6 +22,7 @@ export default async function ReviewRequestsPage(props: {
 
   return (
     <div>
+      <h1 className="text-2xl font-bold mb-4">Review user requests</h1>
       <Card>
         <CardContent>
           <ReviewRequestTable

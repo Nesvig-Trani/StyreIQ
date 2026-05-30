@@ -57,6 +57,33 @@ type DataTableSelectFilterProps<TData> = {
   options: DataTableSelectOption[]
 }
 
+/** Accessible name for the filter trigger; mirrors visible chips (≤2 labels) vs count-only. */
+function formatSelectFilterTriggerAriaLabel(
+  title: string,
+  selectedCount: number,
+  selectedOptions: Pick<DataTableSelectOption, 'label'>[],
+): string {
+  const lead = `Filter by ${title}`
+  if (selectedCount === 0) {
+    return lead
+  }
+
+  const countPhrase =
+    selectedCount === 1 ? '1 option selected' : `${selectedCount} options selected`
+
+  const labelsComplete =
+    selectedCount <= 2 &&
+    selectedOptions.length === selectedCount &&
+    selectedOptions.every((o) => o.label.trim().length > 0)
+
+  if (labelsComplete) {
+    const labels = selectedOptions.map((o) => o.label).join(', ')
+    return `${lead}, ${countPhrase}: ${labels}`
+  }
+
+  return `${lead}, ${countPhrase}`
+}
+
 export const DataTableSelectFilter = <TData,>(
   props: DataTableSelectFilterProps<TData>,
 ): React.ReactNode => {
@@ -77,11 +104,22 @@ export const DataTableSelectFilter = <TData,>(
     setFilterValue(id, undefined, table, isGlobal)
   }
 
+  const triggerAriaLabel = formatSelectFilterTriggerAriaLabel(
+    title,
+    selectedValues.size,
+    selectedOptions,
+  )
+
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8 border-dashed">
-          <PlusCircleIcon className="mr-2 h-4 w-4" />
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-8 border-dashed"
+          aria-label={triggerAriaLabel}
+        >
+          <PlusCircleIcon className="mr-2 h-4 w-4" aria-hidden="true" />
           {title}
           {selectedValues?.size > 0 && (
             <>
@@ -112,9 +150,9 @@ export const DataTableSelectFilter = <TData,>(
       </PopoverTrigger>
 
       <PopoverContent className="w-[200px] p-0" align="start">
-        <Command>
-          <CommandInput placeholder={title} />
-          <CommandList>
+        <Command label={`Search ${title}`}>
+          <CommandInput placeholder={title} aria-label={`Search ${title} filter options`} />
+          <CommandList label={`${title} list`}>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
               {options.map((option) => (

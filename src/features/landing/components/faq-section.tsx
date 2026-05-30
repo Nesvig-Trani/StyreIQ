@@ -159,15 +159,15 @@ export const FAQSection = ({ id = 'faq' }) => {
               <Button
                 onClick={() => toggleAccordion(index)}
                 variant="ghost"
-                className="w-full h-auto px-6 py-5 flex justify-between items-center transition-colors duration-200 hover:bg-gray-50 focus:bg-gray-50"
+                className="w-full h-auto px-6 py-5 flex justify-between items-center transition-colors duration-200 hover:bg-gray-50 focus:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-700/35 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 aria-expanded={openIndex === index}
               >
                 <span className="font-semibold text-gray-900 pr-4">{faq.question}</span>
                 <div className="flex-shrink-0">
                   {openIndex === index ? (
-                    <ChevronUp className="w-5 h-5 text-orange-600" />
+                    <ChevronUp className="w-5 h-5 text-orange-600" aria-hidden />
                   ) : (
-                    <ChevronDown className="w-5 h-5 text-gray-400" />
+                    <ChevronDown className="w-5 h-5 text-gray-400" aria-hidden />
                   )}
                 </div>
               </Button>
@@ -203,8 +203,7 @@ export const FAQSection = ({ id = 'faq' }) => {
           <div className="mt-6 text-sm text-gray-500 space-x-4">
             <a
               href="https://www.iubenda.com/privacy-policy/68492162"
-              className="iubenda-nostyle no-brand iubenda-embed"
-              title="Privacy Policy"
+              className="rounded-sm outline-none ring-offset-white focus-visible:text-gray-800 focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 iubenda-nostyle no-brand iubenda-embed"
             >
               Privacy Policy
             </a>
@@ -213,7 +212,7 @@ export const FAQSection = ({ id = 'faq' }) => {
               href="https://www.linkedin.com/company/nesvig-trani-llc/?viewAsMember=true"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-gray-700 transition-colors"
+              className="rounded-sm outline-none ring-offset-white transition-colors hover:text-gray-700 focus-visible:text-gray-800 focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2"
             >
               Connect on LinkedIn
             </a>

@@ -33,11 +33,11 @@ export default async function DashboardLayout(props: { children: React.ReactNode
 
   if (!user) {
     return (
-      <div className="p-4">
+      <main id="main-content" tabIndex={-1} className="p-4 outline-none">
         <p className="text-center text-muted-foreground">
           You must be logged in to view this page.
         </p>
-      </div>
+      </main>
     )
   }
 
@@ -82,7 +82,7 @@ export default async function DashboardLayout(props: { children: React.ReactNode
       <SidebarProvider>
         <AppSidebar user={user} tenant={userTenantData} />
 
-        <SidebarInset>
+        <SidebarInset id="main-content" tabIndex={-1} className="outline-none">
           <header className="flex h-14 shrink-0 items-center gap-2 border-b bg-background px-3 sm:px-4 lg:hidden">
             <SidebarTrigger />
             <Separator orientation="vertical" className="h-6" />

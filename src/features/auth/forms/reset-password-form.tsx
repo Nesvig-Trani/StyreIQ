@@ -6,7 +6,6 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
   Label,
   PasswordInput,
 } from '@/shared'
@@ -38,11 +37,11 @@ export function ResetPasswordForm() {
               onClick={handleBackToLogin}
               className="p-0 h-auto text-muted-foreground hover:text-foreground"
             >
-              <ArrowLeftIcon className="h-4 w-4 mr-1" />
+              <ArrowLeftIcon className="h-4 w-4 mr-1" aria-hidden="true" />
               Back to login
             </Button>
           </div>
-          <CardTitle className="text-2xl font-bold">Set new password</CardTitle>
+          <h1 className="text-2xl font-bold leading-none">Set new password</h1>
           <CardDescription>
             Enter your new password below. Make sure it&#39;s strong and secure.
           </CardDescription>
@@ -53,9 +52,13 @@ export function ResetPasswordForm() {
             <div className="space-y-2">
               <Label htmlFor="password">New Password</Label>
               <div className="relative">
-                <LockIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <LockIcon
+                  className="absolute left-3 top-3 h-4 w-4 text-muted-foreground"
+                  aria-hidden="true"
+                />
                 <PasswordInput
                   id="password"
+                  autoComplete="new-password"
                   placeholder="Enter your new password"
                   {...register('password')}
                   className={`pl-10 ${errors.password ? 'border-red-500' : ''}`}
@@ -68,9 +71,13 @@ export function ResetPasswordForm() {
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">Confirm New Password</Label>
               <div className="relative">
-                <LockIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <LockIcon
+                  className="absolute left-3 top-3 h-4 w-4 text-muted-foreground"
+                  aria-hidden="true"
+                />
                 <PasswordInput
                   id="confirmPassword"
+                  autoComplete="new-password"
                   placeholder="Confirm your new password"
                   {...register('confirmPassword')}
                   className={`pl-10 ${errors.confirmPassword ? 'border-red-500' : ''}`}
@@ -95,7 +102,9 @@ export function ResetPasswordForm() {
           <CardContent className="pt-0">
             {apiError && (
               <div className="text-sm text-red-500 text-center space-y-2">
-                <p className="!my-2">{apiError}</p>
+                <p role="status" aria-live="polite" className="!my-2">
+                  {apiError}
+                </p>
                 <Link href="/forgot-password">
                   <Button
                     variant="ghost"

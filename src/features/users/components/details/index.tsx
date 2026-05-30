@@ -65,7 +65,9 @@ export const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             {user.name}
-            {user.status === 'active' && <CircleCheck className="h-4 w-4 text-green-600" />}
+            {user.status === 'active' && (
+              <CircleCheck className="h-4 w-4 text-green-600" aria-hidden="true" />
+            )}
           </DialogTitle>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             {userRoles.map((role) => (

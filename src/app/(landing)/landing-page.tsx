@@ -118,24 +118,26 @@ const LandingPage: React.FC<LandingPageProps> = ({ showGetStarted }) => {
     <div className="min-h-screen bg-white">
       <Navbar showGetStarted={showGetStarted} />
 
-      <HeroSection />
+      <main id="main-content" tabIndex={-1} className="outline-none">
+        <HeroSection />
 
-      <FeatureSection
-        id="benefits"
-        title="Ensure Company-Wide Social Media Safety and Compliance"
-        subtitle="Keeps your social media safe by preventing the missteps that lead to reputational damage, legal trouble, or operational headaches."
-        features={benefits}
-      />
+        <FeatureSection
+          id="benefits"
+          title="Ensure Company-Wide Social Media Safety and Compliance"
+          subtitle="Keeps your social media safe by preventing the missteps that lead to reputational damage, legal trouble, or operational headaches."
+          features={benefits}
+        />
 
-      <ProcessSection
-        id="how-it-works"
-        title="Features That Keep You in Control"
-        subtitle="The essential tools leaders need to govern accounts, enforce compliance, and spot risks — without micromanaging every post."
-        steps={processSteps}
-        backgroundClassName="bg-gray-50"
-      />
+        <ProcessSection
+          id="how-it-works"
+          title="Features That Keep You in Control"
+          subtitle="The essential tools leaders need to govern accounts, enforce compliance, and spot risks — without micromanaging every post."
+          steps={processSteps}
+          backgroundClassName="bg-gray-50"
+        />
 
-      <FAQSection id="faq" />
+        <FAQSection id="faq" />
+      </main>
 
       <Footer showGetStarted={showGetStarted} />
     </div>

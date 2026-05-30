@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { ComplianceTask, SocialMedia } from '@/types/payload-types'
 
-import { Card, CardContent, CardHeader, CardTitle, Button } from '@/shared'
+import { Card, CardContent, CardHeader, Button } from '@/shared'
 import { ArrowLeft, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 import { completeRollCallTask } from '@/sdk/compliance-task'
@@ -47,14 +47,16 @@ export const RollCallForm = ({ task, assignedAccounts = [] }: RollCallFormProps)
     <div className="container mx-auto py-6 max-w-4xl space-y-6">
       <Button variant="ghost" asChild>
         <Link href="/dashboard/compliance">
-          <ArrowLeft className="mr-2 h-4 w-4" />
+          <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" />
           Back to Tasks
         </Link>
       </Button>
 
       <Card className={isOverdue ? 'border-destructive' : ''}>
         <CardHeader>
-          <CardTitle>Confirm Your Role and Assigned Accounts</CardTitle>
+          <h1 className="leading-none font-semibold text-2xl">
+            Confirm Your Role and Assigned Accounts
+          </h1>
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
@@ -72,7 +74,7 @@ export const RollCallForm = ({ task, assignedAccounts = [] }: RollCallFormProps)
           </div>
 
           <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 p-4 rounded-lg">
-            <h3 className="font-semibold mb-2">By confirming, I certify that:</h3>
+            <h2 className="font-semibold mb-2">By confirming, I certify that:</h2>
             <ul className="text-sm space-y-2 ml-4 list-disc">
               <li>My role related to these accounts is current</li>
               <li>The accounts listed below are accurate for my responsibilities</li>
@@ -87,7 +89,7 @@ export const RollCallForm = ({ task, assignedAccounts = [] }: RollCallFormProps)
               Admin before confirming.
             </p>
 
-            <h4 className="font-semibold">Assigned Social Media Accounts</h4>
+            <h2 className="font-semibold text-lg">Assigned Social Media Accounts</h2>
 
             {hasAccounts ? (
               <div className="space-y-3">

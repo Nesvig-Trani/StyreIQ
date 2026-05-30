@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { VariantProps, cva } from 'class-variance-authority'
-import { PanelLeftIcon } from 'lucide-react'
+import { PanelLeftIcon, X } from 'lucide-react'
 
 import { useIsMobile } from '@/shared/hooks/use-mobile'
 import { cn } from '@/shared/utils/cn'
@@ -12,6 +12,7 @@ import { Input } from '@/shared/components/ui/input'
 import { Separator } from '@/shared/components/ui/separator'
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -31,6 +32,7 @@ const SIDEBAR_WIDTH = '12rem'
 const SIDEBAR_WIDTH_MOBILE = '12rem'
 const SIDEBAR_WIDTH_ICON = '3rem'
 const SIDEBAR_KEYBOARD_SHORTCUT = 'b'
+const MOBILE_SIDEBAR_CONTENT_ID = 'mobile-sidebar-content'
 
 type SidebarContextProps = {
   state: 'expanded' | 'collapsed'
@@ -40,6 +42,8 @@ type SidebarContextProps = {
   setOpenMobile: (open: boolean) => void
   isMobile: boolean
   toggleSidebar: () => void
+  /** Hamburger / sidebar toggle for restoring focus when the mobile sheet closes. */
+  mobileSidebarTriggerRef: React.RefObject<HTMLButtonElement | null>
 }
 
 const SidebarContext = React.createContext<SidebarContextProps | null>(null)
@@ -68,6 +72,7 @@ function SidebarProvider({
 }) {
   const isMobile = useIsMobile()
   const [openMobile, setOpenMobile] = React.useState(false)
+  const mobileSidebarTriggerRef = React.useRef<HTMLButtonElement | null>(null)
 
   // This is the internal state of the sidebar.
   // We use openProp and setOpenProp for control from outside the component.
@@ -119,8 +124,18 @@ function SidebarProvider({
       openMobile,
       setOpenMobile,
       toggleSidebar,
+      mobileSidebarTriggerRef,
     }),
-    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar],
+    [
+      state,
+      open,
+      setOpen,
+      isMobile,
+      openMobile,
+      setOpenMobile,
+      toggleSidebar,
+      mobileSidebarTriggerRef,
+    ],
   )
 
   return (
@@ -160,7 +175,7 @@ function Sidebar({
   variant?: 'sidebar' | 'floating' | 'inset'
   collapsible?: 'offcanvas' | 'icon' | 'none'
 }) {
-  const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
+  const { isMobile, state, openMobile, setOpenMobile, mobileSidebarTriggerRef } = useSidebar()
 
   if (collapsible === 'none') {
     return (
@@ -181,10 +196,19 @@ function Sidebar({
     return (
       <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
         <SheetContent
+          id={MOBILE_SIDEBAR_CONTENT_ID}
           data-sidebar="sidebar"
           data-slot="sidebar"
           data-mobile="true"
-          className="bg-white text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
+          showCloseButton={false}
+          onCloseAutoFocus={(event) => {
+            const trigger = mobileSidebarTriggerRef.current
+            if (trigger) {
+              event.preventDefault()
+              trigger.focus()
+            }
+          }}
+          className="bg-white text-sidebar-foreground w-(--sidebar-width) gap-0 p-0"
           style={
             {
               '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
@@ -192,11 +216,26 @@ function Sidebar({
           }
           side={side}
         >
-          <SheetHeader className="sr-only">
-            <SheetTitle>Sidebar</SheetTitle>
-            <SheetDescription>Displays the mobile sidebar.</SheetDescription>
-          </SheetHeader>
-          <div className="flex h-full w-full flex-col">{children}</div>
+          <div className="flex h-full min-h-0 w-full flex-col">
+            <div className="border-sidebar-border flex shrink-0 items-center justify-end border-b px-2 py-1.5">
+              <SheetClose asChild>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="size-9 shrink-0"
+                  aria-label="Close sidebar"
+                >
+                  <X aria-hidden="true" className="size-4" />
+                </Button>
+              </SheetClose>
+            </div>
+            <SheetHeader className="sr-only">
+              <SheetTitle>Sidebar</SheetTitle>
+              <SheetDescription>Displays the mobile sidebar.</SheetDescription>
+            </SheetHeader>
+            <div className="flex min-h-0 flex-1 flex-col overflow-hidden">{children}</div>
+          </div>
         </SheetContent>
       </Sheet>
     )
@@ -250,11 +289,30 @@ function Sidebar({
   )
 }
 
-function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<typeof Button>) {
-  const { toggleSidebar } = useSidebar()
+function SidebarTrigger({
+  className,
+  onClick,
+  ref,
+  ...props
+}: React.ComponentProps<typeof Button>) {
+  const { toggleSidebar, isMobile, openMobile, open, mobileSidebarTriggerRef } = useSidebar()
+  const isExpanded = isMobile ? openMobile : open
+
+  const setTriggerRef = React.useCallback(
+    (node: HTMLButtonElement | null) => {
+      mobileSidebarTriggerRef.current = node
+      if (typeof ref === 'function') {
+        ref(node)
+      } else if (ref) {
+        ;(ref as React.MutableRefObject<HTMLButtonElement | null>).current = node
+      }
+    },
+    [mobileSidebarTriggerRef, ref],
+  )
 
   return (
     <Button
+      ref={setTriggerRef}
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
       variant="ghost"
@@ -264,9 +322,11 @@ function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<t
         onClick?.(event)
         toggleSidebar()
       }}
+      aria-expanded={isExpanded}
+      aria-controls={isMobile ? MOBILE_SIDEBAR_CONTENT_ID : undefined}
       {...props}
     >
-      <PanelLeftIcon />
+      <PanelLeftIcon aria-hidden="true" />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )
@@ -280,7 +340,6 @@ function SidebarRail({ className, ...props }: React.ComponentProps<'button'>) {
       data-sidebar="rail"
       data-slot="sidebar-rail"
       aria-label="Toggle Sidebar"
-      tabIndex={-1}
       onClick={toggleSidebar}
       title="Toggle Sidebar"
       className={cn(

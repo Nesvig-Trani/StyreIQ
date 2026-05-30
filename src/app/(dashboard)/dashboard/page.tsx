@@ -57,7 +57,12 @@ export default async function DashboardPage() {
   const socialMediaAccounts = await getSocialMediaAccountsCount()
 
   if (!data) {
-    return <div className="text-center text-red-500">Failed to load dashboard data</div>
+    return (
+      <div className="text-center">
+        <h1 className="text-xl font-semibold">Dashboard</h1>
+        <p className="mt-2 text-red-500">Failed to load dashboard data</p>
+      </div>
+    )
   }
 
   const accessManagementRisk = getRiskLevel(flags.accessManagement.count, { low: 0, medium: 2 })
@@ -77,12 +82,12 @@ export default async function DashboardPage() {
                 <>
                   {isViewingAllTenants ? (
                     <Badge variant="outline" className="bg-gray-100 text-gray-600">
-                      <Globe className="h-3 w-3 mr-1" />
+                      <Globe className="h-3 w-3 mr-1" aria-hidden="true" />
                       All Tenants
                     </Badge>
                   ) : selectedTenant ? (
                     <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-                      <Building2 className="h-3 w-3 mr-1" />
+                      <Building2 className="h-3 w-3 mr-1" aria-hidden="true" />
                       {selectedTenant.name}
                     </Badge>
                   ) : null}
@@ -110,7 +115,7 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <main className="mx-auto px-0 py-0">
+      <section className="mx-auto px-0 py-0" aria-label="Summary statistics">
         {user && effectiveRole === UserRolesEnum.SuperAdmin && isViewingAllTenants && (
           <AggregateMetricsView />
         )}
@@ -163,49 +168,56 @@ export default async function DashboardPage() {
             color="green"
           />
         </div>
+      </section>
 
-        <div className="mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
-            <h2 className="text-lg font-semibold text-gray-900">Risk Categories</h2>
-            <div className="flex flex-wrap gap-2">
-              <Button variant="outline" asChild>
-                <Link href={`/dashboard/audit-logs`}>View Audit Log</Link>
-              </Button>
-            </div>
-          </div>
-
-          <DashboardRiskSection flags={flags} />
-        </div>
-
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Account Status Overview</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-            <StatusCard
-              title="Active Accounts"
-              value={data.accountsByStatus.active}
-              subtitle="Currently operational"
-              color="green"
-              icon={CheckCircle}
-            />
-
-            <StatusCard
-              title="Accounts Needing Review"
-              value={data.pendingApproval}
-              subtitle="Require attention"
-              color="red"
-              icon={XCircle}
-            />
-
-            <StatusCard
-              title="In Transition"
-              value={data.accountsByStatus.inTransition}
-              subtitle="Status being updated"
-              color="blue"
-              icon={ActivityIcon}
-            />
+      <section className="mx-auto px-0 py-0 mb-8" aria-labelledby="risk-categories-heading">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+          <h2 id="risk-categories-heading" className="text-lg font-semibold text-gray-900">
+            Risk Categories
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" asChild>
+              <Link href={`/dashboard/audit-logs`}>View Audit Log</Link>
+            </Button>
           </div>
         </div>
-      </main>
+
+        <DashboardRiskSection flags={flags} />
+      </section>
+
+      <section className="mx-auto px-0 py-0 mb-8" aria-labelledby="account-status-overview-heading">
+        <h2
+          id="account-status-overview-heading"
+          className="text-lg font-semibold text-gray-900 mb-6"
+        >
+          Account Status Overview
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+          <StatusCard
+            title="Active Accounts"
+            value={data.accountsByStatus.active}
+            subtitle="Currently operational"
+            color="green"
+            icon={CheckCircle}
+          />
+
+          <StatusCard
+            title="Accounts Needing Review"
+            value={data.pendingApproval}
+            subtitle="Require attention"
+            color="red"
+            icon={XCircle}
+          />
+
+          <StatusCard
+            title="In Transition"
+            value={data.accountsByStatus.inTransition}
+            subtitle="Status being updated"
+            color="blue"
+            icon={ActivityIcon}
+          />
+        </div>
+      </section>
     </div>
   )
 }

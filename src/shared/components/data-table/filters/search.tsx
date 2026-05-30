@@ -1,3 +1,5 @@
+'use client'
+
 import type { Table } from '@tanstack/react-table'
 import type { ChangeEventHandler } from 'react'
 import { useEffect, useState } from 'react'
@@ -13,13 +15,16 @@ const searchSchema = z.string().nonempty().catch('')
 type DataTableSearchFilterProps<TData> = {
   table: Table<TData>
   id: string
+  label?: string
   placeholder?: string
 }
 
 export const DataTableSearchFilter = <TData,>(
   props: DataTableSearchFilterProps<TData>,
 ): React.ReactNode => {
-  const { table, id, placeholder = 'Search' } = props
+  const { table, id, label, placeholder = 'Search' } = props
+
+  const ariaLabel = label || placeholder || 'Search'
 
   const globalFilter = globalFilterSchema.parse(table.getState().globalFilter)
   const valueFromGlobalFilter = searchSchema.parse(globalFilter[id])
@@ -43,6 +48,7 @@ export const DataTableSearchFilter = <TData,>(
 
   return (
     <Input
+      aria-label={ariaLabel}
       placeholder={placeholder}
       value={value}
       onChange={handleChange}

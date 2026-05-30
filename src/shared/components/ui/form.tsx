@@ -50,7 +50,11 @@ const useFormField = () => {
     throw new Error('useFormField should be used within <FormField>')
   }
 
-  const { id } = itemContext
+  if (!itemContext) {
+    throw new Error('useFormField must be used within <FormItem>')
+  }
+
+  const { id, descriptionCount, registerDescription, unregisterDescription } = itemContext
 
   return {
     id,
@@ -58,21 +62,46 @@ const useFormField = () => {
     formItemId: `${id}-form-item`,
     formDescriptionId: `${id}-form-item-description`,
     formMessageId: `${id}-form-item-message`,
+    hasRegisteredDescription: descriptionCount > 0,
+    registerDescription,
+    unregisterDescription,
     ...fieldState,
   }
 }
 
 type FormItemContextValue = {
   id: string
+  descriptionCount: number
+  registerDescription: () => void
+  unregisterDescription: () => void
 }
 
-const FormItemContext = React.createContext<FormItemContextValue>({} as FormItemContextValue)
+const FormItemContext = React.createContext<FormItemContextValue | null>(null)
 
 function FormItem({ className, ...props }: React.ComponentProps<'div'>) {
   const id = React.useId()
+  const [descriptionCount, setDescriptionCount] = React.useState(0)
+
+  const registerDescription = React.useCallback(() => {
+    setDescriptionCount((c) => c + 1)
+  }, [])
+
+  const unregisterDescription = React.useCallback(() => {
+    setDescriptionCount((c) => Math.max(0, c - 1))
+  }, [])
+
+  const contextValue = React.useMemo<FormItemContextValue>(
+    () => ({
+      id,
+      descriptionCount,
+      registerDescription,
+      unregisterDescription,
+    }),
+    [descriptionCount, id, registerDescription, unregisterDescription],
+  )
 
   return (
-    <FormItemContext.Provider value={{ id }}>
+    <FormItemContext.Provider value={contextValue}>
       <div
         data-slot="form-item"
         className={cn('grid gap-2 min-h-[4.5rem]', className)}
@@ -97,21 +126,37 @@ function FormLabel({ className, ...props }: React.ComponentProps<typeof LabelPri
 }
 
 function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
-  const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
+  const { error, formItemId, formDescriptionId, formMessageId, hasRegisteredDescription } =
+    useFormField()
+
+  const ariaDescribedByFragments: string[] = []
+  if (hasRegisteredDescription) {
+    ariaDescribedByFragments.push(formDescriptionId)
+  }
+  if (error) {
+    ariaDescribedByFragments.push(formMessageId)
+  }
 
   return (
     <Slot
       data-slot="form-control"
-      id={formItemId}
-      aria-describedby={!error ? `${formDescriptionId}` : `${formDescriptionId} ${formMessageId}`}
-      aria-invalid={!!error}
       {...props}
+      id={formItemId}
+      aria-describedby={
+        ariaDescribedByFragments.length > 0 ? ariaDescribedByFragments.join(' ') : undefined
+      }
+      aria-invalid={!!error}
     />
   )
 }
 
 function FormDescription({ className, ...props }: React.ComponentProps<'p'>) {
-  const { formDescriptionId } = useFormField()
+  const { formDescriptionId, registerDescription, unregisterDescription } = useFormField()
+
+  React.useLayoutEffect(() => {
+    registerDescription()
+    return () => unregisterDescription()
+  }, [registerDescription, unregisterDescription])
 
   return (
     <p

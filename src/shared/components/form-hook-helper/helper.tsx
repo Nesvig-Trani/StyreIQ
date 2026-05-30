@@ -80,7 +80,11 @@ export const FormHelper = <
       >
         {/* Validation Errors Summary */}
         {Object.keys(form.formState.errors).length > 0 && form.formState.isSubmitted && (
-          <div className="col-span-12 p-4 bg-red-50 border border-red-200 rounded-md">
+          <div
+            role="status"
+            aria-live="polite"
+            className="col-span-12 p-4 bg-red-50 border border-red-200 rounded-md"
+          >
             <h3 className="text-sm font-medium text-red-800 mb-2">
               Please fix the following errors:
             </h3>
@@ -149,7 +153,7 @@ export const FormHelper = <
               </Button>
             )}
             <Button type="submit" disabled={isLoading} className="flex-1">
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />}
               {submitContent || 'Submit'}
             </Button>
           </div>

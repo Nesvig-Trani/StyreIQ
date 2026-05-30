@@ -72,7 +72,9 @@ export const SocialMediaDetailsDialog: React.FC<SocialMediaDetailsDialogProps> =
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             {socialMedia.name || 'UNC College of Humanities'}
-            <CircleCheck />
+            {status === SocialMediaStatusEnum.Active && (
+              <CircleCheck className="h-4 w-4 text-green-600 shrink-0" aria-hidden="true" />
+            )}
           </DialogTitle>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Badge variant="outline">{platformLabelMap[platform]}</Badge>

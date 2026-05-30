@@ -33,12 +33,12 @@ export default async function ComplianceTasksPage() {
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
                 <div className="space-y-2">
                   <div className="flex items-center gap-3">
-                    <h2 className="text-2xl font-bold">My Compliance Tasks</h2>
+                    <h1 className="text-2xl font-bold">My Compliance Tasks</h1>
                   </div>
                   <div className="space-y-3">
-                    <h3 className="text-lg font-semibold">
+                    <h2 className="text-lg font-semibold">
                       Manage compliance across your organization.
-                    </h3>
+                    </h2>
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       As a Super Admin, you oversee compliance tasks for all organizations.
                       Individual compliance tasks are assigned to Central Admins, Unit Admins, and
@@ -50,9 +50,9 @@ export default async function ComplianceTasksPage() {
             </div>
 
             <div className="text-center py-12 space-y-6">
-              <Info className="h-16 w-16 text-blue-500 mx-auto" />
+              <Info className="h-16 w-16 text-blue-500 mx-auto" aria-hidden="true" />
               <div className="space-y-2">
-                <p className="text-lg font-semibold">Administrative View</p>
+                <h2 className="text-lg font-semibold">Administrative View</h2>
               </div>
             </div>
           </CardContent>
@@ -74,7 +74,7 @@ export default async function ComplianceTasksPage() {
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
               <div className="space-y-2">
                 <div className="flex items-center gap-3 flex-wrap">
-                  <h2 className="text-2xl font-bold">My Compliance Tasks</h2>
+                  <h1 className="text-2xl font-bold">My Compliance Tasks</h1>
                   {pendingTasks.length > 0 && (
                     <Badge variant="secondary">{pendingTasks.length} Pending</Badge>
                   )}
@@ -83,9 +83,9 @@ export default async function ComplianceTasksPage() {
                   )}
                 </div>
                 <div className="space-y-3">
-                  <h3 className="text-lg font-semibold">
+                  <h2 className="text-lg font-semibold">
                     Complete your required actions to maintain compliance.
-                  </h3>
+                  </h2>
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     Click Take Action to review the requirement and submit your confirmation. If
                     something looks incorrect, contact your Unit Admin.
@@ -103,7 +103,7 @@ export default async function ComplianceTasksPage() {
 
           {tasks.docs.length === 0 ? (
             <div className="text-center py-12">
-              <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
+              <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" aria-hidden="true" />
               <p className="text-lg font-semibold">Excellent work!</p>
               <p className="text-muted-foreground">You have no pending tasks.</p>
             </div>
@@ -124,11 +124,14 @@ export default async function ComplianceTasksPage() {
                         <div className="flex-1 space-y-3">
                           <div className="flex items-center gap-3">
                             {isOverdue ? (
-                              <AlertTriangle className="h-5 w-5 text-destructive" />
+                              <AlertTriangle
+                                className="h-5 w-5 text-destructive"
+                                aria-hidden="true"
+                              />
                             ) : (
-                              <Clock className="h-5 w-5 text-muted-foreground" />
+                              <Clock className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
                             )}
-                            <h3 className="font-semibold text-lg">{getTaskTypeLabel(task.type)}</h3>
+                            <h2 className="font-semibold text-lg">{getTaskTypeLabel(task.type)}</h2>
                             <Badge variant={getTaskStatusColor(task.status)}>
                               {task.status === 'OVERDUE' ? 'Overdue' : 'Pending'}
                             </Badge>
@@ -137,7 +140,7 @@ export default async function ComplianceTasksPage() {
                           <p className="text-sm text-muted-foreground">{task.description}</p>
 
                           <div className="flex items-center gap-2 text-sm">
-                            <Clock className="h-4 w-4" />
+                            <Clock className="h-4 w-4" aria-hidden="true" />
                             <span className={isOverdue ? 'text-destructive font-medium' : ''}>
                               {isOverdue
                                 ? `Overdue by ${Math.abs(daysUntilDue)} day${Math.abs(daysUntilDue) !== 1 ? 's' : ''}`
@@ -163,7 +166,7 @@ export default async function ComplianceTasksPage() {
 
                         <Button asChild size="default" variant="secondary" className="shrink-0">
                           <Link href={getActionUrlForTask(task)}>
-                            <CheckCircle className="h-4 w-4 mr-2" />
+                            <CheckCircle className="h-4 w-4 mr-2" aria-hidden="true" />
                             Take Action
                           </Link>
                         </Button>

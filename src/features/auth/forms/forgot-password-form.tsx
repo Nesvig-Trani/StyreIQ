@@ -7,7 +7,6 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
   Input,
   Label,
 } from '@/shared'
@@ -41,12 +40,12 @@ export function ForgotPasswordForm() {
                 onClick={handleBackToLogin}
                 className="p-0 h-auto text-muted-foreground hover:text-foreground"
               >
-                <ArrowLeftIcon className="h-4 w-4 mr-1" />
+                <ArrowLeftIcon className="h-4 w-4 mr-1" aria-hidden="true" />
                 Back to login
               </Button>
             </Link>
           </div>
-          <CardTitle className="text-2xl font-bold">Reset your password</CardTitle>
+          <h1 className="text-2xl font-bold leading-none">Reset your password</h1>
           <CardDescription>
             {isSubmitted
               ? 'Check your email for a password reset link'
@@ -60,10 +59,14 @@ export function ForgotPasswordForm() {
               <div className="space-y-2">
                 <Label htmlFor="email">Email address</Label>
                 <div className="relative mb-4">
-                  <MailIcon className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <MailIcon
+                    className="absolute left-3 top-3 h-4 w-4 text-muted-foreground"
+                    aria-hidden="true"
+                  />
                   <Input
                     id="email"
                     type="email"
+                    autoComplete="email"
                     placeholder="Enter your email address"
                     disabled={isLoading}
                     className="pl-10"
@@ -93,7 +96,9 @@ export function ForgotPasswordForm() {
         {submitError && (
           <CardContent className="space-y-4">
             <div className="text-center py-6">
-              <p className="text-sm text-red-600">{submitError}</p>
+              <p role="status" aria-live="polite" className="text-sm text-red-600">
+                {submitError}
+              </p>
             </div>
           </CardContent>
         )}
@@ -102,7 +107,7 @@ export function ForgotPasswordForm() {
           <CardContent className="space-y-4">
             <div className="text-center py-6">
               <div className="mx-auto w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                <MailIcon className="h-6 w-6 text-green-600" />
+                <MailIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
               </div>
               <p className="text-sm text-muted-foreground mb-4">
                 We&#39;ve sent a password reset link to <strong>{email}</strong>

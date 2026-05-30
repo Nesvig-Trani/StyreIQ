@@ -37,7 +37,11 @@ export function useLogin() {
 
         if (lockedError) {
           toast.custom((t) => (
-            <div className="p-4 bg-red-100 rounded-md shadow text-sm">
+            <div
+              role="status"
+              aria-live="polite"
+              className="p-4 bg-red-100 rounded-md shadow text-sm"
+            >
               <p className="font-semibold text-red-700">
                 Your account is locked for 10 minutes due to too many failed login attempts.
               </p>
@@ -62,7 +66,27 @@ export function useLogin() {
 
       window.location.href = '/dashboard'
     } catch {
-      toast.error('Invalid credentials')
+      toast.custom((t) => (
+        <div
+          role="status"
+          aria-live="polite"
+          className="p-4 bg-red-100 rounded-md shadow text-sm border border-red-200"
+        >
+          <p className="font-semibold text-red-800">Sign-in failed</p>
+          <p className="mt-2 text-red-700">
+            We couldn&apos;t sign you in with those credentials. If you&apos;ve forgotten your
+            password, you can{' '}
+            <Link
+              href="/forgot-password"
+              className="text-red-900 underline font-medium"
+              onClick={() => toast.dismiss(t)}
+            >
+              reset it here
+            </Link>
+            .
+          </p>
+        </div>
+      ))
     }
   }
 

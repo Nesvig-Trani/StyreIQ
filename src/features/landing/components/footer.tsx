@@ -1,6 +1,10 @@
 import Link from 'next/link'
 import { Linkedin, Mail } from 'lucide-react'
 import { useEffect } from 'react'
+import { cn } from '@/shared/utils/cn'
+
+const footerLinkInteract =
+  'rounded-md outline-none ring-offset-2 ring-offset-gray-900 transition-colors focus-visible:ring-2 focus-visible:ring-white/70'
 
 export const Footer: React.FC<{
   showGetStarted: boolean
@@ -42,17 +46,25 @@ export const Footer: React.FC<{
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-start mb-4">
           <div></div>
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center gap-3">
             <a
               href="mailto:info@styreiq.com"
-              className="text-gray-400 hover:text-white transition-colors"
+              className={cn(
+                footerLinkInteract,
+                'inline-flex size-11 min-h-11 min-w-11 shrink-0 touch-manipulation items-center justify-center',
+                'text-gray-400 hover:text-white focus-visible:text-white',
+              )}
               aria-label="Send email to StyreIQ"
             >
               <Mail size={20} aria-hidden="true" />
             </a>
             <Link
               href="https://www.linkedin.com/company/nesvig-trani-llc/?viewAsMember=true"
-              className="text-gray-400 hover:text-white transition-colors"
+              className={cn(
+                footerLinkInteract,
+                'inline-flex size-11 min-h-11 min-w-11 shrink-0 touch-manipulation items-center justify-center',
+                'text-gray-400 hover:text-white focus-visible:text-white',
+              )}
               aria-label="StyreIQ on LinkedIn"
             >
               <Linkedin size={20} aria-hidden="true" />
@@ -63,7 +75,13 @@ export const Footer: React.FC<{
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <div className="mb-2">
-              <Link href="/" className="text-xl font-bold hover:text-gray-300 transition-colors">
+              <Link
+                href="/"
+                className={cn(
+                  footerLinkInteract,
+                  'text-xl font-bold text-white hover:text-gray-300 focus-visible:text-gray-300',
+                )}
+              >
                 StyreIQ
               </Link>
             </div>
@@ -78,14 +96,19 @@ export const Footer: React.FC<{
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4 text-sm">
             <a
               href="https://www.iubenda.com/privacy-policy/68492162"
-              className="text-gray-400 hover:text-white transition-colors iubenda-nostyle no-brand iubenda-embed"
-              title="Privacy Policy"
+              className={cn(
+                footerLinkInteract,
+                'text-gray-400 hover:text-white focus-visible:text-white iubenda-nostyle no-brand iubenda-embed',
+              )}
             >
               Privacy Policy & Cookie Policy
             </a>
             <span className="hidden sm:inline text-gray-600">•</span>
             <button
-              className="text-gray-400 hover:text-white transition-colors iubenda-cs-preferences-link"
+              className={cn(
+                footerLinkInteract,
+                'text-gray-400 hover:text-white focus-visible:text-white iubenda-cs-preferences-link',
+              )}
               type="button"
             >
               Cookie Preferences
@@ -93,7 +116,10 @@ export const Footer: React.FC<{
             <span className="hidden sm:inline text-gray-600">•</span>
             <Link
               href="/terms-and-conditions"
-              className="text-gray-400 hover:text-white transition-colors"
+              className={cn(
+                footerLinkInteract,
+                'text-gray-400 hover:text-white focus-visible:text-white',
+              )}
             >
               Terms and Conditions of Sale
             </Link>

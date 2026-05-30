@@ -1,7 +1,13 @@
 import type { ReactElement } from 'react'
 import React from 'react'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
-import { FormControl, FormField, FormItem, FormMessage } from '@/shared/components/ui/form'
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/shared/components/ui/form'
 import { cn } from '@/shared/utils/cn'
 import { Input } from '@/shared/components/ui/input'
 import { FieldData, useFieldRequired } from '@/shared/components/form-hook-helper'
@@ -33,8 +39,16 @@ export const TextInputHelper = <TFieldValues extends FieldValues>({
             required={isRequired}
           />
           <FormControl>
-            <Input type={fieldData.type} {...field} placeholder={fieldData.placeholder} />
+            <Input
+              type={fieldData.type}
+              {...field}
+              autoComplete={fieldData.autoComplete}
+              placeholder={fieldData.placeholder}
+            />
           </FormControl>
+          {fieldData.description ? (
+            <FormDescription className="sr-only">{fieldData.description}</FormDescription>
+          ) : null}
           <FormMessage />
         </FormItem>
       )}

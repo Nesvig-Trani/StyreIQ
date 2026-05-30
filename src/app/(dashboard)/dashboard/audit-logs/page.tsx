@@ -63,15 +63,15 @@ export default async function AuditLogsPage(props: {
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="space-y-2">
               <div className="flex items-center gap-3">
-                <h2 className="text-2xl font-bold">Audit Log</h2>
+                <h1 className="text-2xl font-bold">Audit Log</h1>
                 <Badge variant="secondary" className="text-xs">
                   {auditLogs.totalDocs} Entries
                 </Badge>
               </div>
               <div className="space-y-3">
-                <h3 className="text-lg font-semibold">
+                <h2 className="text-lg font-semibold">
                   Stay audit-ready with a built-in record of actions.
-                </h3>
+                </h2>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   The Audit Log shows who did what and when — whether at the central level or within
                   a division or department. Use it to review changes, confirm accountability, and

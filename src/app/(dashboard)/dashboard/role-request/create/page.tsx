@@ -31,14 +31,14 @@ export default async function CreateRoleRequestPage() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <nav className="mb-6 flex items-center space-x-2 text-sm text-gray-500">
           <Link href="/dashboard" className="flex items-center hover:text-gray-700">
-            <Home className="h-4 w-4 mr-1" />
+            <Home className="h-4 w-4 mr-1" aria-hidden="true" />
             Dashboard
           </Link>
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="h-4 w-4" aria-hidden="true" />
           <Link href="/dashboard/role-request" className="hover:text-gray-700">
             Role Requests
           </Link>
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="h-4 w-4" aria-hidden="true" />
           <span className="text-gray-900 font-medium">Create Role Request</span>
         </nav>
 

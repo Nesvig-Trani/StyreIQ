@@ -1,6 +1,12 @@
 import React from 'react'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
-import { FormControl, FormField, FormItem, FormMessage } from '@/shared/components/ui/form'
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/shared/components/ui/form'
 import { cn } from '@/shared/utils/cn'
 import { FieldData } from '@/shared/components/form-hook-helper'
 import { DatePicker } from '@/shared/components/ui/datepicker'
@@ -46,6 +52,9 @@ export const DateInputHelper = <TFieldValues extends FieldValues>({
               locale={undefined}
             />
           </FormControl>
+          {fieldData.description ? (
+            <FormDescription className="sr-only">{fieldData.description}</FormDescription>
+          ) : null}
           <FormMessage />
         </FormItem>
       )}

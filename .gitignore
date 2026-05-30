@@ -41,3 +41,7 @@ next-env.d.ts
 .env
 
 /media
+
+# Melt - local settings
+.env.local
+.claude/settings.local.json

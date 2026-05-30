@@ -11,6 +11,7 @@ import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 import { GenerateRollCallButton } from '@/features/compliance-tasks/components/generate-roll-call-button'
 import { RollCallStatus } from '@/features/compliance-tasks/hooks/roll-call-status'
 import { userSearchSchema } from '../schemas'
+import { TruncatedValuePopover } from '@/shared/components/truncated-value-popover'
 
 const shouldShowRollCall = (rollCallStatus?: RollCallStatus, cadenceDays = 90): boolean => {
   if (!rollCallStatus) return true
@@ -90,9 +91,12 @@ function useUserTable({
       cell: ({ row }) => {
         const email = row.getValue('email') as string
         return (
-          <span className="block truncate max-w-[200px]" title={email}>
-            {email}
-          </span>
+          <TruncatedValuePopover
+            value={email}
+            expandLabel={`Show full email for ${row.getValue('name') ?? email}`}
+            expandVisibleLabel="View"
+            maxWidthClassName="max-w-[220px]"
+          />
         )
       },
     },
@@ -135,8 +139,11 @@ function useUserTable({
             </Badge>
           )
         }
+        const expandLabelContext =
+          (row.getValue('name') ?? row.original.email)?.toString().trim() || undefined
+
         return organizations && organizations?.length > 0 ? (
-          <UnitCell organizations={organizations} />
+          <UnitCell organizations={organizations} expandLabelContext={expandLabelContext} />
         ) : (
           <span> - </span>
         )
@@ -147,6 +154,7 @@ function useUserTable({
       header: 'Actions',
       cell: ({ row }) => {
         const id = row.original.id
+        const entityLabel = row.original.name?.trim() || row.original.email
         const effectiveRole = getEffectiveRoleFromUser(user)
         const isOwnRecord = user?.id === id
         const isDialogOpen = selectedUserId === id.toString()
@@ -197,8 +205,12 @@ function useUserTable({
                   }
                 }}
                 trigger={
-                  <Button size="icon" variant="outline" aria-label="View user details">
-                    <EyeIcon className="h-4 w-4" />
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    aria-label={`View user details — ${entityLabel}`}
+                  >
+                    <EyeIcon className="h-4 w-4" aria-hidden="true" />
                   </Button>
                 }
               />
@@ -214,7 +226,12 @@ function useUserTable({
             )}
 
             {canManageAccess && effectiveRole !== UserRolesEnum.SuperAdmin && (
-              <Button size="icon" variant="outline" aria-label="Manage user access" asChild>
+              <Button
+                size="icon"
+                variant="outline"
+                aria-label={`Manage user access — ${entityLabel}`}
+                asChild
+              >
                 <Link href={`/dashboard/users/access/${id}`}>
                   <FileLock2 className="h-4 w-4" aria-hidden="true" />
                 </Link>
@@ -223,7 +240,7 @@ function useUserTable({
 
             <div className="text-white!">
               {canEdit && (
-                <Button size="icon" aria-label="Edit user" asChild>
+                <Button size="icon" aria-label={`Edit user — ${entityLabel}`} asChild>
                   <Link href={`/dashboard/users/update/${id}`}>
                     <PencilIcon className="h-4 w-4" aria-hidden="true" />
                   </Link>

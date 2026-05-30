@@ -61,7 +61,7 @@ export default async function RoleRequestsPage(props: {
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="space-y-2">
               <div className="flex items-center gap-3">
-                <h2 className="text-2xl font-bold">{pageContent.title}</h2>
+                <h1 className="text-2xl font-bold">{pageContent.title}</h1>
                 <Badge variant="secondary" className="text-xs">
                   {requests.totalDocs} {canApprove ? 'Total' : 'Requests'}
                 </Badge>
@@ -73,7 +73,7 @@ export default async function RoleRequestsPage(props: {
               {!isSuperAdmin && !tenantContext.isViewingAllTenants && (
                 <Button size="sm" className="w-full sm:w-auto" asChild>
                   <Link href="/dashboard/role-request/create" prefetch>
-                    <CirclePlus className="h-4 w-4" />
+                    <CirclePlus className="h-4 w-4" aria-hidden="true" />
                     {pageContent.buttonText}
                   </Link>
                 </Button>

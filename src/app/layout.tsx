@@ -1,6 +1,7 @@
 import React from 'react'
 import './styles.css'
 import './phone-input.css'
+import { SkipToMainContent } from '@/shared/components/skip-to-main-content'
 import { Toaster } from '@/shared/components/ui/sonner'
 
 export const metadata = {
@@ -14,7 +15,8 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <main>{children}</main>
+        <SkipToMainContent />
+        {children}
         <Toaster />
       </body>
     </html>

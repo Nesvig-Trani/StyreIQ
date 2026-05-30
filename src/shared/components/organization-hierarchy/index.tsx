@@ -1,5 +1,7 @@
 'use client'
 
+import { useId, useLayoutEffect, useRef, type KeyboardEvent as ReactKeyboardEvent } from 'react'
+import { focusableHeadingClassName } from '@/shared/utils/a11y-styles'
 import {
   Building2,
   ChevronLeftIcon,
@@ -12,7 +14,7 @@ import {
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@/shared'
 import { Input } from '@/shared'
 import { UnitHierarchyProps } from '@/features/units'
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared'
+import { Card, CardContent, CardHeader } from '@/shared'
 import { useUnitHierarchy } from '@/features/units/hooks/useUnitHierarchy'
 import { Button } from '@/shared'
 import { UnitDetail } from '@/features/units/components/unit-detail'
@@ -36,6 +38,9 @@ export default function UnitHierarchy({
   tenants?: Tenant[]
   isViewingAllTenants?: boolean
 }) {
+  const detailPanelTitleId = useId()
+  const detailHeadingRef = useRef<HTMLHeadingElement>(null)
+
   const {
     searchTerm,
     handleSearchChange,
@@ -53,7 +58,23 @@ export default function UnitHierarchy({
     handleConfirmDisable,
     isDisableModalOpen,
     setIsDisableModalOpen,
-  } = useUnitHierarchy({ organizations, originalData, pagination, users })
+    lastSelectedRowTriggerRef,
+  } = useUnitHierarchy({ organizations, originalData, pagination, users, detailHeadingRef })
+
+  const unitStatusAnnouncement =
+    selectedOrg && !isEditing ? `Selected unit: ${selectedOrg.name}` : ''
+
+  const selectedOrgId = selectedOrg?.id
+  useLayoutEffect(() => {
+    if (selectedOrgId == null || isEditing) return
+    detailHeadingRef.current?.focus()
+  }, [selectedOrgId, isEditing])
+
+  const handleDetailPanelKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
+    if (e.key !== 'Escape' || !selectedOrg || isEditing) return
+    e.preventDefault()
+    lastSelectedRowTriggerRef.current?.focus()
+  }
 
   const effectiveRole = getEffectiveRoleFromUser(user)
   const isSocialMediaManager = effectiveRole === UserRolesEnum.SocialMediaManager
@@ -63,8 +84,13 @@ export default function UnitHierarchy({
         <div className="p-4 border-b">
           <div className="space-y-3">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search
+                className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-muted-foreground"
+                aria-hidden="true"
+              />
               <Input
+                type="search"
+                aria-label="Search units by name"
                 placeholder="Search by name..."
                 value={searchTerm}
                 className="pl-10"
@@ -118,7 +144,9 @@ export default function UnitHierarchy({
           </div>
         </div>
 
-        <ScrollArea className="flex-1 p-2">{renderFilteredResults()}</ScrollArea>
+        <ScrollArea className="flex-1 p-2">
+          <section aria-label="Organization units tree">{renderFilteredResults()}</section>
+        </ScrollArea>
 
         <div className="flex justify-center p-2 border-t">
           <div className="flex items-center gap-2">
@@ -162,25 +190,37 @@ export default function UnitHierarchy({
       <div className="flex flex-col">
         {selectedOrg ? (
           <div className="flex-1">
-            <Card>
+            <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+              {unitStatusAnnouncement}
+            </span>
+            <Card
+              role="region"
+              aria-labelledby={detailPanelTitleId}
+              onKeyDown={handleDetailPanelKeyDown}
+            >
               <ScrollArea className={'h-[650px]'}>
                 <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div className="min-w-0 flex-1">
-                    <CardTitle className="flex items-center gap-2 truncate">
+                    <h2
+                      id={detailPanelTitleId}
+                      ref={detailHeadingRef}
+                      tabIndex={-1}
+                      className={`flex items-center gap-2 truncate text-lg font-semibold leading-none ${focusableHeadingClassName}`}
+                    >
                       {selectedOrg.name}
-                    </CardTitle>
+                    </h2>
                   </div>
                   <div className="flex gap-2 shrink-0">
                     {!isSocialMediaManager && (
                       <>
                         {isEditing ? (
                           <Button size="sm" variant="outline" onClick={() => setIsEditing(false)}>
-                            <X className="h-4 w-4" />
+                            <X className="h-4 w-4" aria-hidden="true" />
                             <span className="ml-1 hidden sm:inline">Cancel</span>
                           </Button>
                         ) : (
                           <Button size="sm" onClick={() => setIsEditing(true)}>
-                            <EditIcon className="h-4 w-4" />
+                            <EditIcon className="h-4 w-4" aria-hidden="true" />
                             <span className="ml-1 hidden sm:inline">Edit</span>
                           </Button>
                         )}
@@ -190,7 +230,7 @@ export default function UnitHierarchy({
                           className="ml-2"
                           onClick={() => setIsDisableModalOpen(true)}
                         >
-                          <XCircleIcon className="h-4 w-4 mr-2" />
+                          <XCircleIcon className="h-4 w-4 mr-2" aria-hidden="true" />
                           Disable
                         </Button>
                         <DisableUnitButton
@@ -223,7 +263,7 @@ export default function UnitHierarchy({
         ) : (
           <div className="flex-1 flex items-center justify-center text-muted-foreground border rounded-lg">
             <div className="text-center p-8">
-              <Building2 className="h-12 w-12 mx-auto mb-4 opacity-50" />
+              <Building2 className="mx-auto mb-4 h-12 w-12 opacity-50" aria-hidden="true" />
               <p className="text-sm">Select a unit to view details</p>
             </div>
           </div>

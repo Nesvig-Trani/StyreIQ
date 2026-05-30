@@ -1,6 +1,6 @@
 'use server'
 import React from 'react'
-import { Card, CardContent, CardHeader, CardTitle, UnitAccessForm } from '@/shared'
+import { Card, CardContent, CardHeader, UnitAccessForm } from '@/shared'
 import { getUserById } from '@/features/users'
 import { getUnitAccessByUserId } from '@/features/units'
 import { checkUserUpdateAccess } from '@/shared'
@@ -42,7 +42,7 @@ async function UserAccessPage({ params }: { params: Promise<{ userId: string }> 
     <div>
       <Card>
         <CardHeader>
-          <CardTitle> Set unit access</CardTitle>
+          <h1 className="leading-none font-semibold">Set unit access</h1>
         </CardHeader>
         <CardContent>
           <p>

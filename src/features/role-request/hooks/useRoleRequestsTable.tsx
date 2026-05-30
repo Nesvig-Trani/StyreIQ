@@ -12,6 +12,7 @@ import { roleLabelMap, UserRolesEnum } from '@/features/users/schemas'
 import { approveRoleRequest } from '@/sdk/request-role'
 import { RoleRequest, Tenant } from '@/types/payload-types'
 import { roleRequestSearchSchema } from '../schemas'
+import { TruncatedValuePopover } from '@/shared/components/truncated-value-popover'
 
 function useRoleRequestsTable({
   userRole,
@@ -103,9 +104,13 @@ function useRoleRequestsTable({
       cell: ({ row }) => {
         const text = row.original.justification
         return (
-          <div className="max-w-md truncate" title={text}>
-            {text}
-          </div>
+          <TruncatedValuePopover
+            value={text}
+            expandLabel="Show full justification text"
+            expandVisibleLabel="View"
+            maxWidthClassName="max-w-md"
+            disclosureMinLength={48}
+          />
         )
       },
     },
@@ -172,6 +177,10 @@ function useRoleRequestsTable({
         }
 
         const isLoading = loading === id
+        const user = row.original.user
+        const requesterName = typeof user === 'object' ? user.name : 'Unknown'
+        const requestedRoleKey = row.original.requestedRole as UserRolesEnum
+        const requestedRoleLabel = roleLabelMap[requestedRoleKey] ?? requestedRoleKey
 
         return (
           <div className="flex gap-2">
@@ -180,9 +189,11 @@ function useRoleRequestsTable({
               variant="default"
               onClick={() => handleRoleRequestAction(id, true)}
               disabled={isLoading}
+              aria-busy={isLoading}
+              aria-label={`Approve role request — ${requesterName}, ${requestedRoleLabel}`}
               className="bg-green-600 hover:bg-green-700"
             >
-              <CheckCircle className="h-4 w-4 mr-1" />
+              <CheckCircle className="h-4 w-4 mr-1" aria-hidden="true" />
               Approve
             </Button>
             <Button
@@ -190,8 +201,10 @@ function useRoleRequestsTable({
               variant="destructive"
               onClick={() => handleRoleRequestAction(id, false)}
               disabled={isLoading}
+              aria-busy={isLoading}
+              aria-label={`Reject role request — ${requesterName}, ${requestedRoleLabel}`}
             >
-              <XCircle className="h-4 w-4 mr-1" />
+              <XCircle className="h-4 w-4 mr-1" aria-hidden="true" />
               Reject
             </Button>
           </div>

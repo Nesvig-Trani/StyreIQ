@@ -42,6 +42,8 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
           name: 'reminderSchedule',
           label: 'Reminder Schedule',
           type: 'array',
+          required: true,
+          arrayItemLabel: 'reminder schedule',
           description:
             'Choose the day offsets when StyreIQ sends reminders to the assigned user for any open compliance task.',
           children: [
@@ -49,6 +51,8 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
               name: 'day',
               label: 'Day',
               type: 'number',
+              required: true,
+              description: 'Enter a reminder offset between 1 and 90 days.',
               placeholder: 'Enter days (1-90)',
               size: 'full',
             },
@@ -59,6 +63,8 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
           name: 'escalationDays',
           label: 'Escalation Days',
           type: 'array',
+          required: true,
+          arrayItemLabel: 'escalation day',
           description:
             'When a task is overdue, escalation notifies Unit and Central Admins based on the schedule set here.',
           children: [
@@ -66,6 +72,8 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
               name: 'day',
               label: 'Day',
               type: 'number',
+              required: true,
+              description: 'Enter an escalation offset between 1 and 180 days.',
               placeholder: 'Enter days (1-180)',
               size: 'full',
             },
@@ -76,6 +84,7 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
           name: 'rollCallFrequency',
           label: 'Roll Call Frequency',
           type: 'select',
+          required: true,
           description:
             'How often users must confirm which social media accounts they are connected to.',
           options: [
@@ -91,6 +100,7 @@ export function useUpdateTenantSettings({ tenant }: UseUpdateTenantSettingsProps
           name: 'passwordUpdateCadenceDays',
           label: 'Password Update Cadence (Days)',
           type: 'number',
+          required: true,
           description:
             'How often users will be asked to update passwords used to access their assigned social media accounts, whether through individual login access or shared credentials.',
           placeholder: 'Enter days (30-365)',

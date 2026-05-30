@@ -1,6 +1,12 @@
 import React from 'react'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
-import { FormControl, FormField, FormItem, FormMessage } from '@/shared/components/ui/form'
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/shared/components/ui/form'
 import { FieldData } from '@/shared/components/form-hook-helper'
 import {
   Select,
@@ -52,13 +58,13 @@ export const SelectInputHelper = <TFieldValues extends FieldValues>({
             }}
           >
             <FormControl>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full" aria-required={isRequired || undefined}>
                 <SelectValue placeholder={fieldData.placeholder || 'Select an option'} />
               </SelectTrigger>
             </FormControl>
             <SelectContent className="max-h-[300px]">
               <SelectScrollUpButton className="flex items-center justify-center">
-                <ChevronUp className="h-4 w-4" />
+                <ChevronUp className="h-4 w-4" aria-hidden="true" />
               </SelectScrollUpButton>
               {fieldData.options && fieldData.options.length > 0 ? (
                 fieldData.options.map(({ label: optionLabel, value: optionValue }) => (
@@ -73,10 +79,13 @@ export const SelectInputHelper = <TFieldValues extends FieldValues>({
               )}
 
               <SelectScrollDownButton className="flex items-center justify-center">
-                <ChevronDown className="h-4 w-4" />
+                <ChevronDown className="h-4 w-4" aria-hidden="true" />
               </SelectScrollDownButton>
             </SelectContent>
           </Select>
+          {fieldData.description ? (
+            <FormDescription className="sr-only">{fieldData.description}</FormDescription>
+          ) : null}
           <FormMessage />
         </FormItem>
       )}

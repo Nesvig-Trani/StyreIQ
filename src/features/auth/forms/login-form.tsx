@@ -1,12 +1,6 @@
 'use client'
 import { Button } from '@/shared/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/shared/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader } from '@/shared/components/ui/card'
 import { Input } from '@/shared/components/ui/input'
 import { PasswordInput } from '@/shared/components/ui/password-input'
 import { Label } from '@/shared/components/ui/label'
@@ -19,7 +13,7 @@ export function LoginForm() {
     <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
+          <h1 className="text-2xl font-bold leading-none">Login to your account</h1>
           <CardDescription>Enter your email below to login to your account</CardDescription>
         </CardHeader>
         <CardContent>
@@ -31,6 +25,7 @@ export function LoginForm() {
                   id="email"
                   name="email"
                   type="email"
+                  autoComplete="email"
                   required
                   value={loginFields.email}
                   onChange={handleInputChange}
@@ -49,6 +44,7 @@ export function LoginForm() {
                 <PasswordInput
                   id="password"
                   name="password"
+                  autoComplete="current-password"
                   required
                   value={loginFields.password}
                   onChange={handleInputChange}

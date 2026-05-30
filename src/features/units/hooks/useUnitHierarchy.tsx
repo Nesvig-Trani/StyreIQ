@@ -1,5 +1,14 @@
 import { Building2, CheckCircle, ChevronDown, ChevronRight } from 'lucide-react'
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  type RefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { Badge, Button } from '@/shared'
 import {
   FlattenedTree,
@@ -14,7 +23,14 @@ import { typeConfig } from '../constants/typeConfig'
 import { disableUnit } from '@/sdk/organization'
 import { toast } from 'sonner'
 
-export const useUnitHierarchy = ({ originalData, organizations }: UnitHierarchyProps) => {
+export const useUnitHierarchy = ({
+  originalData,
+  organizations,
+  detailHeadingRef,
+}: UnitHierarchyProps & {
+  detailHeadingRef?: RefObject<HTMLHeadingElement | null>
+}) => {
+  const lastSelectedRowTriggerRef = useRef<HTMLButtonElement | null>(null)
   const [expandedNodes, setExpandedNodes] = useState<Set<number>>(new Set())
   const [selectedOrg, setSelectedOrg] = useState<UnitWithDepth | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
@@ -120,8 +136,34 @@ export const useUnitHierarchy = ({ originalData, organizations }: UnitHierarchyP
   }
 
   const selectOrganization = (org: FlattenedTree) => {
-    setSelectedOrg(originalDataMap[org.id] || null)
+    const next = originalDataMap[org.id] || null
+    const reselectSame = selectedOrg?.id != null && selectedOrg.id === next?.id
+    setSelectedOrg(next)
+    if (reselectSame && detailHeadingRef) {
+      queueMicrotask(() => detailHeadingRef.current?.focus())
+    }
   }
+
+  const unitRowAccessibleLabel = (org: FlattenedTree) => {
+    const originalOrg = originalDataMap[org.id]
+    const status = originalOrg?.status
+    const type = originalOrg?.type
+    const typeLabel = type ? typeConfig[type]?.label : undefined
+    const statusLabel = status ? statusConfig[status]?.label : undefined
+    const parts = [org.name]
+    if (typeLabel) parts.push(typeLabel)
+    if (statusLabel) parts.push(statusLabel)
+    return parts.join(', ')
+  }
+
+  const handleUnitRowKeyDown = (e: KeyboardEvent<HTMLButtonElement>, org: FlattenedTree) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      lastSelectedRowTriggerRef.current = e.currentTarget
+      selectOrganization(org)
+    }
+  }
+
   const renderTreeNode = (org: FlattenedTree, level = 0) => {
     const isExpanded = expandedNodes.has(org.id)
     const hasChildren = org.children && org.children.length > 0
@@ -130,21 +172,21 @@ export const useUnitHierarchy = ({ originalData, organizations }: UnitHierarchyP
     const type = originalOrg?.type
     const StatusIcon = status ? statusConfig[status]?.icon || CheckCircle : CheckCircle
     const TypeIcon = type ? typeConfig[type]?.icon || Building2 : Building2
+    const isSelected = selectedOrg?.id === org.id
 
     return (
       <div key={org.id} className="select-none">
         <div
-          className={`flex items-center gap-2 p-2 cursor-pointer rounded-md ${
-            selectedOrg?.id === org.id ? 'bg-white' : ''
-          }`}
+          className={`flex items-center gap-2 p-2 rounded-md ${isSelected ? 'bg-white' : ''}`}
           style={{ paddingLeft: `${org.depth * 20 + 8}px` }}
-          onClick={() => selectOrganization(org)}
         >
           {hasChildren ? (
             <Button
+              type="button"
               variant="ghost"
               size="sm"
-              className="h-4 w-4 p-0"
+              className="h-4 w-4 shrink-0 p-0"
+              aria-expanded={isExpanded}
               aria-label={isExpanded ? `Collapse ${org.name}` : `Expand ${org.name}`}
               onClick={(e) => {
                 e.stopPropagation()
@@ -158,33 +200,47 @@ export const useUnitHierarchy = ({ originalData, organizations }: UnitHierarchyP
               )}
             </Button>
           ) : (
-            <div className="w-4" />
+            <div className="h-4 w-4 shrink-0" aria-hidden="true" />
           )}
 
-          <TypeIcon className="h-4 w-4 text-muted-foreground" />
+          <button
+            type="button"
+            tabIndex={0}
+            aria-pressed={isSelected}
+            aria-label={unitRowAccessibleLabel(org)}
+            className="flex min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            onClick={(e) => {
+              lastSelectedRowTriggerRef.current = e.currentTarget
+              selectOrganization(org)
+            }}
+            onKeyDown={(e) => handleUnitRowKeyDown(e, org)}
+          >
+            <TypeIcon className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
 
-          <span className="font-medium flex-1">{org.name}</span>
+            <span className="flex-1 font-medium">{org.name}</span>
 
-          {type && (
-            <Badge variant="secondary" className="text-xs">
-              {typeConfig[type]?.label}
-            </Badge>
-          )}
+            {type && (
+              <Badge variant="outline" className="shrink-0 border-border text-xs text-foreground">
+                {typeConfig[type]?.label}
+              </Badge>
+            )}
 
-          {status && (
-            <div className="flex items-center gap-1">
-              <StatusIcon
-                className={`h-3 w-3 ${
-                  statusConfig[status]?.color === 'bg-green-500'
-                    ? 'text-green-500'
-                    : statusConfig[status]?.color === 'bg-red-500'
-                      ? 'text-red-500'
-                      : 'text-yellow-500'
-                }`}
-              />
-              <span className="text-xs text-muted-foreground">{statusConfig[status]?.label}</span>
-            </div>
-          )}
+            {status && (
+              <div className="flex shrink-0 items-center gap-1">
+                <StatusIcon
+                  aria-hidden="true"
+                  className={`h-3 w-3 ${
+                    statusConfig[status]?.color === 'bg-green-500'
+                      ? 'text-green-500'
+                      : statusConfig[status]?.color === 'bg-red-500'
+                        ? 'text-red-500'
+                        : 'text-yellow-500'
+                  }`}
+                />
+                <span className="text-xs text-muted-foreground">{statusConfig[status]?.label}</span>
+              </div>
+            )}
+          </button>
         </div>
 
         {hasChildren && isExpanded && (
@@ -219,5 +275,6 @@ export const useUnitHierarchy = ({ originalData, organizations }: UnitHierarchyP
     handleConfirmDisable,
     isDisableModalOpen,
     setIsDisableModalOpen,
+    lastSelectedRowTriggerRef,
   }
 }

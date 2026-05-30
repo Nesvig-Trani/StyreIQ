@@ -6,5 +6,9 @@ export const metadata = {
 }
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>
+  return (
+    <main id="main-content" tabIndex={-1} className="min-h-svh outline-none">
+      {children}
+    </main>
+  )
 }

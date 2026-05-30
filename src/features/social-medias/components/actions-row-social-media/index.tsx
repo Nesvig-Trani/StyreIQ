@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useId, useState } from 'react'
 import Link from 'next/link'
 import { EyeIcon, PencilIcon } from 'lucide-react'
 import { SocialMediaStatusEnum, useChangeStatusSocialMedia } from '@/features/social-medias'
@@ -16,6 +16,7 @@ import {
   DialogTitle,
 } from '@/shared/components/ui/dialog'
 import { Textarea } from '@/shared'
+import { Label } from '@/shared/components/ui/label'
 import type { AuditLog, SocialMedia, User } from '@/types/payload-types'
 import { SocialMediaDetailsDialog } from '../social-media-details'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
@@ -50,6 +51,7 @@ export const ActionsRowSocialMedia: React.FC<ActionsRowSocialMediaProps> = ({
   } = useChangeStatusSocialMedia(socialMedia)
 
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false)
+  const deactivationReasonId = useId()
   const effectiveRole = getEffectiveRoleFromUser(user)
   const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
   const isCentralAdmin = effectiveRole === UserRolesEnum.CentralAdmin
@@ -60,6 +62,11 @@ export const ActionsRowSocialMedia: React.FC<ActionsRowSocialMediaProps> = ({
   const canEdit = isSuperAdmin || isCentralAdmin || isUnitAdmin
   const canApproveActivate = isSuperAdmin || isCentralAdmin || isUnitAdmin
   const canToggleStatus = isSuperAdmin
+
+  const accountLabel =
+    stateSocialMedia.name?.trim() || `Social media account ${stateSocialMedia.id}`
+  const isAccountActive = stateSocialMedia.status === SocialMediaStatusEnum.Active
+  const statusToggleLabel = `${accountLabel}: ${isAccountActive ? 'Active' : 'Inactive'}. Toggle to change account status.`
 
   const renderActionButtons = () => {
     if (!canApproveActivate) return null
@@ -91,6 +98,7 @@ export const ActionsRowSocialMedia: React.FC<ActionsRowSocialMediaProps> = ({
             checked={stateSocialMedia.status === SocialMediaStatusEnum.Active}
             onCheckedChange={onChangeStatus}
             disabled={!isSuperAdmin && stateSocialMedia.status === SocialMediaStatusEnum.Inactive}
+            aria-label={statusToggleLabel}
           />
         )}
 
@@ -101,17 +109,22 @@ export const ActionsRowSocialMedia: React.FC<ActionsRowSocialMediaProps> = ({
           isOpen={isDetailsDialogOpen}
           onOpenChange={setIsDetailsDialogOpen}
           trigger={
-            <Button size="icon" aria-label="View social media details">
-              <EyeIcon className="h-4 w-4" />
+            <Button size="icon" aria-label={`View social media details — ${accountLabel}`}>
+              <EyeIcon className="h-4 w-4" aria-hidden="true" />
             </Button>
           }
         />
       )}
 
       {canEdit && (
-        <Button className="!text-white" asChild size="icon" aria-label="Edit social media">
+        <Button
+          className="!text-white"
+          asChild
+          size="icon"
+          aria-label={`Edit social media — ${accountLabel}`}
+        >
           <Link href={`/dashboard/social-media-accounts/update/${socialMedia.id}`}>
-            <PencilIcon className="h-4 w-4" />
+            <PencilIcon className="h-4 w-4" aria-hidden="true" />
           </Link>
         </Button>
       )}
@@ -128,11 +141,15 @@ export const ActionsRowSocialMedia: React.FC<ActionsRowSocialMediaProps> = ({
               If you deactivate this social media account, only the super admin can reactivate it,
               please provide a reason for deactivation
             </DialogDescription>
-            <Textarea
-              value={deactivationReason}
-              onChange={handleReasonChange}
-              placeholder="Please provide a reason..."
-            />
+            <div className="grid gap-2">
+              <Label htmlFor={deactivationReasonId}>Reason for deactivation</Label>
+              <Textarea
+                id={deactivationReasonId}
+                value={deactivationReason}
+                onChange={handleReasonChange}
+                placeholder="Please provide a reason..."
+              />
+            </div>
 
             <DialogFooter>
               <Button variant="secondary" onClick={handleDeactivateCancel}>

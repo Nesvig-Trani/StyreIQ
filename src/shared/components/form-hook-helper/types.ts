@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { HTMLInputAutoCompleteAttribute, ReactNode } from 'react'
 import type { FieldValues, Path } from 'react-hook-form'
 import { DatePickerProps } from 'react-datepicker'
 import { Tree } from '@/features/units'
@@ -58,6 +58,8 @@ export type FieldData<TFieldValues extends FieldValues = FieldValues> = {
    * Specifies the children of every element of a list
    */
   children?: FieldData<FieldValues>[]
+  /** Used when `type` === 'array' to name add/remove controls for each repeated item */
+  arrayItemLabel?: string
   multiple?: boolean
   /** Used to specify that the field is required */
   dependsOn?: {
@@ -70,4 +72,5 @@ export type FieldData<TFieldValues extends FieldValues = FieldValues> = {
   disabled?: boolean
   required?: boolean
   hidden?: boolean
+  autoComplete?: HTMLInputAutoCompleteAttribute
 }

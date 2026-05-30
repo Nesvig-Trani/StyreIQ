@@ -1,7 +1,13 @@
 import type { ReactElement } from 'react'
 import React from 'react'
 import type { FieldValues, UseFormReturn } from 'react-hook-form'
-import { FormControl, FormField, FormItem, FormMessage } from '@/shared/components/ui/form'
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/shared/components/ui/form'
 import { cn } from '@/shared/utils/cn'
 import { Input } from '@/shared/components/ui/input'
 import { FieldData, useFieldRequired } from '@/shared/components/form-hook-helper'
@@ -41,6 +47,7 @@ export const NumberInputHelper = <TFieldValues extends FieldValues>({
               maxLength={INPUT_MAX_LENGTH}
               type="text"
               inputMode="numeric"
+              aria-required={isRequired || undefined}
               onBeforeInput={(e: React.ChangeEvent<HTMLInputElement>): void => {
                 const currentValue = e.target.value
                 const selectionStart = e.target.selectionStart as number
@@ -105,6 +112,9 @@ export const NumberInputHelper = <TFieldValues extends FieldValues>({
               placeholder={fieldData.placeholder}
             />
           </FormControl>
+          {fieldData.description ? (
+            <FormDescription className="sr-only">{fieldData.description}</FormDescription>
+          ) : null}
           <FormMessage />
         </FormItem>
       )}

@@ -30,6 +30,7 @@ export default async function UnitsPage(props: {
     return (
       <Card>
         <CardContent>
+          <h1 className="text-2xl font-bold mb-4">Units</h1>
           <p className="text-center text-muted-foreground">
             You must be logged in to view this page.
           </p>
@@ -78,15 +79,15 @@ export default async function UnitsPage(props: {
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
               <div className="space-y-2">
                 <div className="flex items-center gap-3">
-                  <h2 className="text-2xl font-bold">Units</h2>
+                  <h1 className="text-2xl font-bold">Units</h1>
                   <Badge variant="secondary" className="text-xs">
                     {organizations.totalDocs} Units
                   </Badge>
                 </div>
                 <div className="space-y-3">
-                  <h3 className="text-lg font-semibold">
+                  <h2 className="text-lg font-semibold">
                     Build the foundation of your governance system.
-                  </h3>
+                  </h2>
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     Units represent parts of your organization and follow a parent → child
                     hierarchy, just like your org chart. For example: <em>Organization</em> →{' '}
@@ -104,7 +105,7 @@ export default async function UnitsPage(props: {
                       href="/dashboard/units/create"
                       prefetch={true}
                     >
-                      <CirclePlus className="h-4 w-4" />
+                      <CirclePlus className="h-4 w-4" aria-hidden="true" />
                       Create Unit
                     </Link>
                   </Button>

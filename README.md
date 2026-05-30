@@ -1,4 +1,4 @@
-# StyreIQ - Governance & Compliance Platform
+# StyreIQ - Governance & Compliance Platform 1.0.0
 
 StyreIQ is a comprehensive governance and compliance platform designed to help organizations manage social media accounts, track policy compliance, and monitor risks across distributed teams.
 
