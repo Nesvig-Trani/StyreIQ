@@ -83,11 +83,17 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
       return
     }
     try {
-      await createUser(data)
+      const user = await createUser(data)
       toast.success('User created successfully')
       reset()
 
-      router.push('/dashboard/users')
+      // Redirect to unit-access assignment for non-SuperAdmins so the admin
+      // can configure org access before the user logs in (restored after GIQ-81).
+      router.push(
+        user.active_role === UserRolesEnum.SuperAdmin
+          ? '/dashboard/users'
+          : `/dashboard/users/access/${user.id}`,
+      )
     } catch (error) {
       if (isApiError(error)) {
         if (error.data?.message === USER_ALREADY_EXISTS) {

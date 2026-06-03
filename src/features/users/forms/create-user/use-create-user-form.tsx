@@ -131,14 +131,20 @@ export function useCreateUserForm({
       ],
       onSubmit: async (submitData) => {
         try {
-          await createUser({
+          const user = await createUser({
             ...submitData,
             tenant: selectedTenantId,
           })
 
           toast.success('User created successfully')
 
-          router.push('/dashboard/users')
+          // Redirect to unit-access assignment for non-SuperAdmins so the admin
+          // can configure org access before the user logs in (restored after GIQ-81).
+          router.push(
+            user.active_role === UserRolesEnum.SuperAdmin
+              ? '/dashboard/users'
+              : `/dashboard/users/access/${user.id}`,
+          )
         } catch (error) {
           if (isApiError(error)) {
             if (error.data?.message === USER_ALREADY_EXISTS) {
