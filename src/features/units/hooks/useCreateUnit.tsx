@@ -11,6 +11,7 @@ import { toast } from 'sonner'
 import { createUnitTree } from '@/features/units/utils/createUnitTree'
 import { useRouter } from 'next/navigation'
 import { industryLevelOptions, unitLevelOptions } from '../constants/unitTypeOptions'
+import { UNASSIGNED_ADMIN_VALUE, unassignedAdminOption } from '../constants/adminAssignment'
 import { UserRolesEnum } from '@/features/users'
 import { useState, useEffect, useMemo } from 'react'
 import { User } from '@/types/payload-types'
@@ -64,12 +65,14 @@ function useCreateUnit({
         label: 'Admin',
         name: 'admin' as const,
         type: 'select' as const,
-        options: filteredUsers.map((user) => ({
-          value: user.id.toString(),
-          label: user.name,
-        })),
+        options: [
+          unassignedAdminOption,
+          ...filteredUsers.map((user) => ({
+            value: user.id.toString(),
+            label: user.name,
+          })),
+        ],
         size: 'half' as const,
-        required: true,
       },
       {
         label: 'Backup Admins',
@@ -143,7 +146,7 @@ function useCreateUnit({
         name: '',
         type: UnitTypeEnum.HIGHER_EDUCATION_INSTITUTION,
         parent: defaultParentOrg || '',
-        admin: '',
+        admin: UNASSIGNED_ADMIN_VALUE,
         websiteUrl: '',
         status: 'active',
         description: '',
@@ -169,7 +172,7 @@ function useCreateUnit({
         })
 
       // Clear admin and backup admins when parent changes
-      form.setValue('admin', '')
+      form.setValue('admin', UNASSIGNED_ADMIN_VALUE)
       form.setValue('backupAdmins', [])
     } else {
       setFilteredUsers([])

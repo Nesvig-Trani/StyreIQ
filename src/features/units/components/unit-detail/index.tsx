@@ -3,10 +3,11 @@ import { UnitWithDepth } from '@/features/units/schemas'
 import { Organization, User } from '@/types/payload-types'
 import { Badge, Card, CardHeader, CardTitle, CardContent, Separator } from '@/shared'
 import { Avatar, AvatarFallback } from '@/shared/components/ui/avatar'
-import { Building, Globe } from 'lucide-react'
+import { Building, Globe, UserX } from 'lucide-react'
+import { UNASSIGNED_ADMIN_LABEL } from '@/features/units/constants/adminAssignment'
 
 export function UnitDetail({ organization }: { organization: UnitWithDepth }) {
-  const admin = organization.admin as User
+  const admin = organization.admin
   const backupAdmins = organization.backupAdmins as User[]
   const parentOrg = organization.parentOrg as Organization
   const statusColors = {
@@ -107,14 +108,14 @@ export function UnitDetail({ organization }: { organization: UnitWithDepth }) {
         </Card>
 
         <div className="space-y-6">
-          {admin && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Administration</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-2">Primary Admin</h3>
+          <Card>
+            <CardHeader>
+              <CardTitle>Administration</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground mb-2">Primary Admin</h3>
+                {admin ? (
                   <div className="flex items-center gap-3 p-2 border rounded-md">
                     <Avatar>
                       <AvatarFallback>{getInitials(admin.name)}</AvatarFallback>
@@ -126,36 +127,42 @@ export function UnitDetail({ organization }: { organization: UnitWithDepth }) {
                       </div>
                     </div>
                   </div>
-                </div>
-
-                {organization.backupAdmins && organization.backupAdmins.length > 0 && (
-                  <div>
-                    <h3 className="text-sm font-medium text-muted-foreground mb-2">
-                      Backup Admins
-                    </h3>
-                    <div className="space-y-2">
-                      {backupAdmins?.map((backupAdmin) => (
-                        <div
-                          key={backupAdmin.id}
-                          className="flex items-center gap-3 p-2 border rounded-md"
-                        >
-                          <Avatar>
-                            <AvatarFallback>{getInitials(backupAdmin.name)}</AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <div className="font-medium">{backupAdmin.name || 'Unknown'}</div>
-                            <div className="text-sm text-muted-foreground">
-                              {backupAdmin.email || 'No email'}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
+                ) : (
+                  <div className="flex items-center gap-3 rounded-md border border-amber-300 bg-amber-50 p-2 text-amber-800">
+                    <UserX className="h-4 w-4 shrink-0" aria-hidden="true" />
+                    <div>
+                      <div className="font-medium">{UNASSIGNED_ADMIN_LABEL}</div>
+                      <div className="text-sm">Edit this unit to assign a manager.</div>
                     </div>
                   </div>
                 )}
-              </CardContent>
-            </Card>
-          )}
+              </div>
+
+              {organization.backupAdmins && organization.backupAdmins.length > 0 && (
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground mb-2">Backup Admins</h3>
+                  <div className="space-y-2">
+                    {backupAdmins?.map((backupAdmin) => (
+                      <div
+                        key={backupAdmin.id}
+                        className="flex items-center gap-3 p-2 border rounded-md"
+                      >
+                        <Avatar>
+                          <AvatarFallback>{getInitials(backupAdmin.name)}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <div className="font-medium">{backupAdmin.name || 'Unknown'}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {backupAdmin.email || 'No email'}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
           {/* Delegate Permissions button hidden - it has no functionality */}
           {/* <Card>
             <CardHeader>

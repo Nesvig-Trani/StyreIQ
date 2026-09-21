@@ -150,7 +150,9 @@ export const createUnit: Endpoint = {
         },
       })
 
-      await addOrganizationToAdmin(req.payload, admin, createOrganization.id)
+      if (admin) {
+        await addOrganizationToAdmin(req.payload, admin, createOrganization.id)
+      }
 
       return new Response(JSON.stringify(createOrganization), {
         status: 201,
@@ -267,7 +269,9 @@ export const updateUnit: Endpoint = {
         req,
       })
 
-      await updateAdminOrganizations(req.payload, admin, id)
+      if (admin) {
+        await updateAdminOrganizations(req.payload, admin, id)
+      }
 
       return new Response(JSON.stringify(createUnit), {
         status: 200,

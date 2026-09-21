@@ -1,4 +1,5 @@
 import { createUnitFormSchema, updateUnitFormSchema } from '@/features/units'
+import { toAdminId } from '@/features/units/constants/adminAssignment'
 import { z } from 'zod'
 import { env } from '@/config/env'
 import { JSON_HEADERS } from '@/shared/constants'
@@ -14,7 +15,7 @@ export const createUnit = async (data: z.infer<typeof createUnitFormSchema>) => 
       name: data.name,
       type: data.type,
       parentOrg: data.parent ? Number(data.parent) : undefined,
-      admin: data.admin ? Number(data.admin) : undefined,
+      admin: toAdminId(data.admin),
       backupAdmins: data.backupAdmins ? data.backupAdmins.map((admin) => Number(admin)) : undefined,
       websiteUrl: data.websiteUrl,
       status: data.status,
@@ -51,7 +52,7 @@ export const updateUnit = async (data: z.infer<typeof updateUnitFormSchema>) => 
       name: data.name,
       type: data.type,
       parentOrg: data.parent ? Number(data.parent) : undefined,
-      admin: data.admin ? Number(data.admin) : undefined,
+      admin: toAdminId(data.admin),
       backupAdmins: data.backupAdmins ? data.backupAdmins.map((admin) => Number(admin)) : undefined,
       websiteUrl: data.websiteUrl,
       status: data.status,

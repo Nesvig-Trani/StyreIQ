@@ -1,6 +1,7 @@
 import { ColumnDef } from '@tanstack/table-core'
 import { Organization, User } from '@/types/payload-types'
 import { Badge } from '@/shared/components/ui/badge'
+import { UNASSIGNED_ADMIN_LABEL } from '../constants/adminAssignment'
 
 function useUnitTable() {
   const columns: ColumnDef<Organization>[] = [
@@ -38,7 +39,14 @@ function useUnitTable() {
       accessorKey: 'admin',
       header: 'Admin',
       cell: ({ row }) => {
-        const admin = (row.getValue('admin') as User) || { name: '-' }
+        const admin = row.getValue('admin') as User | null | undefined
+        if (!admin) {
+          return (
+            <Badge variant="outline" className="border-amber-300 bg-amber-50 text-amber-800">
+              {UNASSIGNED_ADMIN_LABEL}
+            </Badge>
+          )
+        }
         return <span>{admin.name}</span>
       },
     },
