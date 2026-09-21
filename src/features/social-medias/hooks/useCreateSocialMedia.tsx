@@ -15,75 +15,34 @@ import { createUnitTree } from '@/features/units/utils/createUnitTree'
 import { EndpointError } from '@/shared'
 import { useRouter } from 'next/navigation'
 import { platformOptions } from '@/features/social-medias/constants/platformOptions'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 import { UserRolesEnum } from '@/features/users'
+import { RefreshUsersButton } from '../components/refresh-users-button'
+import { useRefreshableUsers } from './useRefreshableUsers'
+import { getAssignableUserOptions } from '../utils/assignable-user-options'
 
 export function useCreateSocialMedia({
-  users,
+  users: initialUsers,
   organizations,
   currentUser,
   selectedTenantId,
 }: CreateSocialMediaFormProps) {
   const tree = createUnitTree(organizations as UnitWithDepth[])
   const router = useRouter()
+  const { users, refreshUsers, isRefreshing } = useRefreshableUsers(initialUsers)
 
   const [selectedOrganizationId, setSelectedOrganizationId] = useState<string | null>(null)
 
-  const filterUsersByOrganizationAndRoles = useCallback(
-    (organizationId: string | null, roles: string | string[]) => {
-      if (!organizationId) return []
-
-      const numericOrgId = parseInt(organizationId, 10)
-      const roleArray = Array.isArray(roles) ? roles : [roles]
-
-      return users
-        .filter((user) => {
-          const userRoles: UserRolesEnum[] = Array.isArray(user.roles)
-            ? (user.roles as UserRolesEnum[])
-            : user.roles
-              ? [user.roles as UserRolesEnum]
-              : []
-
-          const hasRequiredRole = roleArray.some((requiredRole) =>
-            userRoles.includes(requiredRole as UserRolesEnum),
-          )
-
-          if (!hasRequiredRole) return false
-
-          if (!user.organizations || user.organizations.length === 0) return false
-
-          return user.organizations.some((org) => {
-            if (typeof org === 'number') {
-              return org === numericOrgId
-            }
-            if (typeof org === 'object' && org !== null) {
-              return org.id === numericOrgId
-            }
-            return false
-          })
-        })
-        .map((user) => ({
-          value: user.id.toString(),
-          label: user.name,
-        }))
-    },
-    [users],
+  const administratorOptions = getAssignableUserOptions(
+    users,
+    selectedOrganizationId,
+    UserRolesEnum.UnitAdmin,
   )
-
-  const socialMediaManagerOptions = useMemo(
-    () => filterUsersByOrganizationAndRoles(selectedOrganizationId, 'social_media_manager'),
-    [selectedOrganizationId, filterUsersByOrganizationAndRoles],
-  )
-
-  const administratorOptions = useMemo(
-    () => filterUsersByOrganizationAndRoles(selectedOrganizationId, 'unit_admin'),
-    [selectedOrganizationId, filterUsersByOrganizationAndRoles],
-  )
-
-  const backupAdministratorOptions = useMemo(
-    () => filterUsersByOrganizationAndRoles(selectedOrganizationId, ['unit_admin']),
-    [selectedOrganizationId, filterUsersByOrganizationAndRoles],
+  const socialMediaManagerOptions = getAssignableUserOptions(
+    users,
+    selectedOrganizationId,
+    UserRolesEnum.SocialMediaManager,
   )
 
   const { formComponent, form } = useFormHelper(
@@ -154,6 +113,17 @@ export function useCreateSocialMedia({
           type: 'separator',
           size: 'full',
         },
+        {
+          name: 'primaryAdmin',
+          label: '',
+          type: 'custom',
+          size: 'full',
+          content: <RefreshUsersButton onRefresh={refreshUsers} isRefreshing={isRefreshing} />,
+          dependsOn: {
+            field: 'organization',
+            value: selectedOrganizationId || '',
+          },
+        },
         // Ownership & Contact - Row 4
         {
           label: 'Primary Unit Admin',
@@ -172,7 +142,7 @@ export function useCreateSocialMedia({
           label: 'Backup Unit Admin',
           name: 'backupAdmin',
           type: 'select',
-          options: backupAdministratorOptions,
+          options: administratorOptions,
           placeholder: 'Select Backup Unit Admin',
           dependsOn: {
             field: 'organization',

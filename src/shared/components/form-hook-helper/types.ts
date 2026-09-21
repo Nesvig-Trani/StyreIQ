@@ -17,6 +17,7 @@ export type FieldDataType =
   | 'tree-select'
   | 'phone'
   | 'separator'
+  | 'custom'
 export type FieldDataSize = 'half' | 'full'
 export type FieldDataOption = {
   value: string | boolean
@@ -45,6 +46,8 @@ export type FieldData<TFieldValues extends FieldValues = FieldValues> = {
   size?: FieldDataSize
   /** Options for 'select' and 'checkbox' inputs */
   options?: FieldDataOption[]
+  /** Content to render in place of an input when `type` === 'custom' */
+  content?: ReactNode
   /** Props for date picker component (only for 'date' inputs) */
   dateInputProps?: DatePickerProps
   /**
