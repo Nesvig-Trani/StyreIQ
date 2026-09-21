@@ -12,6 +12,10 @@ import { UserRolesEnum } from '@/features/users'
 import { useRouter } from 'next/navigation'
 import { unitLevelOptions, industryLevelOptions } from '@/features/units/constants/unitTypeOptions'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import {
+  UNASSIGNED_ADMIN_VALUE,
+  unassignedAdminOption,
+} from '@/features/units/constants/adminAssignment'
 
 export const UpdateUnitForm = ({ users, organizations, data, user }: UpdateUnitFormProps) => {
   const router = useRouter()
@@ -27,7 +31,7 @@ export const UpdateUnitForm = ({ users, organizations, data, user }: UpdateUnitF
       name: data?.name || '',
       type: data?.type as UnitTypeEnum,
       parent: data?.parentOrg?.id?.toString(),
-      admin: data?.admin.id?.toString() || '',
+      admin: data?.admin?.id?.toString() || UNASSIGNED_ADMIN_VALUE,
       websiteUrl: data?.websiteUrl || '',
       status: data?.status || 'active',
       description: data?.description || '',
@@ -119,6 +123,9 @@ export const UpdateUnitForm = ({ users, organizations, data, user }: UpdateUnitF
               <SelectValue placeholder="Select admin" />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value={unassignedAdminOption.value}>
+                {unassignedAdminOption.label}
+              </SelectItem>
               {users.map((user) => (
                 <SelectItem key={user.id} value={user.id.toString()}>
                   {user.name}
