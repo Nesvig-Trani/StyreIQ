@@ -15,12 +15,12 @@ import { createUnitTree } from '@/features/units/utils/createUnitTree'
 import { EndpointError } from '@/shared'
 import { useRouter } from 'next/navigation'
 import { platformOptions } from '@/features/social-medias/constants/platformOptions'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Organization, User } from '@/types/payload-types'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 import { UserRolesEnum } from '@/features/users'
 import { RefreshUsersButton } from '../components/refresh-users-button'
-import { useRefreshableUsers } from './useRefreshableUsers'
+import { useAssignableUsers } from './useAssignableUsers'
 import { getAssignableUserOptions } from '../utils/assignable-user-options'
 
 function getEntityId<T extends { id: number }>(entity: number | T | undefined): string | null {
@@ -32,13 +32,12 @@ function getEntityId<T extends { id: number }>(entity: number | T | undefined): 
 
 export function useUpdateSocialMedia({
   data,
-  users: initialUsers,
+  users,
   organizations,
   currentUser,
 }: UpdateSocialMediaFormProps) {
   const tree = createUnitTree(organizations as UnitWithDepth[])
   const router = useRouter()
-  const { users, refreshUsers, isRefreshing } = useRefreshableUsers(initialUsers)
 
   const getOrganizationId = (organization: number | Organization | undefined) =>
     getEntityId(organization)
@@ -48,24 +47,27 @@ export function useUpdateSocialMedia({
   const [selectedOrganizationId, setSelectedOrganizationId] = useState<string | null>(
     getOrganizationId(data?.organization),
   )
+  const {
+    users: unitUsers,
+    refreshUsers,
+    isLoading: isLoadingUnitUsers,
+  } = useAssignableUsers(selectedOrganizationId)
 
-  const administratorOptions = getAssignableUserOptions(
-    users,
-    selectedOrganizationId,
-    UserRolesEnum.UnitAdmin,
+  const administratorOptions = useMemo(
+    () => getAssignableUserOptions(unitUsers, UserRolesEnum.UnitAdmin),
+    [unitUsers],
   )
-  const loadedManagerOptions = getAssignableUserOptions(
-    users,
-    selectedOrganizationId,
-    UserRolesEnum.SocialMediaManager,
-  )
-  const currentManagerOptions = (data.socialMediaManagers ?? []).flatMap((manager) => {
-    const managerId = getUserId(manager)
-    if (!managerId || loadedManagerOptions.some((option) => option.value === managerId)) return []
-    const managerName = typeof manager === 'object' && 'name' in manager ? manager.name : 'Unknown'
-    return [{ value: managerId, label: managerName }]
-  })
-  const socialMediaManagerOptions = [...loadedManagerOptions, ...currentManagerOptions]
+  const socialMediaManagerOptions = useMemo(() => {
+    const loadedOptions = getAssignableUserOptions(unitUsers, UserRolesEnum.SocialMediaManager)
+    const currentOptions = (data.socialMediaManagers ?? []).flatMap((manager) => {
+      const managerId = getUserId(manager)
+      if (!managerId || loadedOptions.some((option) => option.value === managerId)) return []
+      const managerName =
+        typeof manager === 'object' && 'name' in manager ? manager.name : 'Unknown'
+      return [{ value: managerId, label: managerName }]
+    })
+    return [...loadedOptions, ...currentOptions]
+  }, [unitUsers, data.socialMediaManagers])
 
   const { formComponent, form } = useFormHelper(
     {
@@ -140,11 +142,13 @@ export function useUpdateSocialMedia({
           label: '',
           type: 'custom',
           size: 'full',
-          content: <RefreshUsersButton onRefresh={refreshUsers} isRefreshing={isRefreshing} />,
-          dependsOn: {
-            field: 'organization',
-            value: selectedOrganizationId || '',
-          },
+          content: (
+            <RefreshUsersButton
+              onRefresh={refreshUsers}
+              isRefreshing={isLoadingUnitUsers}
+              hidden={!selectedOrganizationId}
+            />
+          ),
         },
         // Ownership & Contact - Row 4
         {

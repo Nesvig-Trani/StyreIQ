@@ -164,7 +164,10 @@ export const getTotalUsers = async (): Promise<number> => {
   }
 }
 
-export const getUsersByRoles = async (roles: UserRolesEnum[]) => {
+export const getUsersByRoles = async (
+  roles: UserRolesEnum[],
+  statuses: UserStatusEnum[] = [UserStatusEnum.Active],
+) => {
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
 
@@ -189,7 +192,7 @@ export const getUsersByRoles = async (roles: UserRolesEnum[]) => {
 
   const where: Where = {
     roles: { in: roles },
-    status: { in: [UserStatusEnum.Active, UserStatusEnum.PendingActivation] },
+    status: { in: statuses },
   }
 
   if (effectiveRole === UserRolesEnum.SuperAdmin) {
@@ -206,7 +209,7 @@ export const getUsersByRoles = async (roles: UserRolesEnum[]) => {
   return payload.find({
     collection: 'users',
     where,
-    limit: 0,
+    depth: 0,
     overrideAccess: effectiveRole === UserRolesEnum.SuperAdmin,
     user: userForQueries,
   })
