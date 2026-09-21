@@ -52,6 +52,14 @@ export const FieldResolver = <TFieldValues extends FieldValues>({
     return <SeparatorField key={`separator-${index}`} />
   }
 
+  if (type === 'custom') {
+    return (
+      <div key={`custom-${index}`} className={sizeClassName}>
+        {fieldData.content}
+      </div>
+    )
+  }
+
   if (type === 'text') {
     return (
       <TextInputHelper

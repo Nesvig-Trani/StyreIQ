@@ -189,7 +189,7 @@ export const getUsersByRoles = async (roles: UserRolesEnum[]) => {
 
   const where: Where = {
     roles: { in: roles },
-    status: { equals: UserStatusEnum.Active },
+    status: { in: [UserStatusEnum.Active, UserStatusEnum.PendingActivation] },
   }
 
   if (effectiveRole === UserRolesEnum.SuperAdmin) {
@@ -206,6 +206,7 @@ export const getUsersByRoles = async (roles: UserRolesEnum[]) => {
   return payload.find({
     collection: 'users',
     where,
+    limit: 0,
     overrideAccess: effectiveRole === UserRolesEnum.SuperAdmin,
     user: userForQueries,
   })
@@ -214,9 +215,11 @@ export const getUsersByRoles = async (roles: UserRolesEnum[]) => {
 export const getUsersByOrganizationAndRole = async ({
   organizationId,
   roles,
+  statuses = [UserStatusEnum.Active],
 }: {
   organizationId: number
   roles: UserRolesEnum[]
+  statuses?: UserStatusEnum[]
 }): Promise<PaginatedDocs<User>> => {
   const { payload } = await getPayloadContext()
   const { user } = await getAuthUser()
@@ -240,8 +243,10 @@ export const getUsersByOrganizationAndRole = async ({
     where: {
       'organizations.id': { equals: organizationId },
       roles: { in: roles },
-      status: { equals: UserStatusEnum.Active },
+      status: { in: statuses },
     },
+    limit: 0,
+    depth: 0,
     overrideAccess: false,
     user: userForQueries,
   })

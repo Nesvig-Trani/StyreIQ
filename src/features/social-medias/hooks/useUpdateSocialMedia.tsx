@@ -15,9 +15,13 @@ import { createUnitTree } from '@/features/units/utils/createUnitTree'
 import { EndpointError } from '@/shared'
 import { useRouter } from 'next/navigation'
 import { platformOptions } from '@/features/social-medias/constants/platformOptions'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Organization, User } from '@/types/payload-types'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { UserRolesEnum } from '@/features/users'
+import { RefreshUsersButton } from '../components/refresh-users-button'
+import { useRefreshableUsers } from './useRefreshableUsers'
+import { getAssignableUserOptions } from '../utils/assignable-user-options'
 
 function getEntityId<T extends { id: number }>(entity: number | T | undefined): string | null {
   if (!entity) return null
@@ -28,12 +32,13 @@ function getEntityId<T extends { id: number }>(entity: number | T | undefined): 
 
 export function useUpdateSocialMedia({
   data,
-  users,
+  users: initialUsers,
   organizations,
   currentUser,
 }: UpdateSocialMediaFormProps) {
   const tree = createUnitTree(organizations as UnitWithDepth[])
   const router = useRouter()
+  const { users, refreshUsers, isRefreshing } = useRefreshableUsers(initialUsers)
 
   const getOrganizationId = (organization: number | Organization | undefined) =>
     getEntityId(organization)
@@ -44,68 +49,23 @@ export function useUpdateSocialMedia({
     getOrganizationId(data?.organization),
   )
 
-  const filterUsersByOrganizationAndRoles = useCallback(
-    (organizationId: string | null, roles: string | string[]) => {
-      if (!organizationId) return []
-
-      const numericOrgId = parseInt(organizationId, 10)
-      const roleArray = Array.isArray(roles) ? roles : [roles]
-      const hasRole = (user: User) => {
-        const effectiveRole = getEffectiveRoleFromUser(user)
-        return !!effectiveRole && roleArray.includes(effectiveRole)
-      }
-
-      const belongsToOrg = (user: User, orgId: number) =>
-        Array.isArray(user.organizations) &&
-        user.organizations.some((org) =>
-          typeof org === 'number' ? org === orgId : org?.id === orgId,
-        )
-
-      return users
-        .filter((user) => hasRole(user) && belongsToOrg(user, numericOrgId))
-        .map((user) => ({
-          value: user.id.toString(),
-          label: user.name,
-        }))
-    },
-    [users],
+  const administratorOptions = getAssignableUserOptions(
+    users,
+    selectedOrganizationId,
+    UserRolesEnum.UnitAdmin,
   )
-
-  const socialMediaManagerOptions = useMemo(() => {
-    const options = filterUsersByOrganizationAndRoles(
-      selectedOrganizationId,
-      'social_media_manager',
-    )
-
-    if (data.socialMediaManagers) {
-      data.socialMediaManagers.forEach((manager) => {
-        const managerId = getUserId(manager)
-        if (managerId) {
-          const managerExists = options.find((opt) => opt.value === managerId)
-          if (!managerExists) {
-            const managerName =
-              typeof manager === 'object' && 'name' in manager ? manager.name : 'Unknown'
-            options.push({
-              value: managerId,
-              label: managerName,
-            })
-          }
-        }
-      })
-    }
-
-    return options
-  }, [selectedOrganizationId, filterUsersByOrganizationAndRoles, data.socialMediaManagers])
-
-  const administratorOptions = useMemo(
-    () => filterUsersByOrganizationAndRoles(selectedOrganizationId, 'unit_admin'),
-    [selectedOrganizationId, filterUsersByOrganizationAndRoles],
+  const loadedManagerOptions = getAssignableUserOptions(
+    users,
+    selectedOrganizationId,
+    UserRolesEnum.SocialMediaManager,
   )
-
-  const backupAdministratorOptions = useMemo(
-    () => filterUsersByOrganizationAndRoles(selectedOrganizationId, ['unit_admin']),
-    [selectedOrganizationId, filterUsersByOrganizationAndRoles],
-  )
+  const currentManagerOptions = (data.socialMediaManagers ?? []).flatMap((manager) => {
+    const managerId = getUserId(manager)
+    if (!managerId || loadedManagerOptions.some((option) => option.value === managerId)) return []
+    const managerName = typeof manager === 'object' && 'name' in manager ? manager.name : 'Unknown'
+    return [{ value: managerId, label: managerName }]
+  })
+  const socialMediaManagerOptions = [...loadedManagerOptions, ...currentManagerOptions]
 
   const { formComponent, form } = useFormHelper(
     {
@@ -175,6 +135,17 @@ export function useUpdateSocialMedia({
           type: 'separator',
           size: 'full',
         },
+        {
+          name: 'primaryAdmin',
+          label: '',
+          type: 'custom',
+          size: 'full',
+          content: <RefreshUsersButton onRefresh={refreshUsers} isRefreshing={isRefreshing} />,
+          dependsOn: {
+            field: 'organization',
+            value: selectedOrganizationId || '',
+          },
+        },
         // Ownership & Contact - Row 4
         {
           label: 'Primary Unit Admin',
@@ -193,7 +164,7 @@ export function useUpdateSocialMedia({
           label: 'Backup Unit Admin',
           name: 'backupAdmin',
           type: 'select',
-          options: backupAdministratorOptions,
+          options: administratorOptions,
           placeholder: 'Select Backup Unit Admin',
           dependsOn: {
             field: 'organization',
