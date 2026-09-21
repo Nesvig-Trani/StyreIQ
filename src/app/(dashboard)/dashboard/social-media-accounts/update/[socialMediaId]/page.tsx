@@ -1,5 +1,9 @@
 import { UpdateSocialMediaForm } from '@/features/social-medias/forms/update-social-media'
-import { getUsersByRoles, UserRolesEnum } from '@/features/users'
+import { getUsersByRoles } from '@/features/users'
+import {
+  ASSIGNABLE_USER_ROLES,
+  ASSIGNABLE_USER_STATUSES,
+} from '@/features/social-medias/constants/assignable-users'
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { getSocialMediaById } from '@/features/social-medias/plugins/queries'
 import { getAllUnits } from '@/features/units/plugins/queries'
@@ -26,11 +30,7 @@ export default async function UpdateSocialMediaPage({
   }
   const { user } = await getAuthUser()
 
-  const users = await getUsersByRoles([
-    UserRolesEnum.SuperAdmin,
-    UserRolesEnum.UnitAdmin,
-    UserRolesEnum.SocialMediaManager,
-  ])
+  const users = await getUsersByRoles(ASSIGNABLE_USER_ROLES, ASSIGNABLE_USER_STATUSES)
 
   const organizations = await getAllUnits()
   return (
