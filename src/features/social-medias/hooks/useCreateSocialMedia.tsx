@@ -15,34 +15,36 @@ import { createUnitTree } from '@/features/units/utils/createUnitTree'
 import { EndpointError } from '@/shared'
 import { useRouter } from 'next/navigation'
 import { platformOptions } from '@/features/social-medias/constants/platformOptions'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 import { UserRolesEnum } from '@/features/users'
 import { RefreshUsersButton } from '../components/refresh-users-button'
-import { useRefreshableUsers } from './useRefreshableUsers'
+import { useAssignableUsers } from './useAssignableUsers'
 import { getAssignableUserOptions } from '../utils/assignable-user-options'
 
 export function useCreateSocialMedia({
-  users: initialUsers,
+  users,
   organizations,
   currentUser,
   selectedTenantId,
 }: CreateSocialMediaFormProps) {
   const tree = createUnitTree(organizations as UnitWithDepth[])
   const router = useRouter()
-  const { users, refreshUsers, isRefreshing } = useRefreshableUsers(initialUsers)
 
   const [selectedOrganizationId, setSelectedOrganizationId] = useState<string | null>(null)
+  const {
+    users: unitUsers,
+    refreshUsers,
+    isLoading: isLoadingUnitUsers,
+  } = useAssignableUsers(selectedOrganizationId)
 
-  const administratorOptions = getAssignableUserOptions(
-    users,
-    selectedOrganizationId,
-    UserRolesEnum.UnitAdmin,
+  const administratorOptions = useMemo(
+    () => getAssignableUserOptions(unitUsers, UserRolesEnum.UnitAdmin),
+    [unitUsers],
   )
-  const socialMediaManagerOptions = getAssignableUserOptions(
-    users,
-    selectedOrganizationId,
-    UserRolesEnum.SocialMediaManager,
+  const socialMediaManagerOptions = useMemo(
+    () => getAssignableUserOptions(unitUsers, UserRolesEnum.SocialMediaManager),
+    [unitUsers],
   )
 
   const { formComponent, form } = useFormHelper(
@@ -118,11 +120,13 @@ export function useCreateSocialMedia({
           label: '',
           type: 'custom',
           size: 'full',
-          content: <RefreshUsersButton onRefresh={refreshUsers} isRefreshing={isRefreshing} />,
-          dependsOn: {
-            field: 'organization',
-            value: selectedOrganizationId || '',
-          },
+          content: (
+            <RefreshUsersButton
+              onRefresh={refreshUsers}
+              isRefreshing={isLoadingUnitUsers}
+              hidden={!selectedOrganizationId}
+            />
+          ),
         },
         // Ownership & Contact - Row 4
         {
