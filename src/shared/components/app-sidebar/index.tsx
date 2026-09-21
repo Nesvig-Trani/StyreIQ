@@ -12,7 +12,7 @@ import {
 } from '@/shared/components/ui/sidebar'
 import { LogOut, Building2 } from 'lucide-react'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import type { Tenant, User } from '@/types/payload-types'
 import { useAccess } from '@/shared/hooks/use-access'
 import { mainNavigation } from './nav-config'
@@ -24,6 +24,7 @@ import {
   normalizeRoles,
 } from '@/shared/utils/role-hierarchy'
 import { RoleSwitcher } from '@/features/users/components/role-switcher'
+import { redirectToLogout } from '@/features/auth/utils/redirectToLogout'
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user: User
@@ -31,7 +32,6 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 }
 
 export function AppSidebar({ user, tenant, ...props }: AppSidebarProps) {
-  const router = useRouter()
   const pathname = usePathname()
   const { can } = useAccess(user)
 
@@ -149,7 +149,7 @@ export function AppSidebar({ user, tenant, ...props }: AppSidebarProps) {
             >
               <button
                 type="button"
-                onClick={() => router.push('/api/logout')}
+                onClick={redirectToLogout}
                 className="flex w-full items-center space-x-3"
               >
                 <LogOut aria-hidden="true" className="h-5 w-5 text-gray-400" />

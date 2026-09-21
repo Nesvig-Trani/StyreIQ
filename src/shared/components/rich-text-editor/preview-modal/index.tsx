@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation'
 import { acceptPolicy } from '@/sdk/policies'
 import { toast } from 'sonner'
 import { useLoading } from '@/shared/hooks'
+import { redirectToLogout } from '@/features/auth/utils/redirectToLogout'
 
 export interface LexicalData {
   root: LexicalNode
@@ -146,7 +147,7 @@ export function LexicalContentModal({
   }
   const onReject = () => {
     toast.error('You must accept the policies to access the system')
-    router.push('/api/logout')
+    redirectToLogout()
   }
 
   return (
