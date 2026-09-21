@@ -13,7 +13,8 @@ import { useRouter } from 'next/navigation'
 import { acceptPolicy } from '@/sdk/policies'
 import { toast } from 'sonner'
 import { useLoading } from '@/shared/hooks'
-import { redirectToLogout } from '@/features/auth/utils/redirectToLogout'
+import { useLogout } from '@/features/auth/hooks/useLogout'
+import { LOGOUT_REASONS } from '@/features/auth/utils/logoutReason'
 
 export interface LexicalData {
   root: LexicalNode
@@ -132,6 +133,7 @@ export function LexicalContentModal({
 }: LexicalContentModalProps) {
   const { isLoading, startLoading, stopLoading } = useLoading()
   const router = useRouter()
+  const { logout, isLoggingOut } = useLogout()
   const onAccept = async () => {
     try {
       if (!policy) return
@@ -146,8 +148,7 @@ export function LexicalContentModal({
     }
   }
   const onReject = () => {
-    toast.error('You must accept the policies to access the system')
-    redirectToLogout()
+    logout(LOGOUT_REASONS.policyRejected)
   }
 
   return (
@@ -166,10 +167,10 @@ export function LexicalContentModal({
         <div className="mt-4">{lexicalData?.root && renderLexicalNode(lexicalData.root, 0)}</div>
         {showActions && (
           <DialogFooter className="mt-6">
-            <Button variant="outline" onClick={onReject}>
+            <Button variant="outline" onClick={onReject} disabled={isLoggingOut}>
               Cancel and Log Out
             </Button>
-            <Button onClick={onAccept} loading={isLoading} disabled={isLoading}>
+            <Button onClick={onAccept} loading={isLoading} disabled={isLoading || isLoggingOut}>
               Accept and Continue
             </Button>
           </DialogFooter>
