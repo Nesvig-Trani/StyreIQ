@@ -26,7 +26,7 @@ export const createUnitFormSchema = z.object({
   name: z.string().min(1, 'Name is required').max(100, "Unit name can\'t exceed 100 characters"),
   type: UnitType,
   parent: z.string().optional(),
-  admin: z.string().min(1, 'Admin is required'),
+  admin: z.string().optional(),
   backupAdmins: z.string().array().optional(),
   websiteUrl: z.string().url('Invalid website URL').or(z.literal('')).optional(),
   status: z.enum(['active', 'inactive', 'pending_review']),
@@ -46,7 +46,7 @@ export type UnitWithChildren = Organization & {
 
 export type UnitWithDepth = {
   parentOrg: Organization
-  admin: User
+  admin?: User | null
   backupAdmins?: User[]
   children?: { docs: Organization[] }
 } & Organization
@@ -56,7 +56,7 @@ export type Tree = {
   parent: number
   name: string
   depth: number
-  admin: User
+  admin?: User | null
   status: string
   type: string
   children: Tree[]

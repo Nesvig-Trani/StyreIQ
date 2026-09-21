@@ -1,4 +1,4 @@
-import { Building2, CheckCircle, ChevronDown, ChevronRight } from 'lucide-react'
+import { Building2, CheckCircle, ChevronDown, ChevronRight, UserX } from 'lucide-react'
 import {
   ChangeEvent,
   KeyboardEvent,
@@ -20,6 +20,7 @@ import {
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { statusConfig } from '../constants/statusConfig'
 import { typeConfig } from '../constants/typeConfig'
+import { UNASSIGNED_ADMIN_LABEL } from '../constants/adminAssignment'
 import { disableUnit } from '@/sdk/organization'
 import { toast } from 'sonner'
 
@@ -153,6 +154,7 @@ export const useUnitHierarchy = ({
     const parts = [org.name]
     if (typeLabel) parts.push(typeLabel)
     if (statusLabel) parts.push(statusLabel)
+    if (originalOrg && !originalOrg.admin) parts.push(`Manager ${UNASSIGNED_ADMIN_LABEL}`)
     return parts.join(', ')
   }
 
@@ -173,6 +175,7 @@ export const useUnitHierarchy = ({
     const StatusIcon = status ? statusConfig[status]?.icon || CheckCircle : CheckCircle
     const TypeIcon = type ? typeConfig[type]?.icon || Building2 : Building2
     const isSelected = selectedOrg?.id === org.id
+    const needsManager = Boolean(originalOrg) && !originalOrg?.admin
 
     return (
       <div key={org.id} className="select-none">
@@ -218,6 +221,16 @@ export const useUnitHierarchy = ({
             <TypeIcon className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
 
             <span className="flex-1 font-medium">{org.name}</span>
+
+            {needsManager && (
+              <Badge
+                variant="outline"
+                className="flex shrink-0 items-center gap-1 border-amber-300 bg-amber-50 text-xs text-amber-800"
+              >
+                <UserX className="h-3 w-3" aria-hidden="true" />
+                Manager needed
+              </Badge>
+            )}
 
             {type && (
               <Badge variant="outline" className="shrink-0 border-border text-xs text-foreground">
