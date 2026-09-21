@@ -5,10 +5,15 @@ import { Input } from '@/shared/components/ui/input'
 import { PasswordInput } from '@/shared/components/ui/password-input'
 import { Label } from '@/shared/components/ui/label'
 import { useLogin } from '@/features/auth'
+import type { LogoutReason } from '@/features/auth/utils/logoutReason'
 import Link from 'next/link'
 
-export function LoginForm() {
-  const { loginFields, handleInputChange, handleSubmit } = useLogin()
+interface LoginFormProps {
+  logoutReason?: LogoutReason
+}
+
+export function LoginForm({ logoutReason }: LoginFormProps) {
+  const { loginFields, handleInputChange, handleSubmit } = useLogin(logoutReason)
   return (
     <div className="flex flex-col gap-6">
       <Card>

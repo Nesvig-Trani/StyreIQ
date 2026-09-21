@@ -1,11 +1,23 @@
 'use client'
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { env } from '@/config/env'
 import { toast } from 'sonner'
 import { JSON_HEADERS } from '@/shared/constants'
 import Link from 'next/link'
+import { LOGOUT_REASONS, type LogoutReason } from '@/features/auth/utils/logoutReason'
 
-export function useLogin() {
+const LOGOUT_REASON_TOAST_ID = 'logout-reason'
+
+const LOGOUT_REASON_MESSAGES: Record<LogoutReason, string> = {
+  [LOGOUT_REASONS.policyRejected]: 'You must accept the policies to access the system',
+}
+
+export function useLogin(logoutReason?: LogoutReason) {
+  useEffect(() => {
+    if (!logoutReason) return
+    toast.error(LOGOUT_REASON_MESSAGES[logoutReason], { id: LOGOUT_REASON_TOAST_ID })
+  }, [logoutReason])
+
   const [loginFields, setLoginFields] = useState({
     email: '',
     password: '',
