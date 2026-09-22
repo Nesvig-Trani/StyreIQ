@@ -15,6 +15,7 @@ import { ListNode, ListItemNode } from '@lexical/list'
 import { LinkNode, AutoLinkNode } from '@lexical/link'
 import { TableNode, TableCellNode, TableRowNode } from '@lexical/table'
 import { LockKeyholeIcon } from 'lucide-react'
+import { isSafeUrl } from '../utils/safeUrl'
 
 const DEFAULT_EMPTY_STATE = JSON.stringify({
   root: {
@@ -172,7 +173,7 @@ export default function LexicalTextEditor({
             <>
               <HistoryPlugin />
               <ListPlugin />
-              <LinkPlugin />
+              <LinkPlugin validateUrl={isSafeUrl} />
               <AutoLinkPlugin matchers={MATCHERS} />
               <OnChangePlugin onChange={onChange} />
             </>

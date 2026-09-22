@@ -15,6 +15,7 @@ import { toast } from 'sonner'
 import { useLoading } from '@/shared/hooks'
 import { useLogout } from '@/features/auth/hooks/useLogout'
 import { LOGOUT_REASONS } from '@/features/auth/utils/logoutReason'
+import { toSafeUrl } from '../utils/safeUrl'
 
 export interface LexicalData {
   root: LexicalNode
@@ -44,16 +45,23 @@ function renderLexicalNode(node: LexicalNode, index: number): React.ReactNode {
   if (!node) return null
 
   if (node.url && (node.type === 'link' || node.type === 'autolink')) {
+    const linkChildren =
+      node.children?.map((child, i) => renderLexicalNode(child, i)) || node.text || node.url
+    // Stored content bypasses the editor's own URL sanitizing, so unsupported schemes render as text.
+    const safeUrl = toSafeUrl(node.url)
+    if (!safeUrl) {
+      return <span key={index}>{linkChildren}</span>
+    }
     return (
       <a
         key={index}
-        href={node.url}
+        href={safeUrl}
         target="_blank"
         rel="noopener noreferrer"
         title={node.title}
         className="text-blue-600 underline hover:text-blue-800 transition-colors"
       >
-        {node.children?.map((child, i) => renderLexicalNode(child, i)) || node.text || node.url}
+        {linkChildren}
       </a>
     )
   }
