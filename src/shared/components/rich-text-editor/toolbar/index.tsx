@@ -29,6 +29,14 @@ import {
 } from 'lucide-react'
 import { useCallback } from 'react'
 
+const HAS_SCHEME = /^[a-z][a-z0-9+.-]*:/i
+
+const normalizeUrl = (value: string) => {
+  const url = value.trim()
+  if (!url) return null
+  return HAS_SCHEME.test(url) ? url : `https://${url}`
+}
+
 const Toolbar = () => {
   const [editor] = useLexicalComposerContext()
 
@@ -59,16 +67,22 @@ const Toolbar = () => {
   }
 
   const insertLink = useCallback(() => {
-    const selection = $getSelection()
-    if (!$isRangeSelection(selection)) {
+    const hasRangeSelection = editor.getEditorState().read(() => $isRangeSelection($getSelection()))
+    if (!hasRangeSelection) {
       return
     }
 
     const url = prompt('Enter the URL:')
-
-    if (url !== null) {
-      editor.dispatchCommand(TOGGLE_LINK_COMMAND, url)
+    if (url === null) {
+      return
     }
+
+    const normalizedUrl = normalizeUrl(url)
+    if (!normalizedUrl) {
+      return
+    }
+
+    editor.dispatchCommand(TOGGLE_LINK_COMMAND, normalizedUrl)
   }, [editor])
 
   return (
@@ -98,7 +112,7 @@ const Toolbar = () => {
       <Button
         onClick={() => convertToParagraph()}
         className="p-2 bg-gray-100 !text-gray-800 rounded hover:bg-gray-200"
-        title="Heading 3"
+        title="Paragraph"
       >
         <Type />
       </Button>
