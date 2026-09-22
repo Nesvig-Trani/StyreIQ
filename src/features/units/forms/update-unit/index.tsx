@@ -56,7 +56,11 @@ export const UpdateUnitForm = ({ users, organizations, data, user }: UpdateUnitF
   const childrenDocs = data?.children?.docs ?? []
   const activeChildren = childrenDocs.filter((child) => child.status === 'active')
   const effectiveRole = getEffectiveRoleFromUser(user)
-  const disabledField = effectiveRole !== UserRolesEnum.SuperAdmin && activeChildren?.length > 0
+  const isRootUnit = !data?.parentOrg
+  const canEditWithActiveChildren =
+    effectiveRole === UserRolesEnum.SuperAdmin ||
+    (effectiveRole === UserRolesEnum.CentralAdmin && isRootUnit)
+  const disabledField = !canEditWithActiveChildren && activeChildren?.length > 0
   const unitTypeOptions =
     effectiveRole === UserRolesEnum.SuperAdmin ? industryLevelOptions : unitLevelOptions
 
