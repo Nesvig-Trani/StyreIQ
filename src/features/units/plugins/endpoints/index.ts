@@ -246,7 +246,10 @@ export const updateUnit: Endpoint = {
         }
       }
 
-      if (effectiveRole !== UserRolesEnum.SuperAdmin && !parentOrg) {
+      // Root units (e.g. the tenant Primary Unit) have no parent, so the guard only
+      // stops non-super admins from detaching a unit that currently has one.
+      const detachesFromParent = Boolean(targetUnit.parentOrg) && !parentOrg
+      if (effectiveRole !== UserRolesEnum.SuperAdmin && detachesFromParent) {
         return new Response(
           JSON.stringify({ error: 'parentOrg is required for non-super_admin users' }),
           {
