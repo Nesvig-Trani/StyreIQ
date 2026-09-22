@@ -28,14 +28,10 @@ import {
   Link as LinkIcon,
 } from 'lucide-react'
 import { useCallback } from 'react'
+import { toast } from 'sonner'
+import { toSafeUrl } from '../utils/safeUrl'
 
-const HAS_SCHEME = /^[a-z][a-z0-9+.-]*:/i
-
-const normalizeUrl = (value: string) => {
-  const url = value.trim()
-  if (!url) return null
-  return HAS_SCHEME.test(url) ? url : `https://${url}`
-}
+const INVALID_LINK_MESSAGE = 'Enter a valid http(s), mailto or tel link'
 
 const Toolbar = () => {
   const [editor] = useLexicalComposerContext()
@@ -77,12 +73,13 @@ const Toolbar = () => {
       return
     }
 
-    const normalizedUrl = normalizeUrl(url)
-    if (!normalizedUrl) {
+    const safeUrl = toSafeUrl(url)
+    if (!safeUrl) {
+      toast.error(INVALID_LINK_MESSAGE)
       return
     }
 
-    editor.dispatchCommand(TOGGLE_LINK_COMMAND, normalizedUrl)
+    editor.dispatchCommand(TOGGLE_LINK_COMMAND, safeUrl)
   }, [editor])
 
   return (
