@@ -47,8 +47,8 @@ Create a `.env` file in the root directory with the following variables:
 PAYLOAD_SECRET=your-payload-secret-here
 POSTGRES_URL=postgres://postgres:postgres@127.0.0.1:5432/web-payload
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
-FROM_ADDRESS=noreply@yourdomain.com
-FROM_NAME='Your Organization Name'
+FROM_ADDRESS=noreply@styreiq.com
+FROM_NAME='StyreIQ'
 NEXT_PUBLIC_NODE_ENV=development
 RESEND_API_KEY=your-resend-api-key
 LOCAL_EMAIL_TO_ADDRESS=your-email@domain.com
@@ -156,8 +156,8 @@ docker run -p 3000:3000 --env-file .env styreiq
 | `PAYLOAD_SECRET`         | Secret key for Payload CMS     | `xxxxxxxxxxxxxxxxx`                                       |
 | `POSTGRES_URL`           | PostgreSQL connection string   | `postgres://postgres:postgres@127.0.0.1:5432/web-payload` |
 | `NEXT_PUBLIC_BASE_URL`   | Public URL for the application | `http://localhost:3000`                                   |
-| `FROM_ADDRESS`           | Email sender address           | `noreply@yourdomain.com`                                  |
-| `FROM_NAME`              | Email sender name              | `'Your Organization Name'`                                |
+| `FROM_ADDRESS`           | Email sender address           | `noreply@styreiq.com`                                     |
+| `FROM_NAME`              | Email sender name              | `'StyreIQ'`                                               |
 | `NEXT_PUBLIC_NODE_ENV`   | Environment mode               | `development`                                             |
 | `RESEND_API_KEY`         | Resend API key for email       | `re_your-api-key-here`                                    |
 | `LOCAL_EMAIL_TO_ADDRESS` | Local email recipient          | `your-email@domain.com`                                   |
