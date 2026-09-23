@@ -29,6 +29,10 @@ import {
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 import { getEffectiveRoleFromUser, getHighestRole } from '@/shared/utils/role-hierarchy'
 import { randomBytes } from 'crypto'
+import {
+  generateNewUserComplianceTasks,
+  SKIP_COMPLIANCE_TASK_GENERATION,
+} from '@/features/compliance-tasks/services/generate-new-user-tasks'
 
 export const createUser: Endpoint = {
   path: '/',
@@ -134,6 +138,7 @@ export const createUser: Endpoint = {
           tenant: dataParsed.tenant,
         },
         req,
+        context: { [SKIP_COMPLIANCE_TASK_GENERATION]: true },
       })
 
       await Promise.all(
@@ -166,15 +171,21 @@ export const createUser: Endpoint = {
           subject: 'Welcome to StyreIQ',
           html: welcomeEmailBody({
             name: createUser.name,
-            instructions: emailData.instructions || '',
-            policyLinks: emailData.policyLinks || [],
-            responsibilities: emailData.responsibilities || [],
+            instructions: emailData?.instructions || '',
+            policyLinks: emailData?.policyLinks || [],
+            responsibilities: emailData?.responsibilities || [],
           }),
         })
         emailSent = true
       } catch {
         emailSent = false
       }
+
+      await generateNewUserComplianceTasks({
+        payload: req.payload,
+        user: createUser,
+        actorId: user.id,
+      })
 
       // Log user creation event in audit log
       if (req.user) {

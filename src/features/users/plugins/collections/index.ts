@@ -16,7 +16,10 @@ import { Organization } from '@/types/payload-types'
 import { getAccessibleOrgIdsForUser, getAccessibleOrgIdsForUserWithPayload } from '@/shared'
 import { injectTenantHook } from '@/features/tenants/hooks/inject-tenant'
 
-import { ComplianceTaskGenerator } from '@/features/compliance-tasks/services/compliance-task-generator'
+import {
+  generateNewUserComplianceTasks,
+  SKIP_COMPLIANCE_TASK_GENERATION,
+} from '@/features/compliance-tasks/services/generate-new-user-tasks'
 import { extractTenantId } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 import {
   getEffectiveRole,
@@ -315,36 +318,14 @@ export const Users: CollectionConfig = {
   hooks: {
     afterChange: [
       async ({ doc, req, operation, previousDoc }) => {
-        if (operation === 'create') {
-          // Awaited directly instead of setTimeout so task generation completes within the
-          // serverless function lifecycle (Vercel suspends the function after the response
-          // is sent, causing deferred callbacks to never execute — GIQ-81).
-          try {
-            const generator = new ComplianceTaskGenerator(req.payload)
-            await generator.generateTasksForNewUserExceptRollCall(doc)
-
-            await req.payload.create({
-              collection: 'audit_log',
-              data: {
-                user: req.user?.id || doc.id,
-                action: 'compliance_task_generated',
-                entity: 'users',
-                metadata: {
-                  userId: doc.id,
-                  tasksGenerated: [
-                    'CONFIRM_USER_PASSWORD',
-                    'CONFIRM_2FA',
-                    'CONFIRM_SHARED_PASSWORD',
-                    'POLICY_ACKNOWLEDGMENT',
-                    'TRAINING_COMPLETION',
-                  ],
-                },
-                tenant: doc.tenant,
-              },
-            })
-          } catch (error) {
-            console.error('Error generating compliance tasks:', error)
-          }
+        // The create-user endpoint sets this flag so it can send the welcome email before
+        // the task emails and generate the tasks itself (GIQ-83).
+        if (operation === 'create' && !req.context?.[SKIP_COMPLIANCE_TASK_GENERATION]) {
+          await generateNewUserComplianceTasks({
+            payload: req.payload,
+            user: doc,
+            actorId: req.user?.id,
+          })
         }
 
         if (operation === 'update' && doc.roles && previousDoc?.roles) {
