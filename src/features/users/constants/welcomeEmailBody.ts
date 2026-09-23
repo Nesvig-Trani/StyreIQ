@@ -1,10 +1,75 @@
 import { env } from '@/config/env'
+import { SUPPORT_EMAIL } from '@/shared/constants'
 
 type WelcomeEmailProps = {
   name: string
   instructions: string
   responsibilities: { responsibility: string }[]
   policyLinks: { title: string; url: string }[]
+}
+
+const COLORS = {
+  orange: '#fb8506',
+  blue: '#1d73bf',
+  deepBlue: '#1e3544',
+  coolOffWhite: '#ecf0ff',
+  warmOffWhite: '#fff9ec',
+  text: '#333333',
+  muted: '#6b7280',
+  border: '#e5e7eb',
+  white: '#ffffff',
+}
+
+const FONT_STACK = "'Atkinson Hyperlegible', Arial, Helvetica, sans-serif"
+const FONT_URL =
+  'https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap'
+const LOGO_PATH = '/email/styreiq-logo.png'
+const LOGO_WIDTH = 160
+const MAX_WIDTH = 640
+const FALLBACK_NAME = 'there'
+
+const paragraphStyle = `font-size: 16px; line-height: 1.6; color: ${COLORS.text}; margin: 0 0 16px;`
+
+const toParagraphs = (text: string) =>
+  text
+    .split(/\r?\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((paragraph) => `<p style="${paragraphStyle}">${paragraph}</p>`)
+    .join('')
+
+const renderResponsibilities = (responsibilities: WelcomeEmailProps['responsibilities']) => {
+  if (responsibilities.length === 0) return ''
+
+  const items = responsibilities
+    .map(
+      (r) =>
+        `<li style="font-size: 15px; line-height: 1.6; color: ${COLORS.text}; margin: 0 0 6px;">${r.responsibility}</li>`,
+    )
+    .join('')
+
+  return `
+      <div style="background-color: ${COLORS.coolOffWhite}; border-radius: 8px; padding: 20px 24px; margin: 24px 0;">
+        <h2 style="font-size: 18px; font-weight: 700; color: ${COLORS.deepBlue}; margin: 0 0 12px;">Your responsibilities</h2>
+        <ul style="margin: 0; padding-left: 20px; color: ${COLORS.blue};">${items}</ul>
+      </div>`
+}
+
+const renderPolicyLinks = (policyLinks: WelcomeEmailProps['policyLinks']) => {
+  if (policyLinks.length === 0) return ''
+
+  const links = policyLinks
+    .map(
+      (p) =>
+        `<a href="${p.url}" style="color: ${COLORS.blue}; font-weight: 700; text-decoration: none;">${p.title}</a>`,
+    )
+    .join(`<span style="color: ${COLORS.muted}; margin: 0 10px;">|</span>`)
+
+  return `
+      <div style="margin: 24px 0;">
+        <h3 style="font-size: 16px; font-weight: 700; color: ${COLORS.deepBlue}; margin: 0 0 8px;">Additional resources</h3>
+        <p style="font-size: 15px; line-height: 1.8; margin: 0;">${links}</p>
+      </div>`
 }
 
 export const welcomeEmailBody = ({
@@ -14,64 +79,51 @@ export const welcomeEmailBody = ({
   policyLinks,
 }: WelcomeEmailProps) => {
   const loginLink = `${env.NEXT_PUBLIC_BASE_URL}/login`
+  const logoUrl = `${env.NEXT_PUBLIC_BASE_URL}${LOGO_PATH}`
+
   return `
-    <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; background-color: #fafafa;">
-      <h1 style="color: #222; font-size: 24px;">Hello ${name || 'User'}!, welcome to StyreIQ</h1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="${FONT_URL}" rel="stylesheet" />
+    <title>Welcome to StyreIQ</title>
+  </head>
+  <body style="margin: 0; padding: 24px 12px; background-color: #f5f7fb; font-family: ${FONT_STACK};">
+    <div style="max-width: ${MAX_WIDTH}px; margin: 0 auto; background-color: ${COLORS.white}; border: 1px solid ${COLORS.border}; border-radius: 8px; padding: 32px;">
+      <div style="border-bottom: 3px solid ${COLORS.orange}; padding-bottom: 16px; margin-bottom: 24px;">
+        <img src="${logoUrl}" alt="StyreIQ" width="${LOGO_WIDTH}" style="display: block; width: ${LOGO_WIDTH}px; height: auto; border: 0;" />
+      </div>
 
-     <p style="text-align: center; margin: 20px 0;">
-        <a href="${loginLink}" style="
-          background-color: #4a90e2;
-          color: #fff;
-          text-decoration: none;
-          padding: 12px 20px;
-          border-radius: 4px;
-          display: inline-block;
-          font-size: 16px;
-        ">
-          Go to Your Dashboard
-        </a>
+      <h1 style="font-size: 26px; font-weight: 700; color: ${COLORS.deepBlue}; margin: 0 0 16px;">Welcome to StyreIQ, ${name || FALLBACK_NAME}</h1>
+
+      ${toParagraphs(instructions)}
+
+      <p style="margin: 28px 0;">
+        <a href="${loginLink}" style="display: inline-block; background-color: ${COLORS.orange}; color: ${COLORS.white}; font-size: 17px; font-weight: 700; text-decoration: none; padding: 14px 32px; border-radius: 6px;">Access StyreIQ</a>
       </p>
 
-      <p style="font-size: 16px; line-height: 1.5; color: #555;">
-        ${instructions}
+      <p style="${paragraphStyle}">
+        Use the Access StyreIQ button above to get started. On your first visit, select
+        <strong>Forgot your password?</strong> to create your password.
+      </p>
+      <p style="${paragraphStyle}">
+        Once you're logged in, head to <strong>My Tasks</strong> to see anything currently assigned to you.
       </p>
 
-      ${
-        responsibilities.length > 0
-          ? `
-      <h2 style="font-size: 18px; margin-top: 20px; color: #222;">Your Responsibilities:</h2>
-      <ul style="font-size: 16px; color: #555; line-height: 1.6; padding-left: 20px;">
-        ${responsibilities.map((r) => `<li>${r.responsibility}</li>`).join('')}
-      </ul>
-      `
-          : ''
-      }
+      ${renderResponsibilities(responsibilities)}
 
-      ${
-        policyLinks.length > 0
-          ? `
-      <h2 style="font-size: 18px; margin-top: 20px; color: #222;">Company Policies:</h2>
-      <ul style="font-size: 16px; color: #555; line-height: 1.6; padding-left: 20px;">
-        ${policyLinks
-          .map(
-            (p) =>
-              `<li><a href="${p.url}" style="color: #4a90e2; text-decoration: none;">${p.title}</a></li>`,
-          )
-          .join('')}
-      </ul>
-      `
-          : ''
-      }
+      ${renderPolicyLinks(policyLinks)}
 
-      <p style="font-size: 14px; color: #999; line-height: 1.5; margin-top: 30px;">
-        If you have any questions or need assistance, please reach out to your manager or the support team.
-      </p>
+      <div style="background-color: ${COLORS.warmOffWhite}; border-radius: 8px; padding: 14px 20px; margin-top: 32px; font-size: 14px; color: ${COLORS.text};">
+        Need help using StyreIQ? <a href="mailto:${SUPPORT_EMAIL}" style="color: ${COLORS.blue}; text-decoration: none;">${SUPPORT_EMAIL}</a>
+      </div>
 
-      <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
-
-      <p style="font-size: 12px; color: #bbb; text-align: center;">
-        &copy; ${new Date().getFullYear()} Your Company. All rights reserved.
+      <p style="font-size: 12px; color: ${COLORS.muted}; text-align: center; margin: 20px 0 0;">
+        &copy; ${new Date().getFullYear()} StyreIQ. All rights reserved.
       </p>
     </div>
-  `
+  </body>
+</html>`
 }
