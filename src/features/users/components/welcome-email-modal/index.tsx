@@ -29,6 +29,7 @@ import { FormEvent, useState } from 'react'
 import { WelcomeEmailSchema } from '@/features/users/schemas'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { SUPPORT_EMAIL } from '@/shared/constants'
 
 export default function WelcomeEmailModal({ email }: { email: WelcomeEmailSchema }) {
   const [open, setOpen] = useState(false)
@@ -147,18 +148,14 @@ export default function WelcomeEmailModal({ email }: { email: WelcomeEmailSchema
             <h3 className="text-lg font-semibold">Email Preview</h3>
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">
-                  Subject: Welcome to the System - Account Activation Required
-                </CardTitle>
+                <CardTitle className="text-base">Subject: Welcome to StyreIQ</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 text-sm">
                 <div className="flex items-start gap-2">
                   <LockIcon className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="font-medium !mt-0">Welcome User</p>
-                    <p className="text-muted-foreground">
-                      Hello {'{{Username}}'}, welcome to StyreIQ!
-                    </p>
+                    <p className="text-muted-foreground">Welcome to StyreIQ, {'{{Username}}'}</p>
                   </div>
                 </div>
 
@@ -186,7 +183,7 @@ export default function WelcomeEmailModal({ email }: { email: WelcomeEmailSchema
                 <div className="flex items-start gap-2">
                   <Edit3Icon className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-primary !mt-0">List of Responsibilities</p>
+                    <p className="font-medium text-primary !mt-0">Your responsibilities</p>
                     <div className="bg-green-50 p-3 rounded border-l-4 border-green-200">
                       <ul className="list-disc list-inside space-y-1">
                         {template?.responsibilities?.map((responsibility, index) => (
@@ -200,7 +197,7 @@ export default function WelcomeEmailModal({ email }: { email: WelcomeEmailSchema
                 <div className="flex items-start gap-2">
                   <Edit3Icon className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-primary !mt-0">Required Policies and Training</p>
+                    <p className="font-medium text-primary !mt-0">Additional resources</p>
                     <div className="bg-purple-50 p-3 rounded border-l-4 border-purple-200 space-y-1">
                       {template?.policyLinks?.map((policy) => (
                         <p key={policy.id}>
@@ -215,8 +212,7 @@ export default function WelcomeEmailModal({ email }: { email: WelcomeEmailSchema
                   <div className="flex items-start gap-2">
                     <LockIcon className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                     <p className="text-xs text-muted-foreground !mt-0">
-                      If you have any questions or need assistance, please reach out to your manager
-                      or the support team.
+                      Need help using StyreIQ? {SUPPORT_EMAIL}
                     </p>
                   </div>
                 </div>
@@ -247,6 +243,9 @@ export default function WelcomeEmailModal({ email }: { email: WelcomeEmailSchema
                       className="min-h-[200px] resize-y"
                       required
                     />
+                    <p className="text-xs text-muted-foreground">
+                      Press Enter to start a new paragraph.
+                    </p>
                   </div>
                 </TabsContent>
 
