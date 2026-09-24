@@ -13,5 +13,6 @@ export const flagTypeOptions = [
   { value: FlagTypeEnum.INCOMPLETE_OFFBOARDING, label: 'Incomplete off boarding' },
   { value: FlagTypeEnum.SECURITY_CONCERN, label: 'Security Concern' },
   { value: FlagTypeEnum.OPERATIONAL_ISSUE, label: 'Operational Issue' },
+  { value: FlagTypeEnum.LOST_INACCESSIBLE_ACCOUNT, label: 'Lost / Inaccessible Account' },
   { value: FlagTypeEnum.OTHER, label: 'Other' },
 ]

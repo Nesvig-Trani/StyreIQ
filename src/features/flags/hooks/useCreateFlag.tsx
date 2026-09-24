@@ -1,11 +1,23 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { createFlagSchema } from '../schemas'
+import { createFlagSchema, FlagTypeEnum } from '../schemas'
 import { createFlag } from '@/sdk/flags'
 import { toast } from 'sonner'
 import { SocialMedia, User, Organization } from '@/types/payload-types'
 import { useFormHelper } from '@/shared'
 import { affectedEntityOptions } from '../constants/affectedEntityOptions'
+import { flagTypeLabels } from '../constants/flagTypeLabels'
+import { platformOptions } from '@/features/social-medias/constants/platformOptions'
+
+const ENTITY_FLAG_TYPES = [
+  FlagTypeEnum.SECURITY_CONCERN,
+  FlagTypeEnum.OPERATIONAL_ISSUE,
+  FlagTypeEnum.OTHER,
+]
+
+const MANUAL_FLAG_TYPE_OPTIONS = [...ENTITY_FLAG_TYPES, FlagTypeEnum.LOST_INACCESSIBLE_ACCOUNT].map(
+  (flagType) => ({ value: flagType, label: flagTypeLabels[flagType] }),
+)
 
 interface CreateFlagFormProps {
   users: User[]
@@ -30,11 +42,7 @@ export function useCreateFlag({
           label: 'Flag Type',
           name: 'flagType',
           type: 'select',
-          options: [
-            { value: 'security_concern', label: 'Security Concern' },
-            { value: 'operational_issue', label: 'Operational Issue' },
-            { value: 'other', label: 'Other' },
-          ],
+          options: MANUAL_FLAG_TYPE_OPTIONS,
           placeholder: 'Select flag type',
           size: 'half',
           required: true,
@@ -46,6 +54,10 @@ export function useCreateFlag({
           options: affectedEntityOptions,
           placeholder: 'Select entity type',
           size: 'half',
+          dependsOn: {
+            field: 'flagType',
+            value: ENTITY_FLAG_TYPES,
+          },
           required: true,
         },
         {
@@ -95,6 +107,58 @@ export function useCreateFlag({
             value: 'organization',
           },
           required: true,
+        },
+        {
+          label: 'Account URL',
+          name: 'accountUrl',
+          type: 'text',
+          placeholder: 'https://',
+          size: 'half',
+          dependsOn: {
+            field: 'flagType',
+            value: FlagTypeEnum.LOST_INACCESSIBLE_ACCOUNT,
+          },
+          required: true,
+        },
+        {
+          label: 'Platform',
+          name: 'accountPlatform',
+          type: 'select',
+          options: platformOptions,
+          placeholder: 'Select platform',
+          size: 'half',
+          dependsOn: {
+            field: 'flagType',
+            value: FlagTypeEnum.LOST_INACCESSIBLE_ACCOUNT,
+          },
+          required: true,
+        },
+        {
+          label: 'Access Issue',
+          name: 'accessIssue',
+          type: 'textarea',
+          placeholder: 'Why can the account not be accessed?',
+          size: 'half',
+          dependsOn: {
+            field: 'flagType',
+            value: FlagTypeEnum.LOST_INACCESSIBLE_ACCOUNT,
+          },
+          required: true,
+        },
+        {
+          label: 'Organizational Unit',
+          name: 'organization',
+          type: 'select',
+          options: organizations.map((org) => ({
+            value: org.id.toString(),
+            label: org.name,
+          })),
+          placeholder: 'Select the unit that owns the account',
+          size: 'half',
+          dependsOn: {
+            field: 'flagType',
+            value: FlagTypeEnum.LOST_INACCESSIBLE_ACCOUNT,
+          },
         },
         {
           label: 'Assigned To',
@@ -150,6 +214,10 @@ export function useCreateFlag({
         flagType: undefined,
         affectedEntityType: undefined,
         affectedEntity: '',
+        accountUrl: '',
+        accountPlatform: undefined,
+        accessIssue: '',
+        organization: '',
         assignedTo: '',
         dueDate: '',
         description: '',
@@ -162,6 +230,17 @@ export function useCreateFlag({
     const subscription = form.watch((value, { name }) => {
       if (name === 'affectedEntityType') {
         form.setValue('affectedEntity', '')
+      }
+      if (name !== 'flagType') return
+
+      if (value.flagType === FlagTypeEnum.LOST_INACCESSIBLE_ACCOUNT) {
+        form.setValue('affectedEntityType', undefined)
+        form.setValue('affectedEntity', '')
+      } else {
+        form.setValue('accountUrl', '')
+        form.setValue('accountPlatform', undefined)
+        form.setValue('accessIssue', '')
+        form.setValue('organization', '')
       }
     })
     return () => subscription.unsubscribe()

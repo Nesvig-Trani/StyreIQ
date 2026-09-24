@@ -13,5 +13,6 @@ export const flagTypeLabels: Record<FlagTypeEnum, string> = {
   [FlagTypeEnum.INCOMPLETE_OFFBOARDING]: 'Incomplete off boarding',
   [FlagTypeEnum.SECURITY_CONCERN]: 'Security Concern',
   [FlagTypeEnum.OPERATIONAL_ISSUE]: 'Operational Issue',
+  [FlagTypeEnum.LOST_INACCESSIBLE_ACCOUNT]: 'Lost / Inaccessible Account',
   [FlagTypeEnum.OTHER]: 'Other',
 }
