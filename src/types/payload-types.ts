@@ -588,6 +588,11 @@ export interface Flag {
         relationTo: 'organization'
         value: number | Organization
       } | null)
+  accountUrl?: string | null
+  accountPlatform?:
+    | ('facebook' | 'instagram' | 'twitter' | 'linkedin' | 'tiktok' | 'youtube' | 'other')
+    | null
+  accessIssue?: string | null
   organizations?: (number | Organization)[] | null
   assignedTo?: (number | null) | User
   dueDate?: string | null
@@ -1247,6 +1252,9 @@ export interface AcknowledgmentsSelect<T extends boolean = true> {
 export interface FlagsSelect<T extends boolean = true> {
   flagType?: T
   affectedEntity?: T
+  accountUrl?: T
+  accountPlatform?: T
+  accessIssue?: T
   organizations?: T
   assignedTo?: T
   dueDate?: T

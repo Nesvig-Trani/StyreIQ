@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, Button, Badge } from '@/shared'
 import { ArrowLeft, AlertTriangle, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 import { useFlagResolution } from '../hooks/use-flag-resolution'
+import { getFlagAffectedName } from '@/features/flags/utils'
 
 interface FlagResolutionFormProps {
   task: ComplianceTask
@@ -18,6 +19,8 @@ export const FlagResolutionForm = ({ task, flag }: FlagResolutionFormProps) => {
   const isOverdue = dueDate < new Date()
 
   const getAffectedEntityDisplay = () => {
+    if (flag.accountUrl) return getFlagAffectedName(flag)
+
     if (!flag.affectedEntity || typeof flag.affectedEntity !== 'object') {
       return 'Unknown'
     }
@@ -48,6 +51,8 @@ export const FlagResolutionForm = ({ task, flag }: FlagResolutionFormProps) => {
   }
 
   const getEntityTypeLabel = () => {
+    if (flag.accountUrl) return 'Lost / Inaccessible Account'
+
     if (!flag.affectedEntity || typeof flag.affectedEntity !== 'object') {
       return 'Unknown'
     }

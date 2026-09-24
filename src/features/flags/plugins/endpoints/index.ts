@@ -5,6 +5,7 @@ import {
   FlagHistoryActionsEnum,
   FlagSourceEnum,
   FlagStatusEnum,
+  FlagTypeEnum,
 } from '@/features/flags/schemas'
 import { EndpointError } from '@/shared'
 import { Endpoint } from 'payload'
@@ -54,65 +55,96 @@ export const createFlag: Endpoint = {
         throw new EndpointError(tenantCheck.error!.message, tenantCheck.error!.status)
       }
 
-      const entityId = Number(dataParsed.affectedEntity)
+      const {
+        affectedEntityType,
+        affectedEntity: affectedEntityId,
+        organization,
+        accountUrl,
+        accountPlatform,
+        accessIssue,
+        ...flagData
+      } = dataParsed
 
-      if (
-        !dataParsed.affectedEntity ||
-        dataParsed.affectedEntity === '' ||
-        isNaN(entityId) ||
-        entityId <= 0
-      ) {
-        throw new EndpointError('Please select an affected entity', 400)
-      }
-
-      const entityCheck = await validateRelatedEntityTenant({
-        req,
-        collection: dataParsed.affectedEntityType,
-        entityId: entityId,
-        entityName: 'Affected entity',
-      })
-
-      if (!entityCheck.valid) {
-        throw new EndpointError(entityCheck.error!.message, entityCheck.error!.status)
-      }
+      const isLostAccount = dataParsed.flagType === FlagTypeEnum.LOST_INACCESSIBLE_ACCOUNT
 
       let organizations
+      let affectedEntity
 
-      switch (dataParsed.affectedEntityType) {
-        case AffectedEntityTypeEnum.USER:
-          const user = await req.payload.findByID({
-            collection: 'users',
-            id: Number(dataParsed.affectedEntity),
-            depth: 0,
-          })
-          if (user) {
-            organizations = user.organizations
-          }
-          break
-        case AffectedEntityTypeEnum.SOCIAL_MEDIA:
-          const socialMedia = await req.payload.findByID({
-            collection: SocialMediasCollectionSlug,
-            id: Number(dataParsed.affectedEntity),
-            depth: 0,
+      if (isLostAccount) {
+        const organizationId = Number(organization)
+
+        if (organization && organizationId > 0) {
+          const unitCheck = await validateRelatedEntityTenant({
+            req,
+            collection: AffectedEntityTypeEnum.ORGANIZATION,
+            entityId: organizationId,
+            entityName: 'Unit',
           })
 
-          if (socialMedia) {
-            organizations = [socialMedia.organization]
+          if (!unitCheck.valid) {
+            throw new EndpointError(unitCheck.error!.message, unitCheck.error!.status)
           }
-          break
-        default:
-          break
+
+          organizations = [organizationId]
+        }
+      } else {
+        const entityId = Number(affectedEntityId)
+
+        if (!affectedEntityType || !affectedEntityId || isNaN(entityId) || entityId <= 0) {
+          throw new EndpointError('Please select an affected entity', 400)
+        }
+
+        const entityCheck = await validateRelatedEntityTenant({
+          req,
+          collection: affectedEntityType,
+          entityId: entityId,
+          entityName: 'Affected entity',
+        })
+
+        if (!entityCheck.valid) {
+          throw new EndpointError(entityCheck.error!.message, entityCheck.error!.status)
+        }
+
+        switch (affectedEntityType) {
+          case AffectedEntityTypeEnum.USER:
+            const user = await req.payload.findByID({
+              collection: 'users',
+              id: entityId,
+              depth: 0,
+            })
+            if (user) {
+              organizations = user.organizations
+            }
+            break
+          case AffectedEntityTypeEnum.SOCIAL_MEDIA:
+            const socialMedia = await req.payload.findByID({
+              collection: SocialMediasCollectionSlug,
+              id: entityId,
+              depth: 0,
+            })
+
+            if (socialMedia) {
+              organizations = [socialMedia.organization]
+            }
+            break
+          default:
+            break
+        }
+
+        affectedEntity = { relationTo: affectedEntityType, value: entityId }
       }
 
       const flag = await req.payload.create({
         collection: FlagsCollectionSlug,
         data: {
-          ...dataParsed,
+          ...flagData,
           status: FlagStatusEnum.PENDING,
-          affectedEntity: {
-            relationTo: dataParsed.affectedEntityType,
-            value: Number(dataParsed.affectedEntity),
-          },
+          affectedEntity,
+          ...(isLostAccount && {
+            accountUrl: accountUrl?.trim(),
+            accountPlatform,
+            accessIssue: accessIssue?.trim(),
+          }),
           assignedTo: Number(dataParsed.assignedTo),
           dueDate: dataParsed.dueDate,
           createdBy: user.id,
