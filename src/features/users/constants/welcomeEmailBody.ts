@@ -1,12 +1,24 @@
 import { env } from '@/config/env'
 import { SUPPORT_EMAIL } from '@/shared/constants'
+import { Tenant } from '@/types/payload-types'
+
+type WelcomeEmailTenant = Pick<Tenant, 'name' | 'adminContactName' | 'adminContactEmail'>
 
 type WelcomeEmailProps = {
   name: string
+  tenant?: WelcomeEmailTenant | null
   instructions: string
   responsibilities: { responsibility: string }[]
   policyLinks: { title: string; url: string }[]
 }
+
+const DEFAULT_RESPONSIBILITIES: WelcomeEmailProps['responsibilities'] = [
+  { responsibility: 'Respond to governance or account-verification requests' },
+  { responsibility: 'Complete assigned tasks or training' },
+  { responsibility: 'Review and acknowledge policies assigned in StyreIQ' },
+  { responsibility: 'Keep profile and account information current' },
+]
+const FALLBACK_ORGANIZATION = 'Your organization'
 
 const COLORS = {
   orange: '#fb8506',
@@ -38,10 +50,25 @@ const toParagraphs = (text: string) =>
     .map((paragraph) => `<p style="${paragraphStyle}">${paragraph}</p>`)
     .join('')
 
-const renderResponsibilities = (responsibilities: WelcomeEmailProps['responsibilities']) => {
-  if (responsibilities.length === 0) return ''
+const renderIntro = (tenant: WelcomeEmailProps['tenant']) => {
+  const organization = tenant?.name || FALLBACK_ORGANIZATION
+  const contact =
+    tenant?.adminContactName && tenant?.adminContactEmail
+      ? `<p style="${paragraphStyle}">
+        If you have questions about your role, responsibilities, or ${organization}'s social media
+        requirements, please contact <strong>${tenant.adminContactName} at ${tenant.adminContactEmail}</strong>.
+      </p>`
+      : ''
 
-  const items = responsibilities
+  return `<p style="${paragraphStyle}">
+        <strong>${organization} uses StyreIQ to help coordinate social media responsibilities across campus.</strong>
+        You've been added because you manage or support one or more institutional social media accounts.
+      </p>
+      ${contact}`
+}
+
+const renderResponsibilities = (responsibilities: WelcomeEmailProps['responsibilities']) => {
+  const items = (responsibilities.length > 0 ? responsibilities : DEFAULT_RESPONSIBILITIES)
     .map(
       (r) =>
         `<li style="font-size: 15px; line-height: 1.6; color: ${COLORS.text}; margin: 0 0 6px;">${r.responsibility}</li>`,
@@ -74,6 +101,7 @@ const renderPolicyLinks = (policyLinks: WelcomeEmailProps['policyLinks']) => {
 
 export const welcomeEmailBody = ({
   name,
+  tenant,
   instructions,
   responsibilities,
   policyLinks,
@@ -98,15 +126,17 @@ export const welcomeEmailBody = ({
 
       <h1 style="font-size: 26px; font-weight: 700; color: ${COLORS.deepBlue}; margin: 0 0 16px;">Welcome to StyreIQ, ${name || FALLBACK_NAME}</h1>
 
+      ${renderIntro(tenant)}
+
       ${toParagraphs(instructions)}
 
       <p style="margin: 28px 0;">
-        <a href="${loginLink}" style="display: inline-block; background-color: ${COLORS.orange}; color: ${COLORS.white}; font-size: 17px; font-weight: 700; text-decoration: none; padding: 14px 32px; border-radius: 6px;">Access StyreIQ</a>
+        <a href="${loginLink}" style="display: inline-block; background-color: ${COLORS.orange}; color: ${COLORS.white}; font-size: 20px; font-weight: 700; line-height: 1.3; text-align: center; text-decoration: none; padding: 16px 44px; border-radius: 6px;">Access<br />StyreIQ</a>
       </p>
 
       <p style="${paragraphStyle}">
         Use the Access StyreIQ button above to get started. On your first visit, select
-        <strong>Forgot your password?</strong> to create your password.
+        <strong>Reset password</strong> to create your password.
       </p>
       <p style="${paragraphStyle}">
         Once you're logged in, head to <strong>My Tasks</strong> to see anything currently assigned to you.

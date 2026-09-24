@@ -156,6 +156,19 @@ export default function WelcomeEmailModal({ email }: { email: WelcomeEmailSchema
                   <div>
                     <p className="font-medium !mt-0">Welcome User</p>
                     <p className="text-muted-foreground">Welcome to StyreIQ, {'{{Username}}'}</p>
+                    <p className="text-muted-foreground">
+                      <strong>
+                        {'{{Organization}}'} uses StyreIQ to help coordinate social media
+                        responsibilities across campus.
+                      </strong>{' '}
+                      You&apos;ve been added because you manage or support one or more institutional
+                      social media accounts.
+                    </p>
+                    <p className="text-muted-foreground">
+                      If you have questions about your role, responsibilities, or{' '}
+                      {'{{Organization}}'}&apos;s social media requirements, please contact{' '}
+                      <strong>{'{{Admin contact}}'}</strong>.
+                    </p>
                   </div>
                 </div>
 
@@ -190,6 +203,11 @@ export default function WelcomeEmailModal({ email }: { email: WelcomeEmailSchema
                           <li key={index}>{responsibility.responsibility}</li>
                         ))}
                       </ul>
+                      {!template?.responsibilities?.length && (
+                        <p className="text-xs text-muted-foreground">
+                          Empty list: the email shows the StyreIQ default responsibilities.
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
