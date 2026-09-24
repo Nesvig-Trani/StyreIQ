@@ -18,6 +18,7 @@ import {
 import { injectTenantHook } from '@/features/tenants/hooks/inject-tenant'
 import { createComment, createFlag, markAsResolved } from '../endpoints'
 import { flagStatusOptions } from '../../constants/flagStatusOptions'
+import { platformOptions } from '@/features/social-medias/constants/platformOptions'
 
 export const Flags: CollectionConfig = {
   slug: FlagsCollectionSlug,
@@ -36,6 +37,19 @@ export const Flags: CollectionConfig = {
       name: 'affectedEntity',
       type: 'relationship',
       relationTo: ['users', 'social-medias', 'organization'],
+    },
+    {
+      name: 'accountUrl',
+      type: 'text',
+    },
+    {
+      name: 'accountPlatform',
+      type: 'select',
+      options: platformOptions,
+    },
+    {
+      name: 'accessIssue',
+      type: 'textarea',
     },
     {
       name: 'organizations',

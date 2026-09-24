@@ -5,7 +5,7 @@ import { FlagSourceEnum, flagsSearchSchema, FlagStatusEnum, FlagTypeEnum } from 
 import { flagTypeLabels } from '../constants/flagTypeLabels'
 import { Badge, Button, DataTableFilter, useParsedSearchParams } from '@/shared'
 import { CheckIcon } from 'lucide-react'
-import { getStatusColor, isActivityStale } from '../utils'
+import { getFlagAffectedName, getStatusColor, isActivityStale } from '../utils'
 import { FlagDetails } from '../components/flag-details'
 import { toast } from 'sonner'
 import { markFlagAsResolved } from '@/sdk/flags'
@@ -34,9 +34,9 @@ function getFlagRowAriaContext(flag: Flag): string {
     parts.push(flagTypeLabels[flag.flagType as FlagTypeEnum])
   }
 
-  const affectedValue = flag.affectedEntity?.value
-  if (affectedValue && typeof affectedValue === 'object' && 'name' in affectedValue) {
-    parts.push(`affected ${(affectedValue as { name: string }).name}`)
+  const affectedName = getFlagAffectedName(flag)
+  if (affectedName) {
+    parts.push(`affected ${affectedName}`)
   }
 
   return parts.join(', ')
@@ -150,16 +150,7 @@ function useFlagsTable({
     {
       accessorKey: 'affectedEntity',
       header: 'Affected Entity',
-      cell: ({ row }) => {
-        const affectedEntity = row.original.affectedEntity
-        return (
-          <div>
-            {typeof affectedEntity === 'object' && typeof affectedEntity?.value === 'object'
-              ? affectedEntity.value.name
-              : ''}
-          </div>
-        )
-      },
+      cell: ({ row }) => <div>{getFlagAffectedName(row.original)}</div>,
     },
     {
       accessorKey: 'status',

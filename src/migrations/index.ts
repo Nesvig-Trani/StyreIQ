@@ -35,6 +35,7 @@ import * as migration_20260210_143353 from './20260210_143353'
 import * as migration_20260217_163505 from './20260217_163505'
 import * as migration_20260218_152146 from './20260218_152146'
 import * as migration_20260227_233143 from './20260227_233143'
+import * as migration_20260924_215523_add_lost_account_flag_fields from './20260924_215523_add_lost_account_flag_fields'
 
 export const migrations = [
   {
@@ -221,5 +222,10 @@ export const migrations = [
     up: migration_20260227_233143.up,
     down: migration_20260227_233143.down,
     name: '20260227_233143',
+  },
+  {
+    up: migration_20260924_215523_add_lost_account_flag_fields.up,
+    down: migration_20260924_215523_add_lost_account_flag_fields.down,
+    name: '20260924_215523_add_lost_account_flag_fields',
   },
 ]

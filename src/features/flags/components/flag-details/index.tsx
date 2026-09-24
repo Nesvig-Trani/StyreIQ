@@ -1,6 +1,6 @@
 import { flagSourceLabels } from '@/features/flags/constants/flagSourceLabels'
 import { FlagSourceEnum, FlagStatusEnum } from '@/features/flags/schemas'
-import { getStatusColor, isActivityStale } from '@/features/flags/utils'
+import { getFlagAffectedName, getStatusColor, isActivityStale } from '@/features/flags/utils'
 import { ComplianceTask, Flag, Organization, SocialMedia, User } from '@/types/payload-types'
 import { Badge, Button, Separator } from '@/shared'
 import {
@@ -81,8 +81,7 @@ export function FlagDetails({
     }
   }
 
-  const affectedName =
-    typeof flag.affectedEntity?.value === 'object' ? flag.affectedEntity?.value.name : ''
+  const affectedName = getFlagAffectedName(flag)
 
   return (
     <Dialog>
@@ -156,6 +155,12 @@ export function FlagDetails({
             </div>
           </div>
           <Separator />
+          {flag.accessIssue && (
+            <div>
+              <h4 className="font-semibold mb-2">Access Issue</h4>
+              <p className="text-sm text-muted-foreground">{flag.accessIssue}</p>
+            </div>
+          )}
           <div>
             <h4 className="font-semibold mb-2">Risk Description</h4>
             <p className="text-sm text-muted-foreground">{flag.description}</p>

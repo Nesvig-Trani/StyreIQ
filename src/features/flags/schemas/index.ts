@@ -1,4 +1,5 @@
 import { paginationSchema } from '@/shared/schemas/pagination'
+import { PlatformEnum } from '@/features/social-medias/schemas'
 import { z } from 'zod'
 
 export enum FlagStatusEnum {
@@ -27,6 +28,7 @@ export enum FlagTypeEnum {
   INCOMPLETE_OFFBOARDING = 'incomplete_offboarding',
   SECURITY_CONCERN = 'security_concern',
   OPERATIONAL_ISSUE = 'operational_issue',
+  LOST_INACCESSIBLE_ACCOUNT = 'lost_inaccessible_account',
   OTHER = 'other',
 }
 
@@ -45,19 +47,43 @@ const FlagStatus = z.nativeEnum(FlagStatusEnum)
 const AffectedEntity = z.nativeEnum(AffectedEntityTypeEnum)
 const FlagType = z.nativeEnum(FlagTypeEnum)
 
-export const createFlagSchema = z.object({
-  flagType: FlagType,
-  affectedEntityType: AffectedEntity,
-  affectedEntity: z.string(),
-  organization: z.string().optional(),
-  status: FlagStatus.optional(),
-  source: z.string().optional(),
-  description: z.string(),
-  suggestedAction: z.string(),
-  tenant: z.number().nullable().optional(),
-  assignedTo: z.string().min(1, 'Assigned To is required'),
-  dueDate: z.coerce.string().min(1, 'Due Date is required'),
-})
+const accountUrlSchema = z.string().trim().url('Enter a valid account URL')
+
+// Lost accounts are flagged by URL because they are not in the inventory yet.
+export const createFlagSchema = z
+  .object({
+    flagType: FlagType,
+    affectedEntityType: AffectedEntity.optional(),
+    affectedEntity: z.string().optional(),
+    accountUrl: z.string().optional(),
+    accountPlatform: z.nativeEnum(PlatformEnum).optional(),
+    accessIssue: z.string().optional(),
+    organization: z.string().optional(),
+    status: FlagStatus.optional(),
+    source: z.string().optional(),
+    description: z.string(),
+    suggestedAction: z.string(),
+    tenant: z.number().nullable().optional(),
+    assignedTo: z.string().min(1, 'Assigned To is required'),
+    dueDate: z.coerce.string().min(1, 'Due Date is required'),
+  })
+  .superRefine((data, ctx) => {
+    const requireField = (path: keyof typeof data, message: string) =>
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: [path], message })
+
+    if (data.flagType === FlagTypeEnum.LOST_INACCESSIBLE_ACCOUNT) {
+      const urlResult = accountUrlSchema.safeParse(data.accountUrl ?? '')
+      if (!urlResult.success) requireField('accountUrl', urlResult.error.issues[0].message)
+      if (!data.accountPlatform) requireField('accountPlatform', 'Platform is required')
+      if (!data.accessIssue?.trim()) requireField('accessIssue', 'Access Issue is required')
+      return
+    }
+
+    if (!data.affectedEntityType) {
+      requireField('affectedEntityType', 'Affected Entity Type is required')
+    }
+    if (!data.affectedEntity) requireField('affectedEntity', 'Affected entity is required')
+  })
 
 export const createFlagCommentSchema = z.object({
   flagId: z.number(),

@@ -1,3 +1,5 @@
+import { platformLabelMap } from '@/features/social-medias/schemas'
+import type { Flag } from '@/types/payload-types'
 import { FlagStatusEnum } from '../schemas'
 
 export const getStatusColor = (status: FlagStatusEnum) => {
@@ -11,6 +13,16 @@ export const getStatusColor = (status: FlagStatusEnum) => {
     default:
       return 'outline'
   }
+}
+
+export const getFlagAffectedName = (flag: Flag): string => {
+  const entity = flag.affectedEntity?.value
+  if (entity && typeof entity === 'object' && 'name' in entity) return entity.name ?? ''
+
+  if (!flag.accountUrl) return ''
+  return flag.accountPlatform
+    ? `${flag.accountUrl} (${platformLabelMap[flag.accountPlatform]})`
+    : flag.accountUrl
 }
 
 export const isActivityStale = (dateString: string) => {
