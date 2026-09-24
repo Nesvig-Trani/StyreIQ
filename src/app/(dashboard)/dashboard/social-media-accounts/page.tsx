@@ -60,7 +60,12 @@ export default async function SocialMediasPage(props: AppPageProps) {
 
   let socialMediasWithAuditLogs = socialMediaAccounts.docs
 
-  if (isSuperAdmin) {
+  const canViewAuditLogs =
+    isSuperAdmin ||
+    effectiveRole === UserRolesEnum.CentralAdmin ||
+    effectiveRole === UserRolesEnum.UnitAdmin
+
+  if (canViewAuditLogs) {
     socialMediasWithAuditLogs = await Promise.all(
       socialMediaAccounts.docs.map(async (socialMedia) => {
         const auditLogs = await getSocialMediaAuditLogs({
