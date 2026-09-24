@@ -161,6 +161,11 @@ export const createUser: Endpoint = {
       })
       const emailData = welcomeEmail.docs[0]
 
+      const userTenantId = extractTenantIdFromProperty(createUser.tenant)
+      const userTenant = userTenantId
+        ? await req.payload.findByID({ collection: 'tenants', id: userTenantId })
+        : null
+
       let emailSent = false
       try {
         await req.payload.sendEmail({
@@ -171,6 +176,7 @@ export const createUser: Endpoint = {
           subject: 'Welcome to StyreIQ',
           html: welcomeEmailBody({
             name: createUser.name,
+            tenant: userTenant,
             instructions: emailData?.instructions || '',
             policyLinks: emailData?.policyLinks || [],
             responsibilities: emailData?.responsibilities || [],
