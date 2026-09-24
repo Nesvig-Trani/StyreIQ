@@ -1,6 +1,5 @@
-import { cookies, headers as getHeaders } from 'next/headers'
+import { cookies } from 'next/headers'
 import { type NextRequest, NextResponse } from 'next/server'
-import { logout } from '@/sdk/users'
 import { SELECTED_TENANT_COOKIE_NAME } from '@/features/tenants/schemas'
 import { isLogoutReason, LOGOUT_REASON_PARAM } from '@/features/auth/utils/logoutReason'
 
@@ -8,11 +7,6 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export async function GET(request: NextRequest) {
-  const headers = await getHeaders()
-  const cookieHeader = headers.get('cookie') || ''
-
-  await logout({ cookie: cookieHeader })
-
   const cookieStore = await cookies()
   cookieStore.set('payload-token', '', {
     path: '/',
@@ -36,7 +30,7 @@ export async function GET(request: NextRequest) {
   response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
   response.headers.set('Pragma', 'no-cache')
   response.headers.set('Expires', '0')
-  response.headers.set('Clear-Site-Data', '"cache", "cookies", "storage"')
+  response.headers.set('Clear-Site-Data', '"cookies", "storage"')
 
   return response
 }
