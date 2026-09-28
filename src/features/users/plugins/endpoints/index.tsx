@@ -29,12 +29,24 @@ import {
   validateRelatedEntityTenant,
   validateTenantAccess,
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
-import { getEffectiveRoleFromUser, getHighestRole } from '@/shared/utils/role-hierarchy'
+import {
+  canAssignRoles,
+  getEffectiveRoleFromUser,
+  getHighestRole,
+} from '@/shared/utils/role-hierarchy'
+import { AccessControl } from '@/shared/utils/rbac'
+import { getAccessibleOrgIdsForUserWithPayload } from '@/shared/utils/organization-filter'
 import { randomBytes } from 'crypto'
 import {
   generateNewUserComplianceTasks,
   SKIP_COMPLIANCE_TASK_GENERATION,
 } from '@/features/compliance-tasks/services/generate-new-user-tasks'
+
+const hasSameValues = (a: (string | number)[], b: (string | number)[]) => {
+  const setA = new Set(a.map(String))
+  const setB = new Set(b.map(String))
+  return setA.size === setB.size && [...setA].every((value) => setB.has(value))
+}
 
 export const createUser: Endpoint = {
   path: '/',
@@ -56,6 +68,12 @@ export const createUser: Endpoint = {
         })
       }
       const effectiveRole = getEffectiveRoleFromUser(user)
+      if (!effectiveRole || !new AccessControl(user).can('create', 'USERS')) {
+        return new Response(JSON.stringify({ error: 'Forbidden' }), {
+          status: 403,
+          headers: JSON_HEADERS,
+        })
+      }
       const data = await req.json()
 
       const tenantCheck = validateTenantAccess({
@@ -101,6 +119,28 @@ export const createUser: Endpoint = {
         data.organizations = [String(data.organizations)]
       }
       const dataParsed = createUserFormSchema.parse(data)
+
+      if (!canAssignRoles(effectiveRole, dataParsed.roles)) {
+        return new Response(JSON.stringify({ error: 'Cannot assign a role above your own' }), {
+          status: 403,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      if (effectiveRole === UserRolesEnum.UnitAdmin) {
+        const accessibleOrgIds = await getAccessibleOrgIdsForUserWithPayload(user, req.payload)
+        const assignsOnlyAccessibleUnits = (dataParsed.organizations ?? []).every((org) =>
+          accessibleOrgIds.includes(Number(org)),
+        )
+
+        if (!assignsOnlyAccessibleUnits) {
+          return new Response(JSON.stringify({ error: 'Cannot assign units outside your access' }), {
+            status: 403,
+            headers: JSON_HEADERS,
+          })
+        }
+      }
+
       const existingUser = await req.payload.find({
         collection: 'users',
         where: {
@@ -266,6 +306,12 @@ export const updateUser: Endpoint = {
         })
       }
       const effectiveRole = getEffectiveRoleFromUser(user)
+      if (!effectiveRole || !new AccessControl(user).can('update', 'USERS')) {
+        return new Response(JSON.stringify({ error: 'Forbidden' }), {
+          status: 403,
+          headers: JSON_HEADERS,
+        })
+      }
 
       const data = await req.json()
       const dataParsed = parseSearchParamsWithSchema(data, updateUserSchema)
@@ -290,6 +336,56 @@ export const updateUser: Endpoint = {
           status: tenantCheck.error!.status,
           headers: JSON_HEADERS,
         })
+      }
+
+      const isSelfUpdate = userExists.id === user.id
+      const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
+
+      if (effectiveRole === UserRolesEnum.SocialMediaManager && !isSelfUpdate) {
+        return new Response(JSON.stringify({ error: 'Forbidden' }), {
+          status: 403,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      if (!canAssignRoles(effectiveRole, dataParsed.roles)) {
+        return new Response(JSON.stringify({ error: 'Cannot assign a role above your own' }), {
+          status: 403,
+          headers: JSON_HEADERS,
+        })
+      }
+
+      const currentOrgIds = ((userExists.organizations ?? []) as (Organization | number)[]).map(
+        (org) => (typeof org === 'object' ? org.id : org),
+      )
+
+      if (isSelfUpdate && !isSuperAdmin) {
+        const changesOwnRoles = !hasSameValues(userExists.roles ?? [], dataParsed.roles)
+        const changesOwnUnits =
+          dataParsed.organizations !== undefined &&
+          !hasSameValues(currentOrgIds, dataParsed.organizations)
+
+        if (changesOwnRoles || changesOwnUnits) {
+          return new Response(JSON.stringify({ error: 'Cannot change your own roles or units' }), {
+            status: 403,
+            headers: JSON_HEADERS,
+          })
+        }
+      }
+
+      if (effectiveRole === UserRolesEnum.UnitAdmin && !isSelfUpdate) {
+        const accessibleOrgIds = await getAccessibleOrgIdsForUserWithPayload(user, req.payload)
+        const sharesAccessibleUnit = currentOrgIds.some((orgId) => accessibleOrgIds.includes(orgId))
+        const assignsOnlyAccessibleUnits = (dataParsed.organizations ?? []).every((org) =>
+          accessibleOrgIds.includes(Number(org)),
+        )
+
+        if (!sharesAccessibleUnit || !assignsOnlyAccessibleUnits) {
+          return new Response(JSON.stringify({ error: 'Cannot manage users outside your units' }), {
+            status: 403,
+            headers: JSON_HEADERS,
+          })
+        }
       }
 
       if (

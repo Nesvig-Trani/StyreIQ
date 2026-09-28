@@ -1,4 +1,7 @@
 import { CollectionConfig } from 'payload'
+import { UserRolesEnum } from '@/features/users/schemas'
+import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { extractTenantId, superAdminOnlyAccess } from './helpers/access-control-helpers'
 import {
   createTenant,
   getAggregateMetrics,
@@ -17,9 +20,15 @@ export const Tenants: CollectionConfig = {
     group: 'System',
   },
   access: {
-    read: () => true,
-    create: () => true,
-    update: () => true,
+    read: ({ req: { user } }) => {
+      if (!user) return false
+      if (getEffectiveRoleFromUser(user) === UserRolesEnum.SuperAdmin) return true
+
+      const tenantId = extractTenantId(user)
+      return tenantId ? { id: { equals: tenantId } } : false
+    },
+    create: superAdminOnlyAccess,
+    update: superAdminOnlyAccess,
     delete: () => false,
   },
   fields: [

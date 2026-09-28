@@ -45,9 +45,11 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
   const tree = createUnitTree(organizations as UnitWithDepth[])
 
   const allowedRoles =
-    authUserRole === UserRolesEnum.UnitAdmin
-      ? [UserRolesEnum.UnitAdmin, UserRolesEnum.SocialMediaManager]
-      : Object.values(UserRolesEnum)
+    authUserRole === UserRolesEnum.SuperAdmin
+      ? Object.values(UserRolesEnum)
+      : authUserRole === UserRolesEnum.UnitAdmin
+        ? [UserRolesEnum.UnitAdmin, UserRolesEnum.SocialMediaManager]
+        : [UserRolesEnum.CentralAdmin, UserRolesEnum.UnitAdmin, UserRolesEnum.SocialMediaManager]
   const allowedStatuses =
     authUserRole === UserRolesEnum.UnitAdmin ? [] : [UserStatusEnum.Active, UserStatusEnum.Inactive]
 
