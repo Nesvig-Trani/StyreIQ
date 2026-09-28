@@ -13,7 +13,7 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ logoutReason }: LoginFormProps) {
-  const { loginFields, handleInputChange, handleSubmit } = useLogin(logoutReason)
+  const { loginFields, logoutMessage, handleInputChange, handleSubmit } = useLogin(logoutReason)
   return (
     <div className="flex flex-col gap-6">
       <Card>
@@ -22,6 +22,14 @@ export function LoginForm({ logoutReason }: LoginFormProps) {
           <CardDescription>Enter your email below to login to your account</CardDescription>
         </CardHeader>
         <CardContent>
+          {logoutMessage && (
+            <div
+              role="alert"
+              className="mb-4 rounded-md border border-red-200 bg-red-100 p-4 text-sm text-red-800"
+            >
+              {logoutMessage}
+            </div>
+          )}
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-4 sm:gap-6">
               <div className="grid gap-2 sm:gap-3">

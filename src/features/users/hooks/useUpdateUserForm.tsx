@@ -14,6 +14,9 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { createUnitTree, UnitWithDepth } from '@/features/units'
 import { normalizeActiveRole, normalizeRoles } from '@/shared/utils/role-hierarchy'
 import { useMemo } from 'react'
+import { getErrorMessage } from '@/shared/utils/getErrorMessage'
+
+const UPDATE_USER_ERROR = 'We could not update this user. Please try again.'
 
 function useUpdateUserForm({ organizations, id, data, authUserRole }: UpdateUserFormProps) {
   const router = useRouter()
@@ -130,10 +133,10 @@ function useUpdateUserForm({ organizations, id, data, authUserRole }: UpdateUser
                   .join(', ')}. Please assign another Unit Admin before disabling the user.`,
               )
               console.log('Conflicting organizations:', typedErr.data.organizations)
+              return
             }
-          } else {
-            toast.error('An unexpected error occurred.')
           }
+          toast.error(getErrorMessage(err, UPDATE_USER_ERROR))
         }
       },
       submitContent: 'Update User',
