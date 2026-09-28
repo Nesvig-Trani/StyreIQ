@@ -89,9 +89,12 @@ export const FormHelper = <
               Please fix the following errors:
             </h3>
             <ul className="text-sm text-red-700 space-y-1">
-              {Object.keys(form.formState.errors).map((fieldName) => (
+              {Object.entries(form.formState.errors).map(([fieldName, fieldError]) => (
                 <li key={fieldName}>
-                  <strong className="capitalize">{fieldName}:</strong> Field is required
+                  <strong className="capitalize">{fieldName}:</strong>{' '}
+                  {typeof fieldError?.message === 'string'
+                    ? fieldError.message
+                    : 'Field is required'}
                 </li>
               ))}
             </ul>
