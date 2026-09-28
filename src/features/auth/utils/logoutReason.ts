@@ -2,6 +2,8 @@ export const LOGOUT_REASON_PARAM = 'reason'
 
 export const LOGOUT_REASONS = {
   policyRejected: 'policy-rejected',
+  inactive: 'inactive',
+  noUnitAccess: 'no-unit-access',
 } as const
 
 export type LogoutReason = (typeof LOGOUT_REASONS)[keyof typeof LOGOUT_REASONS]
