@@ -7,7 +7,7 @@ import {
   FlagStatusEnum,
   FlagTypeEnum,
 } from '@/features/flags/schemas'
-import { EndpointError } from '@/shared'
+import { EndpointError, getAccessibleOrgIdsForUserWithPayload } from '@/shared'
 import { Endpoint } from 'payload'
 import {
   FlagCommentsCollectionSlug,
@@ -83,6 +83,14 @@ export const createFlag: Endpoint = {
 
           if (!unitCheck.valid) {
             throw new EndpointError(unitCheck.error!.message, unitCheck.error!.status)
+          }
+
+          // The tenant check alone lets a Unit Admin file the flag under a unit they don't manage.
+          if (getEffectiveRoleFromUser(user) === UserRolesEnum.UnitAdmin) {
+            const accessibleOrgIds = await getAccessibleOrgIdsForUserWithPayload(user, req.payload)
+            if (!accessibleOrgIds.includes(organizationId)) {
+              throw new EndpointError('You do not have access to this unit', 403)
+            }
           }
 
           organizations = [organizationId]
