@@ -77,7 +77,7 @@ export function validateTenantAccess({
   userTenant?: number | null
 } {
   const effectiveRole = getEffectiveRoleFromUser(req.user)
-  if (effectiveRole) {
+  if (effectiveRole === UserRolesEnum.SuperAdmin) {
     return { valid: true }
   }
 
@@ -94,7 +94,7 @@ export function validateTenantAccess({
   const userTenantId = extractTenantId(req.user)
   const targetId = targetTenantId
 
-  if (targetId && targetId !== userTenantId) {
+  if (targetId && Number(targetId) !== userTenantId) {
     return {
       valid: false,
       error: {
@@ -414,6 +414,9 @@ export const ownerUpdateAccess = (collectionSlug: CollectionSlug): Access => {
 }
 
 export const immutableUpdateAccess: Access = async () => false
+
+export const superAdminOnlyAccess: Access = ({ req: { user } }) =>
+  getEffectiveRoleFromUser(user) === UserRolesEnum.SuperAdmin
 
 export const superAdminOnlyDeleteAccess: Access = async ({ req }) => {
   const { user } = req

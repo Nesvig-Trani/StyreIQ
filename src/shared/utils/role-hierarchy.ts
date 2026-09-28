@@ -67,6 +67,9 @@ export const canUserPerformAction = (
   return ROLE_HIERARCHY[roleToCheck] >= ROLE_HIERARCHY[requiredRole]
 }
 
+export const canAssignRoles = (assignerRole: UserRolesEnum, roles: UserRolesEnum[]): boolean =>
+  roles.every((role) => ROLE_HIERARCHY[role] <= ROLE_HIERARCHY[assignerRole])
+
 export const validateRoleCompatibility = (
   roles: UserRolesEnum[],
 ): { valid: boolean; errors: string[] } => {
