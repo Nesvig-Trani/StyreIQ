@@ -10,6 +10,9 @@ import { z } from 'zod'
 import { unitAccess, UserAccessTypeEnum } from '@/features/units'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { getErrorMessage } from '@/shared/utils/getErrorMessage'
+
+const UPDATE_ACCESS_ERROR = 'We could not update unit access. Please try again.'
 
 interface OrganizationAccessFormProps {
   initialAccess: OrganizationAccess[]
@@ -66,6 +69,8 @@ export const UnitAccessForm = ({ initialAccess = [] }: OrganizationAccessFormPro
       await updateUserAccess({ access: accessList as OrgAccess[] })
       toast.success('Access updated')
       router.push('/dashboard/users')
+    } catch (err) {
+      toast.error(getErrorMessage(err, UPDATE_ACCESS_ERROR))
     } finally {
       setIsSubmitting(false)
     }

@@ -6,7 +6,17 @@ import { isLogoutReason, LOGOUT_REASON_PARAM } from '@/features/auth/utils/logou
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
+const RSC_HEADER = 'rsc'
+const HTTP_NO_CONTENT = 204
+
 export async function GET(request: NextRequest) {
+  // A server component redirect() reaches this route as a client router RSC fetch.
+  // An empty non-flight response makes the router fall back to a full browser navigation,
+  // so the cookie clearing and the /login redirect run as a normal page load.
+  if (request.headers.get(RSC_HEADER)) {
+    return new Response(null, { status: HTTP_NO_CONTENT })
+  }
+
   const cookieStore = await cookies()
   cookieStore.set('payload-token', '', {
     path: '/',

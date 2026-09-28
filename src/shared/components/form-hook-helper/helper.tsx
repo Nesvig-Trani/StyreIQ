@@ -8,6 +8,10 @@ import type { FieldData } from './types'
 import { Button } from '@/shared/components/ui/button'
 import { Loader2 } from 'lucide-react'
 import { Form } from '@/shared/components/ui/form'
+import { toast } from 'sonner'
+import { getErrorMessage } from '@/shared/utils/getErrorMessage'
+
+const UNHANDLED_SUBMIT_ERROR = 'We could not save your changes. Please try again.'
 
 export type FormHelperProps<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -73,7 +77,11 @@ export const FormHelper = <
           const isValid = await form.trigger()
           if (isValid) {
             const data = form.getValues()
-            onSubmit(data as TTransformedValues)
+            try {
+              await onSubmit(data as TTransformedValues)
+            } catch (err) {
+              toast.error(getErrorMessage(err, UNHANDLED_SUBMIT_ERROR))
+            }
           }
         }}
         className="mb-4 grid w-full grid-cols-12 gap-3"

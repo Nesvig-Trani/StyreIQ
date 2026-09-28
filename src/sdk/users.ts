@@ -12,6 +12,7 @@ import { env } from '@/config/env'
 import { updateUnitAccessSchema } from '@/features/units'
 import { setUserStatusSchema } from '@/features/review-requests'
 import { JSON_HEADERS } from '@/shared/constants'
+import { getErrorMessage } from '@/shared/utils/getErrorMessage'
 
 /**
  * Makes a request to the api for creating a user for the first time.
@@ -114,7 +115,8 @@ export const updateUserAccess = async (data: z.infer<typeof updateUnitAccessSche
   })
 
   if (!response.ok) {
-    throw new Error('Failed to update user')
+    const errorData = await response.json().catch(() => ({}))
+    throw new Error(getErrorMessage(errorData, 'Failed to update user access'))
   }
 
   return await response.json()
