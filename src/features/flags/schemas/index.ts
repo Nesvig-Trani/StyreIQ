@@ -47,7 +47,21 @@ const FlagStatus = z.nativeEnum(FlagStatusEnum)
 const AffectedEntity = z.nativeEnum(AffectedEntityTypeEnum)
 const FlagType = z.nativeEnum(FlagTypeEnum)
 
-const accountUrlSchema = z.string().trim().url('Enter a valid account URL')
+const ALLOWED_ACCOUNT_URL_PROTOCOLS = ['http:', 'https:']
+
+// z.string().url() accepts any scheme (javascript:, data:, ...), so only web URLs are allowed.
+const isWebUrl = (value: string) => {
+  try {
+    return ALLOWED_ACCOUNT_URL_PROTOCOLS.includes(new URL(value).protocol)
+  } catch {
+    return false
+  }
+}
+
+const accountUrlSchema = z
+  .string()
+  .trim()
+  .refine(isWebUrl, 'Enter a valid account URL starting with http:// or https://')
 
 // Lost accounts are flagged by URL because they are not in the inventory yet.
 export const createFlagSchema = z
