@@ -7,15 +7,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/components/ui/dialog'
+import { requestDemoSchema } from '@/shared/schemas/requestDemoSchema'
 import { Check } from 'lucide-react'
 import React, { useState } from 'react'
-import * as z from 'zod'
-
-const requestDemoSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  email: z.string().email('Enter a valid email'),
-  company: z.string().optional(),
-})
 
 export const RequestDemoModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -42,6 +36,12 @@ export const RequestDemoModal: React.FC<{ trigger: React.ReactNode }> = ({ trigg
           name: 'company',
           type: 'text',
           placeholder: 'Your organization',
+        },
+        {
+          label: 'Role',
+          name: 'role',
+          type: 'text',
+          placeholder: 'Your role (optional)',
         },
       ],
       onSubmit: async (submitData) => {
@@ -76,6 +76,7 @@ export const RequestDemoModal: React.FC<{ trigger: React.ReactNode }> = ({ trigg
         name: '',
         email: '',
         company: '',
+        role: '',
       },
     },
   )
@@ -101,7 +102,7 @@ export const RequestDemoModal: React.FC<{ trigger: React.ReactNode }> = ({ trigg
               <Check className="w-8 h-8 text-green-600" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Thank you!</h3>
-            <p className="text-gray-600">We&apos;ll be in touch soon to schedule your demo.</p>
+            <p className="text-gray-600">Check your inbox for a link to schedule your demo.</p>
           </div>
         )}
       </DialogContent>
