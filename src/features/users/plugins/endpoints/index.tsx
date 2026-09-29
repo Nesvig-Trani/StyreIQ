@@ -22,6 +22,8 @@ import { welcomeEmailBody } from '@/features/users/constants/welcomeEmailBody'
 import { WelcomeEmailCollectionSlug } from '@/features/welcome-emails/plugins/types'
 import { AuditLogActionEnum } from '@/features/audit-log/plugins/types'
 import { requestDemoEmailBody } from '../../constants/requestDemoEmailBody'
+import { demoConfirmationEmailBody } from '../../constants/demoConfirmationEmailBody'
+import { requestDemoSchema } from '@/shared/schemas/requestDemoSchema'
 import {
   extractTenantIdFromProperty,
   validateRelatedEntityTenant,
@@ -825,28 +827,45 @@ export const requestDemo: Endpoint = {
           headers: JSON_HEADERS,
         })
 
-      const data = await req.json()
+      const parsed = requestDemoSchema.safeParse(await req.json())
 
-      const sendEmailResponse = await req.payload.sendEmail({
-        to:
-          env.NEXT_PUBLIC_NODE_ENV === 'production'
-            ? 'tntrani@nesvigtrani.com'
-            : env.LOCAL_EMAIL_TO_ADDRESS,
-        subject: 'New Demo Request',
-        html: requestDemoEmailBody({
-          name: data.name,
-          email: data.email,
-          company: data.company || '',
-        }),
-      })
+      if (!parsed.success)
+        return new Response(
+          JSON.stringify({ error: 'Invalid demo request', details: parsed.error.issues }),
+          {
+            status: 400,
+            headers: JSON_HEADERS,
+          },
+        )
 
-      if (
-        !sendEmailResponse ||
-        typeof sendEmailResponse !== 'object' ||
-        !('id' in sendEmailResponse)
-      ) {
-        throw new Error('Email service did not return a valid id')
+      const data = parsed.data
+      const isProduction = env.NEXT_PUBLIC_NODE_ENV === 'production'
+
+      const assertEmailSent = (response: unknown) => {
+        if (!response || typeof response !== 'object' || !('id' in response)) {
+          throw new Error('Email service did not return a valid id')
+        }
       }
+
+      const [internalResponse, confirmationResponse] = await Promise.all([
+        req.payload.sendEmail({
+          to: isProduction ? env.DEMO_REQUEST_TO_ADDRESS : env.LOCAL_EMAIL_TO_ADDRESS,
+          replyTo: data.email,
+          subject: 'New demo request',
+          html: requestDemoEmailBody(data),
+        }),
+        req.payload.sendEmail({
+          to: isProduction ? data.email : env.LOCAL_EMAIL_TO_ADDRESS,
+          subject: 'Thanks for your interest in StyreIQ',
+          html: demoConfirmationEmailBody({
+            name: data.name,
+            schedulingUrl: env.DEMO_SCHEDULING_URL,
+          }),
+        }),
+      ])
+
+      assertEmailSent(internalResponse)
+      assertEmailSent(confirmationResponse)
 
       return new Response(JSON.stringify({ success: true }), {
         status: 200,
