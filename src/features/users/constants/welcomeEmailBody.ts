@@ -1,6 +1,16 @@
 import { env } from '@/config/env'
 import { SUPPORT_EMAIL } from '@/shared/constants'
 import { Tenant } from '@/types/payload-types'
+import {
+  EMAIL_COLORS as COLORS,
+  EMAIL_FALLBACK_NAME as FALLBACK_NAME,
+  EMAIL_FONT_STACK as FONT_STACK,
+  EMAIL_FONT_URL as FONT_URL,
+  EMAIL_LOGO_PATH as LOGO_PATH,
+  EMAIL_LOGO_WIDTH as LOGO_WIDTH,
+  EMAIL_MAX_WIDTH as MAX_WIDTH,
+  emailParagraphStyle as paragraphStyle,
+} from './emailTheme'
 
 type WelcomeEmailTenant = Pick<Tenant, 'name' | 'adminContactName' | 'adminContactEmail'>
 
@@ -19,28 +29,6 @@ const DEFAULT_RESPONSIBILITIES: WelcomeEmailProps['responsibilities'] = [
   { responsibility: 'Keep profile and account information current' },
 ]
 const FALLBACK_ORGANIZATION = 'Your organization'
-
-const COLORS = {
-  orange: '#fb8506',
-  blue: '#1d73bf',
-  deepBlue: '#1e3544',
-  coolOffWhite: '#ecf0ff',
-  warmOffWhite: '#fff9ec',
-  text: '#333333',
-  muted: '#6b7280',
-  border: '#e5e7eb',
-  white: '#ffffff',
-}
-
-const FONT_STACK = "'Atkinson Hyperlegible', Arial, Helvetica, sans-serif"
-const FONT_URL =
-  'https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap'
-const LOGO_PATH = '/email/styreiq-logo.png'
-const LOGO_WIDTH = 160
-const MAX_WIDTH = 640
-const FALLBACK_NAME = 'there'
-
-const paragraphStyle = `font-size: 16px; line-height: 1.6; color: ${COLORS.text}; margin: 0 0 16px;`
 
 const toParagraphs = (text: string) =>
   text

@@ -52,6 +52,8 @@ FROM_NAME='StyreIQ'
 NEXT_PUBLIC_NODE_ENV=development
 RESEND_API_KEY=your-resend-api-key
 LOCAL_EMAIL_TO_ADDRESS=your-email@domain.com
+DEMO_REQUEST_TO_ADDRESS=demo@styreiq.com
+DEMO_SCHEDULING_URL=https://calendly.com/styreiq/demo
 SMTP_HOST=smtp-relay.brevo.com
 SMTP_USER=your-smtp-user
 SMTP_PASS=your-smtp-password
@@ -161,6 +163,8 @@ docker run -p 3000:3000 --env-file .env styreiq
 | `NEXT_PUBLIC_NODE_ENV`   | Environment mode               | `development`                                             |
 | `RESEND_API_KEY`         | Resend API key for email       | `re_your-api-key-here`                                    |
 | `LOCAL_EMAIL_TO_ADDRESS` | Local email recipient          | `your-email@domain.com`                                   |
+| `DEMO_REQUEST_TO_ADDRESS` | StyreIQ inbox for demo requests | `demo@styreiq.com`                                       |
+| `DEMO_SCHEDULING_URL`    | Calendar link in the demo confirmation email | `https://calendly.com/styreiq/demo`         |
 | `SMTP_HOST`              | SMTP server host               | `smtp-relay.brevo.com`                                    |
 | `SMTP_USER`              | SMTP username                  | `your-smtp-user`                                          |
 | `SMTP_PASS`              | SMTP password                  | `your-smtp-password`                                      |
