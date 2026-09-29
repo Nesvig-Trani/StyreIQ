@@ -1,5 +1,5 @@
 ---
-status: approved
+status: validated
 ticket: GIQ-90
 sprint: none
 ---
@@ -102,3 +102,20 @@ Do not change the existing `catch` that returns 500 — out of scope (noted in t
    - Submit a name containing `<b>x</b>` → shows literally, not bold (escaping works).
    - `curl -X POST /api/users/request-demo -d '{"email":"bad"}'` → 400 with Zod issues, no email sent.
 4. Before merge: add the two new env vars in Vercel; replace placeholders with the real inbox and Calendly link when the user provides them.
+
+## Validation Results (Agent)
+
+2026-09-29 — commit `cc889ee`.
+
+- `tsc --noEmit`: exit 0.
+- `eslint` on all changed files: exit 0.
+- `next build` with the placeholder `DEMO_*` values: see the PR pre-flight note.
+- `pnpm type-check` / `pnpm lint` cannot run on the dev machine (Corepack pnpm 11 vs `engines` `^9 || ^10`); the local binaries were used instead.
+
+## Validation Results (Developer)
+
+2026-09-29 — the developer ran the manual checks in the Verification section locally and confirmed they pass: both emails arrive, the internal card shows the four fields with "Not provided" fallbacks, `View Lead` opens a `mailto:` to the requester, `Schedule Your Demo` opens `DEMO_SCHEDULING_URL`, HTML in the name renders as text.
+
+## Review Results (Developer)
+
+2026-09-29 — the developer reviewed the diff and approved it as is. Decisions recorded during planning stand: optional Role field, `mailto:` View Lead, fail the request on any email error, env placeholders until the PM provides the real inbox and Calendly link.
