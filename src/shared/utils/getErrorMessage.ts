@@ -18,6 +18,10 @@ const readMessage = (source: unknown): string | undefined => {
   const fromData = readMessage(source.data)
   if (fromData) return fromData
 
+  // fetch() rejects with a TypeError whose text is browser-specific ("Failed to fetch",
+  // "Load failed"…); callers' fallbacks read better than that.
+  if (source instanceof TypeError) return undefined
+
   if (typeof source.message === 'string' && source.message) return source.message
 
   return undefined
