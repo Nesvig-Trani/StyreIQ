@@ -25,8 +25,11 @@ export async function getAuthUser() {
   }
 }
 
-export async function verifyUser() {
-  const { user } = await getAuthUser()
+type AuthUser = Awaited<ReturnType<typeof getAuthUser>>['user']
+
+// Callers that already loaded the user pass it in to skip a second payload.auth().
+export async function verifyUser(authUser?: AuthUser) {
+  const user = authUser === undefined ? (await getAuthUser()).user : authUser
   const now = new Date()
   if (!user) {
     return null
