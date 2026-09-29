@@ -12,7 +12,7 @@ export const EMAIL_COLORS = {
   white: '#ffffff',
 }
 
-export const EMAIL_FONT_STACK = "'Atkinson Hyperlegible', Arial, Helvetica, sans-serif"
+export const EMAIL_FONT_STACK = "'Atkinson Hyperlegible', Tahoma, Verdana, sans-serif"
 export const EMAIL_FONT_URL =
   'https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap'
 export const EMAIL_LOGO_PATH = '/email/styreiq-logo.png'
