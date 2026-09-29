@@ -29,8 +29,8 @@ const showInvalidCredentialsToast = () =>
     >
       <p className="font-semibold text-red-800">Sign-in failed</p>
       <p className="mt-2 text-red-700">
-        We couldn&apos;t sign you in with those credentials. If you&apos;ve forgotten your
-        password, you can{' '}
+        We couldn&apos;t sign you in with those credentials. If you&apos;ve forgotten your password,
+        you can{' '}
         <Link
           href="/forgot-password"
           className="text-red-900 underline font-medium"
@@ -44,7 +44,8 @@ const showInvalidCredentialsToast = () =>
   ))
 
 export function useLogin(logoutReason?: LogoutReason) {
-  const logoutMessage = logoutReason ? LOGOUT_REASON_MESSAGES[logoutReason] : undefined
+  const [activeReason, setActiveReason] = useState(logoutReason)
+  const logoutMessage = activeReason ? LOGOUT_REASON_MESSAGES[activeReason] : undefined
 
   const [loginFields, setLoginFields] = useState({
     email: '',
@@ -58,6 +59,9 @@ export function useLogin(logoutReason?: LogoutReason) {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    // The banner explains the previous session end; a new attempt gets its own feedback.
+    setActiveReason(undefined)
+    window.history.replaceState(null, '', '/login')
 
     try {
       const res = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/users/login`, {
