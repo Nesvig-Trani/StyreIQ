@@ -14,10 +14,12 @@ import React, { useState } from 'react'
 export const RequestDemoModal: React.FC<{ trigger: React.ReactNode }> = ({ trigger }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const { formComponent, form } = useFormHelper(
     {
       schema: requestDemoSchema,
+      isLoading: isSubmitting,
       fields: [
         {
           label: 'Name',
@@ -45,23 +47,28 @@ export const RequestDemoModal: React.FC<{ trigger: React.ReactNode }> = ({ trigg
         },
       ],
       onSubmit: async (submitData) => {
-        const response = await fetch('/api/users/request-demo', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(submitData),
-        })
+        setIsSubmitting(true)
+        try {
+          const response = await fetch('/api/users/request-demo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(submitData),
+          })
 
-        if (!response.ok) {
-          throw new Error('Failed to send demo request')
+          if (!response.ok) {
+            throw new Error('Failed to send demo request')
+          }
+
+          setIsSubmitted(true)
+
+          setTimeout(() => {
+            setIsOpen(false)
+            setIsSubmitted(false)
+            form.reset()
+          }, 2000)
+        } finally {
+          setIsSubmitting(false)
         }
-
-        setIsSubmitted(true)
-
-        setTimeout(() => {
-          setIsOpen(false)
-          setIsSubmitted(false)
-          form.reset()
-        }, 2000)
       },
       onCancel: () => {
         setIsOpen(false)
