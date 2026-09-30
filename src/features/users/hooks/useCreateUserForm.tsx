@@ -8,6 +8,7 @@ import { isApiError } from '@/shared'
 import { createUser } from '@/sdk/users'
 import { USER_ALREADY_EXISTS } from '../constants/Errors'
 import { createUnitTree, UnitWithDepth } from '@/features/units'
+import { getAssignableRoles } from '../utils/assignableRoles'
 
 interface UserFormProps {
   authUserRole?: UserRolesEnum | null
@@ -44,12 +45,7 @@ function useCreateUserForm({ initialOrganizations, authUserRole, topOrgDepth }: 
   const passwordUpdatedAt = watch('passwordUpdatedAt')
   const tree = createUnitTree(organizations as UnitWithDepth[])
 
-  const allowedRoles =
-    authUserRole === UserRolesEnum.SuperAdmin
-      ? Object.values(UserRolesEnum)
-      : authUserRole === UserRolesEnum.UnitAdmin
-        ? [UserRolesEnum.UnitAdmin, UserRolesEnum.SocialMediaManager]
-        : [UserRolesEnum.CentralAdmin, UserRolesEnum.UnitAdmin, UserRolesEnum.SocialMediaManager]
+  const allowedRoles = getAssignableRoles(authUserRole)
   const allowedStatuses =
     authUserRole === UserRolesEnum.UnitAdmin ? [] : [UserStatusEnum.Active, UserStatusEnum.Inactive]
 

@@ -67,6 +67,9 @@ export const canUserPerformAction = (
   return ROLE_HIERARCHY[roleToCheck] >= ROLE_HIERARCHY[requiredRole]
 }
 
+export const isSuperAdmin = (user?: User | null): boolean =>
+  getEffectiveRoleFromUser(user) === UserRolesEnum.SuperAdmin
+
 export const canAssignRoles = (assignerRole: UserRolesEnum, roles: UserRolesEnum[]): boolean =>
   roles.every((role) => ROLE_HIERARCHY[role] <= ROLE_HIERARCHY[assignerRole])
 
