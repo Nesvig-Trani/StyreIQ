@@ -2,15 +2,15 @@ import { Payload } from 'payload'
 import { User } from '@/types/payload-types'
 import { UserRolesEnum } from '@/features/users'
 import { ComplianceTaskStatus, ComplianceTaskType } from '../schema'
-import { ComplianceEmailService } from './email-service'
+import { ComplianceEmailService, ComplianceEmailServiceOptions } from './email-service'
 
 export class ComplianceTaskGenerator {
   private payload: Payload
   private emailService: ComplianceEmailService
 
-  constructor(payload: Payload) {
+  constructor(payload: Payload, emailOptions: ComplianceEmailServiceOptions = {}) {
     this.payload = payload
-    this.emailService = new ComplianceEmailService(payload)
+    this.emailService = new ComplianceEmailService(payload, emailOptions)
   }
 
   async generateTasksForNewUserExceptRollCall(user: User): Promise<void> {

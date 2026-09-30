@@ -1,8 +1,16 @@
 import { Payload } from 'payload'
 import { ComplianceTask, User } from '@/types/payload-types'
+import { ScheduledEmailOptions } from '@/shared/utils/emailAdapter'
+
+export type ComplianceEmailServiceOptions = {
+  scheduledAt?: string
+}
 
 export class ComplianceEmailService {
-  constructor(private payload: Payload) {}
+  constructor(
+    private payload: Payload,
+    private options: ComplianceEmailServiceOptions = {},
+  ) {}
 
   async sendMultipleTrainingsEmail(tasks: ComplianceTask[], user: User): Promise<void> {
     const taskUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/compliance`
@@ -22,8 +30,9 @@ export class ComplianceEmailService {
       )
       .join('')
 
-    await this.payload.sendEmail({
+    const message: ScheduledEmailOptions = {
       to: user.email,
+      scheduledAt: this.options.scheduledAt,
       subject: `Action Required: Complete ${tasks.length} Required Training${tasks.length > 1 ? 's' : ''}`,
       html: `
       <html>
@@ -59,7 +68,9 @@ export class ComplianceEmailService {
         </body>
       </html>
     `,
-    })
+    }
+
+    await this.payload.sendEmail(message)
   }
 
   async sendTaskCreatedEmail(task: ComplianceTask, user: User): Promise<void> {
@@ -69,8 +80,9 @@ export class ComplianceEmailService {
       : `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/compliance/${this.getTaskRoute(task.type)}/${task.id}`
     const dueDate = new Date(task.dueDate).toLocaleDateString('en-US')
 
-    await this.payload.sendEmail({
+    const message: ScheduledEmailOptions = {
       to: user.email,
+      scheduledAt: this.options.scheduledAt,
       subject: `New Action Required: ${this.getTaskTitle(task.type)}`,
       html: `
       <html>
@@ -110,7 +122,9 @@ export class ComplianceEmailService {
         </body>
       </html>
     `,
-    })
+    }
+
+    await this.payload.sendEmail(message)
   }
 
   async sendFlagCreatorNotification(
