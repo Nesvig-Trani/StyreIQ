@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 import { AuditLogPlugin } from '@/features/audit-log/plugins'
-import { EmailAdapter } from '../../shared/utils/emailAdapter'
+import { resendScheduledAdapter } from '../../shared/utils/resendScheduledAdapter'
 import { Users } from '@/features/users/plugins/collections'
 import { OrganizationsPlugin } from '@/features/units/plugins'
 import { UsersPlugin } from '@/features/users/plugins'
@@ -95,7 +95,7 @@ export default buildConfig({
   ],
   cors: ['http://localhost:3000'],
   cookiePrefix: 'payload',
-  email: EmailAdapter(),
+  email: resendScheduledAdapter(),
   jobs: {
     access: {
       run: ({ req }: { req: import('payload').PayloadRequest }) => {

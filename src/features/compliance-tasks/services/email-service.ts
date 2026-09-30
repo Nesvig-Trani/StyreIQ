@@ -1,6 +1,6 @@
 import { Payload } from 'payload'
 import { ComplianceTask, User } from '@/types/payload-types'
-import { ScheduledEmailOptions } from '@/shared/utils/emailAdapter'
+import { ScheduledEmailOptions } from '@/shared/utils/resendScheduledAdapter'
 
 export type ComplianceEmailServiceOptions = {
   scheduledAt?: string
