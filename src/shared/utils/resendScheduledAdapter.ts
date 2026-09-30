@@ -3,8 +3,10 @@ import { env } from '@/config/env'
 
 const RESEND_SEND_EMAIL_URL = 'https://api.resend.com/emails'
 
-// Resend queues every send and does not keep the order between sends, so a caller that
-// needs one email to arrive after another must schedule the later one (ISO 8601 date).
+// Replaces @payloadcms/email-resend, which builds its request body from a fixed field list
+// and cannot forward Resend's `scheduled_at`. Resend queues every send and does not keep the
+// order between sends, so a caller that needs one email to arrive after another must schedule
+// the later one (ISO 8601 date).
 export type ScheduledEmailOptions = SendEmailOptions & {
   scheduledAt?: string
 }
@@ -27,9 +29,9 @@ type ResendSendEmailResponse = { id: string }
 
 type ResendErrorResponse = { statusCode?: number; name?: string; message?: string }
 
-export function EmailAdapter(): PayloadEmailAdapter<ResendSendEmailResponse> {
+export function resendScheduledAdapter(): PayloadEmailAdapter<ResendSendEmailResponse> {
   return () => ({
-    name: 'resend-rest',
+    name: 'resend-scheduled',
     defaultFromAddress: env.FROM_ADDRESS,
     defaultFromName: env.FROM_NAME,
     sendEmail: async (message) => {
