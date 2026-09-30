@@ -1,6 +1,5 @@
 import { CollectionConfig } from 'payload'
-import { UserRolesEnum } from '@/features/users/schemas'
-import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { isSuperAdmin } from '@/shared/utils/role-hierarchy'
 import { extractTenantId, superAdminOnlyAccess } from './helpers/access-control-helpers'
 import {
   createTenant,
@@ -22,7 +21,7 @@ export const Tenants: CollectionConfig = {
   access: {
     read: ({ req: { user } }) => {
       if (!user) return false
-      if (getEffectiveRoleFromUser(user) === UserRolesEnum.SuperAdmin) return true
+      if (isSuperAdmin(user)) return true
 
       const tenantId = extractTenantId(user)
       return tenantId ? { id: { equals: tenantId } } : false

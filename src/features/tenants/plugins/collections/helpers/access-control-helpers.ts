@@ -1,7 +1,7 @@
 import { SELECTED_TENANT_COOKIE_NAME } from '@/features/tenants/schemas'
 import { UserRolesEnum } from '@/features/users'
 import { getAccessibleOrgIdsForUserWithPayload } from '@/shared'
-import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import { getEffectiveRoleFromUser, isSuperAdmin } from '@/shared/utils/role-hierarchy'
 import { Tenant } from '@/types/payload-types'
 import {
   Access,
@@ -76,8 +76,7 @@ export function validateTenantAccess({
   error?: { message: string; status: number }
   userTenant?: number | null
 } {
-  const effectiveRole = getEffectiveRoleFromUser(req.user)
-  if (effectiveRole === UserRolesEnum.SuperAdmin) {
+  if (isSuperAdmin(req.user)) {
     return { valid: true }
   }
 
@@ -415,8 +414,7 @@ export const ownerUpdateAccess = (collectionSlug: CollectionSlug): Access => {
 
 export const immutableUpdateAccess: Access = async () => false
 
-export const superAdminOnlyAccess: Access = ({ req: { user } }) =>
-  getEffectiveRoleFromUser(user) === UserRolesEnum.SuperAdmin
+export const superAdminOnlyAccess: Access = ({ req: { user } }) => isSuperAdmin(user)
 
 export const superAdminOnlyDeleteAccess: Access = async ({ req }) => {
   const { user } = req

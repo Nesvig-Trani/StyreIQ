@@ -33,20 +33,16 @@ import {
   canAssignRoles,
   getEffectiveRoleFromUser,
   getHighestRole,
+  isSuperAdmin,
 } from '@/shared/utils/role-hierarchy'
 import { AccessControl } from '@/shared/utils/rbac'
 import { getAccessibleOrgIdsForUserWithPayload } from '@/shared/utils/organization-filter'
+import { hasSameValues } from '@/shared/utils/hasSameValues'
 import { randomBytes } from 'crypto'
 import {
   generateNewUserComplianceTasks,
   SKIP_COMPLIANCE_TASK_GENERATION,
 } from '@/features/compliance-tasks/services/generate-new-user-tasks'
-
-const hasSameValues = (a: (string | number)[], b: (string | number)[]) => {
-  const setA = new Set(a.map(String))
-  const setB = new Set(b.map(String))
-  return setA.size === setB.size && [...setA].every((value) => setB.has(value))
-}
 
 export const createUser: Endpoint = {
   path: '/',
@@ -339,7 +335,6 @@ export const updateUser: Endpoint = {
       }
 
       const isSelfUpdate = userExists.id === user.id
-      const isSuperAdmin = effectiveRole === UserRolesEnum.SuperAdmin
 
       if (effectiveRole === UserRolesEnum.SocialMediaManager && !isSelfUpdate) {
         return new Response(JSON.stringify({ error: 'Forbidden' }), {
@@ -359,7 +354,7 @@ export const updateUser: Endpoint = {
         (org) => (typeof org === 'object' ? org.id : org),
       )
 
-      if (isSelfUpdate && !isSuperAdmin) {
+      if (isSelfUpdate && !isSuperAdmin(user)) {
         const changesOwnRoles = !hasSameValues(userExists.roles ?? [], dataParsed.roles)
         const changesOwnUnits =
           dataParsed.organizations !== undefined &&

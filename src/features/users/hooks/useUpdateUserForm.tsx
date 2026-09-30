@@ -13,8 +13,8 @@ import { Organization } from '@/types/payload-types'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createUnitTree, UnitWithDepth } from '@/features/units'
 import { normalizeActiveRole, normalizeRoles } from '@/shared/utils/role-hierarchy'
-import { useMemo } from 'react'
 import { getErrorMessage } from '@/shared/utils/getErrorMessage'
+import { getAssignableRoles } from '../utils/assignableRoles'
 
 const UPDATE_USER_ERROR = 'We could not update this user. Please try again.'
 
@@ -24,24 +24,7 @@ function useUpdateUserForm({ organizations, id, data, authUserRole }: UpdateUser
   const returnTo = searchParams.get('returnTo') || `/dashboard/users`
   const tree = createUnitTree(organizations as UnitWithDepth[])
 
-  const allowedRoles = useMemo(() => {
-    switch (authUserRole) {
-      case UserRolesEnum.SuperAdmin:
-        return Object.values(UserRolesEnum)
-      case UserRolesEnum.CentralAdmin:
-        return [
-          UserRolesEnum.CentralAdmin,
-          UserRolesEnum.UnitAdmin,
-          UserRolesEnum.SocialMediaManager,
-        ]
-      case UserRolesEnum.UnitAdmin:
-        return [UserRolesEnum.UnitAdmin, UserRolesEnum.SocialMediaManager]
-      case UserRolesEnum.SocialMediaManager:
-        return [UserRolesEnum.SocialMediaManager]
-      default:
-        return []
-    }
-  }, [authUserRole])
+  const allowedRoles = getAssignableRoles(authUserRole)
 
   const { formComponent } = useFormHelper(
     {
