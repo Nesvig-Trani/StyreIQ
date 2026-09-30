@@ -41,6 +41,7 @@ import { hasSameValues } from '@/shared/utils/hasSameValues'
 import { randomBytes } from 'crypto'
 import {
   generateNewUserComplianceTasks,
+  getTaskEmailsScheduleAfterWelcome,
   SKIP_COMPLIANCE_TASK_GENERATION,
 } from '@/features/compliance-tasks/services/generate-new-user-tasks'
 
@@ -229,6 +230,7 @@ export const createUser: Endpoint = {
         payload: req.payload,
         user: createUser,
         actorId: user.id,
+        taskEmailsScheduledAt: emailSent ? getTaskEmailsScheduleAfterWelcome() : undefined,
       })
 
       // Log user creation event in audit log
