@@ -1,9 +1,13 @@
-name: Release main
+name: Release dev
 
 on:
   push:
     branches:
-      - main
+      - dev
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
 
 jobs:
   code-checks:
@@ -11,12 +15,12 @@ jobs:
     uses: ./.github/workflows/_code_checks.yaml
 
   migrate:
-    name: Run the migrations on the database
+    name: Run the migrations on the dev database
     uses: ./.github/workflows/_migrate.yaml
     with:
-      environment: Production
+      environment: Development
     secrets:
-      db_uri: ${{ secrets.DATABASE_URL }}
+      db_uri: ${{ secrets.DEV_POSTGRES_URL }}
       smtp_host: ${{ secrets.SMTP_HOST }}
       smtp_user: ${{ secrets.SMTP_USER }}
       smtp_pass: ${{ secrets.SMTP_PASS }}
@@ -25,7 +29,7 @@ jobs:
       next_public_base_url: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
       next_public_node_env: ${{ secrets.NEXT_PUBLIC_NODE_ENV }}
       payload_secret: ${{ secrets.PAYLOAD_SECRET }}
-      postgres_uri: ${{ secrets.POSTGRES_URL }}
+      postgres_uri: ${{ secrets.DEV_POSTGRES_URL }}
       resend_api_key: ${{ secrets.RESEND_API_KEY }}
       local_email_to_address: ${{ secrets.LOCAL_EMAIL_TO_ADDRESS }}
       demo_request_to_address: ${{ secrets.DEMO_REQUEST_TO_ADDRESS }}
