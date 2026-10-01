@@ -39,6 +39,15 @@ on:
       local_email_to_address:
         description: 'local_email_to_address env var'
         required: true
+      demo_request_to_address:
+        description: 'demo_request_to_address env var'
+        required: true
+      demo_scheduling_url:
+        description: 'demo_scheduling_url env var'
+        required: true
+      base_social_media_api_url:
+        description: 'base_social_media_api_url env var'
+        required: true
     inputs:
       environment:
         description: 'The deploy environment'
@@ -73,3 +82,6 @@ jobs:
           POSTGRES_URL: ${{ secrets.postgres_uri }}
           RESEND_API_KEY: ${{ secrets.resend_api_key }}
           LOCAL_EMAIL_TO_ADDRESS: ${{ secrets.local_email_to_address }}
+          DEMO_REQUEST_TO_ADDRESS: ${{ secrets.demo_request_to_address }}
+          DEMO_SCHEDULING_URL: ${{ secrets.demo_scheduling_url }}
+          BASE_SOCIAL_MEDIA_API_URL: ${{ secrets.base_social_media_api_url }}
