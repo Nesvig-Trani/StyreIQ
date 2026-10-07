@@ -175,6 +175,7 @@ export function useUpdateSocialMedia({
             value: selectedOrganizationId || '',
           },
           size: 'half',
+          required: false,
         },
         // Ownership & Contact - Row 5
         {
