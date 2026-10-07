@@ -291,7 +291,7 @@ export const patchSocialMedia: Endpoint = {
         data: {
           ...data,
           primaryAdmin: Number(data.primaryAdmin),
-          backupAdmin: data.backupAdmin ? Number(data.backupAdmin) : undefined,
+          backupAdmin: data.backupAdmin ? Number(data.backupAdmin) : null,
           organization: Number(data.organization),
           status: SocialMediaStatusEnum.PendingApproval,
           platform: data.platform as PlatformEnum,
