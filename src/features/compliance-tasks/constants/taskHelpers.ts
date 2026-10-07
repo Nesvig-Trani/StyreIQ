@@ -1,5 +1,5 @@
 import { ComplianceTask } from '@/types/payload-types'
-import { ComplianceTaskType } from '../schema'
+import { ComplianceTaskStatus, ComplianceTaskType } from '../schema'
 
 export function getTaskTypeLabel(type: string): string {
   const labels: Record<string, string> = {
@@ -29,6 +29,20 @@ export function getActionUrlForTask(task: ComplianceTask): string {
 
   const taskType = taskTypeMap[task.type]
   return `/dashboard/compliance/${taskType}/${task.id}`
+}
+
+export function isTaskPastDue(status: string): boolean {
+  return status === ComplianceTaskStatus.OVERDUE || status === ComplianceTaskStatus.ESCALATED
+}
+
+export function getTaskStatusLabel(status: string): string {
+  const labels: Record<string, string> = {
+    [ComplianceTaskStatus.PENDING]: 'Pending',
+    [ComplianceTaskStatus.OVERDUE]: 'Overdue',
+    [ComplianceTaskStatus.ESCALATED]: 'Escalated',
+    [ComplianceTaskStatus.COMPLETED]: 'Completed',
+  }
+  return labels[status] || status
 }
 
 export function getTaskStatusColor(status: string): 'default' | 'destructive' | 'secondary' {

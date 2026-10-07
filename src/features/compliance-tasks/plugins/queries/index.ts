@@ -10,7 +10,13 @@ export const getComplianceTasksForUser = async (userId: number) => {
 
   const where: Where = {
     assignedUser: { equals: userId },
-    status: { in: [ComplianceTaskStatus.PENDING, ComplianceTaskStatus.OVERDUE] },
+    status: {
+      in: [
+        ComplianceTaskStatus.PENDING,
+        ComplianceTaskStatus.OVERDUE,
+        ComplianceTaskStatus.ESCALATED,
+      ],
+    },
   }
 
   const tasks = await payload.find({

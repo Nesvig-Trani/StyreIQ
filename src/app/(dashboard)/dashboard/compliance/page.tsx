@@ -8,6 +8,8 @@ import {
   getTaskTypeLabel,
   getActionUrlForTask,
   getTaskStatusColor,
+  getTaskStatusLabel,
+  isTaskPastDue,
 } from '@/features/compliance-tasks/constants/taskHelpers'
 import Link from 'next/link'
 import { Clock, AlertTriangle, CheckCircle, Info } from 'lucide-react'
@@ -63,7 +65,7 @@ export default async function ComplianceTasksPage() {
 
   const tasks = await getComplianceTasksForUser(user.id)
 
-  const overdueTasks = tasks.docs.filter((t) => t.status === 'OVERDUE')
+  const overdueTasks = tasks.docs.filter((t) => isTaskPastDue(t.status))
   const pendingTasks = tasks.docs.filter((t) => t.status === 'PENDING')
 
   return (
@@ -110,7 +112,7 @@ export default async function ComplianceTasksPage() {
           ) : (
             <div className="space-y-4">
               {tasks.docs.map((task: ComplianceTask) => {
-                const isOverdue = task.status === 'OVERDUE'
+                const isOverdue = isTaskPastDue(task.status)
                 const dueDate = new Date(task.dueDate)
                 const now = new Date()
                 const daysUntilDue = Math.ceil(
@@ -133,7 +135,7 @@ export default async function ComplianceTasksPage() {
                             )}
                             <h2 className="font-semibold text-lg">{getTaskTypeLabel(task.type)}</h2>
                             <Badge variant={getTaskStatusColor(task.status)}>
-                              {task.status === 'OVERDUE' ? 'Overdue' : 'Pending'}
+                              {getTaskStatusLabel(task.status)}
                             </Badge>
                           </div>
 
