@@ -6,7 +6,10 @@ import {
 import { getAuthUser } from '@/features/auth/utils/getAuthUser'
 import { UserRolesEnum } from '@/shared/constants/user-roles'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
+import { getAccessibleOrgIdsForUserWithPayload } from '@/shared/utils/organization-filter'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
+import type { User } from '@/types/payload-types'
+import type { Payload } from 'payload'
 import { Where } from 'payload'
 
 export const getAllUnits = async () => {
@@ -68,6 +71,39 @@ export const getAllUnits = async () => {
   }
 }
 
+const getUserOrgsAndDirectChildrenIds = async (
+  payload: Payload,
+  userOrganizations: User['organizations'],
+) => {
+  const userOrgIds = await payload.db.drizzle.query.organization.findMany({
+    where: (orgs, { inArray }) =>
+      inArray(
+        orgs.id,
+        userOrganizations!.map((org) =>
+          typeof org === 'object' && org !== null && 'id' in org ? org.id : org,
+        ),
+      ),
+  })
+
+  const organizations = await payload.db.drizzle.query.organization.findMany({
+    where: (orgs, { or, inArray }) =>
+      or(
+        inArray(
+          // Get organizations that are directly assigned to the user
+          orgs.id,
+          userOrgIds.map((org) => org.id),
+        ),
+        inArray(
+          // Get organizations that are children of the user's orgs
+          orgs.parentOrg,
+          userOrgIds.map((org) => org.id),
+        ),
+      ),
+  })
+
+  return organizations.map((org) => org.id)
+}
+
 export const getUnitsWithFilter = async ({
   status,
   type,
@@ -126,40 +162,20 @@ export const getUnitsWithFilter = async ({
     })
   }
 
-  // First, get the user's organizations
-  const userOrgIds = await payload.db.drizzle.query.organization.findMany({
-    where: (orgs, { inArray }) =>
-      inArray(
-        orgs.id,
-        user.organizations!.map((org) =>
-          typeof org === 'object' && org !== null && 'id' in org ? org.id : org,
-        ),
-      ),
-  })
-
-  // Get all organizations that are either user's orgs or their children
-  const organizations = await payload.db.drizzle.query.organization.findMany({
-    where: (orgs, { or, inArray }) =>
-      or(
-        inArray(
-          // Get organizations that are directly assigned to the user
-          orgs.id,
-          userOrgIds.map((org) => org.id),
-        ),
-        inArray(
-          // Get organizations that are children of the user's orgs
-          orgs.parentOrg,
-          userOrgIds.map((org) => org.id),
-        ),
-      ),
-  })
+  const visibleOrgIds =
+    effectiveRole === UserRolesEnum.CentralAdmin
+      ? // Same rule as the organization collection's read access: a central admin owns the whole
+        // tenant. The one-level lookup used for the other roles hid units nested deeper, so they
+        // could be neither selected nor disabled from the tree (GIQ-106).
+        await getAccessibleOrgIdsForUserWithPayload(user, payload)
+      : await getUserOrgsAndDirectChildrenIds(payload, user.organizations)
 
   // Create a where clause that includes all user's orgs and their children
   const where: Where = {
     and: [
       {
         id: {
-          in: organizations.map((org) => org.id),
+          in: visibleOrgIds,
         },
       },
       {
