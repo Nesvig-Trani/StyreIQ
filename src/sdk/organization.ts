@@ -89,7 +89,8 @@ export const disableUnit = async (id: number) => {
   })
 
   if (!response.ok) {
-    throw new Error('Failed to disable unit')
+    const body = await response.json().catch(() => null)
+    throw new Error(body?.error ?? 'Failed to disable unit')
   }
 
   return response.json()
