@@ -1,6 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { buildUser } from '@/shared/__tests__/fixtures'
+import { UserRolesEnum } from '@/shared/constants/user-roles'
 import { useAssignableUsers } from '../../hooks/useAssignableUsers'
 
 const mocks = vi.hoisted(() => ({
@@ -40,6 +41,20 @@ describe('useAssignableUsers', () => {
       statuses: ['active', 'pending_activation'],
     })
     expect(result.current.isLoading).toBe(false)
+  })
+
+  it('should query the roles it is given instead of the default ones', async () => {
+    mocks.getUsersByOrganizationAndRole.mockResolvedValue({ docs: [daniela] })
+
+    renderHook(() =>
+      useAssignableUsers('100', [UserRolesEnum.CentralAdmin, UserRolesEnum.UnitAdmin]),
+    )
+
+    await waitFor(() =>
+      expect(mocks.getUsersByOrganizationAndRole).toHaveBeenCalledWith(
+        expect.objectContaining({ roles: [UserRolesEnum.CentralAdmin, UserRolesEnum.UnitAdmin] }),
+      ),
+    )
   })
 
   it('should reload the users when the unit changes', async () => {
