@@ -189,6 +189,7 @@ describe('createFlag endpoint', () => {
     it('should store the trimmed account details and the selected unit', async () => {
       const { req, payload } = setup(validLostAccountBody)
       payload.findByID.mockResolvedValue(buildOrganization({ id: 100, tenant: 10 }))
+      payload.find.mockResolvedValue({ docs: [buildUser({ id: 7 })], totalDocs: 1 })
 
       const response = await createFlag.handler(req)
 
@@ -244,10 +245,45 @@ describe('createFlag endpoint', () => {
       payload.find
         .mockResolvedValueOnce({ docs: [], totalDocs: 0 })
         .mockResolvedValueOnce({ docs: [buildOrganization({ id: 100 })], totalDocs: 1 })
+        .mockResolvedValueOnce({ docs: [buildUser({ id: 7 })], totalDocs: 1 })
 
       const response = await createFlag.handler(req)
 
       expect(response.status).toBe(201)
+    })
+
+    it('should only accept an assignee who is an assignable member of the selected unit', async () => {
+      const { req, payload } = setup(validLostAccountBody)
+      payload.findByID.mockResolvedValue(buildOrganization({ id: 100, tenant: 10 }))
+      payload.find.mockResolvedValue({ docs: [buildUser({ id: 7 })], totalDocs: 1 })
+
+      await createFlag.handler(req)
+
+      expect(payload.find).toHaveBeenCalledWith(
+        expect.objectContaining({
+          collection: 'users',
+          where: {
+            id: { equals: 7 },
+            'organizations.id': { equals: 100 },
+            roles: { in: ['central_admin', 'super_admin', 'unit_admin', 'social_media_manager'] },
+            status: { in: ['active', 'pending_activation'] },
+          },
+        }),
+      )
+    })
+
+    it('should return 400 and create nothing when the assignee is not in the selected unit', async () => {
+      const { req, payload } = setup(validLostAccountBody)
+      payload.findByID.mockResolvedValue(buildOrganization({ id: 100, tenant: 10 }))
+      payload.find.mockResolvedValue({ docs: [], totalDocs: 0 })
+
+      const response = await createFlag.handler(req)
+
+      expect(response.status).toBe(400)
+      expect(await readJson(response)).toEqual({
+        error: 'The assigned user does not belong to the selected unit',
+      })
+      expect(payload.create).not.toHaveBeenCalled()
     })
 
     it('should reject a javascript: account url', async () => {

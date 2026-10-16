@@ -25,6 +25,8 @@ import {
 } from '@/features/tenants/plugins/collections/helpers/access-control-helpers'
 import { getEffectiveRoleFromUser } from '@/shared/utils/role-hierarchy'
 import { FlagTaskGenerator } from '@/features/compliance-tasks/services/flag-task-generator'
+import { ASSIGNABLE_USER_STATUSES } from '@/features/social-medias/constants/assignable-users'
+import { FLAG_ASSIGNABLE_USER_ROLES } from '../../constants/assignableFlagUsers'
 
 export const createFlag: Endpoint = {
   path: '/',
@@ -91,6 +93,22 @@ export const createFlag: Endpoint = {
             if (!accessibleOrgIds.includes(organizationId)) {
               throw new EndpointError('You do not have access to this unit', 403)
             }
+          }
+
+          // Same rule the form uses to fill "Assigned To", so a crafted request can't bypass it.
+          const { totalDocs: assigneeMatches } = await req.payload.find({
+            collection: 'users',
+            where: {
+              id: { equals: Number(dataParsed.assignedTo) },
+              'organizations.id': { equals: organizationId },
+              roles: { in: FLAG_ASSIGNABLE_USER_ROLES },
+              status: { in: ASSIGNABLE_USER_STATUSES },
+            },
+            limit: 1,
+            depth: 0,
+          })
+          if (assigneeMatches === 0) {
+            throw new EndpointError('The assigned user does not belong to the selected unit', 400)
           }
 
           organizations = [organizationId]
