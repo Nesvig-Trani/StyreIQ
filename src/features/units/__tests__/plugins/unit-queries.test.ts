@@ -112,6 +112,28 @@ describe('getUnitsWithFilter', () => {
     )
   })
 
+  it('should show central admins every unit of their tenant, however deeply nested (GIQ-106)', async () => {
+    payload.auth.mockResolvedValue({ user: centralAdmin })
+    // accessible organizations lookup, then the units listing itself
+    payload.find
+      .mockResolvedValueOnce(
+        pageOf([
+          buildOrganization({ id: 100 }),
+          buildOrganization({ id: 101, parentOrg: 100 }),
+          buildOrganization({ id: 102, parentOrg: 101 }),
+        ]),
+      )
+      .mockResolvedValueOnce(pageOf([]))
+    await getUnitsWithFilter({})
+    expect(payload.find).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        overrideAccess: false,
+        where: { and: [{ id: { in: [100, 101, 102] } }, disabledFilter] },
+      }),
+    )
+    expect(drizzleOrganizations).not.toHaveBeenCalled()
+  })
+
   it('should limit other roles to their organizations and the direct children', async () => {
     payload.auth.mockResolvedValue({
       user: buildUser({
