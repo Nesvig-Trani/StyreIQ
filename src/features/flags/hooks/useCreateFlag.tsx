@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createFlagSchema, FlagTypeEnum } from '../schemas'
 import { createFlag } from '@/sdk/flags'
@@ -8,6 +8,8 @@ import { useFormHelper } from '@/shared'
 import { affectedEntityOptions } from '../constants/affectedEntityOptions'
 import { flagTypeLabels } from '../constants/flagTypeLabels'
 import { platformOptions } from '@/features/social-medias/constants/platformOptions'
+import { useAssignableUsers } from '@/features/social-medias/hooks/useAssignableUsers'
+import { FLAG_ASSIGNABLE_USER_ROLES } from '../constants/assignableFlagUsers'
 
 const ENTITY_FLAG_TYPES = [
   FlagTypeEnum.SECURITY_CONCERN,
@@ -33,6 +35,28 @@ export function useCreateFlag({
   selectedTenantId,
 }: CreateFlagFormProps) {
   const router = useRouter()
+
+  const [isLostAccountFlag, setIsLostAccountFlag] = useState(false)
+  const [selectedOrganizationId, setSelectedOrganizationId] = useState<string | null>(null)
+  const unitScopedAssignees = isLostAccountFlag && selectedOrganizationId !== null
+  const { users: unitUsers, isLoading: isLoadingUnitUsers } = useAssignableUsers(
+    unitScopedAssignees ? selectedOrganizationId : null,
+    FLAG_ASSIGNABLE_USER_ROLES,
+  )
+
+  const assignedToOptions = useMemo(
+    () =>
+      (unitScopedAssignees ? unitUsers : users).map((user) => ({
+        value: user.id.toString(),
+        label: user.name || user.email,
+      })),
+    [unitScopedAssignees, unitUsers, users],
+  )
+
+  const unitUsersMessage = isLoadingUnitUsers
+    ? 'Loading users...'
+    : 'The selected unit has no users to assign'
+  const assignedToEmptyMessage = unitScopedAssignees ? unitUsersMessage : undefined
 
   const { formComponent, form } = useFormHelper(
     {
@@ -154,6 +178,8 @@ export function useCreateFlag({
             label: org.name,
           })),
           placeholder: 'Select the unit that owns the account',
+          emptyOptionsMessage:
+            'No units available for your account. Ask a Central Admin to check your unit assignment.',
           size: 'half',
           dependsOn: {
             field: 'flagType',
@@ -164,10 +190,8 @@ export function useCreateFlag({
           label: 'Assigned To',
           name: 'assignedTo',
           type: 'select',
-          options: users.map((user) => ({
-            value: user.id.toString(),
-            label: user.name || user.email,
-          })),
+          options: assignedToOptions,
+          emptyOptionsMessage: assignedToEmptyMessage,
           placeholder: 'Select person responsible for reviewing this flag',
           size: 'half',
           required: true,
@@ -231,8 +255,14 @@ export function useCreateFlag({
       if (name === 'affectedEntityType') {
         form.setValue('affectedEntity', '')
       }
+      if (name === 'organization') {
+        setSelectedOrganizationId(value.organization || null)
+        // The previous assignee may not belong to the newly selected unit
+        form.setValue('assignedTo', '')
+      }
       if (name !== 'flagType') return
 
+      setIsLostAccountFlag(value.flagType === FlagTypeEnum.LOST_INACCESSIBLE_ACCOUNT)
       if (value.flagType === FlagTypeEnum.LOST_INACCESSIBLE_ACCOUNT) {
         form.setValue('affectedEntityType', undefined)
         form.setValue('affectedEntity', '')

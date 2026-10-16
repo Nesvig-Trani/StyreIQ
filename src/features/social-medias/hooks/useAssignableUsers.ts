@@ -3,9 +3,13 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { getUsersByOrganizationAndRole } from '@/features/users/plugins/queries'
 import type { User } from '@/types/payload-types'
+import type { UserRolesEnum } from '@/shared/constants/user-roles'
 import { ASSIGNABLE_USER_ROLES, ASSIGNABLE_USER_STATUSES } from '../constants/assignable-users'
 
-export function useAssignableUsers(organizationId: string | null) {
+export function useAssignableUsers(
+  organizationId: string | null,
+  roles: UserRolesEnum[] = ASSIGNABLE_USER_ROLES,
+) {
   const [users, setUsers] = useState<User[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const latestRequestId = useRef(0)
@@ -22,7 +26,7 @@ export function useAssignableUsers(organizationId: string | null) {
     try {
       const result = await getUsersByOrganizationAndRole({
         organizationId: Number(organizationId),
-        roles: ASSIGNABLE_USER_ROLES,
+        roles,
         statuses: ASSIGNABLE_USER_STATUSES,
       })
       // Ignore responses that arrive after the unit changed again
@@ -34,7 +38,7 @@ export function useAssignableUsers(organizationId: string | null) {
     } finally {
       if (requestId === latestRequestId.current) setIsLoading(false)
     }
-  }, [organizationId])
+  }, [organizationId, roles])
 
   useEffect(() => {
     void loadUsers()

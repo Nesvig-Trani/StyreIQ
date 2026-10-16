@@ -6,6 +6,11 @@ import { CreateFlagForm } from '../../forms/create-flag-form'
 import { buildOrganization, buildUser } from '@/shared/__tests__/fixtures'
 import { buildSocialMedia, jsonResponse } from '../fixtures'
 
+const unitUsers = vi.hoisted(() => ({ get: vi.fn() }))
+vi.mock('@/features/users/plugins/queries', () => ({
+  getUsersByOrganizationAndRole: unitUsers.get,
+}))
+
 const navigation = vi.hoisted(() => ({ push: vi.fn() }))
 
 vi.mock('next/navigation', () => ({
@@ -26,6 +31,7 @@ beforeAll(() => {
 beforeEach(() => {
   vi.stubGlobal('fetch', fetchMock)
   fetchMock.mockReset()
+  unitUsers.get.mockReset()
   navigation.push.mockClear()
   vi.mocked(toast.success).mockClear()
 })
@@ -36,12 +42,14 @@ const users = [
   buildUser({ id: 7, name: 'Valentina Restrepo' }),
 ]
 
-const renderForm = () =>
+const renderForm = (
+  organizations = [buildOrganization({ id: 100, name: 'Dirección de Comunicaciones' })],
+) =>
   render(
     <CreateFlagForm
       users={users}
       socialMedias={[buildSocialMedia({ id: 31 })]}
-      organizations={[buildOrganization({ id: 100, name: 'Dirección de Comunicaciones' })]}
+      organizations={organizations}
       selectedTenantId={10}
     />,
   )
@@ -144,5 +152,78 @@ describe('CreateFlagForm', () => {
     })
     await waitFor(() => expect(navigation.push).toHaveBeenCalledWith('/dashboard/flags'))
     expect(toast.success).toHaveBeenCalledWith('Risk flag created successfully')
+  })
+
+  describe('assignees of a lost account flag', () => {
+    const unitMember = buildUser({ id: 99, name: 'Marta Unit Member' })
+
+    it('should list only the members of the selected unit', async () => {
+      unitUsers.get.mockResolvedValue({ docs: [unitMember] })
+      const user = userEvent.setup()
+      renderForm()
+
+      await choose(user, /Flag Type/, 'Lost / Inaccessible Account')
+      await choose(user, /Organizational Unit/, 'Dirección de Comunicaciones')
+      await user.click(screen.getByRole('combobox', { name: /Assigned To/ }))
+
+      const options = (await screen.findAllByRole('option')).map((o) => o.textContent)
+      expect(options).toEqual(['Marta Unit Member'])
+      expect(unitUsers.get).toHaveBeenCalledWith(
+        expect.objectContaining({
+          organizationId: 100,
+          roles: expect.arrayContaining(['central_admin', 'unit_admin']),
+        }),
+      )
+    })
+
+    it('should clear the chosen assignee when the unit changes', async () => {
+      unitUsers.get.mockResolvedValue({ docs: [unitMember] })
+      const user = userEvent.setup()
+      renderForm([
+        buildOrganization({ id: 100, name: 'Dirección de Comunicaciones' }),
+        buildOrganization({ id: 101, name: 'Admisiones' }),
+      ])
+
+      await choose(user, /Flag Type/, 'Lost / Inaccessible Account')
+      await choose(user, /Organizational Unit/, 'Dirección de Comunicaciones')
+      await choose(user, /Assigned To/, 'Marta Unit Member')
+      expect(screen.getByRole('combobox', { name: /Assigned To/ })).toHaveTextContent(
+        'Marta Unit Member',
+      )
+
+      await choose(user, /Organizational Unit/, 'Admisiones')
+
+      await waitFor(() =>
+        expect(screen.getByRole('combobox', { name: /Assigned To/ })).not.toHaveTextContent(
+          'Marta Unit Member',
+        ),
+      )
+    })
+
+    it('should keep the full user list for other flag types', async () => {
+      const user = userEvent.setup()
+      renderForm()
+
+      await choose(user, /Flag Type/, 'Other')
+      await user.click(screen.getByRole('combobox', { name: /Assigned To/ }))
+
+      const options = (await screen.findAllByRole('option')).map((o) => o.textContent)
+      expect(options).toEqual(['Camilo Ortiz', 'Valentina Restrepo'])
+      expect(unitUsers.get).not.toHaveBeenCalled()
+    })
+
+    it('should say so when the selected unit has no users', async () => {
+      unitUsers.get.mockResolvedValue({ docs: [] })
+      const user = userEvent.setup()
+      renderForm()
+
+      await choose(user, /Flag Type/, 'Lost / Inaccessible Account')
+      await choose(user, /Organizational Unit/, 'Dirección de Comunicaciones')
+      await user.click(screen.getByRole('combobox', { name: /Assigned To/ }))
+
+      expect(
+        await screen.findByText('The selected unit has no users to assign'),
+      ).toBeInTheDocument()
+    })
   })
 })

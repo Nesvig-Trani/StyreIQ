@@ -55,7 +55,8 @@ export const getAllUnits = async () => {
       user: userForQueries,
     })
     return organizations
-  } catch {
+  } catch (error) {
+    console.error('getAllUnits failed, returning no units', error)
     return {
       docs: [],
       hasNextPage: false,

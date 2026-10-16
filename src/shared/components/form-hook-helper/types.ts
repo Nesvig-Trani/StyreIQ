@@ -46,6 +46,8 @@ export type FieldData<TFieldValues extends FieldValues = FieldValues> = {
   size?: FieldDataSize
   /** Options for 'select' and 'checkbox' inputs */
   options?: FieldDataOption[]
+  /** Text shown in a 'select' when `options` is empty (default: 'No options available') */
+  emptyOptionsMessage?: string
   /** Content to render in place of an input when `type` === 'custom' */
   content?: ReactNode
   /** Props for date picker component (only for 'date' inputs) */
