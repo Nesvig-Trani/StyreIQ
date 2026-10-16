@@ -34,8 +34,10 @@ const renderForm = (authUserRole: UserRolesEnum = UserRolesEnum.UnitAdmin) =>
 
 const fillAndSubmit = async () => {
   const user = userEvent.setup()
-  await user.type(screen.getByLabelText(/Email/), 'laura.pineda@universidad-andina.edu')
-  await user.type(screen.getByLabelText(/^Name/), 'Laura Pineda')
+  await user.click(screen.getByLabelText(/Email/))
+  await user.paste('laura.pineda@universidad-andina.edu')
+  await user.click(screen.getByLabelText(/^Name/))
+  await user.paste('Laura Pineda')
 
   await user.click(screen.getByRole('button', { name: /Roles/ }))
   await user.click(await screen.findByText('Social Media Manager'))
