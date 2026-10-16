@@ -119,15 +119,16 @@ describe('CreateFlagForm', () => {
     renderForm()
 
     await choose(user, /Flag Type/, 'Lost / Inaccessible Account')
-    await user.type(
-      await screen.findByLabelText(/Account URL/),
-      'https://instagram.com/uandina_artes',
-    )
+    await user.click(await screen.findByLabelText(/Account URL/))
+    await user.paste('https://instagram.com/uandina_artes')
     await choose(user, /Platform/, 'Instagram')
-    await user.type(screen.getByLabelText(/Access Issue/), 'El administrador anterior se fue')
+    await user.click(screen.getByLabelText(/Access Issue/))
+    await user.paste('El administrador anterior se fue')
     await choose(user, /Assigned To/, 'Valentina Restrepo')
-    await user.type(screen.getByLabelText(/Risk Description/), 'Cuenta inaccesible')
-    await user.type(screen.getByLabelText(/Suggested Action/), 'Solicitar recuperación')
+    await user.click(screen.getByLabelText(/Risk Description/))
+    await user.paste('Cuenta inaccesible')
+    await user.click(screen.getByLabelText(/Suggested Action/))
+    await user.paste('Solicitar recuperación')
     await user.click(screen.getByRole('button', { name: /Due Date|Select due date/ }))
     await user.click(await screen.findByRole('gridcell', { name: /15/ }))
     await user.click(screen.getByRole('button', { name: /submit|save|create/i }))
