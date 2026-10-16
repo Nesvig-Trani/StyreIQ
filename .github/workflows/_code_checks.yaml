@@ -21,3 +21,5 @@ jobs:
         run: yarn syncpack list-mismatches
       - name: Run checks
         run: yarn ci:checks
+      - name: Run unit tests with coverage
+        run: yarn test:coverage
