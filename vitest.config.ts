@@ -7,7 +7,8 @@ export default defineConfig({
     alias: { '@': path.resolve(__dirname, 'src') },
   },
   test: {
-    environment: 'node',
+    environment: 'jsdom',
+    setupFiles: ['./vitest.setup.ts'],
     // Feature barrels import src/config/env.ts, which validates env at load time.
     // Static fake values keep tests deterministic and independent of any local or CI .env.
     env: {
