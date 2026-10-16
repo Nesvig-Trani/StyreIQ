@@ -69,11 +69,10 @@ describe('CreateUnitForm', () => {
 
   it('should create the unit for the selected tenant and go back to the list', async () => {
     renderForm()
-    await userEvent.type(screen.getByLabelText(/Name/), 'Dirección de Comunicaciones')
-    await userEvent.type(
-      screen.getByLabelText(/Website URL/),
-      'https://comunicaciones.universidad-andina.edu',
-    )
+    await userEvent.click(screen.getByLabelText(/Name/))
+    await userEvent.paste('Dirección de Comunicaciones')
+    await userEvent.click(screen.getByLabelText(/Website URL/))
+    await userEvent.paste('https://comunicaciones.universidad-andina.edu')
     await userEvent.click(screen.getByRole('button', { name: /submit|create|save/i }))
 
     await vi.waitFor(() => expect(push).toHaveBeenCalledWith('/dashboard/units'))
@@ -98,11 +97,10 @@ describe('CreateUnitForm', () => {
         : jsonResponse(500, { error: 'boom' }),
     )
     renderForm()
-    await userEvent.type(screen.getByLabelText(/Name/), 'Dirección de Comunicaciones')
-    await userEvent.type(
-      screen.getByLabelText(/Website URL/),
-      'https://comunicaciones.universidad-andina.edu',
-    )
+    await userEvent.click(screen.getByLabelText(/Name/))
+    await userEvent.paste('Dirección de Comunicaciones')
+    await userEvent.click(screen.getByLabelText(/Website URL/))
+    await userEvent.paste('https://comunicaciones.universidad-andina.edu')
     await userEvent.click(screen.getByRole('button', { name: /submit|create|save/i }))
     await vi.waitFor(() => expect(toast.error).toHaveBeenCalled())
     expect(vi.mocked(toast.error).mock.calls[0][0]).toContain('Failed to create unit')

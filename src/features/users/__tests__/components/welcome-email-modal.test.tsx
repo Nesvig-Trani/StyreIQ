@@ -56,7 +56,8 @@ describe('WelcomeEmailModal', () => {
     const { user, dialog } = await openModal()
     const textarea = within(dialog).getByLabelText('Instructions for New Users')
     await user.clear(textarea)
-    await user.type(textarea, 'Complete la capacitación de accesibilidad')
+    await user.click(textarea)
+    await user.paste('Complete la capacitación de accesibilidad')
     expect(textarea).toHaveValue('Complete la capacitación de accesibilidad')
     expect(
       within(dialog).getAllByText('Complete la capacitación de accesibilidad').length,
@@ -67,7 +68,9 @@ describe('WelcomeEmailModal', () => {
     const { user, dialog } = await openModal()
     await user.click(within(dialog).getByRole('tab', { name: 'Responsibilities' }))
     const input = within(dialog).getByPlaceholderText('Add new responsibility...')
-    await user.type(input, '  Responder solicitudes de gobernanza  {Enter}')
+    await user.click(input)
+    await user.paste('  Responder solicitudes de gobernanza  ')
+    await user.keyboard('{Enter}')
 
     expect(
       within(dialog).getAllByText('Responder solicitudes de gobernanza').length,
@@ -84,7 +87,9 @@ describe('WelcomeEmailModal', () => {
   it('should ignore blank responsibilities', async () => {
     const { user, dialog } = await openModal()
     await user.click(within(dialog).getByRole('tab', { name: 'Responsibilities' }))
-    await user.type(within(dialog).getByPlaceholderText('Add new responsibility...'), '   {Enter}')
+    await user.click(within(dialog).getByPlaceholderText('Add new responsibility...'))
+    await user.paste('   ')
+    await user.keyboard('{Enter}')
     expect(within(dialog).getAllByText('Publicar solo contenido aprobado').length).toBeGreaterThan(
       0,
     )
@@ -95,18 +100,16 @@ describe('WelcomeEmailModal', () => {
     const { user, dialog } = await openModal()
     await user.click(within(dialog).getByRole('tab', { name: 'Policies' }))
 
-    await user.type(
-      within(dialog).getByPlaceholderText('Policy/Training title...'),
-      'Guía de marca',
-    )
-    await user.type(
-      within(dialog).getAllByPlaceholderText('URL...')[0],
-      'https://universidad-andina.edu/marca{Enter}',
-    )
+    await user.click(within(dialog).getByPlaceholderText('Policy/Training title...'))
+    await user.paste('Guía de marca')
+    await user.click(within(dialog).getAllByPlaceholderText('URL...')[0])
+    await user.paste('https://universidad-andina.edu/marca')
+    await user.keyboard('{Enter}')
     expect(within(dialog).getAllByText('Guía de marca').length).toBeGreaterThan(0)
 
     const titleInput = within(dialog).getByDisplayValue('Política de redes')
-    await user.type(titleInput, ' 2026')
+    await user.click(titleInput)
+    await user.paste(' 2026')
     expect(within(dialog).getByDisplayValue('Política de redes 2026')).toBeInTheDocument()
 
     const container = titleInput.closest('div')
@@ -151,7 +154,8 @@ describe('WelcomeEmailModal', () => {
   it('should discard unsaved edits when cancelled', async () => {
     const { user, dialog } = await openModal()
     const textarea = within(dialog).getByLabelText('Instructions for New Users')
-    await user.type(textarea, ' Texto descartado')
+    await user.click(textarea)
+    await user.paste(' Texto descartado')
     await user.click(within(dialog).getByRole('button', { name: 'Cancel' }))
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
 

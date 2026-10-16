@@ -59,7 +59,8 @@ describe('CreateRoleRequestForm', () => {
     const user = userEvent.setup()
     render(<CreateRoleRequestForm currentUser={currentUser} organizations={organizations} />)
 
-    await user.type(screen.getByLabelText(/Justification/), 'Lo necesito')
+    await user.click(screen.getByLabelText(/Justification/))
+    await user.paste('Lo necesito')
     await user.click(screen.getByRole('button', { name: /submit|save|create|request/i }))
 
     expect(
@@ -74,10 +75,8 @@ describe('CreateRoleRequestForm', () => {
 
     await user.click(screen.getByRole('combobox', { name: /Unit/ }))
     await user.click(await screen.findByText('Dirección de Comunicaciones'))
-    await user.type(
-      screen.getByLabelText(/Justification/),
-      'Necesito administrar la Dirección de Comunicaciones durante el semestre.',
-    )
+    await user.click(screen.getByLabelText(/Justification/))
+    await user.paste('Necesito administrar la Dirección de Comunicaciones durante el semestre.')
     await user.click(screen.getByRole('button', { name: /submit|save|create|request/i }))
 
     await waitFor(() =>
@@ -95,10 +94,8 @@ describe('CreateRoleRequestForm', () => {
 
     await user.click(screen.getByRole('combobox', { name: /Unit/ }))
     await user.click(await screen.findByText('Facultad de Ingeniería'))
-    await user.type(
-      screen.getByLabelText(/Justification/),
-      'Necesito administrar la Facultad de Ingeniería durante el semestre.',
-    )
+    await user.click(screen.getByLabelText(/Justification/))
+    await user.paste('Necesito administrar la Facultad de Ingeniería durante el semestre.')
     await user.click(screen.getByRole('button', { name: /submit|save|create|request/i }))
 
     await waitFor(() => expect(toast.error).toHaveBeenCalledWith('You already have this role'))
