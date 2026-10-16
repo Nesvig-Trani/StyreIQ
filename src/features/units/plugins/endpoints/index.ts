@@ -303,11 +303,20 @@ export const disableUnit: Endpoint = {
       }
       const user = req.user
       const effectiveRole = getEffectiveRoleFromUser(user)
-      if (!user || effectiveRole !== UserRolesEnum.SuperAdmin) {
+      if (!user) {
         throw new EndpointError('Unauthorized', 401)
+      }
+      if (
+        effectiveRole !== UserRolesEnum.SuperAdmin &&
+        effectiveRole !== UserRolesEnum.CentralAdmin
+      ) {
+        throw new EndpointError('You do not have permission to disable units.', 403)
       }
       const { id } = req.routeParams
       const unitId = typeof id === 'string' ? parseInt(id) : Number(id)
+      if (Number.isNaN(unitId)) {
+        throw new EndpointError('Organization not found', 404)
+      }
       const targetUnit = await req.payload.findByID({
         collection: 'organization',
         id: unitId,
@@ -329,9 +338,32 @@ export const disableUnit: Endpoint = {
         throw new EndpointError(tenantCheck.error!.message, tenantCheck.error!.status)
       }
 
+      // Disabling a parent would leave its children visible but orphaned in the hierarchy.
+      const activeChildren = await req.payload.find({
+        collection: 'organization',
+        where: {
+          and: [
+            { parentOrg: { equals: unitId } },
+            { or: [{ disabled: { equals: false } }, { disabled: { equals: null } }] },
+          ],
+        },
+        select: { name: true },
+        depth: 0,
+        limit: 0,
+        overrideAccess: true,
+      })
+
+      if (activeChildren.docs.length > 0) {
+        const childNames = activeChildren.docs.map((child) => child.name).join(', ')
+        throw new EndpointError(
+          `Cannot disable this unit while it has active sub-units: ${childNames}. Disable them first.`,
+          409,
+        )
+      }
+
       const disabledOrg = await req.payload.update({
         collection: 'organization',
-        where: { id: { equals: id } },
+        where: { id: { equals: unitId } },
         data: {
           disabled: true,
         },
