@@ -1,11 +1,12 @@
 import { vi } from 'vitest'
-import type { Payload, PayloadRequest } from 'payload'
+import type { Payload, PayloadRequest, SanitizedCollectionConfig } from 'payload'
 import type { User } from '@/types/payload-types'
 
 /**
  * Test doubles for the Payload boundary (database + auth), so endpoint, hook and access
- * logic can run for real. Payload's `Payload` and `PayloadRequest` types are huge and
- * cannot be built literally, so the single unavoidable cast lives here and nowhere else.
+ * logic can run for real. Payload's `Payload`, `PayloadRequest` and
+ * `SanitizedCollectionConfig` types are huge and cannot be built literally, so the
+ * unavoidable casts (approved by the developer for GIQ-109) live here and nowhere else.
  */
 const EMPTY_PAGE = {
   docs: [],
@@ -41,6 +42,7 @@ type FakeRequestOptions = {
   query?: Record<string, unknown>
   routeParams?: Record<string, string>
   searchParams?: Record<string, string>
+  context?: Record<string, unknown>
 }
 
 export const createFakeRequest = ({
@@ -50,6 +52,7 @@ export const createFakeRequest = ({
   query = {},
   routeParams = {},
   searchParams = {},
+  context = {},
 }: FakeRequestOptions = {}) => {
   const url = new URL('https://app.styreiq.test/api')
   Object.entries(searchParams).forEach(([key, value]) => url.searchParams.set(key, value))
@@ -63,8 +66,20 @@ export const createFakeRequest = ({
     url: url.toString(),
     headers: new Headers(),
     cookies: new Map<string, string>(),
-    context: {},
+    context,
     t: (key: string) => key,
   }
   return { fake, payload, asRequest: (): PayloadRequest => fake as unknown as PayloadRequest }
+}
+
+/**
+ * Collection hooks receive the sanitized collection config, of which they only read `slug`
+ * (and occasionally `labels`). Pass any extra fields a hook under test needs via `extra`.
+ */
+export const createFakeCollection = (
+  slug: string,
+  extra: Record<string, unknown> = {},
+): SanitizedCollectionConfig => {
+  const fake = { slug, labels: { singular: slug, plural: slug }, fields: [], ...extra }
+  return fake as unknown as SanitizedCollectionConfig
 }
