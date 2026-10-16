@@ -89,6 +89,7 @@ describe('CreateFlagForm', () => {
     expect(await screen.findByLabelText(/Account URL/)).toBeInTheDocument()
     expect(screen.getByLabelText(/Access Issue/)).toBeInTheDocument()
     expect(screen.queryByRole('combobox', { name: /Affected Entity Type/ })).not.toBeInTheDocument()
+    expect(screen.queryByLabelText(/Risk Description/)).not.toBeInTheDocument()
   })
 
   it('should ask for the affected entity type after choosing an entity flag type', async () => {
@@ -101,6 +102,7 @@ describe('CreateFlagForm', () => {
       await screen.findByRole('combobox', { name: /Affected Entity Type/ }),
     ).toBeInTheDocument()
     expect(screen.queryByLabelText(/Account URL/)).not.toBeInTheDocument()
+    expect(screen.getByLabelText(/Risk Description/)).toBeInTheDocument()
   })
 
   it('should not submit and show validation messages when required data is missing', async () => {
@@ -133,8 +135,6 @@ describe('CreateFlagForm', () => {
     await user.click(screen.getByLabelText(/Access Issue/))
     await user.paste('El administrador anterior se fue')
     await choose(user, /Assigned To/, 'Valentina Restrepo')
-    await user.click(screen.getByLabelText(/Risk Description/))
-    await user.paste('Cuenta inaccesible')
     await user.click(screen.getByLabelText(/Suggested Action/))
     await user.paste('Solicitar recuperación')
     await user.click(screen.getByRole('button', { name: /Due Date|Select due date/ }))
