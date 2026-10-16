@@ -53,13 +53,14 @@ describe('CreateTenantForm', () => {
 
   it('should create the tenant and return to the tenants list', { timeout: 15000 }, async () => {
     withProvider(<CreateTenantForm />)
-    await userEvent.type(screen.getByLabelText(/Organization Name/), 'Universidad Andina')
-    await userEvent.type(screen.getByLabelText(/Domain/), 'universidad-andina.edu')
-    await userEvent.type(screen.getByLabelText(/Admin Contact Name/), 'Camila Ortega')
-    await userEvent.type(
-      screen.getByLabelText(/Admin Contact Email/),
-      'camila.ortega@universidad-andina.edu',
-    )
+    await userEvent.click(screen.getByLabelText(/Organization Name/))
+    await userEvent.paste('Universidad Andina')
+    await userEvent.click(screen.getByLabelText(/Domain/))
+    await userEvent.paste('universidad-andina.edu')
+    await userEvent.click(screen.getByLabelText(/Admin Contact Name/))
+    await userEvent.paste('Camila Ortega')
+    await userEvent.click(screen.getByLabelText(/Admin Contact Email/))
+    await userEvent.paste('camila.ortega@universidad-andina.edu')
     await userEvent.click(screen.getByRole('button', { name: /submit|create|save/i }))
 
     await vi.waitFor(() => expect(push).toHaveBeenCalledWith('/dashboard/tenants'))
@@ -94,7 +95,8 @@ describe('UpdateTenantForm', () => {
     withProvider(<UpdateTenantForm tenantId={10} initialData={tenant} />)
     const name = screen.getByLabelText(/Organization Name/)
     await userEvent.clear(name)
-    await userEvent.type(name, 'Universidad Andina de Colombia')
+    await userEvent.click(name)
+    await userEvent.paste('Universidad Andina de Colombia')
     await userEvent.click(screen.getByRole('button', { name: 'Update Tenant' }))
 
     await vi.waitFor(() => expect(push).toHaveBeenCalledWith('/dashboard/tenants'))
@@ -138,7 +140,8 @@ describe('UpdateTenantSettingsForm', () => {
     render(<UpdateTenantSettingsForm tenant={buildTenant({ id: 10 })} />)
     const cadence = screen.getByRole('textbox', { name: /Password Update Cadence/ })
     await userEvent.clear(cadence)
-    await userEvent.type(cadence, '45')
+    await userEvent.click(cadence)
+    await userEvent.paste('45')
     await userEvent.click(screen.getByRole('button', { name: 'Reset to Current' }))
     expect(toast.info).toHaveBeenCalledWith('Changes discarded')
     expect(cadence).toHaveValue('180')

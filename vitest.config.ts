@@ -1,6 +1,10 @@
 import path from 'node:path'
 import { defineConfig } from 'vitest/config'
 
+// Date-based logic (due dates, day counts, formatted dates) must not depend on the machine's
+// timezone, so tests behave the same on CI (UTC) and on developers' laptops.
+process.env.TZ = 'UTC'
+
 export default defineConfig({
   esbuild: { jsx: 'automatic' },
   resolve: {
