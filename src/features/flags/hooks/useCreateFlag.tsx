@@ -210,6 +210,10 @@ export function useCreateFlag({
           type: 'textarea',
           placeholder: 'Describe the risk or issue',
           size: 'half',
+          dependsOn: {
+            field: 'flagType',
+            value: ENTITY_FLAG_TYPES,
+          },
         },
         {
           label: 'Suggested Action',

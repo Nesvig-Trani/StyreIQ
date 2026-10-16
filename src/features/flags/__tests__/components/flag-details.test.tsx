@@ -78,6 +78,20 @@ describe('FlagDetails', () => {
 
     expect(dialog).toHaveTextContent('https://instagram.com/uandina_artes (Instagram)')
     expect(dialog).toHaveTextContent('El administrador anterior ya no trabaja en la universidad')
+    expect(dialog).not.toHaveTextContent('Risk Description')
+  })
+
+  it('should keep showing the description of lost account flags that already have one', async () => {
+    const dialog = await openDetails(
+      buildFlag({
+        flagType: 'lost_inaccessible_account',
+        description: 'Descripción anterior',
+        organizations: [],
+      }),
+    )
+
+    expect(dialog).toHaveTextContent('Risk Description')
+    expect(dialog).toHaveTextContent('Descripción anterior')
   })
 
   it('should offer to view and edit an affected user keeping the current filters', async () => {
