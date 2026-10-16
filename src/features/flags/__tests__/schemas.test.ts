@@ -57,6 +57,13 @@ describe('createFlagSchema', () => {
     expect(createFlagSchema.safeParse(lostAccountFlag).success).toBe(true)
   })
 
+  it('should accept a lost account flag without a risk description', () => {
+    const { description: _description, ...withoutDescription } = lostAccountFlag
+
+    expect(createFlagSchema.safeParse(withoutDescription).success).toBe(true)
+    expect(createFlagSchema.safeParse({ ...lostAccountFlag, description: '' }).success).toBe(true)
+  })
+
   it('should require url, platform and access issue for lost accounts', () => {
     expect(
       issuesOf({
