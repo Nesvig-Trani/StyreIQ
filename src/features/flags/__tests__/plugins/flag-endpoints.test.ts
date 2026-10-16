@@ -204,6 +204,20 @@ describe('createFlag endpoint', () => {
       expect(flagCall.data.affectedEntity).toBeUndefined()
     })
 
+    it('should create a lost account flag without a risk description', async () => {
+      const { description: _description, ...bodyWithoutDescription } = validLostAccountBody
+      const { req, payload } = setup(bodyWithoutDescription)
+      payload.findByID.mockResolvedValue(buildOrganization({ id: 100, tenant: 10 }))
+      payload.find.mockResolvedValue({ docs: [buildUser({ id: 7 })], totalDocs: 1 })
+
+      const response = await createFlag.handler(req)
+
+      expect(response.status).toBe(201)
+      const flagCall = payload.create.mock.calls.find(([arg]) => arg.collection === 'flags')?.[0]
+      expect(flagCall.data.description).toBeUndefined()
+      expect(flagCall.data.accountUrl).toBe('https://instagram.com/uandina_artes')
+    })
+
     it('should return 404 when the selected unit does not exist', async () => {
       const { req, payload } = setup(validLostAccountBody)
       payload.findByID.mockResolvedValue(null)
