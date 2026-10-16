@@ -119,8 +119,8 @@ export const useUnitHierarchy = ({
       setIsDisableModalOpen(false)
       setSelectedOrg(null)
       router.refresh()
-    } catch {
-      toast.error('Failed to disable organization')
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to disable organization')
     }
   }
 
