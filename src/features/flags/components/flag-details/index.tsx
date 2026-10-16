@@ -161,10 +161,12 @@ export function FlagDetails({
               <p className="text-sm text-muted-foreground">{flag.accessIssue}</p>
             </div>
           )}
-          <div>
-            <h4 className="font-semibold mb-2">Risk Description</h4>
-            <p className="text-sm text-muted-foreground">{flag.description}</p>
-          </div>
+          {flag.description && (
+            <div>
+              <h4 className="font-semibold mb-2">Risk Description</h4>
+              <p className="text-sm text-muted-foreground">{flag.description}</p>
+            </div>
+          )}
           {flag.suggestedAction && (
             <div>
               <h4 className="font-semibold mb-2">Suggested Action</h4>
