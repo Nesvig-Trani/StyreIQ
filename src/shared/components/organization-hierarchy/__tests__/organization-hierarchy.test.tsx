@@ -198,7 +198,7 @@ describe('UnitHierarchy', () => {
     await user.click(screen.getByRole('button', { name: 'Disable' }))
     await user.click(await screen.findByRole('button', { name: 'Disable Anyway' }))
 
-    await waitFor(() => expect(toast.error).toHaveBeenCalledWith('Failed to disable organization'))
+    await waitFor(() => expect(toast.error).toHaveBeenCalledWith('Failed to disable unit'))
   })
 
   it('should push the pagination state to the URL', async () => {
