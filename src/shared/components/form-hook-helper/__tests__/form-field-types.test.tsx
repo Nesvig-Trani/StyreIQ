@@ -203,6 +203,27 @@ describe('form field types', () => {
     expect(await screen.findByText('No options available')).toBeInTheDocument()
   })
 
+  it('should show a custom message when a select has no options', async () => {
+    const user = userEvent.setup()
+    render(
+      <Harness
+        fields={[
+          {
+            name: 'channel',
+            label: 'Channel',
+            type: 'select',
+            options: [],
+            emptyOptionsMessage: 'No units available for your account.',
+          },
+        ]}
+      />,
+    )
+    await user.click(screen.getByRole('combobox', { name: /Channel/ }))
+
+    expect(await screen.findByText('No units available for your account.')).toBeInTheDocument()
+    expect(screen.queryByText('No options available')).not.toBeInTheDocument()
+  })
+
   it('should render nothing for a hidden select', () => {
     render(
       <Harness fields={[{ name: 'channel', label: 'Channel', type: 'select', hidden: true }]} />,

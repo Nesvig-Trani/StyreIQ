@@ -77,6 +77,18 @@ describe('getAllUnits', () => {
     const result = await getAllUnits()
     expect(result.totalDocs).toBe(0)
   })
+
+  it('should log the error instead of failing silently when the lookup fails', async () => {
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+    const failure = new Error('db down')
+    payload.auth.mockResolvedValue({ user: centralAdmin })
+    payload.find.mockRejectedValue(failure)
+
+    await getAllUnits()
+
+    expect(consoleError).toHaveBeenCalledWith(expect.stringContaining('getAllUnits'), failure)
+    consoleError.mockRestore()
+  })
 })
 
 describe('getUnitsWithFilter', () => {
