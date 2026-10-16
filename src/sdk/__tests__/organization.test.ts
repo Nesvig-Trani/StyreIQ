@@ -3,7 +3,7 @@ import { createUnit, disableUnit, getUnitById, updateUnit } from '../organizatio
 import { UnitTypeEnum } from '@/features/units/schemas'
 import { createFakePayload } from '@/shared/__tests__/payload-fakes'
 import { buildOrganization } from '@/shared/__tests__/fixtures'
-import { BASE_URL, jsonResponse, setupFetchMock } from './sdk-fetch'
+import { BASE_URL, htmlResponse, jsonResponse, setupFetchMock } from './sdk-fetch'
 
 const fakePayload = createFakePayload()
 vi.mock('@/shared/utils/getPayloadContext', () => ({
@@ -98,6 +98,20 @@ describe('disableUnit', () => {
 
   it('should throw when the unit cannot be disabled', async () => {
     fetchMock.mockResolvedValue(jsonResponse(403, {}))
+    await expect(disableUnit(100)).rejects.toThrow('Failed to disable unit')
+  })
+
+  it('should surface the reason given by the server (GIQ-106)', async () => {
+    fetchMock.mockResolvedValue(
+      jsonResponse(409, { error: 'Cannot disable this unit while it has active sub-units: A.' }),
+    )
+    await expect(disableUnit(100)).rejects.toThrow(
+      'Cannot disable this unit while it has active sub-units: A.',
+    )
+  })
+
+  it('should fall back to a generic message when the error body is not JSON (GIQ-106)', async () => {
+    fetchMock.mockResolvedValue(htmlResponse(502))
     await expect(disableUnit(100)).rejects.toThrow('Failed to disable unit')
   })
 })
