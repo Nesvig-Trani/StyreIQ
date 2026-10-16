@@ -260,7 +260,22 @@ describe('useUnitHierarchy disabling', () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('{}', { status: 500 })))
     const { result } = await selectBiblioteca()
     await act(() => result.current.handleConfirmDisable())
-    expect(toast.error).toHaveBeenCalledWith('Failed to disable organization')
+    expect(toast.error).toHaveBeenCalledWith('Failed to disable unit')
     expect(refresh).not.toHaveBeenCalled()
+  })
+
+  it('should show the reason given by the server and keep the unit selected (GIQ-106)', async () => {
+    const reason = 'Cannot disable this unit while it has active sub-units: Sala de Lectura.'
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(new Response(JSON.stringify({ error: reason }), { status: 409 })),
+    )
+    const { result } = await selectBiblioteca()
+    act(() => result.current.setIsDisableModalOpen(true))
+    await act(() => result.current.handleConfirmDisable())
+    expect(toast.error).toHaveBeenCalledWith(reason)
+    expect(refresh).not.toHaveBeenCalled()
+    expect(result.current.isDisableModalOpen).toBe(true)
+    expect(result.current.selectedOrg).not.toBeNull()
   })
 })

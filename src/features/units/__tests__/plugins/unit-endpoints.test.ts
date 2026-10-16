@@ -265,9 +265,29 @@ describe('disableUnit endpoint', () => {
     expect(response.status).toBe(404)
   })
 
-  it('should return 401 for anyone but super admins', async () => {
+  it('should return 401 for anonymous requests', async () => {
     expect((await disable(null, undefined, '200')).status).toBe(401)
-    expect((await disable(centralAdmin, undefined, '200')).status).toBe(401)
+  })
+
+  it('should return 403 for roles that cannot disable units', async () => {
+    const socialMediaManager = buildUser({ id: 4, roles: ['social_media_manager'], tenant: 10 })
+    const payload = createFakePayload()
+    for (const user of [unitAdmin, socialMediaManager]) {
+      const response = await disable(user, payload, '200')
+      expect(response.status).toBe(403)
+      expect(await response.json()).toEqual({
+        error: 'You do not have permission to disable units.',
+      })
+    }
+    expect(payload.findByID).not.toHaveBeenCalled()
+    expect(payload.update).not.toHaveBeenCalled()
+  })
+
+  it('should return 404 for a non numeric id', async () => {
+    const payload = createFakePayload()
+    const response = await disable(superAdmin, payload, 'abc')
+    expect(response.status).toBe(404)
+    expect(payload.findByID).not.toHaveBeenCalled()
   })
 
   it('should return 404 when the unit does not exist', async () => {
@@ -285,9 +305,64 @@ describe('disableUnit endpoint', () => {
     expect(payload.findByID).toHaveBeenCalledWith({ collection: 'organization', id: 200 })
     expect(payload.update).toHaveBeenCalledWith({
       collection: 'organization',
-      where: { id: { equals: '200' } },
+      where: { id: { equals: 200 } },
       data: { disabled: true },
     })
+  })
+
+  it('should let a central admin disable a unit of their own tenant (GIQ-106)', async () => {
+    const payload = createFakePayload()
+    payload.findByID.mockResolvedValue(buildOrganization({ id: 200, tenant: 10 }))
+    payload.update.mockResolvedValue({ docs: [{ id: 200, disabled: true }] })
+    const response = await disable(centralAdmin, payload, '200')
+    expect(response.status).toBe(200)
+    expect(payload.update).toHaveBeenCalledWith({
+      collection: 'organization',
+      where: { id: { equals: 200 } },
+      data: { disabled: true },
+    })
+  })
+
+  it('should return 403 when a central admin targets a unit of another tenant (GIQ-106)', async () => {
+    const payload = createFakePayload()
+    payload.findByID.mockResolvedValue(buildOrganization({ id: 200, tenant: 11 }))
+    const response = await disable(centralAdmin, payload, '200')
+    expect(response.status).toBe(403)
+    expect(await response.json()).toEqual({ error: 'Cannot access unit from different tenant' })
+    expect(payload.update).not.toHaveBeenCalled()
+  })
+
+  it('should refuse to disable a unit that still has active sub-units (GIQ-106)', async () => {
+    const payload = createFakePayload()
+    payload.findByID.mockResolvedValue(buildOrganization({ id: 200, tenant: 10 }))
+    payload.find.mockResolvedValue({
+      docs: [{ name: 'Oficina de Prensa' }, { name: 'Archivo Histórico' }],
+    })
+    const response = await disable(centralAdmin, payload, '200')
+    expect(response.status).toBe(409)
+    expect(await response.json()).toEqual({
+      error:
+        'Cannot disable this unit while it has active sub-units: Oficina de Prensa, Archivo Histórico. Disable them first.',
+    })
+    expect(payload.update).not.toHaveBeenCalled()
+  })
+
+  it('should only look at sub-units that are not already disabled (GIQ-106)', async () => {
+    const payload = createFakePayload()
+    payload.findByID.mockResolvedValue(buildOrganization({ id: 200, tenant: 10 }))
+    payload.update.mockResolvedValue({ docs: [{ id: 200, disabled: true }] })
+    await disable(superAdmin, payload, '200')
+    expect(payload.find).toHaveBeenCalledWith(
+      expect.objectContaining({
+        collection: 'organization',
+        where: {
+          and: [
+            { parentOrg: { equals: 200 } },
+            { or: [{ disabled: { equals: false } }, { disabled: { equals: null } }] },
+          ],
+        },
+      }),
+    )
   })
 
   it('should return 500 for unexpected failures', async () => {
