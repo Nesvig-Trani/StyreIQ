@@ -82,7 +82,7 @@ export const SelectInputHelper = <TFieldValues extends FieldValues>({
                     ))
                   ) : (
                     <div className="text-muted-foreground px-4 py-2 text-sm text-center">
-                      No options available
+                      {fieldData.emptyOptionsMessage ?? 'No options available'}
                     </div>
                   )}
                   <SelectScrollDownButton className="flex items-center justify-center">
