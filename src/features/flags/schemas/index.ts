@@ -75,7 +75,7 @@ export const createFlagSchema = z
     organization: z.string().optional(),
     status: FlagStatus.optional(),
     source: z.string().optional(),
-    description: z.string(),
+    description: z.string().optional(),
     suggestedAction: z.string(),
     tenant: z.number().nullable().optional(),
     assignedTo: z.string().min(1, 'Assigned To is required'),
