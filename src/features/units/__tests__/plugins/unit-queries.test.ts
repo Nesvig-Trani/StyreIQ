@@ -134,6 +134,58 @@ describe('getUnitsWithFilter', () => {
     expect(drizzleOrganizations).not.toHaveBeenCalled()
   })
 
+  it('should keep the status and type filters for central admins (GIQ-106)', async () => {
+    payload.auth.mockResolvedValue({ user: centralAdmin })
+    payload.find
+      .mockResolvedValueOnce(pageOf([buildOrganization({ id: 100 })]))
+      .mockResolvedValueOnce(pageOf([]))
+    await getUnitsWithFilter({ status: 'inactive', type: 'faculty' })
+    expect(payload.find).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        where: {
+          and: [
+            { id: { in: [100] } },
+            disabledFilter,
+            { status: { equals: 'inactive' } },
+            { type: { equals: 'faculty' } },
+          ],
+        },
+      }),
+    )
+  })
+
+  it('should look up the units assigned to the user and the ones whose parent is assigned', async () => {
+    payload.auth.mockResolvedValue({
+      user: buildUser({
+        roles: ['unit_admin'],
+        tenant: 10,
+        organizations: [buildOrganization({ id: 100 }), 200],
+      }),
+    })
+    const conditions: unknown[] = []
+    const operators = {
+      inArray: (column: string, values: number[]) => ({ column, values }),
+      or: (...parts: unknown[]) => ({ or: parts }),
+    }
+    const columns = { id: 'id', parentOrg: 'parentOrg' }
+    drizzleOrganizations.mockImplementation(
+      async ({ where }: { where: (c: typeof columns, o: typeof operators) => unknown }) => {
+        conditions.push(where(columns, operators))
+        return [{ id: 100 }, { id: 200 }]
+      },
+    )
+    await getUnitsWithFilter({})
+    expect(conditions).toEqual([
+      { column: 'id', values: [100, 200] },
+      {
+        or: [
+          { column: 'id', values: [100, 200] },
+          { column: 'parentOrg', values: [100, 200] },
+        ],
+      },
+    ])
+  })
+
   it('should limit other roles to their organizations and the direct children', async () => {
     payload.auth.mockResolvedValue({
       user: buildUser({
