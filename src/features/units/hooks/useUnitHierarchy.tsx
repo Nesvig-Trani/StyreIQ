@@ -23,6 +23,12 @@ import { typeConfig } from '../constants/typeConfig'
 import { UNASSIGNED_ADMIN_LABEL } from '../constants/adminAssignment'
 import { disableUnit } from '@/sdk/organization'
 import { toast } from 'sonner'
+import { getErrorMessage } from '@/shared/utils/getErrorMessage'
+
+// Sonner's default (4s) is easy to miss while the dialog closes and the tree re-renders.
+const DISABLE_TOAST_DURATION = 6000
+const DISABLE_UNIT_FALLBACK_ERROR =
+  'We could not disable this unit. Check your connection and try again.'
 
 export const useUnitHierarchy = ({
   originalData,
@@ -115,12 +121,14 @@ export const useUnitHierarchy = ({
     try {
       if (!selectedOrg?.id) return
       await disableUnit(selectedOrg.id)
-      toast.success('Organization disabled successfully')
+      toast.success('Unit disabled successfully', { duration: DISABLE_TOAST_DURATION })
       setIsDisableModalOpen(false)
       setSelectedOrg(null)
       router.refresh()
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Failed to disable organization')
+      toast.error(getErrorMessage(error, DISABLE_UNIT_FALLBACK_ERROR), {
+        duration: DISABLE_TOAST_DURATION,
+      })
     }
   }
 
