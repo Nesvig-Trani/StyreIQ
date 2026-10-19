@@ -169,6 +169,17 @@ describe('UnitHierarchy', () => {
     expect(screen.queryByRole('button', { name: 'Disable' })).not.toBeInTheDocument()
   })
 
+  it('should keep editing but hide disabling from unit admins (GIQ-106)', async () => {
+    const user = userEvent.setup()
+    renderHierarchy({
+      user: buildUser({ roles: ['unit_admin'], organizations: [university] }),
+    })
+    await user.click(screen.getByRole('button', { name: /^Universidad Andina/ }))
+    await screen.findByRole('region', { name: 'Universidad Andina' })
+    expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Disable' })).not.toBeInTheDocument()
+  })
+
   it('should disable a unit after confirmation and refresh the page', async () => {
     const user = userEvent.setup()
     const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({}) })
@@ -181,7 +192,7 @@ describe('UnitHierarchy', () => {
     await user.click(await screen.findByRole('button', { name: 'Disable Anyway' }))
 
     await waitFor(() =>
-      expect(toast.success).toHaveBeenCalledWith('Organization disabled successfully'),
+      expect(toast.success).toHaveBeenCalledWith('Unit disabled successfully', { duration: 6000 }),
     )
     expect(fetchMock.mock.calls[0][0]).toContain('/api/organization/disable/1')
     expect(router.refresh).toHaveBeenCalled()
@@ -198,7 +209,12 @@ describe('UnitHierarchy', () => {
     await user.click(screen.getByRole('button', { name: 'Disable' }))
     await user.click(await screen.findByRole('button', { name: 'Disable Anyway' }))
 
-    await waitFor(() => expect(toast.error).toHaveBeenCalledWith('Failed to disable unit'))
+    await waitFor(() =>
+      expect(toast.error).toHaveBeenCalledWith(
+        'We could not disable this unit. Please try again.',
+        { duration: 6000 },
+      ),
+    )
   })
 
   it('should push the pagination state to the URL', async () => {

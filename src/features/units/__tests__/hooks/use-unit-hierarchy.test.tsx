@@ -250,7 +250,7 @@ describe('useUnitHierarchy disabling', () => {
     expect(String(fetchMock.mock.calls[0][0])).toBe(
       'https://app.styreiq.test/api/organization/disable/3',
     )
-    expect(toast.success).toHaveBeenCalledWith('Organization disabled successfully')
+    expect(toast.success).toHaveBeenCalledWith('Unit disabled successfully', { duration: 6000 })
     expect(refresh).toHaveBeenCalled()
     expect(result.current.isDisableModalOpen).toBe(false)
     expect(result.current.selectedOrg).toBeNull()
@@ -260,7 +260,9 @@ describe('useUnitHierarchy disabling', () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('{}', { status: 500 })))
     const { result } = await selectBiblioteca()
     await act(() => result.current.handleConfirmDisable())
-    expect(toast.error).toHaveBeenCalledWith('Failed to disable unit')
+    expect(toast.error).toHaveBeenCalledWith('We could not disable this unit. Please try again.', {
+      duration: 6000,
+    })
     expect(refresh).not.toHaveBeenCalled()
   })
 
@@ -273,9 +275,21 @@ describe('useUnitHierarchy disabling', () => {
     const { result } = await selectBiblioteca()
     act(() => result.current.setIsDisableModalOpen(true))
     await act(() => result.current.handleConfirmDisable())
-    expect(toast.error).toHaveBeenCalledWith(reason)
+    expect(toast.error).toHaveBeenCalledWith(reason, { duration: 6000 })
     expect(refresh).not.toHaveBeenCalled()
     expect(result.current.isDisableModalOpen).toBe(true)
     expect(result.current.selectedOrg).not.toBeNull()
+  })
+
+  it('should not show the raw browser error when the network fails (GIQ-106)', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new TypeError('Failed to fetch')))
+    const { result } = await selectBiblioteca()
+    act(() => result.current.setIsDisableModalOpen(true))
+    await act(() => result.current.handleConfirmDisable())
+    expect(toast.error).toHaveBeenCalledWith(
+      'We could not disable this unit. Check your connection and try again.',
+      { duration: 6000 },
+    )
+    expect(result.current.isDisableModalOpen).toBe(true)
   })
 })

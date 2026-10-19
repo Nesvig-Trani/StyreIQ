@@ -98,7 +98,14 @@ describe('disableUnit', () => {
 
   it('should throw when the unit cannot be disabled', async () => {
     fetchMock.mockResolvedValue(jsonResponse(403, {}))
-    await expect(disableUnit(100)).rejects.toThrow('Failed to disable unit')
+    await expect(disableUnit(100)).rejects.toThrow(
+      'We could not disable this unit. Please try again.',
+    )
+  })
+
+  it('should tell the user their session expired on a 401 (GIQ-106)', async () => {
+    fetchMock.mockResolvedValue(jsonResponse(401, { error: 'Unauthorized' }))
+    await expect(disableUnit(100)).rejects.toThrow('Your session has expired. Please log in again.')
   })
 
   it('should surface the reason given by the server (GIQ-106)', async () => {
@@ -112,7 +119,9 @@ describe('disableUnit', () => {
 
   it('should fall back to a generic message when the error body is not JSON (GIQ-106)', async () => {
     fetchMock.mockResolvedValue(htmlResponse(502))
-    await expect(disableUnit(100)).rejects.toThrow('Failed to disable unit')
+    await expect(disableUnit(100)).rejects.toThrow(
+      'We could not disable this unit. Please try again.',
+    )
   })
 })
 
