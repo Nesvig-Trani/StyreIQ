@@ -78,6 +78,9 @@ export default function UnitHierarchy({
 
   const effectiveRole = getEffectiveRoleFromUser(user)
   const isSocialMediaManager = effectiveRole === UserRolesEnum.SocialMediaManager
+  // The disable endpoint only accepts these roles; other roles would just get a 403.
+  const canDisableUnit =
+    effectiveRole === UserRolesEnum.SuperAdmin || effectiveRole === UserRolesEnum.CentralAdmin
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div className="flex flex-col border rounded-lg">
@@ -224,21 +227,25 @@ export default function UnitHierarchy({
                             <span className="ml-1 hidden sm:inline">Edit</span>
                           </Button>
                         )}
-                        <Button
-                          size="sm"
-                          variant="destructive"
-                          className="ml-2"
-                          onClick={() => setIsDisableModalOpen(true)}
-                        >
-                          <XCircleIcon className="h-4 w-4 mr-2" aria-hidden="true" />
-                          Disable
-                        </Button>
-                        <DisableUnitButton
-                          open={isDisableModalOpen}
-                          handleOpenChange={setIsDisableModalOpen}
-                          id={selectedOrg.id}
-                          onConfirmDisable={handleConfirmDisable}
-                        />
+                        {canDisableUnit && (
+                          <>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              className="ml-2"
+                              onClick={() => setIsDisableModalOpen(true)}
+                            >
+                              <XCircleIcon className="h-4 w-4 mr-2" aria-hidden="true" />
+                              Disable
+                            </Button>
+                            <DisableUnitButton
+                              open={isDisableModalOpen}
+                              handleOpenChange={setIsDisableModalOpen}
+                              id={selectedOrg.id}
+                              onConfirmDisable={handleConfirmDisable}
+                            />
+                          </>
+                        )}
                       </>
                     )}
                   </div>

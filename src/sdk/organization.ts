@@ -81,6 +81,8 @@ export const getUnitById = async (id: number): Promise<Organization> => {
   return organization
 }
 
+const DISABLE_UNIT_ERROR = 'We could not disable this unit. Please try again.'
+
 export const disableUnit = async (id: number) => {
   const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/organization/disable/${id}`, {
     method: 'PUT',
@@ -88,9 +90,13 @@ export const disableUnit = async (id: number) => {
     credentials: 'include',
   })
 
+  if (response.status === 401) {
+    throw new Error('Your session has expired. Please log in again.')
+  }
+
   if (!response.ok) {
     const body = await response.json().catch(() => null)
-    throw new Error(body?.error ?? 'Failed to disable unit')
+    throw new Error(body?.error ?? DISABLE_UNIT_ERROR)
   }
 
   return response.json()
