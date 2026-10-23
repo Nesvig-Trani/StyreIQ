@@ -6232,7 +6232,7 @@
   --${Pi}-rows: auto 1fr auto;
   --${Pi}-columns: auto;
 
-  &:not(:has([arc-modal-footer])):has([arc-modal-header]) {
+  &:not(:-giq89-disabled-has([arc-modal-footer])):-giq89-disabled-has([arc-modal-header]) {
     --${Pi}-rows: auto 1fr;
   }
 
@@ -6402,11 +6402,11 @@
 `,
         Wi = P`
   [arc-modal-content] {
-    &:has([arc-modal-header]) {
+    &:-giq89-disabled-has([arc-modal-header]) {
       --${Ni}-block-start: var(--${Hi}-10);
     }
 
-    &:has([arc-modal-footer]) {
+    &:-giq89-disabled-has([arc-modal-footer]) {
       --${Ni}-block-end: var(--${Hi}-10);
     }
 
@@ -6454,7 +6454,7 @@
       --${Ni}-inline-start: var(--${Hi}-24);
     }
 
-    &:has([arc-modal-go-back]) {
+    &:-giq89-disabled-has([arc-modal-go-back]) {
       --${Vi}-inline-start: var(--${Hi}-20);
     }
 
@@ -6476,7 +6476,7 @@
       var(--${Ui}-block-end, var(--${Hi}-20))
       var(--${Hi}-24);
 
-    &:has([arc-modal-body][data-padding=none]) {
+    &:-giq89-disabled-has([arc-modal-body][data-padding=none]) {
       --${Ni}: 0;
     }
   }
@@ -6733,7 +6733,7 @@
     }
 
     /* Nested confirm modal */
-    &:not([is-top-layer]):has([arc-modal][is-confirm][open])::after {
+    &:not([is-top-layer]):-giq89-disabled-has([arc-modal][is-confirm][open])::after {
       content: '';
       position: absolute;
       inset: 0;
