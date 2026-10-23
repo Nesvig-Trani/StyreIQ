@@ -1,5 +1,5 @@
 ---
-status: approved
+status: reviewed
 ticket: GIQ-89
 sprint: none (flat .plans layout)
 ---
@@ -58,3 +58,49 @@ None (no migrations, env vars or dependencies). Needs access to a Safari 17.4.x 
 1. Can we get a Safari 17.4.x environment (macOS 14.4 VM, BrowserStack)?
 2. If not, is a defensive `:has()` rewrite without confirmation acceptable, with the client verifying after deploy?
 3. Does the client have the original Rise projects, so we can re-export with a different theme or version instead of patching?
+
+## Changes
+
+- Reproduced on Safari 17.4.1 (macOS 14.4.1 VM). Bisected to 6 selectors (7 `:has(` occurrences) of the Arc modal styles in `lib/rise/6df44b14.js`; fixed with `scripts/patch-training-safari.mjs` instead of re-serving or transforming in the route. Step 4 test: `src/app/__tests__/api/training-safari-selectors.test.ts`.
+
+## Validation Results (Agent)
+
+- [x] Safari 17.4.1 (macOS 14.4.1 VM): risk-mitigation, governance-essentials and leadership-guide load, no tab crash — verified manually by the developer (after clearing Safari's cache; the first retest crashed because Safari served the cached old bundle)
+- [x] Crash reproduced before the fix on Safari 17.4.1 (risk-mitigation: "A problem repeatedly occurred")
+- [x] Chrome (current): all 3 courses render the landing page (title, content, Start Course) — verified via Chrome DevTools MCP; no console errors. One vendor warning, `Unsatisfied version ^5.0.0 ... svelte` (module federation), unrelated to the CSS change
+- [x] Served files are patched: over HTTP each bundle has 105 `:has(` left and 7 disabled
+- [x] `yarn lint`, `yarn type-check`, `yarn test` — 166 files, 1977 tests, 0 failures; new test fails without the patch (3 failures) and passes with it
+- [x] Latest Safari on the host Mac after the patch: governance-essentials loads with no issues — verified manually by the developer
+- [ ] Firefox — NOT tested
+- [x] Modals: walked all 7 lessons of risk-mitigation in Chrome with a MutationObserver; the Arc modal (`[arc-modal]`, the component the 6 disabled rules style) never appeared. Only `react-medium-image-zoom` dialogs (`data-rmiz-modal`) opened, which the patch does not touch. Not covered: quiz feedback in the other lessons and the other two courses
+- [ ] In-app path (Resources / Start Training from a task) — SKIPPED: the test user has no training tasks; the direct `/trainings/...` URLs serve the same content
+
+## Validation Results (Developer)
+
+All answers observed in the Safari 17.4.1 VM unless noted.
+
+1. Q: Title and main button label on the first screen of risk-mitigation?
+   A: "Social Media Risk Mitigation Course" and "Start course".
+2. Q: Title of the first module after starting, and does the course keep loading?
+   A: "Terms of Use", and yes it keeps loading.
+3. Q: Module 1 accordion, image zoom, and Final Knowledge Check behaviour?
+   A: "Unauthorized Access" expands and is readable; an image zooms and closes with Esc or a click outside; answering Final Knowledge Check question 1 shows inline feedback ("Incorrect" with explanation), no pop-up, no crash (confirmed in the Safari VM).
+4. Q: Current Safari on the host Mac, governance-essentials?
+   A: "Social Media Governance Essentials: Accessibility, Compliance & Risk" loads, no issues.
+
+Approved: yes
+
+## Review Results (Developer)
+
+### Review Brief
+
+- Summary: disables 6 `:has()` selectors (7 occurrences) in the Arc modal styles of `lib/rise/6df44b14.js` in all three courses via `scripts/patch-training-safari.mjs`; new test `training-safari-selectors.test.ts` keeps them out. About 95 added / 18 removed non-plan lines.
+- Plan deviations: disabled (dropped) the rules instead of rewriting them; Firefox check not done.
+- Standards violations: none.
+- Flagged for human attention: rules disabled for all browsers; Safari 17.4.1 bisect done only on risk-mitigation and the other courses only checked for loading; 105 other `:has()` rules remain; script prints nothing if the bundle is renamed (the test fails loudly); exact-text matching breaks on a newer Rise export; one-hour cache on `serve-training`; vendor bundles edited by hand.
+
+### Developer Review
+
+The developer did not answer the three targeted questions one by one; they gave an explicit decision only.
+
+Decision: approved
