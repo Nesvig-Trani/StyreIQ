@@ -6276,7 +6276,7 @@
   --${xa}-rows: auto 1fr auto;
   --${xa}-columns: auto;
 
-  &:not(:has([arc-modal-footer])):has([arc-modal-header]) {
+  &:not(:-giq89-disabled-has([arc-modal-footer])):-giq89-disabled-has([arc-modal-header]) {
     --${xa}-rows: auto 1fr;
   }
 
@@ -6446,11 +6446,11 @@
 `,
         Kc = u`
   [arc-modal-content] {
-    &:has([arc-modal-header]) {
+    &:-giq89-disabled-has([arc-modal-header]) {
       --${N}-block-start: var(--${k}-10);
     }
 
-    &:has([arc-modal-footer]) {
+    &:-giq89-disabled-has([arc-modal-footer]) {
       --${N}-block-end: var(--${k}-10);
     }
 
@@ -6498,7 +6498,7 @@
       --${N}-inline-start: var(--${k}-24);
     }
 
-    &:has([arc-modal-go-back]) {
+    &:-giq89-disabled-has([arc-modal-go-back]) {
       --${$a}-inline-start: var(--${k}-20);
     }
 
@@ -6520,7 +6520,7 @@
       var(--${Kr}-block-end, var(--${k}-20))
       var(--${k}-24);
 
-    &:has([arc-modal-body][data-padding=none]) {
+    &:-giq89-disabled-has([arc-modal-body][data-padding=none]) {
       --${N}: 0;
     }
   }
@@ -6777,7 +6777,7 @@
     }
 
     /* Nested confirm modal */
-    &:not([is-top-layer]):has([arc-modal][is-confirm][open])::after {
+    &:not([is-top-layer]):-giq89-disabled-has([arc-modal][is-confirm][open])::after {
       content: '';
       position: absolute;
       inset: 0;
