@@ -6,28 +6,22 @@
 //   node scripts/patch-training-safari.mjs
 import fs from 'node:fs'
 import path from 'node:path'
+import { BUNDLE, listCourses, TRAININGS_DIR, UNSAFE_SELECTORS } from './training-safari-selectors.mjs'
 
-const TRAININGS_DIR = path.join(process.cwd(), 'private', 'trainings')
-const BUNDLE = path.join('lib', 'rise', '6df44b14.js')
 const DISABLED_HAS = ':-giq89-disabled-has('
 
-// Each selector must appear exactly once per bundle (6 selectors, 7 `:has(` occurrences).
-const UNSAFE_SELECTORS = [
-  '&:not(:has([arc-modal-footer])):has([arc-modal-header]) {',
-  '&:has([arc-modal-header]) {',
-  '&:has([arc-modal-footer]) {',
-  '&:has([arc-modal-go-back]) {',
-  '&:has([arc-modal-body][data-padding=none]) {',
-  '&:not([is-top-layer]):has([arc-modal][is-confirm][open])::after {',
-]
-
-const courses = fs
-  .readdirSync(TRAININGS_DIR, { withFileTypes: true })
-  .filter((entry) => entry.isDirectory() && fs.existsSync(path.join(TRAININGS_DIR, entry.name, BUNDLE)))
-  .map((entry) => entry.name)
-
-for (const course of courses) {
+for (const course of listCourses()) {
   const file = path.join(TRAININGS_DIR, course, BUNDLE)
+  if (!fs.existsSync(file)) {
+    console.error(
+      `${course}: ${BUNDLE} not found. If the course was re-exported, find the bundle with the ` +
+        'Arc modal styles (search for "arc-modal-header"), update BUNDLE in ' +
+        'scripts/training-safari-selectors.mjs and run this script again.',
+    )
+    process.exitCode = 1
+    continue
+  }
+
   let content = fs.readFileSync(file, 'utf8')
   let patched = 0
 
