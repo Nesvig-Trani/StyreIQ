@@ -65,7 +65,9 @@ export default async function UsersPage(props: {
   const access = new AccessControl(user!)
 
   const canManageWelcomeEmail =
-    access.can('update', 'WELCOME_EMAIL') && (isSuperAdmin || isCentralAdmin)
+    access.can('update', 'WELCOME_EMAIL') &&
+    (isSuperAdmin || isCentralAdmin) &&
+    !tenantContext.isViewingAllTenants
   return (
     <Card>
       <CardContent>
@@ -120,7 +122,10 @@ export default async function UsersPage(props: {
               {access.can('create', 'USERS') && (
                 <>
                   {canManageWelcomeEmail && (
-                    <WelcomeEmailModal email={welcomeEmail as WelcomeEmailSchema} />
+                    <WelcomeEmailModal
+                      key={tenantContext.tenantIdForFilter}
+                      email={welcomeEmail as WelcomeEmailSchema | undefined}
+                    />
                   )}
                   <Button size="sm" variant="outline" className="w-full sm:w-auto" asChild>
                     <Link href={'/dashboard/review-requests'} prefetch>

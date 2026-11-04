@@ -31,9 +31,16 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { SUPPORT_EMAIL } from '@/shared/constants'
 
-export default function WelcomeEmailModal({ email }: { email: WelcomeEmailSchema }) {
+const EMPTY_TEMPLATE: WelcomeEmailSchema = {
+  instructions: '',
+  responsibilities: [],
+  policyLinks: [],
+}
+
+// `email` is undefined while the tenant has not written a welcome email yet.
+export default function WelcomeEmailModal({ email }: { email?: WelcomeEmailSchema }) {
   const [open, setOpen] = useState(false)
-  const [template, setTemplate] = useState(email)
+  const [template, setTemplate] = useState<WelcomeEmailSchema>(email ?? EMPTY_TEMPLATE)
 
   const [newResponsibility, setNewResponsibility] = useState('')
   const [newPolicyTitle, setNewPolicyTitle] = useState('')
@@ -69,7 +76,7 @@ export default function WelcomeEmailModal({ email }: { email: WelcomeEmailSchema
   }
 
   const resetForm = () => {
-    setTemplate(email)
+    setTemplate(email ?? EMPTY_TEMPLATE)
     setNewResponsibility('')
     setNewPolicyTitle('')
     setNewPolicyUrl('')
