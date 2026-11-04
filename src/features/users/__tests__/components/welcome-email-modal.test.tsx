@@ -20,7 +20,7 @@ const template = {
   ],
 }
 
-const openModal = async (email = template) => {
+const openModal = async (email: typeof template | undefined = template) => {
   const user = userEvent.setup()
   render(<WelcomeEmailModal email={email} />)
   await user.click(screen.getByRole('button', { name: 'Welcome Email' }))
@@ -116,6 +116,30 @@ describe('WelcomeEmailModal', () => {
     if (!container) throw new Error('policy row not found')
     await user.click(within(container).getByRole('button'))
     expect(within(dialog).queryByDisplayValue('Política de redes 2026')).not.toBeInTheDocument()
+  })
+
+  it('should open empty and save when the tenant has no welcome email yet', async () => {
+    fetchMock.mockResolvedValue(jsonResponse(200, { id: 1 }))
+    const user = userEvent.setup()
+    render(<WelcomeEmailModal />)
+    await user.click(screen.getByRole('button', { name: 'Welcome Email' }))
+    const dialog = await screen.findByRole('dialog')
+
+    const textarea = within(dialog).getByLabelText('Instructions for New Users')
+    expect(textarea).toHaveValue('')
+    expect(
+      within(dialog).getByText(/the Your responsibilities section is left out of the email/),
+    ).toBeInTheDocument()
+
+    await user.click(textarea)
+    await user.paste('Bienvenida a la Universidad Andina')
+    await user.click(within(dialog).getByRole('button', { name: 'Save Template' }))
+
+    await waitFor(() =>
+      expect(toast.success).toHaveBeenCalledWith('Welcome email updated successfully'),
+    )
+    const [, init] = fetchMock.mock.calls[0]
+    expect(JSON.parse(String(init?.body)).instructions).toBe('Bienvenida a la Universidad Andina')
   })
 
   it('should save the template, close the dialog and refresh the page', async () => {
