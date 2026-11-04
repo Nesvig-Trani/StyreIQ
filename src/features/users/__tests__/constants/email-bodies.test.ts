@@ -145,8 +145,13 @@ describe('welcomeEmailBody', () => {
     expect(html).toContain('Your organization uses StyreIQ')
   })
 
-  it('should show the default responsibilities when the tenant defines none', () => {
-    expect(welcomeEmailBody(props)).toContain('Complete assigned tasks or training')
+  it('should leave out every editable section when the tenant has not configured any', () => {
+    const html = welcomeEmailBody(props)
+    expect(html).not.toContain('Your responsibilities')
+    expect(html).not.toContain('Complete assigned tasks or training')
+    expect(html).not.toContain('Additional resources')
+    expect(html).toContain('Welcome to StyreIQ')
+    expect(html).toContain('href="https://app.styreiq.test/login"')
   })
 
   it('should show tenant responsibilities, instructions and policy links', () => {

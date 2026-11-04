@@ -185,6 +185,71 @@ describe('createUser endpoint', () => {
     )
   })
 
+  describe('welcome email content', () => {
+    const welcomeEmails = [
+      {
+        id: 1,
+        tenant: 10,
+        instructions: 'Instrucciones Universidad Andina',
+        responsibilities: [{ responsibility: 'Publicar solo contenido aprobado' }],
+        policyLinks: [{ title: 'Guía Andina', url: 'https://universidad-andina.edu/guia' }],
+      },
+      {
+        id: 2,
+        tenant: 20,
+        instructions: 'Instrucciones Colegio San Pablo',
+        responsibilities: [{ responsibility: 'Responder en menos de 24 horas' }],
+        policyLinks: [{ title: 'Guía San Pablo', url: 'https://colegio-sanpablo.edu/guia' }],
+      },
+    ]
+
+    const payloadWithWelcomeEmails = (tenantId: number, docs: typeof welcomeEmails) => {
+      const payload = payloadWithOrgInTenant()
+      payload.create.mockImplementation(async ({ collection, data }) =>
+        collection === 'users' ? { id: 55, ...data, tenant: tenantId } : { id: 900 },
+      )
+      payload.find.mockImplementation(
+        async ({
+          collection,
+          where,
+        }: {
+          collection: string
+          where?: { tenant?: { equals: number } }
+        }) => {
+          if (collection !== 'welcome-emails') return { docs: [], totalDocs: 0 }
+          const matching = docs.filter((d) => !where?.tenant || d.tenant === where.tenant.equals)
+          return { docs: matching.slice(-1), totalDocs: matching.length }
+        },
+      )
+      return payload
+    }
+
+    const sentHtml = (payload: ReturnType<typeof createFakePayload>) =>
+      String(payload.sendEmail.mock.calls[0][0].html)
+
+    it("should only use the new user's own tenant content in the welcome email", async () => {
+      const payload = payloadWithWelcomeEmails(10, welcomeEmails)
+      await run(createUser, { user: centralAdmin, payload, body: newUserBody })
+
+      const html = sentHtml(payload)
+      expect(html).toContain('Guía Andina')
+      expect(html).toContain('Publicar solo contenido aprobado')
+      expect(html).not.toContain('Guía San Pablo')
+      expect(html).not.toContain('Responder en menos de 24 horas')
+    })
+
+    it('should send a welcome email without editable sections when the tenant has none', async () => {
+      const payload = payloadWithWelcomeEmails(10, [welcomeEmails[1]])
+      await run(createUser, { user: centralAdmin, payload, body: newUserBody })
+
+      const html = sentHtml(payload)
+      expect(html).not.toContain('Guía San Pablo')
+      expect(html).not.toContain('Instrucciones Colegio San Pablo')
+      expect(html).not.toContain('Additional resources')
+      expect(html).not.toContain('Your responsibilities')
+    })
+  })
+
   it('should still create the user when the welcome email fails to send', async () => {
     const payload = payloadWithOrgInTenant()
     payload.sendEmail.mockRejectedValue(new Error('Resend unavailable'))
