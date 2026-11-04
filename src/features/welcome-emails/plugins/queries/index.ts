@@ -2,9 +2,8 @@ import type { Payload } from 'payload'
 import { getPayloadContext } from '@/shared/utils/getPayloadContext'
 import { WelcomeEmailCollectionSlug } from '../types'
 
-// Server-only on purpose (no 'use server'): exported server actions are publicly callable.
-// The local API skips collection access control, so the tenant must be filtered explicitly.
-// Without a tenant there is no welcome email: never fall back to another tenant's content.
+// No 'use server': exported server actions are publicly callable, and this reads any tenant.
+// The local API skips access control, so filter by tenant; no tenant means no content.
 export const getWelcomeEmailForTenant = async (
   payload: Payload,
   tenantId: number | null | undefined,
