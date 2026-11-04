@@ -22,12 +22,6 @@ type WelcomeEmailProps = {
   policyLinks: { title: string; url: string }[]
 }
 
-const DEFAULT_RESPONSIBILITIES: WelcomeEmailProps['responsibilities'] = [
-  { responsibility: 'Respond to governance or account-verification requests' },
-  { responsibility: 'Complete assigned tasks or training' },
-  { responsibility: 'Review and acknowledge policies assigned in StyreIQ' },
-  { responsibility: 'Keep profile and account information current' },
-]
 const FALLBACK_ORGANIZATION = 'Your organization'
 
 const toParagraphs = (text: string) =>
@@ -56,7 +50,9 @@ const renderIntro = (tenant: WelcomeEmailProps['tenant']) => {
 }
 
 const renderResponsibilities = (responsibilities: WelcomeEmailProps['responsibilities']) => {
-  const items = (responsibilities.length > 0 ? responsibilities : DEFAULT_RESPONSIBILITIES)
+  if (responsibilities.length === 0) return ''
+
+  const items = responsibilities
     .map(
       (r) =>
         `<li style="font-size: 15px; line-height: 1.6; color: ${COLORS.text}; margin: 0 0 6px;">${r.responsibility}</li>`,

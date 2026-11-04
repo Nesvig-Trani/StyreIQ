@@ -19,7 +19,7 @@ import { USER_ALREADY_EXISTS } from '@/features/users/constants/Errors'
 import { forgotPasswordEmailBody } from '@/features/users/constants/forgotPasswordEmailBody'
 import { resetPasswordEmailBody } from '@/features/users/constants/resetPasswordEmailBody'
 import { welcomeEmailBody } from '@/features/users/constants/welcomeEmailBody'
-import { WelcomeEmailCollectionSlug } from '@/features/welcome-emails/plugins/types'
+import { getWelcomeEmailForTenant } from '@/features/welcome-emails/plugins/queries'
 import { AuditLogActionEnum } from '@/features/audit-log/plugins/types'
 import { requestDemoEmailBody } from '../../constants/requestDemoEmailBody'
 import { demoConfirmationEmailBody } from '../../constants/demoConfirmationEmailBody'
@@ -131,10 +131,13 @@ export const createUser: Endpoint = {
         )
 
         if (!assignsOnlyAccessibleUnits) {
-          return new Response(JSON.stringify({ error: 'Cannot assign units outside your access' }), {
-            status: 403,
-            headers: JSON_HEADERS,
-          })
+          return new Response(
+            JSON.stringify({ error: 'Cannot assign units outside your access' }),
+            {
+              status: 403,
+              headers: JSON_HEADERS,
+            },
+          )
         }
       }
 
@@ -193,14 +196,8 @@ export const createUser: Endpoint = {
         ) || [],
       )
 
-      const welcomeEmail = await req.payload.find({
-        collection: WelcomeEmailCollectionSlug,
-        sort: '-createdAt',
-        limit: 1,
-      })
-      const emailData = welcomeEmail.docs[0]
-
       const userTenantId = extractTenantIdFromProperty(createUser.tenant)
+      const emailData = await getWelcomeEmailForTenant(req.payload, userTenantId)
       const userTenant = userTenantId
         ? await req.payload.findByID({ collection: 'tenants', id: userTenantId })
         : null
