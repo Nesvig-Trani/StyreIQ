@@ -205,7 +205,7 @@ export default function WelcomeEmailModal({ email }: { email: WelcomeEmailSchema
                       </ul>
                       {!template?.responsibilities?.length && (
                         <p className="text-xs text-muted-foreground">
-                          Empty list: the email shows the StyreIQ default responsibilities.
+                          Empty list: the Your responsibilities section is left out of the email.
                         </p>
                       )}
                     </div>
