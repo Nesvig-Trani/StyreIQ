@@ -16,22 +16,29 @@ beforeEach(() => {
 })
 
 describe('getLastWelcomeEmail', () => {
-  it('should return the most recently created welcome email', async () => {
+  it('should return the most recent welcome email of the given tenant', async () => {
     boundary.payload?.find.mockResolvedValue({
       docs: [{ id: 3, instructions: 'Bienvenida a StyreIQ, Universidad Andina' }],
     })
 
-    const email = await getLastWelcomeEmail()
+    const email = await getLastWelcomeEmail(7)
 
     expect(email).toEqual({ id: 3, instructions: 'Bienvenida a StyreIQ, Universidad Andina' })
     expect(boundary.payload?.find).toHaveBeenCalledWith({
       collection: 'welcome-emails',
+      where: { tenant: { equals: 7 } },
       sort: '-createdAt',
       limit: 1,
     })
   })
 
-  it('should return undefined when no welcome email has been written', async () => {
-    expect(await getLastWelcomeEmail()).toBeUndefined()
+  it('should return undefined when the tenant has not written a welcome email', async () => {
+    expect(await getLastWelcomeEmail(7)).toBeUndefined()
+  })
+
+  it('should not read any welcome email when there is no tenant', async () => {
+    expect(await getLastWelcomeEmail(null)).toBeUndefined()
+    expect(await getLastWelcomeEmail(undefined)).toBeUndefined()
+    expect(boundary.payload?.find).not.toHaveBeenCalled()
   })
 })

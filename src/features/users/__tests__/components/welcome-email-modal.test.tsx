@@ -45,10 +45,10 @@ describe('WelcomeEmailModal', () => {
     expect(within(dialog).getByText('Política de redes')).toBeInTheDocument()
   })
 
-  it('should explain that default responsibilities apply when the list is empty', async () => {
+  it('should explain that the responsibilities section is left out when the list is empty', async () => {
     const { dialog } = await openModal({ ...template, responsibilities: [] })
     expect(
-      within(dialog).getByText(/the email shows the StyreIQ default responsibilities/),
+      within(dialog).getByText(/the Your responsibilities section is left out of the email/),
     ).toBeInTheDocument()
   })
 

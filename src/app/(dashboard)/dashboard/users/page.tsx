@@ -61,7 +61,7 @@ export default async function UsersPage(props: {
     tenants = tenantsResult.docs
   }
 
-  const welcomeEmail = await getLastWelcomeEmail()
+  const welcomeEmail = await getLastWelcomeEmail(tenantContext.tenantIdForFilter)
   const access = new AccessControl(user!)
 
   const canManageWelcomeEmail =
