@@ -166,7 +166,7 @@ export default function WelcomeEmailModal({ email }: { email?: WelcomeEmailSchem
                     <p className="text-muted-foreground">
                       <strong>
                         {'{{Organization}}'} uses StyreIQ to help coordinate social media
-                        responsibilities across campus.
+                        responsibilities across the organization.
                       </strong>{' '}
                       You&apos;ve been added because you manage or support one or more institutional
                       social media accounts.
